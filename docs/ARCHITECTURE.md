@@ -167,6 +167,8 @@ Humans and observers:
 | `finding.added` (any agent) | Urednik | dedupe/merge, status, conflict check (official source wins) -> `finding.updated`, `conflict.resolved` |
 | `finding.added` VD_PREKO_ROKA / VD_LANAC (**Kadrovik**) | Mediji | **cross-agent reaction**: a new Mediji loop (fresh context, via `startAgentLoop`) with a targeted media check of the appointment: do outlets say "v.d." or "direktor"? (`vesti_imenovanje`; a finding with real articles and, if new, a `funkcija` claim for the Urednik's conflict check). First message `Povod: nalaz Kadrovik: <title> [f3 · VD_LANAC]`. Once per case and code (and per person). |
 | `finding.added` BEZ_OBJAVE / KONCENTRACIJA (**Nabavke**) | Revizor | **cross-agent reaction**: a new Revizor loop that searches the cached DRI excerpts for an earlier finding on the same topic (`dri_srodni_nalazi`) and adds a corroboration finding "DRI je u izveštaju <za 2019. / objavljenom ...> već utvrdio nalaz o ..." whose sources are the DRI report AND the Nabavke finding's procurement source (`potkrepljuje` = the Nabavke finding; the Urednik adds a note to it). First message `Povod: nalaz Nabavke: <title> [f7 · BEZ_OBJAVE]`. Nothing is added when no related excerpt exists. |
+| `finding.added` DRI_NALAZ about procurement or acting heads (**Revizor**) | Mediji | **cross-agent reaction**: a new Mediji loop that reads the shared state (`dosije_pregled`), then searches the coverage of that audit topic for the institution (`vesti_tema_revizije`: the cached institution search, plus the head's person search for acting heads) and files a neutral finding "Mediji o temi revizije „<tema>“: N članaka" **only with real articles** (headline or lead names the topic). First message `Povod: nalaz Revizor: <title> [f12 · DRI_NALAZ]. Tema revizije: <tema>. ...`; `agent.reakcija` carries `reaction.tema`. Once per case and topic (`javne nabavke`, `vršioci dužnosti`). |
+| `mapa.red` (Trijaža agents) | Urednik | **cross-institution coordination**: `updateLinks()` compares the top suppliers (name + PIB) that the Trijaža tools put into the shared state; a supplier among the top 8 of 2+ institutions -> `mapa.veza` (once per link, again when an institution joins it) and every affected row gets `signals.sharedSuppliers`, +5 points (max +10) and the reason line "Isti dobavljač u N institucije: <naziv>" (`mapa.red` from the Urednik) |
 | `pitanje.za_coveka` (agent or gate) | SSE most -> UI inbox | journalist sees the question |
 | `odgovor.coveka` (Novinar) | Urednik (approvals), the asking agent (questions) | resolve the awaited approval / start a new loop with the answer (e.g. owner name -> `add_entity` -> cascade) |
 | `message_received.started` / `model.answer` (any) | Urednik | track active loops; idle for 2.5 s -> final summary loop -> `dosije.zavrsen` |
@@ -209,9 +211,10 @@ Source and analysis tools (thin wrappers over the data facade; analysis is deter
 | `acas_imovina({personId?, name})` | `AssetReport[]` |
 | `acas_pretraga_osobe({name})` | `Official[]` (is this person an official?) |
 | `pep_provera({name})` | `PepMatch[]` |
-| `dri_izvestaji()` / `dri_nalazi({reportId})` | audit reports / excerpts (`period` = audited period, only when the report's title states it) |
+| `dri_izvestaji()` / `dri_nalazi({reportId})` | audit reports / excerpts (`period` = audited period, only when the report's title states it). `excerpts` are filtered in `src/mozaik/driText.ts`: only whole-sentence quotes that describe an irregularity or a recommendation (neutral/positive compliance statements, page headers, "Page N", cut-off sentences are dropped); `misljenjeIzvod` is the opinion sentence when it is whole |
+| `vesti_tema_revizije({tema})` | Mediji's reaction to a Revizor finding: articles whose headline/lead names the audit topic (`javne nabavke` / `vršioci dužnosti`) for the institution, plus how many findings the dossier already holds on it |
 | `dri_srodni_nalazi({nalazId})` | Revizor's reaction: the best not yet used cached DRI excerpt on the topic of a Nabavke finding (BEZ_OBJAVE / KONCENTRACIJA), with the report's sources and the finding's procurement source |
-| `vesti_imenovanje({ime})` | Mediji's reaction: articles naming the person AND the institution that speak of an appointment or function, each classified "v.d." / "direktor" / "drugo", plus the claim value and whether the dossier already holds it |
+| `vesti_imenovanje({ime})` | Mediji's reaction: only articles whose headline or lead names the person (given name AND surname) together with an appointment/function word (imenovan, postavljen, direktor, v.d., vršilac), each classified "v.d." / "direktor" / "drugo"; `clanakSaFunkcijom` is the ONE article that states the function (the only source of a `funkcija` claim), `navodVecUDosijeu` says whether the dossier already holds it |
 | `vesti_pretraga({query, days?, tip?, kontekst?})` / `vest_tekst({url})` | `{pregled: {naslov, tekst, ukupno, izvori[<=12]}, clanci}` (institution: 12 months, aliases; person: 2 years, article must name person AND institution/firm) / article text |
 | `dosije_pregled()` / `napisi_sazetak({lede, topSignals, toVerify})` | Urednik only |
 
@@ -264,7 +267,8 @@ and a case are mutually exclusive (REST answers 409) and a new run replaces the 
 | event (producer) | who reacts | reaction |
 |---|---|---|
 | `mapa.started` (Novinar) | Fabrika | resolves every institution, then spawns one dynamic agent "Trijaža · <short name>" (group `trijaza`) per institution in the same tick; each runs its own `runLoop` (fresh context, per-loop tools, UrednikGate) |
-| `mapa.red` (Trijaža agent, Fabrika, Urednik) | SSE bridge | upsert of one row, after every triage tool |
+| `mapa.red` (Trijaža agent, Fabrika, Urednik) | SSE bridge, Urednik | upsert of one row, after every triage tool; the Urednik also reacts to it (below) |
+| `mapa.veza` (Urednik) | SSE bridge | `{mapaId, veza: {key, supplier: {name, pib}, institutions: [{slug, name, rank, share}], points, line}}`: one supplier (PIB) that is among the top 8 suppliers of 2+ institutions; `line` = "Isti dobavljač u 3 institucije: ZGOP DOO". The affected rows follow as `mapa.red` with `signals.sharedSuppliers` and the +points |
 | loop end of a Trijaža agent | Urednik | finishes a row the agent did not write (all three tools ran) or marks it `error`; when every row is terminal and no triage loop is active: `mapa.zavrsena` with the ranking |
 
 Tools: `trijaza_rukovodstvo`, `trijaza_nabavke`, `trijaza_revizija` (wrappers over the same adapters and `src/data/analysis`
@@ -287,6 +291,11 @@ it), drops requests of a closed case or map, and publishes at most 400 requests 
 `stats.activitiesDropped`). Outside a tool (CLI probes, warm-cache, the resolver) nothing is emitted. In scripted mode the
 simulated source latency is spent inside the `u_toku` -> `kes` window, so the feed shows requests in progress while the total
 per tool call is unchanged. `npm run cli -- "<institution>" --pretraga` prints one line per request.
+
+A request still `u_toku` when its case or map ends or is replaced is finished by `finalizeActivities()` (`src/mozaik/activity.ts`) with a
+final `izvor.upit` (status `greska`, error `prekinuto: dosije završen` / `prekinuto: mapa završena` / `... zamenjen novim`), published before
+`dosije.zavrsen` / `mapa.zavrsena`; the late result of the real request is then dropped, so a request has exactly one final event and the UI
+never shows a request in flight after "Završeno".
 
 ## 6. Wire protocol
 Defined in `src/shared/types.ts` (`WireEvent`, `WirePayloads`, `DosijeSnapshot`, REST list at the bottom).

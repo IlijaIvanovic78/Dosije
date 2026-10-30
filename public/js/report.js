@@ -1,20 +1,21 @@
 // Report modal: Markdown render, download, print/PDF, copy.
 
 import { renderMarkdown } from "./markdown.js"
-import { state, on, now } from "./store.js"
+import { state, on } from "./store.js"
 import { api } from "./api.js"
 import { toast, dismissToasts } from "./toast.js"
 import { fmtClock } from "./format.js"
+import { t } from "./i18n.js"
 
 let modal, body, copyBtn, titleEl
 
 export function openReport() {
 	if (!state.report) {
-		toast({ kind: "info", title: "Izveštaj još nije spreman", text: "Pojaviće se kad agenti završe dosije." })
+		toast({ kind: "info", title: t("Izveštaj još nije spreman"), text: t("Pojaviće se kad agenti završe dosije.") })
 		return
 	}
 	body.innerHTML = renderMarkdown(state.report.markdown)
-	titleEl.textContent = state.institution?.name ? `Izveštaj · ${state.institution.name}` : "Izveštaj"
+	titleEl.textContent = state.institution?.name ? `${t("Izveštaj")} · ${state.institution.name}` : t("Izveštaj")
 	modal.hidden = false
 	dismissToasts(".toast.done")
 	document.body.classList.add("modal-open")
@@ -56,8 +57,8 @@ async function copy() {
 		document.execCommand("copy")
 		ta.remove()
 	}
-	copyBtn.textContent = "Kopirano"
-	setTimeout(() => (copyBtn.textContent = "Kopiraj"), 1800)
+	copyBtn.textContent = t("Kopirano")
+	setTimeout(() => (copyBtn.textContent = t("Kopiraj")), 1800)
 }
 
 function print() {
@@ -87,13 +88,13 @@ export function initReport() {
 	})
 	on("done", (report) => {
 		if (!report) return
-		if (now() - (Date.parse(report.generatedAt) || 0) > 20000) return // replayed history after a page load
+		if (state.replay) return // replayed history after a page load
 		toast({
 			kind: "done",
-			title: "Dosije je spreman",
-			text: `Izveštaj generisan u ${fmtClock(Date.parse(report.generatedAt) || Date.now())}. Pregledaj signale i šta još treba proveriti.`,
+			title: t("Dosije je spreman"),
+			text: t("Izveštaj generisan u {time}. Pregledaj signale i šta još treba proveriti.", { time: fmtClock(Date.parse(report.generatedAt) || Date.now()) }),
 			ttl: 16000,
-			actions: [{ label: "Otvori izveštaj", onClick: openReport }],
+			actions: [{ label: t("Otvori izveštaj"), onClick: openReport }],
 		})
 	})
 }

@@ -8,5 +8,6 @@ export function aprNormalize(name: string): string {
 	const s = cyrToLat(name)
 		.replace(/dru[šs]tvo\s+s\s+ograni[čc]enom/gi, "društvo sa ograničenom")
 		.replace(/\bd\s*\.\s*o\s*\.\s*o\s*\.?/gi, " doo ")
-	return normalizeName(s)
+	// the committed index was built with the city always stripped: queries must normalize the same way
+	return normalizeName(s, { alwaysStripCity: true })
 }

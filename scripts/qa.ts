@@ -177,7 +177,7 @@ for (const r of results) {
 
 	// ACAS
 	try {
-		const officials = await data.acas.getOfficials({ acasId: ref.acasId, name: ref.name, nameCyr: ref.nameCyr })
+		const officials = await data.acas.getOfficials({ acasId: ref.acasId, altIds: ref.acasAltIds, name: ref.name, nameCyr: ref.nameCyr })
 		const bad = officials.filter((o) => !titleNamesInstitution(o.institutionName, ref.name))
 		const stale = data.analysis.supersededOpen(officials)
 		for (const o of bad) report("greška", r.name, "ACAS", `funkcioner „${o.fullName}“ vodi se pod drugom institucijom: ${o.institutionName}`)
@@ -238,7 +238,7 @@ for (const r of results) {
 
 	// DRI
 	try {
-		const reports = await data.dri.getReports({ name: ref.name, nameCyr: ref.nameCyr })
+		const reports = await data.dri.getReports({ name: ref.name, nameCyr: ref.nameCyr, aliases: ref.aliases })
 		const bad = reports.filter((x) => !titleNamesInstitution(x.title, ref.name))
 		for (const b of bad) report("greška", r.name, "DRI", `izveštaj ${b.id} ne imenuje instituciju u naslovu: ${b.title.slice(0, 100)}`)
 		note("DRI", `${reports.length} izveštaja, svi imenuju instituciju u naslovu${bad.length ? ` (osim ${bad.length})` : ""}`)

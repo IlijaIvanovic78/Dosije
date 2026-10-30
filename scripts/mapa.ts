@@ -48,6 +48,8 @@ function line(ev: WireEvent): string | undefined {
 			const st = row.status === "done" ? `${color.green}gotovo${color.reset}` : row.status === "error" ? `${color.red}greška${color.reset}` : row.status === "running" ? `${color.violet}radi…${color.reset}` : "čeka"
 			return `${head} ${color.bold}red${color.reset} ${row.name.padEnd(32).slice(0, 32)} ${st} ocena ${String(row.score).padStart(3)} ${color.dim}${signalChips(row.signals).join(" · ")}${color.reset}`
 		}
+		case "mapa.veza":
+			return `${head} ${color.violet}↔ mapa.veza${color.reset} ${p.veza.line} ${color.dim}(${p.veza.institutions.map((i: { name: string; rank: number }) => `${i.name} #${i.rank}`).join(", ")}; +${p.veza.points} za svaku)${color.reset}`
 		case "mapa.zavrsena":
 			return `${head} ${color.bold}${color.green}mapa.zavrsena${color.reset}`
 		case "model.answer":
@@ -72,7 +74,9 @@ function table(rows: MapaRow[]): string[] {
 		const bar = "█".repeat(Math.round((r.score / max) * 20)).padEnd(20, "·")
 		const chips = r.status === "error" ? `greška: ${r.error ?? ""}` : signalChips(r.signals).join(" · ")
 		out.push(`${String(i + 1).padStart(2)}  ${r.name.padEnd(34).slice(0, 34)} ${String(r.score).padStart(5)}  ${bar}  ${chips}`)
-		for (const reason of r.reasons.slice(0, 4)) out.push(`${"".padEnd(4)}${color.dim}- ${reason}${color.reset}`)
+		// the cross-institution lines ("Isti dobavljač u N institucije: ...") are always shown
+		const shared = r.reasons.filter((x) => x.startsWith("Isti dobavljač"))
+		for (const reason of [...r.reasons.filter((x) => !x.startsWith("Isti dobavljač")).slice(0, 4), ...shared]) out.push(`${"".padEnd(4)}${color.dim}- ${reason}${color.reset}`)
 		if (r.summary) out.push(`${"".padEnd(4)}${color.dim}${short(r.summary, 150)}${color.reset}`)
 	})
 	return out
@@ -111,6 +115,7 @@ console.log(`\n${color.bold}Statistika${color.reset}`)
 console.log(`  vrhunac: ${color.bold}${n(s.peakConcurrentLoops, "petlja")}${color.reset} istovremeno · petlji ukupno: ${s.totalLoops} · ${n(agents.length, "agent")} Trijaža`)
 console.log(`  pozivi alata: ${s.toolCalls} · zaključivanja: ${s.inferences} · Mozaik događaja: ${s.events} · trajanje: ${(s.elapsedMs / 1000).toFixed(1)} s`)
 console.log(`  institucija: ${view.rows.length} (gotovo ${view.rows.filter((r) => r.status === "done").length}, greška ${view.rows.filter((r) => r.status === "error").length})`)
+console.log(`  veze među institucijama (isti dobavljač): ${events.filter((e) => e.type === "mapa.veza").length}`)
 console.log(`\nTrag događaja: out/trace-${view.id}.jsonl`)
 await shutdown()
 process.exit(0)

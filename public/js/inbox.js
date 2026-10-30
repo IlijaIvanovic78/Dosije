@@ -5,6 +5,7 @@ import { state, on, openTasks, applySnapshot } from "./store.js"
 import { api } from "./api.js"
 import { toast, dismissToasts } from "./toast.js"
 import { showNotice, clearNotice } from "./notice.js"
+import { t, onLang } from "./i18n.js"
 
 let root, backdrop, listEl, historyEl, historyCount, countEl, emptyEl, inboxBtn
 const cardCache = new Map() // taskId -> { el }
@@ -49,7 +50,7 @@ async function send(task, payload, card) {
 			host = h("div", { class: "notice-host" })
 			card.append(host)
 		}
-		showNotice(host, { text: `Odgovor nije poslat. ${e.message}` })
+		showNotice(host, { text: `${t("Odgovor nije poslat.")} ${e.message}` })
 		// "already resolved" (409) or "no such task" (404): the screen is out of date, refresh it
 		if (e.status === 409 || e.status === 404) {
 			try {
@@ -69,7 +70,7 @@ function draftBlock(draft) {
 			{ class: "f-meta" },
 			draft.section ? h("span", { class: "sect" }, SECTION_LABEL[draft.section] || draft.section) : null,
 			draft.signalCode ? h("span", { class: `code ${sev}` }, SIGNAL_LABEL[draft.signalCode] || draft.signalCode) : null,
-			h("span", { class: "appr pending" }, "nacrt"),
+			h("span", { class: "appr pending" }, t("nacrt")),
 		),
 		draft.title ? h("h3", { class: "f-title" }, draft.title) : null,
 		draft.text ? h("p", { class: "f-text" }, draft.text) : null,
@@ -84,15 +85,15 @@ function buildTaskCard(task) {
 	const card = h("article", { class: `task ${task.kind}${task.blocking ? " blocking" : ""}`, dataset: { id: task.id } })
 
 	const parts = [
-		h("div", { class: "task-head" }, avatar(agent), h("b", null, task.fromAgentName), h("span", { class: "task-time" }, created ? fmtClock(created) : ""), h("span", { class: `kind ${task.kind}` }, approval ? "odobrenje" : "pitanje")),
+		h("div", { class: "task-head" }, avatar(agent), h("b", null, task.fromAgentName), h("span", { class: "task-time" }, created ? fmtClock(created) : ""), h("span", { class: `kind ${task.kind}` }, approval ? t("odobrenje") : t("pitanje"))),
 	]
 	if (task.blocking) {
-		parts.push(h("p", { class: "hold-line" }, h("b", null, `${task.fromAgentName} čeka tvoju odluku.`), " Ostali agenti nastavljaju."))
+		parts.push(h("p", { class: "hold-line" }, h("b", null, `${t("{agent} čeka tvoju odluku", { agent: task.fromAgentName })}.`), ` ${t("Ostali agenti nastavljaju.")}`))
 	}
-	parts.push(h("h4", { class: "task-title" }, approval ? (task.findingDraft ? "Urednik predlaže signal za izveštaj" : `Urednik predlaže signal: ${task.title}`) : task.title))
+	parts.push(h("h4", { class: "task-title" }, approval ? (task.findingDraft ? t("Urednik predlaže signal za izveštaj") : `${t("Urednik predlaže signal")}: ${task.title}`) : task.title))
 	if (approval && task.findingDraft) parts.push(draftBlock(task.findingDraft))
 	if (task.question) parts.push(h("p", { class: "task-q" }, task.question))
-	if (task.hint) parts.push(h("p", { class: "task-hint" }, h("b", null, "Savet: "), task.hint))
+	if (task.hint) parts.push(h("p", { class: "task-hint" }, h("b", null, `${t("Savet")}: `), task.hint))
 	if (task.links?.length) {
 		parts.push(
 			h(
@@ -111,18 +112,18 @@ function buildTaskCard(task) {
 			h(
 				"div",
 				{ class: "task-actions" },
-				h("button", { class: "btn primary", type: "button", onclick: () => send(task, { decision: "approve" }, card) }, "Ubaci u izveštaj"),
-				h("button", { class: "btn", type: "button", onclick: () => send(task, { decision: "reject" }, card) }, "Odbaci"),
+				h("button", { class: "btn primary", type: "button", onclick: () => send(task, { decision: "approve" }, card) }, t("Ubaci u izveštaj")),
+				h("button", { class: "btn", type: "button", onclick: () => send(task, { decision: "reject" }, card) }, t("Odbaci")),
 			),
 		)
 	} else {
-		const ta = h("textarea", { rows: "2", placeholder: "Upiši odgovor (na primer ime vlasnika)", "aria-label": "Odgovor" })
-		const submit = h("button", { class: "btn primary", type: "button", disabled: true, onclick: () => send(task, { answer: ta.value.trim() }, card) }, "Pošalji timu")
+		const ta = h("textarea", { rows: "2", placeholder: t("Upiši odgovor (na primer ime vlasnika)"), "aria-label": t("Odgovor") })
+		const submit = h("button", { class: "btn primary", type: "button", disabled: true, onclick: () => send(task, { answer: ta.value.trim() }, card) }, t("Pošalji timu"))
 		ta.addEventListener("input", () => (submit.disabled = !ta.value.trim()))
 		ta.addEventListener("keydown", (e) => {
 			if (e.key === "Enter" && (e.ctrlKey || e.metaKey) && ta.value.trim()) submit.click()
 		})
-		parts.push(h("div", { class: "task-answer" }, ta, h("div", { class: "task-actions" }, submit, h("button", { class: "btn", type: "button", onclick: () => send(task, { decision: "reject" }, card) }, "Preskoči"))))
+		parts.push(h("div", { class: "task-answer" }, ta, h("div", { class: "task-actions" }, submit, h("button", { class: "btn", type: "button", onclick: () => send(task, { decision: "reject" }, card) }, t("Preskoči")))))
 	}
 	card.append(...parts)
 	return card
@@ -130,7 +131,8 @@ function buildTaskCard(task) {
 
 function historyItem(task) {
 	const map = { approved: ["odobreno", "ok"], rejected: ["odbijeno", "no"], answered: ["odgovoreno", "ok"], expired: ["isteklo", "muted"] }
-	const [label, cls] = map[task.status] || [task.status, "muted"]
+	const [labelSr, cls] = map[task.status] || [task.status, "muted"]
+	const label = t(labelSr)
 	const at = parseIso(task.answeredAt)
 	return h(
 		"div",
@@ -142,17 +144,17 @@ function historyItem(task) {
 
 function render() {
 	const open = openTasks().sort((a, b) => Number(b.blocking) - Number(a.blocking) || (parseIso(b.createdAt) || 0) - (parseIso(a.createdAt) || 0))
-	const done = [...state.tasks.values()].filter((t) => t.status !== "open").sort((a, b) => (parseIso(b.answeredAt) || 0) - (parseIso(a.answeredAt) || 0))
+	const done = [...state.tasks.values()].filter((k) => k.status !== "open").sort((a, b) => (parseIso(b.answeredAt) || 0) - (parseIso(a.answeredAt) || 0))
 
-	const els = open.map((t) => {
-		let c = cardCache.get(t.id)
+	const els = open.map((k) => {
+		let c = cardCache.get(k.id)
 		if (!c) {
-			c = { el: buildTaskCard(t) }
-			cardCache.set(t.id, c)
+			c = { el: buildTaskCard(k) }
+			cardCache.set(k.id, c)
 		}
 		return c.el
 	})
-	for (const id of [...cardCache.keys()]) if (!open.some((t) => t.id === id)) cardCache.delete(id)
+	for (const id of [...cardCache.keys()]) if (!open.some((k) => k.id === id)) cardCache.delete(id)
 	reconcile(listEl, els)
 	emptyEl.hidden = els.length > 0
 
@@ -162,8 +164,8 @@ function render() {
 
 	countEl.textContent = open.length ? String(open.length) : ""
 	countEl.classList.toggle("wait", open.length > 0)
-	inboxBtn.setAttribute("aria-label", open.length ? `Sanduče, ${open.length} ${open.length === 1 ? "otvoren zadatak" : "otvorenih zadataka"}` : "Sanduče")
-	document.title = `${open.length ? `(${open.length}) ` : ""}Dosije · istraživački tim agenata`
+	inboxBtn.setAttribute("aria-label", open.length ? t("Sanduče, {n} otvorenih zadataka", { n: open.length }) : t("Sanduče"))
+	document.title = `${open.length ? `(${open.length}) ` : ""}Dosije · ${t("istraživački tim agenata")}`
 }
 
 export function initInbox() {
@@ -197,9 +199,9 @@ export function initInbox() {
 		try {
 			await api.lead(name, kind)
 			leadForm.elements.name.value = ""
-			showNotice(notice, { kind: "info", text: `Trag dodat: ${name}. Tim ga već proverava.` })
+			showNotice(notice, { kind: "info", text: t("Trag dodat: {name}. Tim ga već proverava.", { name }) })
 		} catch (err) {
-			showNotice(notice, { text: `Trag nije dodat. ${err.message}` })
+			showNotice(notice, { text: `${t("Trag nije dodat.")} ${err.message}` })
 		} finally {
 			submit.disabled = false
 		}
@@ -213,15 +215,19 @@ export function initInbox() {
 			const approval = task.kind === "odobrenje"
 			toast({
 				kind: approval ? "approve" : "ask",
-				title: approval ? `${task.fromAgentName} čeka tvoje odobrenje` : `${task.fromAgentName} ima pitanje za tebe`,
+				title: approval ? t("{agent} čeka tvoje odobrenje", { agent: task.fromAgentName }) : t("{agent} ima pitanje za tebe", { agent: task.fromAgentName }),
 				text: truncate(task.title, 110),
 				ttl: approval ? 12000 : 6000,
-				actions: [{ label: approval ? "Odluči" : "Odgovori", onClick: openInbox }],
+				actions: [{ label: approval ? t("Odluči") : t("Odgovori"), onClick: openInbox }],
 			})
 		}
 	})
 	on("snapshot", ({ newCase }) => {
 		if (newCase) cardCache.clear()
+		schedule()
+	})
+	onLang(() => {
+		cardCache.clear()
 		schedule()
 	})
 	schedule()

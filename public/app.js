@@ -14,6 +14,7 @@ import { initMapa } from "./js/mapa.js"
 import { initMetrics } from "./js/metrics.js"
 import { initSearch } from "./js/search.js"
 import { showNotice, clearNotice, finishCaseThen, caseBusy } from "./js/notice.js"
+import { t, setLang, getLang, onLang, applyStatic } from "./js/i18n.js"
 
 const $ = (id) => document.getElementById(id)
 
@@ -22,8 +23,8 @@ function renderMode() {
 	const el = $("modeText")
 	if (state.conn !== "up") {
 		el.className = `mode-text ${state.conn === "down" ? "down" : ""}`
-		el.textContent = state.conn === "down" ? "veza prekinuta, povezujem…" : "povezujem…"
-		el.title = "Veza sa serverom (SSE)"
+		el.textContent = state.conn === "down" ? t("veza prekinuta, povezujem…") : t("povezujem…")
+		el.title = t("Veza sa serverom (SSE)")
 		return
 	}
 	el.className = "mode-text"
@@ -31,12 +32,12 @@ function renderMode() {
 		el.textContent = ""
 		return
 	}
-	const dm = { cache: "keš", live: "uživo", auto: "auto" }[c.dataMode] || c.dataMode
-	el.textContent = c.mode === "llm" ? `OpenAI · ${c.model}` : `bez ključa · ${dm}`
+	const dm = t({ cache: "keš", live: "uživo", auto: "auto" }[c.dataMode] || c.dataMode)
+	el.textContent = c.mode === "llm" ? `OpenAI · ${c.model}` : `${t("bez ključa")} · ${dm}`
 	el.title =
 		c.mode === "llm"
-			? `Radnici: ${c.model} · urednik: ${c.editorModel} · podaci: ${dm}${c.searchProviders?.length ? ` · pretraga vesti: ${c.searchProviders.join(", ")}` : ""}`
-			: `Nije podešen API ključ: agenti rade po skripti, ali sa istim alatima, kapijom i događajima · podaci: ${dm}`
+			? `${t("Radnici")}: ${c.model} · ${t("urednik")}: ${c.editorModel} · ${t("podaci")}: ${dm}${c.searchProviders?.length ? ` · ${t("pretraga vesti")}: ${c.searchProviders.join(", ")}` : ""}`
+			: `${t("Nije podešen API ključ: agenti rade po skripti, ali sa istim alatima, kapijom i događajima")} · ${t("podaci")}: ${dm}`
 }
 
 function renderDemoChips() {
@@ -52,8 +53,8 @@ async function doStart(value, focusValue) {
 		await api.start(value, focusValue || undefined)
 	} catch (e) {
 		const actions = []
-		if (e.status === 409 && caseBusy()) actions.push({ label: "Završi dosije pa pokreni novi", onClick: () => finishCaseThen(host, () => doStart(value, focusValue)) })
-		showNotice(host, { text: `Dosije nije pokrenut. ${e.message}`, actions })
+		if (e.status === 409 && caseBusy()) actions.push({ label: t("Završi dosije pa pokreni novi"), onClick: () => finishCaseThen(host, () => doStart(value, focusValue)) })
+		showNotice(host, { text: `${t("Dosije nije pokrenut.")} ${e.message}`, actions })
 	}
 }
 
@@ -73,14 +74,14 @@ async function startCase(inputValue) {
 	starting = true
 	const btn = $("btnStart")
 	btn.disabled = true
-	btn.textContent = "Pokrećem…"
+	btn.textContent = t("Pokrećem…")
 	try {
 		await doStart(value, focus.value.trim())
 	} finally {
 		setTimeout(() => {
 			starting = false
 			btn.disabled = false
-			btn.textContent = "Napravi dosije"
+			btn.textContent = t("Napravi dosije")
 		}, 900)
 	}
 }
@@ -96,6 +97,12 @@ async function boot() {
 		startCase()
 	})
 	$("inInst").addEventListener("input", (e) => e.target.classList.remove("invalid"))
+	for (const b of document.querySelectorAll(".lang-btn")) b.addEventListener("click", () => setLang(b.dataset.lang))
+	applyStatic()
+	onLang(() => {
+		renderMode()
+		renderDemoChips()
+	})
 
 	initMetrics()
 	initLanes()

@@ -69,7 +69,10 @@ export async function writeCache<T>(source: string, key: string, data: T, meta?:
 	if (getDataMode(source) === "cache") return envelope
 	const file = filePath(source, key)
 	await fs.mkdir(path.dirname(file), { recursive: true })
-	await fs.writeFile(file, JSON.stringify(envelope, null, 1), "utf8")
+	// write-then-rename: a reader (another process, a parallel lookup) never sees half a file
+	const tmp = `${file}.${process.pid}.${Math.random().toString(36).slice(2, 8)}.tmp`
+	await fs.writeFile(tmp, JSON.stringify(envelope, null, 1), "utf8")
+	await fs.rename(tmp, file)
 	return envelope
 }
 

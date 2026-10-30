@@ -4,6 +4,7 @@
 import { state, on, laneEnd, activeCount, peakCount, isRunning } from "./store.js"
 import { laneRows } from "./lanes.js"
 import { s, parseIso, fmtDur, truncate } from "./format.js"
+import { t, onLang } from "./i18n.js"
 
 const RULER_H = 22
 const PAD_L = 1
@@ -153,7 +154,7 @@ function draw() {
 	const col = ax.col
 	ctx.fillStyle = col
 	ctx.fillRect(nx, RULER_H - 8, 1, 8)
-	const label = running ? "sada" : "kraj"
+	const label = running ? t("sada") : t("kraj")
 	ctx.font = `10px system-ui, sans-serif`
 	const lw = ctx.measureText(label).width + 6
 	const lx = Math.min(nx - lw - 2, W - lw - 2)
@@ -173,15 +174,15 @@ function drawRow(lane, r, ax, end) {
 
 	// the journalist's open questions: amber hatched spans while waiting for her
 	if (lane.info.group === "novinar") {
-		for (const t of state.tasks.values()) {
-			const a = parseIso(t.createdAt)
+		for (const tk of state.tasks.values()) {
+			const a = parseIso(tk.createdAt)
 			if (!a) continue
-			const b = t.status === "open" ? end : parseIso(t.answeredAt) || end
+			const b = tk.status === "open" ? end : parseIso(tk.answeredAt) || end
 			const x1 = X(a)
 			const w = Math.max(3, X(b) - x1)
 			ctx.fillStyle = stripe || C.wait
 			ctx.fillRect(x1, cy - BAR_H / 2, w, BAR_H)
-			hits.push({ x: x1, y: cy - 7, w, h: 14, title: `${t.kind === "odobrenje" ? "Odobrenje" : "Pitanje"}: ${truncate(t.title, 60)}`, sub: `${t.status === "open" ? "čeka odgovor" : "odgovoreno"} · ${fmtDur(b - a)}` })
+			hits.push({ x: x1, y: cy - 7, w, h: 14, title: `${tk.kind === "odobrenje" ? t("Odobrenje") : t("Pitanje")}: ${truncate(tk.title, 60)}`, sub: `${tk.status === "open" ? t("čeka odgovor") : t("odgovoreno")} · ${fmtDur(b - a)}` })
 		}
 	}
 
@@ -206,8 +207,8 @@ function drawRow(lane, r, ax, end) {
 			y: cy - BAR_H / 2 - 3,
 			w,
 			h: BAR_H + 6,
-			title: seg.k === "inf" ? "Razmišlja" : seg.k === "tool" ? `Alat: ${seg.label}` : "Čeka odluku novinara",
-			sub: `${fmtDur((seg.t1 ?? end) - seg.t0)}${seg.t1 == null ? " · u toku" : ""}${seg.detail ? `\n${seg.detail}` : ""}`,
+			title: seg.k === "inf" ? t("Razmišlja") : seg.k === "tool" ? `${t("Alat")}: ${seg.label}` : t("Čeka odluku novinara"),
+			sub: `${fmtDur((seg.t1 ?? end) - seg.t0)}${seg.t1 == null ? ` · ${t("u toku")}` : ""}${seg.detail ? `\n${seg.detail}` : ""}`,
 		})
 	}
 
@@ -217,7 +218,7 @@ function drawRow(lane, r, ax, end) {
 		if (m.k === "finding") {
 			ctx.fillStyle = C.tick
 			ctx.fillRect(Math.round(x) - 1, cy - 9, 2, 18)
-			hits.push({ x: x - 4, y: cy - 10, w: 8, h: 20, title: "Nalaz", sub: m.label })
+			hits.push({ x: x - 4, y: cy - 10, w: 8, h: 20, title: t("Nalaz"), sub: m.label })
 		} else if (m.k === "spawn") {
 			ctx.beginPath()
 			ctx.arc(x, cy, 4, 0, Math.PI * 2)
@@ -226,7 +227,7 @@ function drawRow(lane, r, ax, end) {
 			ctx.strokeStyle = C.spawn
 			ctx.lineWidth = 1.25
 			ctx.stroke()
-			hits.push({ x: x - 6, y: cy - 6, w: 12, h: 12, title: "Pokrenut agent", sub: lane.info.name })
+			hits.push({ x: x - 6, y: cy - 6, w: 12, h: 12, title: t("Pokrenut agent"), sub: lane.info.name })
 		} else if (m.k === "block") {
 			ctx.strokeStyle = C.signal
 			ctx.lineWidth = 1.5
@@ -236,17 +237,17 @@ function drawRow(lane, r, ax, end) {
 			ctx.moveTo(x + 3, cy - 3)
 			ctx.lineTo(x - 3, cy + 3)
 			ctx.stroke()
-			hits.push({ x: x - 6, y: cy - 6, w: 12, h: 12, title: "Blokiran nalaz", sub: m.label })
+			hits.push({ x: x - 6, y: cy - 6, w: 12, h: 12, title: t("Blokiran nalaz"), sub: m.label })
 		} else if (m.k === "edit") {
 			ctx.fillStyle = C.axis
 			ctx.fillRect(Math.round(x) - 1, y0 - 1, 2, 3)
-			hits.push({ x: x - 4, y: y0 - 2, w: 8, h: 6, title: "Urednik", sub: m.label })
+			hits.push({ x: x - 4, y: y0 - 2, w: 8, h: 6, title: t("Urednik"), sub: m.label })
 		} else if (m.k === "answer") {
 			ctx.fillStyle = C.tool
 			ctx.beginPath()
 			ctx.arc(x, cy, 3, 0, Math.PI * 2)
 			ctx.fill()
-			hits.push({ x: x - 6, y: cy - 6, w: 12, h: 12, title: "Novinar", sub: m.label })
+			hits.push({ x: x - 6, y: cy - 6, w: 12, h: 12, title: t("Novinar"), sub: m.label })
 		}
 	}
 
@@ -269,7 +270,7 @@ function buildSpark() {
 function drawSpark() {
 	const now = activeCount()
 	const peak = peakCount()
-	const label = `istovremeno aktivnih: ${now} (vrhunac ${peak})`
+	const label = t("istovremeno aktivnih: {n} (vrhunac {peak})", { n: now, peak })
 	if (label !== lastConc) {
 		lastConc = label
 		concLabel.textContent = label
@@ -366,6 +367,11 @@ export function initGantt() {
 	new ResizeObserver(markDirty).observe(wrap)
 	new ResizeObserver(markDirty).observe(teamEl)
 	for (const t of ["lane", "agents", "snapshot", "filters", "tasks", "meta", "done", "mapa"]) on(t, markDirty)
+
+	onLang(() => {
+		lastConc = ""
+		markDirty()
+	})
 
 	let last = -MIN_FRAME_MS
 	const frame = (ts) => {

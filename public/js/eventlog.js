@@ -1,7 +1,8 @@
 // Bottom drawer "Ispod haube: Mozaik događaji": live log of the raw wire events.
 
-import { h, createScheduler, fmtClockMs, truncate, jsonShort } from "./format.js"
+import { h, createScheduler, fmtClockMs, fmtNum, truncate, jsonShort } from "./format.js"
 import { state, on, setFilterValue } from "./store.js"
+import { t, getLang, onLang } from "./i18n.js"
 
 const CAP = 2000
 const CATS = [
@@ -12,7 +13,7 @@ const CATS = [
 	{ id: "intercept", label: "interception" },
 ]
 
-let drawer, list, countEl, rateEl, tickerEl, stateEl, agentSel, hintEl
+let drawer, list, lineEl, rateEl, stateEl, agentSel, hintEl
 const enabled = new Set(CATS.map((c) => c.id))
 let queue = []
 let hover = false
@@ -140,21 +141,20 @@ function flush() {
 		while (list.childElementCount > CAP) list.firstElementChild.remove()
 		if (stick && !hover) scrollEnd()
 	}
-	countEl.textContent = state.eventCount.toLocaleString("sr-RS")
-	const ev = state.lastEvent
-	if (ev) tickerEl.textContent = `${ev.type} · ${ev.producerName || ""} · ${truncate(describe(ev), 80)}`
+	// collapsed state: one friendly line, no raw event types
+	lineEl.textContent = t("Ispod haube: {n} Mozaik događaja", { n: fmtNum(Math.max(state.eventCount, state.stats?.events ?? 0)) })
 	stateEl.hidden = !(hover || !stick)
-	stateEl.textContent = hover ? "pauzirano dok je miš iznad" : "na kraj ↓"
+	stateEl.textContent = hover ? t("pauzirano dok je miš iznad") : t("na kraj ↓")
 	stateEl.classList.toggle("link", !hover && !stick)
 	syncAgents()
 }
 
 function syncAgents() {
 	const lanes = [...state.lanes.values()]
-	const sig = `${lanes.map((l) => l.id).join(",")}|${state.filters.agentId}`
+	const sig = `${getLang()}|${lanes.map((l) => l.id).join(",")}|${state.filters.agentId}`
 	if (sig === agentSig) return
 	agentSig = sig
-	agentSel.replaceChildren(h("option", { value: "" }, "Svi agenti"), ...lanes.map((l) => h("option", { value: l.id }, l.info.name)))
+	agentSel.replaceChildren(h("option", { value: "" }, t("Svi agenti")), ...lanes.map((l) => h("option", { value: l.id }, l.info.name)))
 	agentSel.value = state.filters.agentId || ""
 }
 
@@ -166,7 +166,7 @@ function applyFilters() {
 function setOpen(open) {
 	drawer.classList.toggle("collapsed", !open)
 	drawer.querySelector(".drawer-toggle").setAttribute("aria-expanded", String(open))
-	hintEl.textContent = open ? "sakrij" : "prikaži"
+	hintEl.textContent = open ? t("sakrij") : t("prikaži")
 	try {
 		localStorage.setItem("dosije.drawer", open ? "1" : "0")
 	} catch {}
@@ -176,24 +176,44 @@ function setOpen(open) {
 export function initEventLog() {
 	drawer = document.getElementById("drawer")
 	list = document.getElementById("evList")
-	countEl = document.getElementById("evCount")
+	lineEl = document.getElementById("evLine")
 	rateEl = document.getElementById("evRate")
-	tickerEl = document.getElementById("evTicker")
 	stateEl = document.getElementById("evState")
 	agentSel = document.getElementById("evAgent")
 	hintEl = document.getElementById("evHint")
 
 	const chips = document.getElementById("evChips")
-	for (const c of CATS) {
-		const b = h("button", { class: `fchip toggle on c-${c.id}`, type: "button", "aria-pressed": "true", onclick: () => {
-			if (enabled.has(c.id)) enabled.delete(c.id)
-			else enabled.add(c.id)
-			b.classList.toggle("on", enabled.has(c.id))
-			b.setAttribute("aria-pressed", String(enabled.has(c.id)))
-			applyFilters()
-		} }, c.label)
-		chips.appendChild(b)
+	const buildChips = () => {
+		chips.replaceChildren(
+			...CATS.map((c) => {
+				const on_ = enabled.has(c.id)
+				const b = h(
+					"button",
+					{
+						class: `fchip toggle${on_ ? " on" : ""} c-${c.id}`,
+						type: "button",
+						"aria-pressed": String(on_),
+						onclick: () => {
+							if (enabled.has(c.id)) enabled.delete(c.id)
+							else enabled.add(c.id)
+							b.classList.toggle("on", enabled.has(c.id))
+							b.setAttribute("aria-pressed", String(enabled.has(c.id)))
+							applyFilters()
+						},
+					},
+					t(c.label),
+				)
+				return b
+			}),
+		)
 	}
+	buildChips()
+	onLang(() => {
+		buildChips()
+		hintEl.textContent = drawer.classList.contains("collapsed") ? t("prikaži") : t("sakrij")
+		agentSig = ""
+		flush()
+	})
 	agentSel.addEventListener("change", () => {
 		setFilterValue("agentId", agentSel.value || null)
 	})
@@ -244,8 +264,9 @@ export function initEventLog() {
 	})
 	on("agents", schedule)
 	setInterval(() => {
-		const t = performance.now()
-		stamps = stamps.filter((s) => t - s < 2000)
-		rateEl.textContent = `${(stamps.length / 2).toFixed(stamps.length < 20 ? 1 : 0).replace(".", ",")}/s`
+		const tm = performance.now()
+		stamps = stamps.filter((s) => tm - s < 2000)
+		const r = (stamps.length / 2).toFixed(stamps.length < 20 ? 1 : 0)
+		rateEl.textContent = `${getLang() === "en" ? r : r.replace(".", ",")}/s`
 	}, 500)
 }

@@ -259,7 +259,9 @@ export interface NewsOverview {
 
 /** The `max` most relevant distinct articles: relevance, then recency; repeated stories and over-represented outlets are skipped. */
 export function newsOverview(items: NewsItem[], days: number, max = 12): NewsOverview {
-	const usable = items.filter((i) => !i.unresolved)
+	// a Google link that could not be resolved (the endpoint throttles) still opens the article; it is used only when too few resolved ones exist
+	const resolved = items.filter((i) => !i.unresolved)
+	const usable = resolved.length >= 3 ? resolved : items
 	const ranked = [...usable].sort((a, b) => (b.score ?? 0) - (a.score ?? 0) || (b.publishedAt ?? "").localeCompare(a.publishedAt ?? ""))
 	const picked: NewsItem[] = []
 	const perOutlet = new Map<string, number>()

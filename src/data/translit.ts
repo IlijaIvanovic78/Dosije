@@ -29,8 +29,19 @@ export function latToCyr(input: string): string {
 	return Array.from(s, (ch) => LAT_TO_CYR[ch] ?? ch).join("")
 }
 
+const CYR_UPPER = /[\u0410-\u042F\u0402\u0408-\u040B\u040F]/
+
+/** ALL-CAPS Cyrillic keeps upper-case digraphs: "ЗДРАВЉА" -> "ZDRAVLJA" (not "ZDRAVLjA"). */
 export function cyrToLat(input: string): string {
-	return Array.from(input, (ch) => CYR_TO_LAT[ch] ?? ch).join("")
+	const chars = Array.from(input)
+	return chars
+		.map((ch, i) => {
+			const lat = CYR_TO_LAT[ch]
+			if (lat === undefined) return ch
+			if (lat.length === 2 && ch === ch.toUpperCase() && (CYR_UPPER.test(chars[i - 1] ?? "") || CYR_UPPER.test(chars[i + 1] ?? ""))) return lat.toUpperCase()
+			return lat
+		})
+		.join("")
 }
 
 export function hasCyrillic(s: string): boolean {
@@ -73,15 +84,22 @@ const LEGAL_SUFFIXES = [
 ]
 
 /** Normalize a company / institution / person name for matching across sources. */
-export function normalizeName(input: string): string {
+export function normalizeName(input: string, opts: { alwaysStripCity?: boolean } = {}): string {
 	let s = asciiFold(input).replace(/["'„“”‘’`()]/g, " ").replace(/[.,;:/\\|_-]+/g, " ")
 	s = ` ${s.replace(/\s+/g, " ").trim()} `
 	for (const suffix of LEGAL_SUFFIXES) s = s.replace(new RegExp(` ${suffix} `, "g"), " ")
-	return s
-		.replace(/\s+(beograd|novi sad|nis|kragujevac|subotica)(\s+\S+)*\s*$/g, " ")
-		.replace(/\s+/g, " ")
-		.trim()
+	const trimmed = s.replace(/\s+/g, " ").trim()
+	const stripped = trimmed.replace(/\s+(beograd|novi sad|nis|kragujevac|subotica)(\s+\S+)*\s*$/g, " ").replace(/\s+/g, " ").trim()
+	// "Dom zdravlja Novi Sad", "Grad Novi Sad": without the city only a generic phrase is left, which names hundreds of bodies
+	if (!opts.alwaysStripCity && stripped !== trimmed && stripped.split(" ").every((t) => GENERIC_WORDS.has(t))) return trimmed
+	return stripped
 }
+
+export const GENERIC_WORDS = new Set([
+	"dom", "zdravlja", "grad", "gradska", "gradsko", "opstina", "opsta", "bolnica", "klinicki", "centar", "zavod", "institut", "skola", "gimnazija",
+	"vodovod", "i", "kanalizacija", "javno", "komunalno", "gradski", "toplana", "gradska", "ustanova", "apoteka", "fakultet", "univerzitet",
+	"univerzitetski", "specijalna", "opsta", "republicki", "drzavna", "klinicko", "bolnicki", "medicinski", "osnovna", "srednja", "visoka", "tehnicka", "muzej", "pozoriste", "biblioteka", "decji", "vrtic", "predskolska", "ustanova", "kulture", "obrazovanje", "za", "zdravstveni", "kulturni", "sportski", "preduzece", "uprava", "agencija", "direkcija", "ministarstvo", "fond", "posta", "aerodrom", "jkp", "jp",
+])
 
 const CASE_ENDINGS = new Set(["", "a", "e", "i", "o", "u", "om", "em", "im", "am", "ama", "ima", "ih", "og", "oj", "ovi", "ova", "ove", "ega", "emu", "omu", "ju", "ja", "je", "ji"])
 
@@ -100,7 +118,12 @@ export function sameWord(a: string, b: string): boolean {
 	if (a === b) return true
 	if (fleetingA(a, b) || fleetingA(b, a)) return true
 	const min = Math.min(a.length, b.length)
-	if (min < 5) return false
+	if (min < 5) {
+		// short stems ("dom" ~ "doma", "nis" ~ "nisu"): only a bare case ending of at most two letters may differ
+		if (min < 3) return false
+		const [s, l] = a.length <= b.length ? [a, b] : [b, a]
+		return l.startsWith(s) && l.length - s.length <= 2 && CASE_ENDINGS.has(l.slice(s.length))
+	}
 	let i = 0
 	while (i < min && a[i] === b[i]) i++
 	if (i < 4) return false

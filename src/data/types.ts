@@ -24,10 +24,12 @@ export interface InstitutionRef {
 	name: string // official name, Latin script
 	nameCyr: string // official name, Cyrillic script (ACAS & data.gov.rs search only Cyrillic)
 	shortName?: string // e.g. "IŽS"
+	aliases?: string[] // other names of the same body found in the registers (searched in the media and accepted as the institution)
 	legalType: LegalType
 	pib?: string
 	mb?: string // matični broj
 	acasId?: string // ACAS institution identifier
+	acasAltIds?: string[] // other register entries of the same body (renamed / re-registered); officials are merged
 	jnId?: string // Portal javnih nabavki contracting-authority identifier
 	municipality?: string
 	sources: SourceRef[]
@@ -93,7 +95,21 @@ export interface SupplierAggregate {
 	lastContractAt?: string
 }
 
+/** What part of an authority's contract history an analysis covers (big authorities are capped to the most recent contracts). */
+export interface ProcurementCoverage {
+	/** contracts the portal lists for the authority */
+	total: number
+	/** contracts read and analysed */
+	analyzed: number
+	truncated: boolean
+	/** signing date of the oldest contract read: the analysed period starts here */
+	from?: string
+	/** procedure types are known only for part of the contracts (the crawl of procedures ran out of time) */
+	proceduresPartial?: boolean
+}
+
 export interface ProcurementSummary {
+	coverage?: ProcurementCoverage
 	institution: string
 	totalContracts: number
 	totalValueRsd: number

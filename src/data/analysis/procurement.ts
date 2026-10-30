@@ -11,7 +11,7 @@ import { cacheKey, readCache } from "../cache"
 import * as iw from "../sources/integrityWatch"
 import * as jn from "../sources/jnportal"
 import { asciiFold, normalizeName } from "../translit"
-import type { Contract, IntegrityWatchLink, ProcurementSummary } from "../types"
+import type { Contract, IntegrityWatchLink, ProcurementCoverage, ProcurementSummary } from "../types"
 
 interface StoredContract {
 	id: string
@@ -123,6 +123,7 @@ export interface NegotiatedItem {
 
 export interface ProcurementAnalysis {
 	institution: string
+	coverage?: ProcurementCoverage
 	totalContracts: number
 	totalValueRsd: number
 	period: { from?: string; to?: string }
@@ -345,7 +346,8 @@ export async function analyzeProcurement(inst: InstLike, links?: IntegrityWatchL
 	const candidates: Candidate[] = []
 	for (const r of suppliers) {
 		if (!r.pib || r.publicSystem) continue
-		if (/^PIB \d+$/.test(r.name) && r.participationValueRsd < 1e8) continue
+		// a consortium member known only by PIB (the portal gives the bid's names without mapping them): nothing to look up, so no per-firm check
+		if (/^PIB \d+$/.test(r.name)) continue
 		const links = iwByPib.get(r.pib) ?? []
 		const kinds = new Set(links.map((l) => l.linkType))
 		const official = [...kinds].some((k) => /funkcioner/i.test(k))
@@ -383,6 +385,7 @@ export async function analyzeProcurement(inst: InstLike, links?: IntegrityWatchL
 
 	return {
 		institution: summary.institution,
+		coverage: summary.coverage,
 		totalContracts: summary.totalContracts,
 		totalValueRsd: summary.totalValueRsd,
 		period: summary.period,

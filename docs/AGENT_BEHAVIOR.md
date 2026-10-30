@@ -77,6 +77,12 @@ Zadatak: šta je Državna revizorska institucija našla.
 Scripted policy: same; pick reports with excerpts, most recent first. Only reports whose title names the institution
 (including old names such as "Srbija voz") are listed; joint audits of several auditees are not.
 
+**Excerpt hygiene** (`src/mozaik/driText.ts`, applied by the tools `dri_nalazi` and `dri_srodni_nalazi`, not by the DRI adapter): only excerpts that
+describe an irregularity or a recommendation are used ("nije u skladu", "nije dokumentovalo", "nepravilnost", "preporuk", "propust", "bez ",
+"suprotno", ...); neutral or positive compliance statements ("Društvo je obračunalo i platilo svoju obavezu ...") and corrected irregularities
+are dropped. Page headers and "Page N" artifacts are removed, and a quote ends at a sentence boundary: a sentence that the PDF extraction cut
+off is not quoted half. The opinion sentence (`misljenjeIzvod`) is quoted only when it is whole.
+
 **Period wording.** A year in a title or text is the *audited period* only when the report's title states it ("... za 2018. godinu" ->
 `period: "2018"` -> "DRI za 2018. · ..." / "finansijski izveštaji za 2018., izveštaj objavljen 04.12.2019."). Otherwise the label is the
 publication date ("DRI izveštaj od 25.07.2025. · ...", "izveštaj objavljen 25.07.2025."): the publication year is never presented as the
@@ -120,11 +126,27 @@ concern the same head). First message: `Povod: nalaz Kadrovik: <title> [f3 · VD
 ```
 REAKCIJA NA TUĐI NALAZ (poruka počinje sa "Povod: nalaz Kadrovik: ..."):
 1) vesti_imenovanje({ime}): ciljana provera medija o imenovanju (isti pretraživač kao "Mediji · osoba": članak mora da pominje osobu I
-   instituciju); za svaki članak naslov/opis određuje kako je osoba nazvana: "v.d." ili "direktor" bez oznake v.d.
-2) Ako ima članaka: JEDAN add_finding (mediji; paznja + MEDIJSKI_NAVOD ako neko izdanje navodi "direktor" bez v.d., inače info) koji kaže
-   koliko izdanja navodi v.d. a koliko direktor, sa člancima kao izvorima; claim {osoba, funkcija, "generalni direktor"} samo ako taj navod
-   još nije u dosijeu, pa ga Urednik poredi sa registrom. Ne tvrdi ko je u pravu.
+   instituciju). Broje se SAMO članci čiji naslov ili uvod pominje osobu (ime i prezime) uz reč o imenovanju ili funkciji (imenovan,
+   postavljen, direktor, v.d., vršilac); članak o nečem drugom koji samo pominje instituciju se ne računa. Za svaki članak naslov/uvod
+   određuje kako je osoba nazvana: "v.d." ili "direktor" bez oznake v.d.
+2) Ako ima članaka: JEDAN add_finding (mediji, info, bez signalCode i bez claim) koji neutralno kaže koliko izdanja navodi v.d. a koliko
+   direktor, sa člancima kao izvorima; status mu određuju izvori (potvrđeno / nepotvrđeno). Oznaka "odstupa od registra" nikad ne dolazi
+   od zbirnog nalaza: ako JEDAN konkretan članak navodi funkciju bez v.d. (clanakSaFunkcijom) i navod još nije u dosijeu, JEDAN poseban
+   add_finding (paznja + MEDIJSKI_NAVOD) sa tim člankom kao jedinim izvorom i claim {osoba, funkcija, "generalni direktor"}, pa ga Urednik
+   poredi sa registrom. Ne tvrdi ko je u pravu.
 3) Ako nema članaka: jedna rečenica, ništa se ne dodaje.
+```
+**Reaction (cross-agent): Revizor finding -> Mediji.** Situation handler on `finding.added`: a finding of **Revizor** with signalCode
+`DRI_NALAZ` whose text is about procurement ("javne nabavke") or acting heads ("vršioci dužnosti") starts a new Mediji loop (once per case
+and audit topic). First message: `Povod: nalaz Revizor: <title> [f12 · DRI_NALAZ]. Tema revizije: <tema>. Institucija: ...`; the
+`agent.reakcija` event carries `reaction.tema`.
+```
+REAKCIJA NA NALAZ REVIZORA (poruka počinje sa "Povod: nalaz Revizor: ..."):
+1) dosije_pregled: šta su drugi već našli o toj temi (zajedničko stanje).
+2) vesti_tema_revizije({tema}): pretraga medija o istoj temi za instituciju (isti keširani pretraživač institucije; za vršioce dužnosti i
+   pretraga čelnika koji je već u dosijeu). Alat vraća samo članke čiji naslov ili uvod pominje temu.
+3) Ako ima članaka: JEDAN add_finding (mediji, info) "Mediji o temi revizije „<tema>“: N članaka", neutralno (članci su zaseban izvor, ne
+   potvrđuju niti pobijaju nalaz DRI), sa člancima kao izvorima. Bez članaka nema nalaza.
 ```
 Scripted policy: core Mediji first calls `add_finding` for the union article **without sources** (deliberate,
 documented demo of the source gate), receives `ODBIJENO`, then retries with the article as the source; then up to two
@@ -158,6 +180,8 @@ koji propis važi, akti o imenovanju, otvorena pitanja). Ne dodaj nove činjenic
 Scripted policy: topSignals (`pickTop`, `src/mozaik/summary.ts`): **reliability tier first** (official/approved, then confirmed by two
 hosts, then unconfirmed, then "not found" findings such as `IMENOVANJE_NEPOZNATO`), within a tier by severity and signal weight; **at most one
 finding per signalCode** (several Integrity Watch flags are one signal) and at most 2 per section for rukovodstvo/novac, 1 for the others;
+**a DRI finding whose report was published more than 5 years ago ranks below recent signals** (tier 3, like "not found" findings) and appears
+only when nothing else qualifies;
 the caps are relaxed only to reach 3 entries. An unconfirmed finding is never above an official one; a list proposed by the model in
 `napisi_sazetak` is re-ordered by the same rules. toVerify = open tasks + `nepotvrdjeno` signals + a fixed checklist; **every item is one
 complete sentence** (long wording is rewritten shorter, never clipped).
@@ -177,6 +201,12 @@ Zadatak: proveri dobavljača iz ugla javnog interesa.
    automatskog izvora." i linkom na APR pretragu.
 ```
 Scripted policy: same; ask the owner question only for the 2 highest-value suppliers (avoid flooding the inbox).
+
+**Owner answers are free text.** A journalist writes "Marko Marković, 100%", "Petar Petrović 60%, Jovan Jovanović 40%" or "Ana Anić i Mila
+Milić". `parseOwnerAnswer` (`src/mozaik/owners.ts`) splits on commas, semicolons, new lines and " i ", strips percentages, shares and words such
+as "vlasnik", keeps the share as the entity attribute `udeo` and ignores fragments that are not person names ("100%", "nepoznato", "Ne znam",
+a firm name). At most 3 names. `add_entity` (kind osoba, role vlasnik) applies the same rule, so an LLM cannot create "100%" as a person
+either: nothing is spawned or searched for it.
 
 **Answers:** when the journalist answers an owner question, the Urednik routes `odgovor.coveka` to the asking
 Firme agent as a new loop: `Novinarka je odgovorila na pitanje "<q>": <answer>`. The agent calls `add_entity`
@@ -225,3 +255,11 @@ Spawned by the Fabrika on `mapa.started`, one per institution, group `trijaza`, 
 
 Scripted policy (`trijaza` in `src/mozaik/inference/policies.ts`): the same four calls in order, with the summary composed from the
 tool outputs, then one sentence. Same seeded latency as the other agents.
+
+**Cross-institution coordination (shared state).** The Trijaža agents are not independent: `trijaza_nabavke` puts the institution's top 8
+suppliers (name, PIB, rank, value, share; public systems excluded) into the shared state (`MapaSignals.topSuppliers`). The **Urednik**
+reacts to every `mapa.red`: a supplier (same PIB) among the top suppliers of 2+ institutions becomes a `mapa.veza` event
+(`{mapaId, veza: {key, supplier: {name, pib}, institutions: [{slug, name, rank, share}], points: 5, line}}`, `line` = "Isti dobavljač u 3
+institucije: ZGOP DOO"), and every affected row gets `signals.sharedSuppliers`, +5 points per such supplier (at most +10, documented in
+`src/data/analysis/priority.ts`) and the reason line "Isti dobavljač u N institucije: <naziv> (+5)". The link is published once and again when
+another institution joins it; the ranking is settled before `mapa.zavrsena`.

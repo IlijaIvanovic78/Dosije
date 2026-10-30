@@ -19,7 +19,8 @@ import type { ArticleText, NewsItem } from "../types"
 const SOURCE = "vesti"
 const MAX_ARTICLE_CHARS = 6000
 const VERIFY_TIMEOUT_MS = 12000
-const VERIFY_BUDGET_MS = 100_000
+const VERIFY_BUDGET_MS = 35_000
+const RESOLVE_BUDGET_MS = 60_000
 
 // ── outlet feeds (every URL below was verified to return items, Oct 2026) ───────────────────────
 
@@ -164,15 +165,44 @@ async function fetchGoogleNews(q: string, days: number, hl: Edition): Promise<Ra
 }
 
 const gnCache = new Map<string, string>()
+// one resolution per link at a time, and at most a few requests to Google at once across all searches of the process: the endpoint
+// throttles bursts (five parallel searches used to push one search past two minutes)
+const gnInflight = new Map<string, Promise<string>>()
+let gnActive = 0
+const gnQueue: (() => void)[] = []
+
+async function gnSlot<T>(fn: () => Promise<T>): Promise<T> {
+	if (gnActive >= 5) await new Promise<void>((r) => gnQueue.push(r))
+	gnActive++
+	try {
+		return await fn()
+	} finally {
+		gnActive--
+		gnQueue.shift()?.()
+	}
+}
 
 /** Google News article links are opaque; resolve through the same endpoint the news.google.com page uses. */
-async function resolveGoogleNewsUrl(link: string): Promise<string> {
-	if (!/^https?:\/\/news\.google\.com\/(rss\/)?articles\//.test(link)) return link
+function resolveGoogleNewsUrl(link: string): Promise<string> {
+	if (!/^https?:\/\/news\.google\.com\/(rss\/)?articles\//.test(link)) return Promise.resolve(link)
 	const hit = gnCache.get(link)
-	if (hit) return hit
+	if (hit) return Promise.resolve(hit)
+	let p = gnInflight.get(link)
+	if (!p) {
+		p = gnSlot(() => resolveGoogleNewsUrlOnce(link)).finally(() => gnInflight.delete(link))
+		gnInflight.set(link, p)
+	}
+	return p
+}
+
+// after a 429 the endpoint is left alone for a while: more requests only prolong the block, and every dossier would wait for them
+let gnBlockedUntil = 0
+
+async function resolveGoogleNewsUrlOnce(link: string): Promise<string> {
+	if (Date.now() < gnBlockedUntil) return link
 	try {
 		const id = new URL(link).pathname.split("/").pop()!
-		const page = (await httpRequest(`https://news.google.com/rss/articles/${id}?hl=sr&gl=RS&ceid=RS:sr`, { timeoutMs: 20000, retries: 1 })).text()
+		const page = (await httpRequest(`https://news.google.com/rss/articles/${id}?hl=sr&gl=RS&ceid=RS:sr`, { timeoutMs: 10000, retries: 0 })).text()
 		const sg = page.match(/data-n-a-sg="([^"]+)"/)?.[1]
 		const ts = page.match(/data-n-a-ts="([^"]+)"/)?.[1]
 		if (!sg || !ts) return link
@@ -181,15 +211,16 @@ async function resolveGoogleNewsUrl(link: string): Promise<string> {
 			method: "POST",
 			body: "f.req=" + encodeURIComponent(JSON.stringify([[["Fbv4je", inner, null, "generic"]]])),
 			headers: { "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8" },
-			timeoutMs: 20000,
-			retries: 1,
+			timeoutMs: 10000,
+			retries: 0,
 		})
 		const m = res.text().match(/garturlres\\",\\"(https?:[^"\\]+)/)
 		if (m) {
 			gnCache.set(link, m[1])
 			return m[1]
 		}
-	} catch {
+	} catch (err) {
+		if ((err as { status?: number })?.status === 429) gnBlockedUntil = Date.now() + 10 * 60_000
 		// keep the Google link
 	}
 	return link
@@ -264,7 +295,8 @@ async function fetchBrave(q: string, days: number): Promise<RawItem[]> {
 	const from = new Date(to.getTime() - days * 86400e3)
 	const day = (d: Date) => d.toISOString().slice(0, 10)
 	const url =
-		`https://api.search.brave.com/res/v1/news/search?q=${encodeURIComponent(q)}&country=rs&search_lang=sr&count=20` +
+		// no country param: Brave has no "rs" country code and answers 422; the query and search_lang keep it Serbian
+		`https://api.search.brave.com/res/v1/news/search?q=${encodeURIComponent(q)}&search_lang=sr&count=20` +
 		`&freshness=${day(from)}to${day(to)}`
 	const res = await httpRequest(url, { headers: { "X-Subscription-Token": key, Accept: "application/json" }, timeoutMs: 20000 })
 	const data = res.json<{ results?: { title: string; url: string; description?: string; page_age?: string; age?: string; meta_url?: { hostname?: string }; source?: string }[] }>()
@@ -414,7 +446,7 @@ async function liveSearch(query: string, kind: SubjectKind, days: number, limit:
 			const work = (async () => {
 				for (const v of scripts(query)) out.push(...(await tracked({ source: "GDELT", action: "pretraga", label: variantLabel(v) }, () => fetchGdelt(phrase(v), days)).catch(() => [])))
 			})()
-			await Promise.race([work, new Promise((r) => setTimeout(r, 16000))])
+			await Promise.race([work, new Promise((r) => setTimeout(r, 9000))])
 			return out
 		})(),
 	)
@@ -446,8 +478,10 @@ async function liveSearch(query: string, kind: SubjectKind, days: number, limit:
 	if (process.env.NEWS_DEBUG) console.error(`  [news] raw=${raw.length} window=${inWindow.length} sure=${sure.length} toVerify=${toVerify.length}`)
 
 	// 3. resolve Google News redirect links (only for what can still count)
+	// (own time budget: a throttled Google endpoint must not hold the whole dossier; what is left unresolved ranks last and stays out of the overview)
+	const resolveDeadline = Date.now() + RESOLVE_BUDGET_MS
 	const resolved = await mapLimit([...sure, ...toVerify], 4, async (c) => {
-		if (c.raw.provider !== "google-news-rss") return c
+		if (c.raw.provider !== "google-news-rss" || Date.now() > resolveDeadline) return c
 		const url = await resolveGoogleNewsUrl(c.raw.url)
 		return url === c.raw.url ? c : { ...c, raw: { ...c.raw, url } }
 	})

@@ -177,6 +177,7 @@ export interface AgentReaction {
 	fromAgent: string; // e.g. "Kadrovik"
 	signalCode: SignalCode;
 	title: string; // title of the triggering finding
+	tema?: string; // Mediji <- Revizor: the audit topic the reaction looks for in the media ("javne nabavke" | "vršioci dužnosti")
 	at: string;
 }
 
@@ -278,6 +279,34 @@ export interface MapaSignals {
 	driReports?: number;
 	driQualified?: number; // qualified / adverse / disclaimer opinions among the opinions already extracted
 	driKnown?: number; // reports whose opinion is known
+	/** the biggest suppliers (without public systems) put into the shared state by the triage tool: the basis of the cross-institution link */
+	topSuppliers?: MapaSupplier[];
+	/** suppliers of this row that are also top suppliers of at least one OTHER institution of the map (set by the Urednik, event "mapa.veza") */
+	sharedSuppliers?: MapaSharedSupplier[];
+}
+
+export interface MapaSupplier {
+	name: string;
+	pib?: string; // always present for suppliers that can be linked across institutions
+	rank: number; // 1 = biggest
+	valueRsd: number; // participation value (sole + joint bids)
+	share: number; // fraction 0..1 of the value without public systems
+}
+
+export interface MapaSharedSupplier {
+	name: string;
+	pib?: string;
+	institutions: number; // how many institutions of the map list this supplier among their top suppliers (this one included)
+	with: string[]; // names of the OTHER institutions
+}
+
+/** Payload of "mapa.veza": one supplier that is among the top suppliers of 2+ institutions of the map. */
+export interface MapaVeza {
+	key: string; // PIB (or normalized name when the PIB is missing)
+	supplier: { name: string; pib?: string };
+	institutions: { slug: string; name: string; rank: number; share: number }[]; // rank among that institution's top suppliers, share 0..1
+	points: number; // priority points each of these institutions gets for this supplier (see src/data/analysis/priority.ts)
+	line: string; // ready-made Serbian line: "Isti dobavljač u 3 institucije: ZGOP DOO"
 }
 
 export interface MapaRow {
@@ -384,6 +413,9 @@ export interface WirePayloads {
 	"mapa.started": { mapaId: string; institutions: { slug: string; name: string }[] };
 	"mapa.red": { mapaId: string; row: MapaRow }; // upsert, every time a row changes
 	"mapa.zavrsena": { mapaId: string; ranking: MapaRow[] }; // sorted by score, highest first
+	// cross-institution coordination through the shared state: the Urednik publishes it when a supplier is among the top suppliers of 2+
+	// institutions of the map (producer = Urednik). The affected rows follow as "mapa.red" (signals.sharedSuppliers + a reason line).
+	"mapa.veza": { mapaId: string; veza: MapaVeza };
 }
 
 // ─── REST ────────────────────────────────────────────────────────────────────

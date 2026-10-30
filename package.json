@@ -15,7 +15,8 @@
     "warm-cache": "tsx scripts/warm-cache.ts",
     "qa": "tsx scripts/qa.ts",
     "test": "tsx --test test/*.test.ts",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "check-keys": "tsx scripts/check-keys.ts"
   },
   "license": "MIT",
   "dependencies": {

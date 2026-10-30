@@ -54,7 +54,7 @@ function line(ev: WireEvent): string | undefined {
 		case "function_call.started":
 			return `${head} ${color.cyan}alat${color.reset} ${p.name} ${color.dim}${short(p.args, 70)}${color.reset}`
 		case "agent.reakcija":
-			return `${head} ${color.violet}↳ reakcija na nalaz${color.reset} ${p.reaction.fromAgent} · ${p.reaction.signalCode}: ${short(p.reaction.title, 64)}`
+			return `${head} ${color.violet}↳ reakcija na nalaz${color.reset} ${p.reaction.fromAgent} · ${p.reaction.signalCode}${p.reaction.tema ? ` [${p.reaction.tema}]` : ""}: ${short(p.reaction.title, 64)}`
 		case "entity.added":
 			return `${head} ${color.green}entitet${color.reset} ${p.entity.kind}/${p.entity.role}: ${short(p.entity.name, 50)}`
 		case "finding.added":

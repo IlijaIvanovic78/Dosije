@@ -10,13 +10,20 @@
 //   Integrity Watch Srbija flagged suppliers                                 +3 each, at most 15
 //   DRI qualified / adverse / disclaimer opinions                            +10 each, at most 20
 //   at least 5 DRI reports                                                   +5
+//   the same supplier among the top suppliers of 2+ institutions of the map  +5 each (of the row's suppliers), at most 10
+//     (cross-institution link: the triage agents put their top suppliers into the shared state, the Urednik finds the overlap,
+//      publishes "mapa.veza" and adds this contribution and the line "Isti dobavljač u N institucije: <naziv>" to the row)
 //
-// Maximum 145. Every contribution produces a short Serbian reason with its points, so a score can always be explained.
+// Maximum 155. Every contribution produces a short Serbian reason with its points, so a score can always be explained.
 
 import { n } from "../../shared/plural"
 import type { MapaSignals } from "../../shared/types"
 
-export const PRIORITY_MAX = 145
+export const PRIORITY_MAX = 155
+
+/** Points per supplier shared with another institution, and the cap per institution. */
+export const SHARED_SUPPLIER_POINTS = 5
+export const SHARED_SUPPLIER_MAX = 10
 
 export interface PriorityResult {
 	score: number
@@ -46,6 +53,13 @@ export function scoreSignals(s: MapaSignals): PriorityResult {
 	if (s.iwFlags) add(Math.min(15, 3 * s.iwFlags), `${n(s.iwFlags, "dobavljac")} ${s.iwFlags % 10 === 1 && s.iwFlags % 100 !== 11 ? "označen" : "označeno"} u Integrity Watch`)
 	if (s.driQualified) add(Math.min(20, 10 * s.driQualified), `${n(s.driQualified, "driMisljenje")}`)
 	if (s.driReports !== undefined && s.driReports >= 5) add(5, `DRI: ${n(s.driReports, "izvestaj")}`)
+	let sharedPoints = 0
+	for (const sh of s.sharedSuppliers ?? []) {
+		const points = Math.min(SHARED_SUPPLIER_POINTS, SHARED_SUPPLIER_MAX - sharedPoints)
+		if (points <= 0) break
+		sharedPoints += points
+		add(points, `Isti dobavljač u ${n(sh.institutions, "institucija")}: ${sh.name}`)
+	}
 	return { score, reasons }
 }
 
@@ -57,5 +71,6 @@ export function signalChips(s: MapaSignals): string[] {
 	if (s.nwpCount) chips.push(`bez objave ${s.nwpCount}${s.nwpShare !== undefined ? ` · ${pct(s.nwpShare)}` : ""}`)
 	if (s.iwFlags) chips.push(`IW ${s.iwFlags}`)
 	if (s.driReports) chips.push(`DRI ${s.driReports}${s.driQualified ? ` · ${s.driQualified} sa rezervom` : ""}`)
+	if (s.sharedSuppliers?.length) chips.push(`isti dobavljač ${s.sharedSuppliers.length}`)
 	return chips
 }

@@ -101,6 +101,8 @@ export class MapaState {
 	refs = new Map<string, ResolvedInstitution>()
 	triage = new Map<string, TriageRecord>()
 	agentSlug = new Map<string, string>()
+	/** supplier key (PIB) -> the institutions it was published for in "mapa.veza" (the Urednik publishes a link once per change) */
+	links = new Map<string, string>()
 }
 
 /** Highest score first; finished rows before failed ones; then by name. */

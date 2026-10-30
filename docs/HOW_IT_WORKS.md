@@ -38,6 +38,13 @@ concurrency: one **"Trijaža · <institucija>"** agent per institution, all runn
 | suppliers flagged by Integrity Watch Srbija | +3 each, max 15 |
 | DRI qualified / adverse / disclaimer opinions | +10 each, max 20 |
 | at least 5 DRI reports | +5 |
+| the same supplier among the top 8 suppliers of 2+ institutions of the map (cross-institution link) | +5 each, max +10 |
+
+**The Mapa is not 6 independent agents.** The Trijaža tools put their top suppliers (name + PIB) into the shared state; the **Urednik** reacts to
+every `mapa.red`, finds a supplier that appears among the top suppliers of 2+ institutions, publishes a **`mapa.veza`** event
+(`{mapaId, veza: {key, supplier: {name, pib}, institutions: [{slug, name, rank, share}], points, line}}`) and adds the line "Isti dobavljač u N
+institucije: <naziv> (+5)" and the points to every affected row. In the cached preset: N-ING (IŽS #3, Putevi Srbije #6), ŽELVOZ and GOŠA FŠV (Srbija
+Kargo, Srbijavoz). The maximum score is now 155.
 
 Every contribution becomes a short reason with its points, so a score can always be explained. Missing data never scores:
 a source that did not answer is listed as "nema podataka". DRI opinions are counted only where the PDF was already
@@ -93,6 +100,7 @@ Every agent's loop runs through the **UrednikGate** (`InterceptionHandler`).
   | `entity.added` (person) | Fabrika spawns Imovina and Mediji agents |
   | `finding.added` | Urednik dedupes and resolves conflicts |
   | `finding.added` VD_PREKO_ROKA / VD_LANAC (from Kadrovik) | **Mediji** opens a new loop that checks how outlets reported that appointment (feeds the conflict check) |
+  | `finding.added` DRI_NALAZ about procurement or acting heads (from Revizor) | **Mediji** opens a new loop ("Povod: nalaz Revizor: ..."): it reads the shared state (`dosije_pregled`), searches the coverage of that audit topic for the institution and files a neutral finding only with real articles |
   | `finding.added` BEZ_OBJAVE / KONCENTRACIJA (from Nabavke) | **Revizor** opens a new loop that looks for earlier DRI findings and files a corroborated finding citing both sources |
   | `odgovor.coveka` | a new loop for the agent that asked |
   | `message_received.started` / `model.answer` | completion tracking |
@@ -156,7 +164,8 @@ typical run has 2 interventions, not one per call.
 
 ### Live search: you can watch the agents look things up
 - Every request a tool makes to a public source becomes an `izvor.upit` event on the same Mozaik bus, with the
-  producer set to the agent. There are two events per request: `u_toku`, then `ok`, `kes` or `greska`.
+  producer set to the agent. There are two events per request: `u_toku`, then `ok`, `kes` or `greska`. A request still in flight when
+  the case or map ends (or is replaced) is finished with a `greska` event ("prekinuto: dosije završen"), so nothing stays "u toku" after "Završeno".
 - Each event carries the source, a Serbian label ("funkcioneri: Infrastruktura železnice Srbije", "ugovori, strana
   3/16", "PDF: Izveštaj o reviziji … 2023") and the public URL.
 - Attribution needs no plumbing: tools run inside an `AsyncLocalStorage` context `{agent, tool}`, so the data layer

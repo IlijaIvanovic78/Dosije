@@ -5,6 +5,7 @@
 import fs from "node:fs"
 import path from "node:path"
 import { searchName } from "./names"
+import { normalizeName } from "./translit"
 import { nameTokens } from "./newsMatch"
 import type { NewsSearchOptions } from "./sources/news"
 
@@ -12,6 +13,7 @@ interface InstitutionLike {
 	slug?: string
 	name: string
 	shortName?: string
+	aliases?: string[]
 }
 
 interface Extra {
@@ -38,8 +40,24 @@ const unique = (list: (string | undefined)[]): string[] => [...new Set(list.filt
 
 const sameTokens = (a: string[], b: string[]) => a.length === b.length && a.every((t) => b.includes(t))
 
+/**
+ * The name as the media write it: no legal-form prefix ("JP", "JKP", "AD"), no quotes, no seat city that only the register adds
+ * ("JP "Pošta Srbije" Beograd" -> "Pošta Srbije"; "Dom zdravlja Novi Sad" keeps its city: it is part of the name).
+ */
+export function mediaName(name: string): string {
+	let s = searchName(name)
+		.replace(/^(jp|jkp|ad|a\.d\.|doo|d\.o\.o\.|j\.p\.)\s+/i, "")
+		.replace(/["„“”'`]/g, " ")
+		.replace(/\s+/g, " ")
+		.trim()
+	const city = /\s+(beograd|novi sad|niš|nis|kragujevac|subotica)$/i.exec(s)
+	// normalizeName itself keeps the city when the rest is a generic phrase: then it is part of the name
+	if (city && normalizeName(s.slice(0, city.index)) === normalizeName(s)) s = s.slice(0, city.index)
+	return s || searchName(name)
+}
+
 export function institutionNames(inst: InstitutionLike): { query: string; aliases: string[]; exclude: string[] } {
-	const query = searchName(inst.name)
+	const query = mediaName(inst.name)
 	const own = nameTokens(query)
 	// the slug is optional: a bare name finds the known institution with the same distinctive tokens
 	const slug = inst.slug ?? known().find((k) => sameTokens(nameTokens(searchName(k.name)), own))?.slug
@@ -55,7 +73,7 @@ export function institutionNames(inst: InstitutionLike): { query: string; aliase
 		})
 	return {
 		query,
-		aliases: unique([inst.shortName, ...(e.aliases ?? [])]).filter((a) => a.toLowerCase() !== query.toLowerCase()),
+		aliases: unique([inst.shortName, ...(inst.aliases ?? []), ...(e.aliases ?? [])]).filter((a) => a.toLowerCase() !== query.toLowerCase()),
 		exclude: unique([...(e.exclude ?? []), ...longer]),
 	}
 }

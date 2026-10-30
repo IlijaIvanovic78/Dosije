@@ -15,6 +15,12 @@ import type { SourceRef } from "../../shared/types"
 import type { AssetReport, Official } from "../types"
 
 const SOURCE = "acas"
+
+function hashString(s: string): string {
+	let h = 5381
+	for (const ch of s) h = ((h * 33) ^ ch.codePointAt(0)!) >>> 0
+	return h.toString(36)
+}
 const API = "https://publicacas.acas.rs/acasPublicNew"
 const REGISTER_URL = "https://publicacas.acas.rs/#/acas/funkcioner"
 const reportUrl = (reportId: number | string) => `https://publicacas.acas.rs/#/acas/funkcionerIzvestajDetails/${reportId}`
@@ -139,30 +145,49 @@ function toOfficial(f: RawFunction): Official {
 
 // ─── Institutions ───────────────────────────────────────────────────────────
 
-const ORG_NOISE = /^(а\.?д\.?|ј\.?п\.?|д\.?о\.?о\.?|београд|нови|сад|ниш|крагујевац)$/iu
+const ORG_NOISE = /^(а\.?д\.?|ј\.?п\.?|д\.?о\.?о\.?)$/iu
 
-function institutionQueries(nameCyr: string): string[] {
-	const full = nameCyr.replace(/\s+/g, " ").trim()
-	const tokens = full.split(" ").filter((t) => !ORG_NOISE.test(t))
-	const queries = [full, tokens.join(" ")]
-	for (let n = tokens.length - 1; n >= 2 && queries.length < 5; n--) queries.push(tokens.slice(0, n).join(" "))
-	return [...new Set(queries.filter(Boolean))]
+/**
+ * The register matches `naziv` as one contiguous substring (a phrase), never as separate words ("водовод нови сад" finds nothing,
+ * "канализација нови" finds the right utility). So the query is tried as a whole, then as shorter contiguous phrases; the results
+ * are filtered by the caller (every query word must be in the name). Phrases that match hundreds of bodies ("нови сад") are skipped.
+ */
+function institutionPhrases(nameCyr: string): string[][] {
+	const words = nameCyr.replace(/\s+/g, " ").trim().split(" ").filter((t) => t && !ORG_NOISE.test(t))
+	const levels: string[][] = []
+	for (let len = words.length; len >= 1; len--) {
+		const phrases: string[] = []
+		for (let i = 0; i + len <= words.length; i++) {
+			const p = words.slice(i, i + len).join(" ")
+			if (p.length >= 3 && !phrases.includes(p)) phrases.push(p)
+		}
+		if (phrases.length) levels.push(phrases)
+	}
+	return levels
 }
 
 export async function findInstitution(name: string): Promise<{ id: string; name: string; nameCyr: string; source: SourceRef }[]> {
 	const nameCyr = latToCyr(name).replace(/\s+/g, " ").trim()
 	if (!nameCyr) return []
-	const env = await cached(SOURCE, cacheKey("institution", nameCyr), async () => {
-		let found: RawOrganization[] = []
-		for (const q of institutionQueries(nameCyr)) {
-			const page = await api<SearchPage<RawOrganization>>("/organizacija/search", { page: 1, limit: 20, naziv: q })
-			if (page.results?.length) {
-				found = page.results
-				break
-			}
+	// cacheKey folds diacritics ("Пошта" and "Поста" would share one file) while the register answers them differently: tell them apart
+	const exact = /[шчћжђШЧЋЖЂ]/.test(nameCyr) ? `d${hashString(nameCyr)}` : undefined
+	const env = await cached(SOURCE, cacheKey("institution", nameCyr, exact), async () => {
+		const found = new Map<number, RawOrganization>()
+		const ask = async (naziv: string) => {
+			const page = await api<SearchPage<RawOrganization>>("/organizacija/search", { page: 1, limit: 100, naziv }).catch(() => ({ results: [], total: 0 }) as SearchPage<RawOrganization>)
+			return { rows: page.results ?? [], total: page.total ?? (page.results ?? []).length }
 		}
+		for (const phrases of institutionPhrases(nameCyr)) {
+			const answers = await Promise.all(phrases.map(ask))
+			const complete = answers.filter((a) => a.rows.length > 0 && a.total <= 100)
+			// a level whose only matches are cut off (generic phrase) is not usable: continue with shorter, rarer phrases
+			if (complete.length === 0) continue
+			for (const a of complete) for (const o of a.rows) found.set(o.id, o)
+			break
+		}
+		if (found.size === 0) for (const o of (await ask(nameCyr)).rows) found.set(o.id, o)
 		const retrievedAt = new Date().toISOString()
-		return found
+		return [...found.values()]
 			.map((o) => ({
 				id: String(o.id),
 				name: latin(str(o.naziv)),
@@ -170,6 +195,7 @@ export async function findInstitution(name: string): Promise<{ id: string; name:
 				score: nameSimilarity(nameCyr, str(o.naziv)),
 			}))
 			.sort((a, b) => b.score - a.score)
+			.slice(0, 120)
 			.map(({ score: _score, ...o }) => ({
 				...o,
 				source: {
@@ -203,19 +229,39 @@ async function functionsBy(params: Record<string, string | number | boolean>, li
 	return out.slice(0, limit)
 }
 
-export async function getOfficials(inst: { acasId?: string; name: string; nameCyr?: string }): Promise<Official[]> {
+async function officialsOfOrg(id: string, label: string): Promise<Official[]> {
+	const env = await cached(SOURCE, cacheKey("officials", id), async () => (await functionsBy({ organizacijaId: id })).map(toOfficial), {
+		skipWrite: (d) => d.length === 0,
+		activity: { ...SRC.acas, action: "pretraga", label: `funkcioneri: ${shortInstitution(label)}`, url: REGISTER_URL, after: (d, h) => h.items(d.length) },
+	})
+	return env.data.map((o) => retitle(o))
+}
+
+/**
+ * Officials of the institution. `altIds` are further register entries of the same body (renamed or re-registered: "JP Elektroprivreda
+ * Srbije" -> "AD Elektroprivreda Srbije"); their records are merged so that a successor's appointment supersedes the open record
+ * the older entry never closed. An alternative entry that does not answer is skipped, never fatal.
+ */
+export async function getOfficials(inst: { acasId?: string; altIds?: string[]; name: string; nameCyr?: string }): Promise<Official[]> {
 	let orgId = inst.acasId
 	if (!orgId) {
 		const matches = await findInstitution(inst.nameCyr || inst.name)
 		orgId = matches[0]?.id
 	}
 	if (!orgId) return []
-	const id = orgId
-	const env = await cached(SOURCE, cacheKey("officials", id), async () => (await functionsBy({ organizacijaId: id })).map(toOfficial), {
-		skipWrite: (d) => d.length === 0,
-		activity: { ...SRC.acas, action: "pretraga", label: `funkcioneri: ${shortInstitution(inst.name)}`, url: REGISTER_URL, after: (d, h) => h.items(d.length) },
-	})
-	return env.data.map((o) => retitle(o))
+	const main = await officialsOfOrg(orgId, inst.name)
+	const alts = [...new Set(inst.altIds ?? [])].filter((a) => a !== orgId)
+	if (alts.length === 0) return main
+	const more = await Promise.all(alts.map((a) => officialsOfOrg(a, inst.name).catch(() => [] as Official[])))
+	const seen = new Set<string>()
+	return [...main, ...more.flat()]
+		.filter((o) => {
+			const key = `${o.id}|${o.position}|${o.from}|${o.to ?? ""}`
+			if (seen.has(key)) return false
+			seen.add(key)
+			return true
+		})
+		.sort((a, b) => (b.from ?? "").localeCompare(a.from ?? ""))
 }
 
 // ─── Person search ──────────────────────────────────────────────────────────

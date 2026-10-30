@@ -67,7 +67,8 @@ export function commonTools(ctx: ToolCtx): Tool[] {
 				entityIds: { type: "array", items: { type: "string" }, description: "id-jevi entiteta na koje se nalaz odnosi (npr. osoba:ime-prezime)" },
 				claim: {
 					type: "object",
-					description: "Strukturisana tvrdnja radi poređenja izvora, npr. funkcija osobe",
+					description:
+						"Samo za proverljive pojedinačne činjenice o osobi ili firmi koje Urednik poredi sa drugim izvorima: funkcija osobe, datum ili organ imenovanja, vlasnik, datum osnivanja. Subject je ime osobe ili firme. Za sve ostalo (nalazi revizije, ugovori, ocene) izostavi claim.",
 					properties: {
 						subject: { type: "string" },
 						predicate: { type: "string", enum: ["funkcija", "datum_imenovanja", "organ_imenovanja", "vlasnik", "vrednost", "datum_osnivanja", "status", "drugo"] },
@@ -109,7 +110,13 @@ export function commonTools(ctx: ToolCtx): Tool[] {
 				entityName: { type: "string" },
 			},
 			required: ["question"],
-			handler: (args) => domain.askHuman(ctx, args),
+			handler: (args) => {
+				// the inbox must stay readable: at most 3 open questions per case, whatever the model decides
+				const state = S()
+				const asked = [...state.tasks.values()].filter((t) => t.caseId === ctx.caseId && t.kind === "pitanje").length
+				if (asked >= 3) return { ok: false, error: "Limit pitanja za ovaj dosije je dostignut (3). Ne postavljaj novo pitanje; navedi u nalazu da podatak treba ručno proveriti." }
+				return domain.askHuman(ctx, args)
+			},
 		}),
 		buildTool(ctx, {
 			name: "dosije_pregled",

@@ -8,7 +8,7 @@ import path from "node:path"
 import zlib from "node:zlib"
 import type { SourceRef } from "../../shared/types"
 import type { CompanyProfile } from "../types"
-import { nameSimilarity } from "../translit"
+import { asciiFold, cyrToLat, nameSimilarity } from "../translit"
 import { aprNormalize } from "./aprNames"
 
 export const APR_INDEX_FILE = path.resolve(process.cwd(), "data", "static", "apr-index.json.gz")
@@ -292,4 +292,53 @@ export async function findInstitutionCompany(name: string): Promise<CompanyProfi
 	if (!idx) return null
 	const mb = findByName(idx, name, true)
 	return mb ? toProfile(idx, mb) : null
+}
+
+// ─── diacritics: "Posta Srbije" -> "Pošta Srbije" ─────────────────────────────
+
+let vocabulary: Promise<Map<string, string> | null> | undefined
+
+/** ASCII-folded word -> its usual spelling with diacritics, learned from the 134k registered names (only where a diacritic form dominates). */
+function loadVocabulary(): Promise<Map<string, string> | null> {
+	vocabulary ??= (async () => {
+		const idx = await loadIndex()
+		if (!idx) return null
+		const stats = new Map<string, Map<string, number>>()
+		for (const row of Object.values(idx.raw.rows)) {
+			for (const w of cyrToLat(row[0]).toLowerCase().split(/[^\p{L}]+/u)) {
+				if (w.length < 3) continue
+				const key = asciiFold(w)
+				const forms = stats.get(key) ?? new Map<string, number>()
+				forms.set(w, (forms.get(w) ?? 0) + 1)
+				stats.set(key, forms)
+			}
+		}
+		const out = new Map<string, string>()
+		for (const [key, forms] of stats) {
+			if (!forms.has(key) && forms.size === 0) continue
+			let best = ""
+			let bestN = 0
+			for (const [form, n] of forms) if (n > bestN) [best, bestN] = [form, n]
+			const plain = forms.get(key) ?? 0
+			// a form with diacritics wins when at least as common as half of the plain spelling
+			const diac = [...forms].filter(([f]) => f !== key).sort((a, b) => b[1] - a[1])[0]
+			if (diac && diac[1] * 2 >= plain) out.set(key, diac[0])
+			else if (best) out.set(key, best)
+		}
+		return out
+	})()
+	return vocabulary
+}
+
+/** Restores č ć š ž đ in ASCII-only words that the registers spell with them. Words that already have diacritics or Cyrillic stay. */
+export async function restoreDiacritics(text: string): Promise<string> {
+	const vocab = await loadVocabulary()
+	if (!vocab) return text
+	return text.replace(/\p{L}+/gu, (w) => {
+		if (w.length < 3 || !/^[A-Za-z]+$/.test(w)) return w
+		const form = vocab.get(w.toLowerCase())
+		if (!form || form === w.toLowerCase()) return w
+		if (w === w.toUpperCase()) return form.toUpperCase()
+		return w[0] === w[0].toUpperCase() ? form[0].toUpperCase() + form.slice(1) : form
+	})
 }

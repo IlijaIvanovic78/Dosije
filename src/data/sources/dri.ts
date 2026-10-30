@@ -230,11 +230,12 @@ async function crawlSubject(subject: Subject): Promise<ListedReport[]> {
 }
 
 /** Audit reports where the institution is the auditee (newest first). No excerpts: use getReportFindings. */
-export async function getReports(inst: { name: string; nameCyr?: string }): Promise<AuditReport[]> {
+export async function getReports(inst: { name: string; nameCyr?: string; aliases?: string[] }): Promise<AuditReport[]> {
 	const key = cacheKey("reports", normalizeName(inst.name || inst.nameCyr || ""))
 	const env = await cached<AuditReport[]>(SOURCE, key, async () => {
 		const index = parseSubjects(await getText(`${BASE}/izvestaji`, { timeoutMs: 60000 }))
-		const subjects = matchSubjects(index, inst)
+		// the registers may know the body under another name (old / new name): every known name picks its auditee entries
+		const subjects = [...new Map([inst, ...(inst.aliases ?? []).map((a) => ({ name: a }))].flatMap((i) => matchSubjects(index, i)).map((s) => [s.id, s])).values()].slice(0, 6)
 		const retrievedAt = new Date().toISOString()
 		const byId = new Map<string, AuditReport>()
 		for (const subject of subjects) {
@@ -271,7 +272,7 @@ export async function getReports(inst: { name: string; nameCyr?: string }): Prom
 	// precision at read time as well (older cache files): only reports whose title names the institution
 	const own = inst.name || cyrToLat(inst.nameCyr ?? "")
 	return env.data
-		.filter((r) => titleNamesInstitution(r.title, own))
+		.filter((r) => [own, ...(inst.aliases ?? [])].some((nm) => titleNamesInstitution(r.title, nm)))
 		.map((r) => {
 			const period = auditedPeriod(r.title, r.kind)
 			return { ...r, period, source: { ...r.source, title: reportSourceTitle({ kind: r.kind, period, publishedAt: r.publishedAt }) } }
@@ -363,6 +364,9 @@ function cutAtStray(s: string): string {
 const MONEY = /(милион|милијард|хиљад[аеу]\s+динар|динар|евра|EUR)/i
 const NEGATIVE = /(није у складу|нису у складу|није поступ|нису поступ|није успоставил|није документовал|није спровел|није извршил|неправилност|нису спровођен|без спровођења|несврсисходн|прецењен|потцењен|нису вршен|није вршен)/i
 
+// cover captions, links and page headers that leak into the text layer are never a finding
+const JUNK = /https?:\/\/|www\.|наслов\w*\s+слика|слика\s+преузета|\bPage\s+\d+|\bСтрана\s+\d+\s+од\s+\d+/i
+
 function scoreSentence(s: string): number {
 	let score = 0
 	if (MONEY.test(s) && /\d/.test(s)) score += 3
@@ -400,7 +404,7 @@ function pickExcerpts(flat: string, opinionSentence?: string): string[] {
 	const sentences = splitSentences(flat.slice(0, Math.min(flat.length, 90000))).map((s, i) => ({ s: s.trim(), i, score: scoreSentence(s) }))
 	const pass = (minScore: number, maxChars: number, want: number) => {
 		const candidates = sentences
-			.filter((c) => c.s.length >= 80 && c.s.length <= 700 && c.score >= minScore && !/\.{4,}/.test(c.s) && (c.s.match(TOC_PAGE_REF)?.length ?? 0) < 2)
+			.filter((c) => c.s.length >= 80 && c.s.length <= 700 && c.score >= minScore && !JUNK.test(c.s) && !/\.{4,}/.test(c.s) && (c.s.match(TOC_PAGE_REF)?.length ?? 0) < 2)
 			.filter((c) => c.i < sentences.length * (maxChars / 90000) || maxChars >= 90000)
 			.map((c) => ({ ...c, score: c.score + (c.s.length <= MAX_EXCERPT ? 2 : 0) }))
 			.sort((a, b) => b.score - a.score || a.i - b.i)

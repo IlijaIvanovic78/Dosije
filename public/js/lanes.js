@@ -4,7 +4,7 @@
 import { h, reconcile, createScheduler, avatar, truncate } from "./format.js"
 import { state, on, now, openTasks, setFilter, CORE_ORDER } from "./store.js"
 import { openInbox } from "./inbox.js"
-import { plural } from "./metrics.js"
+import { t, pl, getLang, onLang } from "./i18n.js"
 
 const DYN_GROUPS = [
 	{ id: "trijaza", label: "Trijaža" },
@@ -21,6 +21,7 @@ let coreEl
 let dynEl
 let dynEmptyEl
 let banner
+let wrapEl
 
 const classify = (info) => {
 	if (info.group === "novinar" || (info.role === "human" && info.group !== "sistem")) return "human"
@@ -28,25 +29,25 @@ const classify = (info) => {
 	return info.dynamic ? "dyn" : "core"
 }
 
-export function laneStatus(lane, t) {
+export function laneStatus(lane, now_) {
 	if (classify(lane.info) === "human") {
 		const n = openTasks().length
-		return n ? { k: "wait", label: "čeka tebe" } : { k: "idle", label: "u timu" }
+		return n ? { k: "wait", label: t("čeka tebe") } : { k: "idle", label: t("u timu") }
 	}
-	if (lane.left) return { k: "done", label: "gotovo" }
-	if (lane.openWait) return { k: "wait", label: "čeka tebe" }
-	if (lane.blockedUntil > t) return { k: "blocked", label: "blokirano" }
+	if (lane.left) return { k: "done", label: t("gotovo") }
+	if (lane.openWait) return { k: "wait", label: t("čeka tebe") }
+	if (lane.blockedUntil > now_) return { k: "blocked", label: t("blokirano") }
 	let req = null
 	for (const r of lane.reqs.values()) req = r
 	if (req) return { k: "tool", label: `${req.source} · ${req.label} …` }
 	let tool = null
 	for (const seg of lane.tools.values()) tool = seg
-	if (tool) return { k: "tool", label: `alat: ${truncate(tool.label, 28)}` }
-	if (lane.openInf) return { k: "think", label: "razmišlja" }
-	if (lane.loopsOpen > 0) return { k: "work", label: "radi" }
-	if (lane.error) return { k: "error", label: "greška" }
-	if (lane.answered) return { k: "done", label: "gotovo" }
-	return { k: "idle", label: "čeka" }
+	if (tool) return { k: "tool", label: `${t("alat")}: ${truncate(tool.label, 28)}` }
+	if (lane.openInf) return { k: "think", label: t("razmišlja") }
+	if (lane.loopsOpen > 0) return { k: "work", label: t("radi") }
+	if (lane.error) return { k: "error", label: t("greška") }
+	if (lane.answered) return { k: "done", label: t("gotovo") }
+	return { k: "idle", label: t("čeka") }
 }
 
 function spawnerName(info) {
@@ -54,13 +55,13 @@ function spawnerName(info) {
 }
 
 function spawnText(info) {
-	return `pokrenuo: ${info.group === "trijaza" ? "mapa.started" : "entity.added"} · ${spawnerName(info) || "Fabrika"}`
+	return t("pokrenuo: {ev} · {by}", { ev: info.group === "trijaza" ? "mapa.started" : "entity.added", by: spawnerName(info) || "Fabrika" })
 }
 
 function buildLane(lane) {
 	const info = lane.info
 	const kind = classify(info)
-	const status = h("span", { class: "lane-status" }, "čeka")
+	const status = h("span", { class: "lane-status" }, t("čeka"))
 	const spawn = h("span", { class: "lane-spawn" })
 	const root = h(
 		"div",
@@ -87,10 +88,10 @@ function buildLane(lane) {
 	return rec
 }
 
-function updateLane(lane, t) {
+function updateLane(lane, tm) {
 	const rec = rows.get(lane.id)
 	if (!rec) return
-	const st = laneStatus(lane, t)
+	const st = laneStatus(lane, tm)
 	const sig = st.k + st.label
 	if (rec.sig !== sig) {
 		rec.sig = sig
@@ -98,9 +99,9 @@ function updateLane(lane, t) {
 		rec.status.textContent = st.label
 		rec.root.dataset.state = st.k
 	}
-	const recent = state.live && lane.info.dynamic && lane.spawnT && t - lane.spawnT < 10000
-	const reacting = state.live && lane.reactT && t - lane.reactT < 10000
-	const note = reacting ? `reaguje na nalaz${lane.reactFrom ? ` · ${lane.reactFrom}` : ""}` : recent ? spawnText(lane.info) : ""
+	const recent = state.live && lane.info.dynamic && lane.spawnT && tm - lane.spawnT < 10000
+	const reacting = state.live && lane.reactT && tm - lane.reactT < 10000
+	const note = reacting ? `${t("reaguje na nalaz")}${lane.reactFrom ? ` · ${lane.reactFrom}` : ""}` : recent ? spawnText(lane.info) : ""
 	if (rec.spawnSig !== note) {
 		rec.spawnSig = note
 		rec.spawn.textContent = note
@@ -122,22 +123,29 @@ function laneSort(a, b) {
 }
 
 function renderBanner() {
-	const open = openTasks().filter((t) => t.blocking)
+	const open = openTasks().filter((k) => k.blocking)
 	if (!open.length) {
 		banner.hidden = true
 		banner.dataset.sig = ""
 		return
 	}
-	const who = open.length > 1 ? `${open.length} ${plural(open.length, "agent čeka", "agenta čekaju", "agenata čeka")} tvoju odluku` : `${open[0].fromAgentName} čeka tvoju odluku`
-	if (banner.dataset.sig !== who) {
-		banner.dataset.sig = who
-		banner.replaceChildren(h("span", null, h("b", null, `${who}.`), " Ostali agenti nastavljaju."), h("button", { class: "link-btn", type: "button", onclick: () => openInbox() }, "Odluči u sandučetu"))
+	const n = open.length
+	const who =
+		n > 1
+			? getLang() === "en"
+				? `${n} agents are waiting for your decision`
+				: `${n} ${pl(n, ["agent čeka", "agenta čekaju", "agenata čeka"])} tvoju odluku`
+			: t("{agent} čeka tvoju odluku", { agent: open[0].fromAgentName })
+	const sig = `${getLang()}|${who}`
+	if (banner.dataset.sig !== sig) {
+		banner.dataset.sig = sig
+		banner.replaceChildren(h("span", null, h("b", null, `${who}.`), ` ${t("Ostali agenti nastavljaju.")}`), h("button", { class: "link-btn", type: "button", onclick: () => openInbox() }, t("Odluči u sandučetu")))
 	}
 	banner.hidden = false
 }
 
 function render() {
-	const t = now()
+	const tm = now()
 	// during a map only the agents that took part are shown (the case agents would sit idle)
 	const idleInMap = (l) => state.runKind === "mapa" && !l.segs.length && !l.loopsOpen
 	const all = [...state.lanes.values()]
@@ -155,7 +163,7 @@ function render() {
 		if (!members.length) continue
 		let hd = headers.get(g.id)
 		if (!hd) {
-			hd = { root: h("div", { class: "lane-group" }, h("span", null, g.label), h("span", { class: "g-count" }, "0")), count: null }
+			hd = { root: h("div", { class: "lane-group" }, h("span", null, t(g.label)), h("span", { class: "g-count" }, "0")), count: null }
 			hd.count = hd.root.querySelector(".g-count")
 			headers.set(g.id, hd)
 		}
@@ -167,7 +175,8 @@ function render() {
 	dynEmptyEl.hidden = dynEls.length > 0
 	dynEl.hidden = dynEls.length === 0
 
-	for (const l of all) updateLane(l, t)
+	for (const l of all) updateLane(l, tm)
+	wrapEl.classList.toggle("is-mapa", state.runKind === "mapa")
 	renderBanner()
 }
 
@@ -176,6 +185,7 @@ export function initLanes() {
 	dynEl = document.getElementById("lanesDyn")
 	dynEmptyEl = document.getElementById("dynEmpty")
 	banner = document.getElementById("holdBanner")
+	wrapEl = document.getElementById("ganttWrap")
 
 	const schedule = createScheduler(render)
 	on("agents", schedule)
@@ -188,6 +198,12 @@ export function initLanes() {
 			rows.clear()
 			headers.clear()
 		}
+		schedule()
+	})
+	onLang(() => {
+		for (const r of rows.values()) r.root.remove()
+		rows.clear()
+		headers.clear()
 		schedule()
 	})
 	setInterval(schedule, 400)

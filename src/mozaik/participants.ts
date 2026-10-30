@@ -39,26 +39,52 @@ export function coreAgentHandlers(group: AgentGroup, agentRef: () => Agent): Sit
 
 /**
  * Mediji reacts to a Kadrovik finding about an acting head (VD_PREKO_ROKA, VD_LANAC): a targeted media check of the appointment and
- * of whether outlets say "v.d." or "direktor". Revizor reacts to a Nabavke finding (BEZ_OBJAVE, KONCENTRACIJA): it looks for an earlier
- * DRI finding on the same topic and backs the finding up with a second official source. Each fires at most once per case and
- * trigger code (Mediji also once per person: the two codes concern the same head).
+ * of whether outlets say "v.d." or "direktor". Mediji also reacts to a Revizor DRI finding about procurement or acting heads: it reads
+ * the shared state and searches the coverage of that audit topic for the institution. Revizor reacts to a Nabavke finding
+ * (BEZ_OBJAVE, KONCENTRACIJA): it looks for an earlier DRI finding on the same topic and backs the finding up with a second official
+ * source. Each fires at most once per case and trigger code (Mediji also once per person: the two Kadrovik codes concern the same
+ * head; and once per audit topic for the Revizor trigger).
  */
-const REACTIONS: Partial<Record<AgentGroup, { from: AgentGroup; codes: SignalCode[] }>> = {
-	mediji: { from: "kadrovik", codes: ["VD_PREKO_ROKA", "VD_LANAC"] },
-	revizor: { from: "nabavke", codes: ["BEZ_OBJAVE", "KONCENTRACIJA"] },
+interface ReactionRule {
+	from: AgentGroup
+	codes: SignalCode[]
+}
+
+const REACTIONS: Partial<Record<AgentGroup, ReactionRule[]>> = {
+	mediji: [
+		{ from: "kadrovik", codes: ["VD_PREKO_ROKA", "VD_LANAC"] },
+		// the Revizor's DRI finding about procurement or acting heads: Mediji looks for coverage of that audit topic (once per topic)
+		{ from: "revizor", codes: ["DRI_NALAZ"] },
+	],
+	revizor: [{ from: "nabavke", codes: ["BEZ_OBJAVE", "KONCENTRACIJA"] }],
+}
+
+/** The audit topic of a DRI finding when it is about acting heads or procurement (the two topics the media can be asked about). */
+export function auditTopicOf(f: Pick<Finding, "title" | "text">): string | undefined {
+	const t = `${f.title} ${f.text}`
+	if (/vr[šs]ioc\w*\s+du[žz]nosti|(?:^|[^\p{L}])v\.\s?d\./iu.test(t)) return "vršioci dužnosti"
+	if (/javn\w+\s+nabavk|pregovara[čc]k|nabavk/i.test(t)) return "javne nabavke"
+	return undefined
 }
 
 function onFindingReaction(group: AgentGroup, agent: Agent, finding: Finding): void {
-	const rule = REACTIONS[group]
 	const state = S()
-	if (!rule || !finding.signalCode || !rule.codes.includes(finding.signalCode)) return
-	if (!state.isRunning(finding.caseId) || !state.institutionRef) return
+	if (!finding.signalCode) return
 	const from = state.agentInfo.get(finding.agentId)
-	if (finding.agentId === agent.getId() || from?.group !== rule.from) return
+	const rule = REACTIONS[group]?.find((r) => r.from === from?.group && r.codes.includes(finding.signalCode as SignalCode))
+	if (!rule || !from) return
+	if (!state.isRunning(finding.caseId) || !state.institutionRef) return
+	if (finding.agentId === agent.getId()) return
 
 	const keys = [`${group}:${finding.signalCode}`]
 	let trigger: ReactionTrigger = { findingId: finding.id, agent: from.name, signalCode: finding.signalCode, title: finding.title }
-	if (group === "mediji") {
+	if (group === "mediji" && rule.from === "revizor") {
+		const tema = auditTopicOf(finding)
+		if (!tema) return
+		trigger = { ...trigger, tema }
+		keys.length = 0
+		keys.push(`${group}:dri:${tema}`)
+	} else if (group === "mediji") {
 		const entity = finding.entityIds.map((id) => state.entities.get(id)).find((e) => e?.kind === "osoba")
 		const person = entity?.name ?? finding.claim?.subject
 		if (!person) return
@@ -70,7 +96,7 @@ function onFindingReaction(group: AgentGroup, agent: Agent, finding: Finding): v
 	for (const k of keys) state.reacted.add(k)
 
 	const info = state.agentInfo.get(agent.getId())
-	const reaction: AgentReaction = { findingId: finding.id, fromAgentId: finding.agentId, fromAgent: from.name, signalCode: finding.signalCode, title: finding.title, at: nowIso() }
+	const reaction: AgentReaction = { findingId: finding.id, fromAgentId: finding.agentId, fromAgent: from.name, signalCode: finding.signalCode, title: finding.title, ...(trigger.tema ? { tema: trigger.tema } : {}), at: nowIso() }
 	if (info) info.reactions = [...(info.reactions ?? []), reaction]
 	emit("agent.reakcija", agent.getId(), { agentId: agent.getId(), agentName: state.nameOf(agent.getId()), reaction })
 	log("reakcija", `${state.nameOf(agent.getId())} ← ${from.name}: ${finding.signalCode} (${finding.title})`)

@@ -39,7 +39,7 @@ if (!ref) process.exit(1)
 console.log(`  -> ${ref.name} (ACAS ${ref.acasId ?? "-"}, JN ${ref.jnId ?? "-"}, MB ${ref.mb ?? "-"})\n`)
 
 // Kadrovik
-const officials = (await step("acas: funkcioneri", () => data.acas.getOfficials({ acasId: ref.acasId, name: ref.name, nameCyr: ref.nameCyr }))) ?? []
+const officials = (await step("acas: funkcioneri", () => data.acas.getOfficials({ acasId: ref.acasId, altIds: ref.acasAltIds, name: ref.name, nameCyr: ref.nameCyr }))) ?? []
 const head = pickHead(officials)
 const people = [head, ...pickOthers(officials, head, 2)].filter((o): o is NonNullable<typeof head> => !!o)
 if (head) {
@@ -62,7 +62,7 @@ for (const c of analysis ? pickFirmCandidates(analysis.candidates, config.budget
 	await step(`firma: ${c.name.slice(0, 40)} (PIB ${c.pib}${mb ? `, MB ${mb}` : ", MB nepoznat"})`, () => data.analysis.analyzeFirm(inst, { name: c.name, pib: c.pib, mb }))
 }
 // Revizor
-const reports = (await step("dri: spisak izveštaja", () => data.dri.getReports({ name: ref.name, nameCyr: ref.nameCyr }))) ?? []
+const reports = (await step("dri: spisak izveštaja", () => data.dri.getReports({ name: ref.name, nameCyr: ref.nameCyr, aliases: ref.aliases }))) ?? []
 const wanted = [
 	...reports.filter((r) => /pravilnosti/i.test(r.kind ?? "") && !/odaziv|poslerevizion/i.test(r.kind ?? "")).slice(0, 3),
 	...reports.filter((r) => /finansijska/i.test(r.kind ?? "")).slice(0, 1),

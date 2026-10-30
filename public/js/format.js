@@ -1,5 +1,7 @@
 // Small shared helpers: DOM builder, escaping, formatting, labels.
 
+import { t, getLang } from "./i18n.js"
+
 const ESC = { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }
 
 export function esc(s) {
@@ -112,11 +114,12 @@ export function fmtElapsed(ms) {
 
 export function fmtDur(ms) {
 	if (ms < 1000) return `${Math.round(ms)} ms`
-	return `${(ms / 1000).toFixed(1).replace(".", ",")} s`
+	const s = (ms / 1000).toFixed(1)
+	return `${getLang() === "en" ? s : s.replace(".", ",")} s`
 }
 
 export function fmtNum(n) {
-	return Number(n || 0).toLocaleString("sr-RS")
+	return Number(n || 0).toLocaleString(getLang() === "en" ? "en-US" : "sr-RS")
 }
 
 export function truncate(str, n) {
@@ -139,20 +142,25 @@ export const SECTIONS = [
 	{ id: "revizija", label: "Revizija" },
 	{ id: "mediji", label: "Mediji" },
 ]
-export const SECTION_LABEL = Object.fromEntries(SECTIONS.map((x) => [x.id, x.label]))
 
-export const STATUS_LABEL = {
+/** Label tables are written in Serbian; reading a key returns the text in the current language (see i18n.js). */
+const translated = (table) => new Proxy(table, { get: (o, k) => (typeof o[k] === "string" ? t(o[k]) : o[k]) })
+
+export const SECTION_LABEL = translated(Object.fromEntries(SECTIONS.map((x) => [x.id, x.label])))
+
+export const STATUS_LABEL = translated({
 	zvanicno: "Zvanično",
 	potvrdjeno: "Potvrđeno",
 	nepotvrdjeno: "Nepotvrđeno",
 	demantovano: "Odstupa od registra",
-}
+})
 
-export const SEVERITY_LABEL = { info: "info", paznja: "pažnja", signal: "signal" }
+export const SEVERITY_LABEL = translated({ info: "info", paznja: "pažnja", signal: "signal" })
 
-export const SIGNAL_LABEL = {
+export const SIGNAL_LABEL = translated({
 	VD_PREKO_ROKA: "v.d. preko roka",
 	VD_BLIZU_ROKA: "v.d. blizu roka",
+	VD_LANAC: "lanac v.d.",
 	IMENOVANJE_NEPOZNATO: "imenovanje nepoznato",
 	BEZ_OBJAVE: "bez objave",
 	KONCENTRACIJA: "koncentracija dobavljača",
@@ -166,9 +174,9 @@ export const SIGNAL_LABEL = {
 	MEDIJSKI_NAVOD: "medijski navod",
 	IMOVINA: "imovina",
 	KONFLIKT_IZVORA: "konflikt izvora",
-}
+})
 
-export const SOURCE_LABEL = {
+export const SOURCE_LABEL = translated({
 	acas: "ACAS",
 	jnportal: "Portal JN",
 	integrity_watch: "Integrity Watch",
@@ -180,21 +188,21 @@ export const SOURCE_LABEL = {
 	opensanctions: "OpenSanctions",
 	krik: "KRIK",
 	novinar: "Novinar",
-}
+})
 
-export const RULE_LABEL = {
+export const RULE_LABEL = translated({
 	zvanicni_izvor_ima_prednost: "prednost zvaničnom izvoru",
 	vise_izvora: "prednost nalazu sa više izvora",
 	noviji_datum: "prednost novijem podatku",
-}
+})
 
-export const ROLE_LABEL = {
+export const ROLE_LABEL = translated({
 	institucija: "institucija",
 	funkcioner: "funkcioner",
 	dobavljac: "dobavljač",
 	vlasnik: "vlasnik",
 	pomenut: "pomenut",
-}
+})
 
 /** News sources are titled "Outlet: headline" (or "Outlet – headline"): split into both parts. */
 export function splitSourceTitle(src) {
@@ -226,7 +234,7 @@ const expandedSources = new Set() // keys (finding ids) whose full list is open
 
 function sourceItem(src) {
 	const url = safeUrl(src.url)
-	const title = `${src.title}${src.official ? " (zvanični izvor)" : ""}`
+	const title = `${src.title}${src.official ? ` (${t("zvanični izvor")})` : ""}`
 	const { outlet, headline } = src.kind === "vesti" ? splitSourceTitle(src) : { outlet: SOURCE_LABEL[src.kind] || src.kind, headline: src.title }
 	const date = fmtDate(src.publishedAt || src.retrievedAt)
 	const meta = [truncate(outlet, 26), date].filter(Boolean).join(" · ")
@@ -244,13 +252,13 @@ export function sourceLinks(sources, key) {
 			list.map((src) => {
 				const url = safeUrl(src.url)
 				const label = sourceLine(src)
-				const title = `${src.title}${src.official ? " (zvanični izvor)" : ""}`
+				const title = `${src.title}${src.official ? ` (${t("zvanični izvor")})` : ""}`
 				return url ? h("a", { class: `src${src.official ? " official" : ""}`, href: url, target: "_blank", rel: "noopener noreferrer", title }, label) : h("span", { class: "src", title }, label)
 			}),
 		)
 	}
 	const ul = h("ul", { class: "src-list" })
-	const box = h("div", { class: "f-sources list" }, h("div", { class: "src-count" }, `Izvori (${list.length})`), ul)
+	const box = h("div", { class: "f-sources list" }, h("div", { class: "src-count" }, t("Izvori ({n})", { n: list.length })), ul)
 	const render = () => {
 		const open = key && expandedSources.has(key)
 		const shown = open ? list : list.slice(0, SOURCE_LIST_SHOWN)
@@ -272,7 +280,7 @@ export function sourceLinks(sources, key) {
 							render()
 						},
 					},
-					open ? "prikaži manje" : `prikaži još ${rest}`,
+					open ? t("prikaži manje") : t("prikaži još {n}", { n: rest }),
 				),
 			)
 		}

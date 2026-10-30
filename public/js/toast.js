@@ -1,6 +1,7 @@
 // Toasts (bottom right): white, hairline, small shadow. Text is always inserted as text.
 
 import { h } from "./format.js"
+import { t } from "./i18n.js"
 
 const MAX = 2
 
@@ -45,7 +46,7 @@ export function toast({ kind = "info", title, text, actions = [], ttl = 7000 } =
 					)
 				: null,
 		),
-		h("button", { class: "t-x", type: "button", "aria-label": "Zatvori", onclick: () => close() }, "×"),
+		h("button", { class: "t-x", type: "button", "aria-label": t("Zatvori"), onclick: () => close() }, "×"),
 	)
 	host.appendChild(el)
 	while (host.children.length > MAX) (host.querySelector(".toast:not(.approve)") || host.firstChild).remove()

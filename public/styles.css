@@ -456,6 +456,31 @@ input.invalid {
 .nav-btn .count.wait {
 	color: var(--wait);
 }
+.lang-switch {
+	display: inline-flex;
+	align-items: center;
+	gap: 6px;
+	font-size: 12px;
+	color: var(--rule-strong);
+}
+.lang-btn {
+	background: none;
+	border: 0;
+	padding: 2px 0;
+	font-size: 12px;
+	letter-spacing: 0.04em;
+	color: var(--ink-3);
+	border-bottom: 2px solid transparent;
+	cursor: pointer;
+}
+.lang-btn:hover {
+	color: var(--ink);
+}
+.lang-btn[aria-pressed="true"] {
+	color: var(--ink);
+	font-weight: 600;
+	border-bottom-color: var(--accent);
+}
 .mode-text {
 	font-size: 12.5px;
 	color: var(--ink-3);
@@ -715,11 +740,18 @@ body[data-view="case"] #hero {
 
 .gantt-wrap {
 	position: relative;
-	flex: 1 1 0;
+	flex: 0 1 auto;
 	min-height: 350px;
 	display: flex;
 	flex-direction: column;
 	margin-top: 4px;
+}
+/* during a map there are no case lanes: no reserved height, so the live search flows right below the lanes */
+.gantt-wrap.is-mapa {
+	min-height: 0;
+}
+.gantt-wrap.is-mapa .lanes-dyn {
+	min-height: 96px;
 }
 #gantt {
 	position: absolute;
@@ -737,13 +769,13 @@ body[data-view="case"] #hero {
 	flex: none;
 }
 .dyn-wrap {
-	flex: 1 1 0;
+	flex: 1 1 auto;
 	min-height: 0;
 	display: flex;
 	flex-direction: column;
 }
 .lanes-dyn {
-	flex: 1 1 0;
+	flex: 1 1 auto;
 	min-height: 0;
 	overflow-y: auto;
 }
@@ -858,10 +890,10 @@ body[data-view="case"] #hero {
 
 /* live search */
 .live {
-	flex: none;
 	display: flex;
 	flex-direction: column;
-	height: clamp(170px, 26vh, 300px);
+	flex: 1 0 clamp(170px, 26vh, 300px);
+	min-height: 0; /* the list scrolls inside; its content height must not push the lanes around */
 	margin-top: 10px;
 	border-top: 1px solid var(--rule);
 }
@@ -953,6 +985,15 @@ body[data-view="case"] #hero {
 	color: var(--signal);
 	font-weight: 600;
 }
+.srow .rs.interrupted {
+	color: var(--ink-3);
+	font-style: italic;
+}
+.srow.prekinuto .rx,
+.srow.prekinuto .lbl,
+.srow.prekinuto .act {
+	color: var(--ink-3);
+}
 .srow.u_toku .rsrc,
 .srow.u_toku .rx,
 .srow.u_toku .lbl,
@@ -1017,6 +1058,40 @@ body[data-view="case"] #hero {
 	color: var(--ink-2);
 }
 
+/* the report lede: small, calm, three lines; the numbered list carries the hierarchy */
+.lede-box {
+	margin: 0 0 10px;
+}
+.lede-box .lede {
+	margin: 0;
+	font: 14px/1.55 var(--sans);
+	color: var(--ink-2);
+	max-width: 76ch;
+}
+.lede-box .lede.clamp {
+	display: -webkit-box;
+	-webkit-box-orient: vertical;
+	-webkit-line-clamp: 3;
+	line-clamp: 3;
+	overflow: hidden;
+}
+.lede-more {
+	margin-top: 2px;
+	font-size: 13px;
+}
+.mapa-veza {
+	margin-top: 18px;
+	padding: 8px 12px;
+	border: 1px solid var(--rule-strong);
+	border-radius: 4px;
+	font-size: 13.5px;
+	color: var(--ink-2);
+}
+.rk.prov {
+	color: var(--ink-3);
+	opacity: 0.75;
+	font-style: italic;
+}
 .sig-list {
 	list-style: none;
 	padding: 0;
@@ -1741,20 +1816,11 @@ a.src:hover {
 	text-align: left;
 	cursor: pointer;
 }
-.d-title {
-	font-weight: 600;
-	color: var(--ink);
-	flex: none;
-}
-.d-meta {
-	flex: none;
-	font-variant-numeric: tabular-nums;
-}
-.d-ticker {
+.d-line {
 	flex: 1;
 	min-width: 0;
-	font: 11.5px var(--mono);
-	color: var(--ink-3);
+	color: var(--ink-2);
+	font-variant-numeric: tabular-nums;
 	white-space: nowrap;
 	overflow: hidden;
 	text-overflow: ellipsis;
@@ -1762,6 +1828,14 @@ a.src:hover {
 .d-hint {
 	flex: none;
 	color: var(--accent);
+}
+.ev-rate {
+	margin-left: auto;
+	font: 11.5px var(--mono);
+	color: var(--ink-3);
+}
+.ev-rate + .link-btn {
+	margin-left: 0;
 }
 .drawer.collapsed .drawer-body {
 	display: none;
@@ -2027,7 +2101,7 @@ a.src:hover {
 		margin-top: 0;
 	}
 	.live {
-		height: clamp(120px, 20vh, 180px);
+		flex-basis: clamp(120px, 20vh, 180px);
 		margin-top: 6px;
 	}
 	.doc-scroll {

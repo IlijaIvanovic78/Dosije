@@ -10,7 +10,7 @@ import { getJson, HttpError, USER_AGENT } from "../http"
 import { institutionNames } from "../newsPlan"
 import { clipWords } from "../../shared/text"
 import { cyrToLat, latToCyr, nameSimilarity, normalizeName } from "../translit"
-import type { Contract, ProcurementSummary, SupplierAggregate } from "../types"
+import type { Contract, ProcurementCoverage, ProcurementSummary, SupplierAggregate } from "../types"
 import type { SourceRef } from "../../shared/types"
 
 const BASE = "https://jnportal.ujn.gov.rs"
@@ -45,7 +45,8 @@ let sessionPromise: Promise<Session> | null = null
 
 async function openSession(): Promise<Session> {
 	let lastErr: unknown
-	for (let i = 0; i < 6; i++) {
+	const started = Date.now()
+	for (let i = 0; i < 6 && (i === 0 || Date.now() - started < 30_000); i++) {
 		try {
 			// global fetch on purpose: http.ts keeps only the last Set-Cookie header, the portal needs ASP.NET_SessionId
 			const res = await fetch(`${BASE}/`, { headers: { "User-Agent": USER_AGENT }, signal: AbortSignal.timeout(20000) })
@@ -83,13 +84,13 @@ interface GridResponse<T> {
 async function grid<T>(name: string, params: Record<string, string>): Promise<GridResponse<T>> {
 	const qs = new URLSearchParams(params).toString()
 	let lastErr: unknown
-	for (let attempt = 0; attempt < 4; attempt++) {
+	for (let attempt = 0; attempt < 3; attempt++) {
 		const s = await getSession()
 		try {
 			return await getJson<GridResponse<T>>(`${BASE}/api/searchgrid/${name}/get?${qs}`, {
 				headers: { UserToken: s.token, Cookie: s.cookie, "Content-Type": "application/json" },
-				retries: 1,
-				timeoutMs: 45000,
+				retries: 0,
+				timeoutMs: 30000,
 			})
 		} catch (err) {
 			lastErr = err
@@ -107,11 +108,32 @@ async function grid<T>(name: string, params: Record<string, string>): Promise<Gr
 /** Raw grid access for probes and the QA script (attribution checks). */
 export { grid as rawGrid }
 
+export interface CrawlLimits {
+	/** stop after this many rows (the grid is sorted newest first, so what is kept is the most recent part) */
+	maxRows?: number
+	/** epoch ms after which no further page is requested */
+	deadline?: number
+}
+
+export interface Crawl<T> {
+	rows: T[]
+	/** rows the grid holds for this filter */
+	total: number
+	/** the crawl stopped before the last page (row cap or time budget) */
+	truncated: boolean
+}
+
 /** One live activity per page of a crawl ("ugovori, strana 3/16"); no events outside a tool's activity context. */
-async function gridAll<T>(name: string, filter: unknown, sort: unknown, what = "podaci"): Promise<T[]> {
+async function gridAll<T>(name: string, filter: unknown, sort: unknown, what = "podaci", limits: CrawlLimits = {}): Promise<Crawl<T>> {
 	const rows: T[] = []
 	let total = Number.POSITIVE_INFINITY
+	let truncated = false
+	const maxRows = limits.maxRows ?? Number.POSITIVE_INFINITY
 	for (let skip = 0, page = 0; skip < total && page < 400; skip += PAGE, page++) {
+		if (rows.length >= maxRows || (limits.deadline && Date.now() > limits.deadline)) {
+			truncated = true
+			break
+		}
 		const res = await trackActivity({ ...SRC.jn, action: "preuzimanje", label: `${what}, strana ${page + 1}`, url: `${BASE}/ugovori` }, async (h) => {
 			const r = await grid<T>(name, {
 				filter: JSON.stringify(filter),
@@ -121,7 +143,7 @@ async function gridAll<T>(name: string, filter: unknown, sort: unknown, what = "
 				requireTotalCount: "true",
 			})
 			h.items(r.data.length)
-			if (r.totalCount) h.label(`${what}, strana ${page + 1}/${Math.max(1, Math.ceil(r.totalCount / PAGE))}`)
+			if (r.totalCount) h.label(`${what}, strana ${page + 1}/${Math.max(1, Math.ceil(Math.min(r.totalCount, Number.isFinite(maxRows) ? maxRows : r.totalCount) / PAGE))}`)
 			return r
 		})
 		total = res.totalCount ?? res.data.length
@@ -129,9 +151,8 @@ async function gridAll<T>(name: string, filter: unknown, sort: unknown, what = "
 		rows.push(...res.data)
 		await sleep(DELAY_MS)
 	}
-	return rows
+	return { rows: rows.slice(0, Number.isFinite(maxRows) ? maxRows : undefined), total: Number.isFinite(total) ? total : rows.length, truncated }
 }
-
 // ─── raw shapes (only the fields we use) ─────────────────────────────────────
 
 interface RawContractor {
@@ -201,9 +222,13 @@ interface StoredProcedure {
 	cpv?: string
 }
 
+export type Coverage = ProcurementCoverage
+
 interface Store {
 	authority: { id: string; name: string; pib?: string }
 	totalTenders: number
+	/** absent in older cache files = the whole history was read */
+	coverage?: Coverage
 	contracts: StoredContract[]
 	negotiated: StoredProcedure[]
 }
@@ -233,7 +258,7 @@ function procedureLabel(id: number | undefined, raw?: string, article?: string |
 	return art ? `${base} (${art})` : base
 }
 
-function buildStore(auth: { id: string; name: string; pib?: string }, lots: RawLotContract[], tenders: RawTender[]): Store {
+function buildStore(auth: { id: string; name: string; pib?: string }, lots: RawLotContract[], tenders: RawTender[], coverage?: Coverage): Store {
 	const tenderById = new Map(tenders.map((t) => [t.Id, t]))
 	const seen = new Map<string, number>()
 	const contracts: StoredContract[] = lots.map((l) => {
@@ -278,7 +303,7 @@ function buildStore(auth: { id: string; name: string; pib?: string }, lots: RawL
 			legalBasis: t.NegotiatedProcedureLegalBaseArticle ? cyrToLat(t.NegotiatedProcedureLegalBaseArticle).trim() : undefined,
 			cpv: cpvCode(t.CPVExtended),
 		}))
-	return { authority: auth, totalTenders: tenders.length, contracts, negotiated }
+	return { authority: auth, totalTenders: tenders.length, coverage, contracts, negotiated }
 }
 
 // ─── authority lookup ────────────────────────────────────────────────────────
@@ -310,17 +335,27 @@ async function readIndex(): Promise<AuthorityIndex> {
 	return (await readCache<AuthorityIndex>(SOURCE, "authority-index"))?.data ?? {}
 }
 
-async function remember(a: { id: string; name: string; pib?: string }): Promise<void> {
-	const idx = await readIndex()
-	if (idx[a.id]?.name === a.name && idx[a.id]?.pib === a.pib) return
-	idx[a.id] = { id: a.id, name: a.name, pib: a.pib }
-	await writeCache(SOURCE, "authority-index", idx)
+// read-modify-write of one file: calls must not interleave (parallel lookups once overwrote the whole index with a partial copy)
+let indexLock: Promise<unknown> = Promise.resolve()
+
+function remember(a: { id: string; name: string; pib?: string }): Promise<void> {
+	const run = async () => {
+		const idx = await readIndex()
+		if (idx[a.id]?.name === a.name && idx[a.id]?.pib === a.pib) return
+		idx[a.id] = { id: a.id, name: a.name, pib: a.pib }
+		await writeCache(SOURCE, "authority-index", idx)
+	}
+	const next = indexLock.then(run, run)
+	indexLock = next.catch(() => undefined)
+	return next
 }
 
 export async function findAuthority(nameOrPib: string): Promise<AuthorityRef[]> {
 	const q = nameOrPib.trim()
 	if (!q) return []
-	const env = await cached(SOURCE, cacheKey("authority", q), async () => {
+	// cacheKey folds diacritics: "Pošta" and "Posta" are different searches (Пошта / Поста) and must not share a file
+	const exact = /[čćšžđČĆŠŽĐ]/.test(q) ? `d${[...q].reduce((h, ch) => ((h * 33) ^ ch.codePointAt(0)!) >>> 0, 5381).toString(36)}` : undefined
+	const env = await cached(SOURCE, cacheKey("authority", q, exact), async () => {
 		const isPib = /^\d{8,9}$/.test(q)
 		const cyr = latToCyr(q)
 		const run = (filter: unknown) =>
@@ -347,6 +382,18 @@ export async function findAuthority(nameOrPib: string): Promise<AuthorityRef[]> 
 	if (!/^\d{8,9}$/.test(q)) out.sort((a, b) => nameSimilarity(b.name, q) - nameSimilarity(a.name, q))
 	for (const a of out.slice(0, 5)) await remember(a)
 	return out.slice(0, 10)
+}
+
+/** How much and how recently an authority published contracts (one request): tells a live registration from an old, renamed one. */
+export async function authorityActivity(a: { name: string }): Promise<{ total: number; latest: string }> {
+	const res = await grid<{ ContractDate?: string }>("VContracts", {
+		filter: JSON.stringify(["OfficialName", "=", latToCyr(a.name)]),
+		sort: JSON.stringify([{ selector: "ContractDate", desc: true }]),
+		skip: "0",
+		take: "1",
+		requireTotalCount: "true",
+	})
+	return { total: res.totalCount ?? res.data.length, latest: res.data[0]?.ContractDate?.slice(0, 10) ?? "" }
 }
 
 async function resolveAuthority(inst: InstLike): Promise<{ id: string; name: string; pib?: string }> {
@@ -384,10 +431,16 @@ interface Loaded {
 
 const memo = new Map<string, Promise<Loaded>>()
 
+// newest first: a capped crawl keeps the most recent contracts. LotId makes paging stable for contracts signed on one day.
 const LOT_SORT = [
-	{ selector: "LotId", desc: false },
-	{ selector: "ContractNo", desc: false },
+	{ selector: "ContractDate", desc: true },
+	{ selector: "LotId", desc: true },
 ]
+
+/** Authorities with more contracts than this are analysed on their most recent ones (EPS: tens of thousands). */
+export const MAX_CONTRACTS = 1500
+/** Time budget of one authority's crawl (contracts, then procedures). */
+export const CRAWL_BUDGET_MS = 60_000
 
 /** Name without legal form and city ("Друштво са ограниченом одговорношћу "Путеви Србије" Београд" -> "Путеви Србије"). */
 function coreNameCyr(cyr: string): string {
@@ -401,30 +454,71 @@ function coreNameCyr(cyr: string): string {
 }
 
 async function fetchStore(auth: { id: string; name: string; pib?: string }, otherNames: string[] = []): Promise<string> {
+	const started = Date.now()
+	const contractDeadline = started + CRAWL_BUDGET_MS * 0.6
 	const cyrName = latToCyr(auth.name)
-	let lots = await gridAll<RawLotContract>("VContracts", ["OfficialName", "=", cyrName], LOT_SORT, "ugovori")
-	if (lots.length === 0) lots = await gridAll<RawLotContract>("VContracts", ["OfficialName", "contains", cyrName], LOT_SORT, "ugovori")
-	const tenders = await gridAll<RawTender>("TendersAll", ["CAId", "=", Number(auth.id)], [{ selector: "Id", desc: false }], "postupci nabavki")
-	const mine = new Set(tenders.map((t) => t.Id))
+	let byName = await gridAll<RawLotContract>("VContracts", ["OfficialName", "=", cyrName], LOT_SORT, "ugovori", { maxRows: MAX_CONTRACTS, deadline: contractDeadline })
+	let viaContains = false
+	if (byName.rows.length === 0) {
+		byName = await gridAll<RawLotContract>("VContracts", ["OfficialName", "contains", cyrName], LOT_SORT, "ugovori", { maxRows: MAX_CONTRACTS, deadline: contractDeadline })
+		viaContains = true
+	}
+	let lots = byName.rows
+	let total = byName.total
+	let truncated = byName.truncated
 	const key = (l: RawLotContract) => `${l.TenderId}|${l.LotId}|${l.ContractNo}`
+	const olderNameRows = new Set<string>()
 
 	// A renamed authority (e.g. "Javno preduzeće Putevi Srbije" -> "Društvo sa ograničenom odgovornošću Putevi Srbije", or
-	// "Srbija Voz" -> "Srbijavoz") keeps its CAId, but older contracts carry the old OfficialName. Add them only when the
-	// tender belongs to THIS authority's CAId.
+	// "Srbija Voz" -> "Srbijavoz") keeps its CAId, but older contracts carry the old OfficialName. They are older than what the new
+	// name holds, so they are read only while the cap and the time budget leave room, and only when the tender belongs to THIS CAId.
 	const cores = [...new Set([coreNameCyr(cyrName), ...otherNames.map((n) => coreNameCyr(latToCyr(n)))].filter((c) => c.length >= 8))]
 	for (const [i, core] of cores.entries()) {
+		if (lots.length >= MAX_CONTRACTS || Date.now() > contractDeadline) break
 		const probe = await grid<RawLotContract>("VContracts", { filter: JSON.stringify(["OfficialName", "contains", core]), skip: "0", take: "1", requireTotalCount: "true" })
-		const total = probe.totalCount ?? 0
-		if (total === 0 || (i === 0 && total <= lots.length)) continue
+		const probeTotal = probe.totalCount ?? 0
+		if (probeTotal === 0 || (i === 0 && probeTotal <= lots.length)) continue
 		const have = new Set(lots.map(key))
-		const more = await gridAll<RawLotContract>("VContracts", ["OfficialName", "contains", core], LOT_SORT, `ugovori (raniji naziv: ${cyrToLat(core)})`)
-		lots = [...lots, ...more.filter((l) => mine.has(l.TenderId) && !have.has(key(l)))]
+		const more = await gridAll<RawLotContract>("VContracts", ["OfficialName", "contains", core], LOT_SORT, `ugovori (raniji naziv: ${cyrToLat(core)})`, { maxRows: MAX_CONTRACTS - lots.length, deadline: contractDeadline })
+		const fresh = more.rows.filter((l) => !have.has(key(l)))
+		for (const l of fresh) olderNameRows.add(key(l))
+		lots = [...lots, ...fresh]
+		total = Math.max(total, probeTotal)
+		truncated ||= more.truncated
 	}
-	// the authority's own tenders are the ground truth: a lot found by name that belongs to another body's tender is not its contract
-	if (mine.size > 0) lots = lots.filter((l) => mine.has(l.TenderId))
-	return JSON.stringify(buildStore(auth, lots, tenders))
-}
 
+	// procedures (type of procedure per contract) of the same period only: from the oldest tender among the contracts read
+	const minTender = lots.length ? Math.min(...lots.map((l) => l.TenderId)) : 0
+	const tenderDeadline = Math.max(Date.now() + 15_000, started + CRAWL_BUDGET_MS)
+	const tendersCrawl = await gridAll<RawTender>(
+		"TendersAll",
+		minTender ? [["CAId", "=", Number(auth.id)], "and", ["Id", ">=", minTender]] : ["CAId", "=", Number(auth.id)],
+		[{ selector: "Id", desc: true }],
+		"postupci nabavki",
+		{ deadline: tenderDeadline },
+	)
+	const tenders = tendersCrawl.rows
+	// negotiated procedures without a public call: asked for directly (a few rows), so the list is complete for the whole analysed
+	// period even when the crawl above stopped early
+	const nwp = await gridAll<RawTender>(
+		"TendersAll",
+		[["CAId", "=", Number(auth.id)], "and", ["ProcedureTypeId", "=", NEGOTIATED_NO_PUBLICATION], ...(truncated && minTender ? ["and", ["Id", ">=", minTender]] : [])],
+		[{ selector: "Id", desc: true }],
+		"pregovarački postupci",
+		{ maxRows: 300 },
+	).catch(() => ({ rows: [] as RawTender[] }))
+	const allTenders = [...new Map([...tenders, ...nwp.rows].map((t) => [t.Id, t])).values()]
+
+	if (olderNameRows.size > 0 || viaContains) {
+		const mine = new Set(allTenders.map((t) => t.Id))
+		// a lot found by (partial) name that belongs to another body's tender is not this authority's contract
+		if (mine.size > 0 && !tendersCrawl.truncated) lots = lots.filter((l) => mine.has(l.TenderId) || (!olderNameRows.has(key(l)) && !viaContains))
+	}
+
+	const dates = lots.map((l) => l.ContractDate?.slice(0, 10)).filter((d): d is string => !!d).sort()
+	const coverage: Coverage = { total: Math.max(total, lots.length), analyzed: lots.length, truncated, from: dates[0], proceduresPartial: tendersCrawl.truncated || undefined }
+	return JSON.stringify(buildStore(auth, lots, allTenders, coverage))
+}
 async function load(inst: InstLike): Promise<Loaded> {
 	const auth = await resolveAuthority(inst)
 	const key = cacheKey("contracts", auth.id)
@@ -577,6 +671,7 @@ function summarize(l: Loaded): ProcurementSummary {
 	const dates = all.map((c) => c.signedAt).filter((d): d is string => !!d).sort()
 	return {
 		institution: l.store.authority.name,
+		coverage: l.store.coverage ?? { total: all.length, analyzed: all.length, truncated: false, from: all.map((c) => c.signedAt).filter((d): d is string => !!d).sort()[0] },
 		totalContracts: all.length,
 		totalValueRsd: round2(total),
 		period: { from: dates[0], to: dates[dates.length - 1] },

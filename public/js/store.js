@@ -26,7 +26,7 @@ export const state = {
 
 	// "Mapa prioriteta" (separate from the case): runKind says which run the lanes / Gantt / metrics belong to
 	runKind: "case",
-	mapa: { id: null, status: "idle", startedAt: null, finishedAt: null, rows: new Map() },
+	mapa: { id: null, status: "idle", startedAt: null, finishedAt: null, rows: new Map(), veze: new Map() }, // veze: shared suppliers ("mapa.veza")
 	ui: { view: "dosije", fresh: false }, // right column: "dosije" | "mapa"; fresh = client-side "Novi dosije" (empty state shown)
 
 	lanes: new Map(),
@@ -42,10 +42,12 @@ export const state = {
 	lastEvent: null,
 
 	filters: { agentId: null, entityId: null, section: "all" },
+	replay: false, // true while applyEvent handles a replayed (not live) event
 }
 
 const seen = new Set()
 let wasDisconnected = false
+let syncUntil = 0 // until this wall-clock time, incoming events are the replay that follows a snapshot
 const listeners = {}
 
 export function on(topic, fn) {
@@ -259,6 +261,7 @@ function resetDerived(keepAgents = false) {
 
 export function applySnapshot(snap) {
 	if (!snap) return
+	syncUntil = Date.now() + 2500
 	const prevMapa = state.mapa.id
 	const newCase = snap.caseId !== state.caseId || (!snap.caseId && (snap.mapa?.id || null) !== prevMapa)
 	if (newCase) {
@@ -266,7 +269,7 @@ export function applySnapshot(snap) {
 		state.ui.fresh = false
 	}
 	if (snap.mapa) {
-		state.mapa = { id: snap.mapa.id, status: snap.mapa.status, startedAt: snap.mapa.startedAt || null, finishedAt: snap.mapa.finishedAt || null, rows: new Map((snap.mapa.rows || []).map((r) => [r.slug, r])) }
+		state.mapa = { id: snap.mapa.id, status: snap.mapa.status, startedAt: snap.mapa.startedAt || null, finishedAt: snap.mapa.finishedAt || null, veze: new Map(), rows: new Map((snap.mapa.rows || []).map((r) => [r.slug, r])) }
 	}
 	state.runKind = snap.caseId ? "case" : snap.mapa?.id ? "mapa" : "case"
 	if (newCase && snap.caseId) state.ui.view = "dosije"
@@ -353,6 +356,8 @@ export function clearFilters() {
 export function applyEvent(ev) {
 	if (!ev || typeof ev.seq !== "number" || seen.has(ev.seq)) return
 	seen.add(ev.seq)
+	// right after a snapshot the server replays history: those events must never raise toasts
+	state.replay = Date.now() < syncUntil
 	syncClock(ev.t)
 	state.eventCount++
 	state.lastEvent = ev
@@ -468,6 +473,15 @@ export function applyEvent(ev) {
 			emit("lane", lane.id)
 			break
 		}
+		case "agent.reakcija": {
+			const lane = state.lanes.get(p.agentId) || laneFor(ev, false)
+			if (lane && p.reaction) {
+				lane.reactT = t
+				lane.reactFrom = p.reaction.fromAgent || ""
+			}
+			emit("lane", lane?.id)
+			break
+		}
 		case "izvor.upit": {
 			if (!p.id) break
 			const prev = state.acts.get(p.id)
@@ -491,7 +505,7 @@ export function applyEvent(ev) {
 				state.conflicts.clear()
 				state.tasks.clear()
 				state.report = null
-				state.mapa = { id: p.mapaId, status: "running", startedAt: new Date(t).toISOString(), finishedAt: null, rows: new Map((p.institutions || []).map((i) => [i.slug, { slug: i.slug, name: i.name, status: "queued", score: 0, signals: {}, reasons: [], sources: [] }])) }
+				state.mapa = { id: p.mapaId, status: "running", startedAt: new Date(t).toISOString(), finishedAt: null, veze: new Map(), rows: new Map((p.institutions || []).map((i) => [i.slug, { slug: i.slug, name: i.name, status: "queued", score: 0, signals: {}, reasons: [], sources: [] }])) }
 				seen.add(ev.seq)
 				state.eventCount = 1
 				state.lastEvent = ev
@@ -520,6 +534,11 @@ export function applyEvent(ev) {
 				lane.findings++
 			}
 			emit("mapa", { slug: row.slug })
+			break
+		}
+		case "mapa.veza": {
+			if (p.veza?.key) state.mapa.veze.set(p.veza.key, p.veza)
+			emit("mapa", { veza: true })
 			break
 		}
 		case "mapa.zavrsena": {
@@ -617,7 +636,7 @@ export function applyEvent(ev) {
 			state.tasks.set(p.task.id, p.task)
 			const lane = state.lanes.get(p.task.fromAgentId)
 			if (lane) refreshWait(lane, t)
-			emit("tasks", { task: p.task, isNew: now() - t < 20000 }) // replayed history after a page load must not toast
+			emit("tasks", { task: p.task, isNew: !state.replay }) // replayed history after a page load must not toast
 			emit("lane", lane?.id)
 			break
 		}

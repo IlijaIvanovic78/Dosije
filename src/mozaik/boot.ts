@@ -8,7 +8,7 @@ import * as data from "../data"
 import { LEGAL_LABELS, listStaticInstitutions, type ResolvedInstitution } from "../data/resolver"
 import { n } from "../shared/plural"
 import type { AgentInfo, DosijeReport, DosijeSnapshot, InstitutionView, MapaView, RuntimeConfigView } from "../shared/types"
-import { installActivityBridge } from "./activity"
+import { finalizeActivities, forgetActivities, installActivityBridge } from "./activity"
 import { CORE_AGENTS, OBSERVERS, createCoreAgent } from "./agents"
 import { bus } from "./bus"
 import * as domain from "./domain"
@@ -135,6 +135,9 @@ function institutionView(ref: ResolvedInstitution): InstitutionView {
 function teardownCase(): void {
 	const state = S()
 	stopCompletionWatch()
+	// a case or map that is replaced (or was never finished) leaves no request "u_toku" behind
+	finalizeActivities(null, state.mapa.id && state.caseId === null ? "prekinuto: mapa zamenjena novom" : "prekinuto: dosije zamenjen novim")
+	forgetActivities()
 	for (const loopId of state.activeLoops.keys()) state.staleLoops.add(loopId)
 	state.activeLoops.clear()
 	for (const settle of [...state.pendingApprovals.values()]) settle("reject")

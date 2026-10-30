@@ -30,12 +30,23 @@ export function findingScore(f: Finding): number {
 	return sev + (f.signalCode ? (CODE_WEIGHT[f.signalCode] ?? 2) : 0) + (f.status === "zvanicno" ? 3 : f.status === "potvrdjeno" ? 1 : 0)
 }
 
+/** A DRI finding older than this is history, not a current signal: it ranks below recent signals (see rankTier). */
+export const DRI_STALE_YEARS = 5
+
+/** The finding is a DRI finding/opinion whose DRI report was published more than DRI_STALE_YEARS before `now`. */
+export function isStaleDri(f: Finding, now = Date.now()): boolean {
+	if (f.signalCode !== "DRI_NALAZ" && f.signalCode !== "DRI_MISLJENJE") return false
+	const published = f.sources.filter((s) => s.kind === "dri" && s.publishedAt).map((s) => Date.parse(s.publishedAt as string)).filter((t) => Number.isFinite(t))
+	return published.length > 0 && Math.max(...published) < now - DRI_STALE_YEARS * 365.25 * 86400e3
+}
+
 /**
  * How much a finding can be relied on, the first key of every ranking: 0 official (zvanično; approved when it needed approval),
- * 1 confirmed by two independent sources, 2 unconfirmed, 3 "not found" findings (a missing appointment act is a gap, not a signal).
+ * 1 confirmed by two independent sources, 2 unconfirmed, 3 "not found" findings (a missing appointment act is a gap, not a signal)
+ * and DRI findings older than 5 years (they rank below recent signals and only fill the list when nothing else qualifies).
  */
 export function rankTier(f: Finding): number {
-	if (f.signalCode === "IMENOVANJE_NEPOZNATO") return 3
+	if (f.signalCode === "IMENOVANJE_NEPOZNATO" || isStaleDri(f)) return 3
 	return f.status === "zvanicno" ? 0 : f.status === "potvrdjeno" ? 1 : 2
 }
 
@@ -46,7 +57,7 @@ const byRank = (a: Finding, b: Finding) =>
 export function rankable(state: DosijeState): Finding[] {
 	return state
 		.findingList()
-		.filter((f) => f.status !== "demantovano" && f.approval !== "pending" && f.approval !== "rejected")
+		.filter((f) => f.status !== "demantovano" && f.approval !== "pending" && f.approval !== "rejected" && !f.title.startsWith("Izvor nije odgovorio"))
 		.sort(byRank)
 }
 
@@ -101,6 +112,10 @@ export function defaultToVerify(state: DosijeState): string[] {
 	}
 	for (const f of state.findingList()) {
 		if (f.severity === "signal" && f.status === "nepotvrdjeno" && f.approval !== "pending" && f.signalCode !== "POLITICKA_VEZA") out.push(`Potvrditi iz drugog izvora: ${quoted(f)}.`)
+	}
+	for (const f of state.findingList()) {
+		// a source that did not answer: say what to repeat (see sourceGap in inference/policies.ts)
+		if (f.title.startsWith("Izvor nije odgovorio")) out.push(`Ponoviti pretragu ili ručno proveriti: ${f.title.replace(/^Izvor nije odgovorio:\s*/, "")} nije odgovorio (${f.sources[0]?.url ?? "stranica izvora"}).`)
 	}
 	const codes = new Set(state.findingList().map((f) => f.signalCode))
 	if (codes.has("VD_PREKO_ROKA") || codes.has("VD_LANAC")) {

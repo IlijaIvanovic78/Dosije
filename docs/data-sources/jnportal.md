@@ -130,3 +130,24 @@ instead of a pretty-printed 1 MB array): `{authority, totalTenders, contracts[],
   Journalists should check the contract page before quoting a value.
 - Winners are as published on the portal; groups of bidders are listed by name without roles.
 - Name matching on names is a convenience; PIB is the reliable key.
+
+## Crawl cap for big authorities (live path)
+
+A judge can type an authority that was never cached. EPS has 10,037 contract lots and 167 pages of procedures: crawling all of it takes
+minutes. `fetchStore` therefore reads **the most recent contracts only**:
+
+- `VContracts` is sorted by `ContractDate` (newest first), then `LotId`, and read until `MAX_CONTRACTS` (1,500) rows or 36 s
+  (`CRAWL_BUDGET_MS` 60 s x 0.6) are reached. The store records `coverage = {total, analyzed, truncated, from, proceduresPartial}` (the portal's
+  `totalCount`, the rows read, the oldest signing date). Older cache files have no `coverage` and mean "everything was read".
+- Procedures (`TendersAll`) are read from the oldest tender among those contracts (`Id >= min TenderId`), with their own budget. The
+  negotiated procedures without a public call are asked for directly (`ProcedureTypeId = 6`, a few rows), so that list is complete for the
+  analysed period even when the crawl of procedures stopped early (`proceduresPartial`).
+- Every figure then describes the analysed period. The finding text says so ("Analiza obuhvata samo poslednjih 1.500 od ukupno 10.037
+  ugovora ... potpisanih od ..."), the finding title does ("poslednjih 1.500 od 10.037 ugovora"), and the BEZ_OBJAVE / KONCENTRACIJA texts repeat the
+  period. Aggregates (total value, HHI, top supplier, share of negotiated procedures) are computed on the same rows, never extrapolated.
+- A renamed authority's older contracts (old `OfficialName`) are read only while the cap and the budget leave room: they are older than
+  what the current name holds.
+- `authorityActivity(a)` (one request) tells a live registration from an old one: contracts count and the date of the latest contract.
+  The resolver uses it when several portal entries have the same name.
+- `authority-index.json` is a read-modify-write file: writes are serialized and `writeCache` is write-then-rename (parallel lookups once
+  overwrote the index with a partial copy).

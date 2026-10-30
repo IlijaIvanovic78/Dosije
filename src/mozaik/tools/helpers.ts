@@ -7,6 +7,8 @@ import { S, type ToolCtx } from "../domain"
 import { clip, errorMessage, hashString, seeded, sleep } from "../util"
 
 export const MAX_OUTPUT = 4000
+/** Upper bound of one source tool call; the portal crawl has its own 75 s budget inside, so this only catches a hung request. */
+export const TOOL_TIMEOUT_MS = 150_000
 
 type Json = unknown
 
@@ -122,6 +124,8 @@ export interface ToolSpec {
 	required?: string[]
 	/** pure bookkeeping tools (no external source) skip the simulated source latency */
 	local?: boolean
+	/** hard limit of one call in ms (default TOOL_TIMEOUT_MS) */
+	timeoutMs?: number
 	/** output limit in characters (default MAX_OUTPUT) */
 	max?: number
 	handler: (args: Record<string, unknown>) => Promise<unknown> | unknown
@@ -141,7 +145,7 @@ export function buildTool(ctx: ToolCtx, spec: ToolSpec): Tool {
 				if (!isAlive()) return fit({ ok: false, error: ctx.group === "trijaza" ? "Mapa je zatvorena ili zamenjena novom." : "Slučaj je zatvoren ili zamenjen novim." })
 				const latency = spec.local ? undefined : planLatency(ctx.agentId)
 				// every public-source request the handler makes is attributed to this agent and tool (live search, "izvor.upit")
-				const out = await withActivityContext(
+				const work = withActivityContext(
 					{ agentId: ctx.agentId, agentName: ctx.agentName, tool: spec.name, caseId: ctx.caseId, alive: isAlive, simulate: latency?.take },
 					async () => {
 						const result = await spec.handler(args && typeof args === "object" ? (args as Record<string, unknown>) : {})
@@ -149,6 +153,17 @@ export function buildTool(ctx: ToolCtx, spec: ToolSpec): Tool {
 						return result
 					},
 				)
+				// no tool call may hang the dossier: a source that does not answer in time is reported as such and the loop goes on
+				const limit = spec.local ? 0 : (spec.timeoutMs ?? TOOL_TIMEOUT_MS)
+				let timer: NodeJS.Timeout | undefined
+				const out = limit
+					? await Promise.race([
+							work,
+							new Promise<never>((_, reject) => {
+								timer = setTimeout(() => reject(new Error(`izvor nije odgovorio u roku od ${Math.round(limit / 1000)} s`)), limit)
+							}),
+						]).finally(() => clearTimeout(timer))
+					: await work
 				return fit(out, spec.max)
 			} catch (err) {
 				return fit({ ok: false, error: friendlyError(err) })

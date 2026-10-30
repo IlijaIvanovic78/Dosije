@@ -11,7 +11,7 @@ import * as jn from "../sources/jnportal"
 import * as news from "../sources/news"
 import { monthsBetween } from "../rules/vdRules"
 import type { CompanyProfile, Contract, IntegrityWatchLink } from "../types"
-import { nameSimilarity, normalizeName } from "../translit"
+import { asciiFold, nameSimilarity, normalizeName } from "../translit"
 import { formatRsd, type InstLike } from "./procurement"
 import { daysLabel, formatDate, monthsLabel } from "./vd"
 
@@ -57,6 +57,36 @@ export interface FirmMatch {
 	candidates?: { mb: string; name: string; municipality?: string; score: number }[]
 }
 
+const FORM_WORDS = new Set(["doo", "ad", "ado", "d", "o", "a", "drustvo", "sa", "ogranicenom", "odgovornoscu", "akcionarsko", "dd", "ltd"])
+
+function seatTokens(name: string): string[] {
+	return asciiFold(name)
+		.replace(/[^a-z0-9]+/g, " ")
+		.split(" ")
+		.filter((t) => t && !FORM_WORDS.has(t))
+}
+
+/**
+ * Registered names often put the activity in front of the brand ("DRUŠTVO ZA SPOLJNU I UNUTRAŠNJU TRGOVINU MEDICOM DOO ŠABAC"), so the
+ * supplier's trade name is not a token-set match. A company is accepted when the supplier's whole name (brand, legal form and the
+ * seat written in it) is the END of the registered name, or its brand starts the name and its seat ends it, and it is the ONLY such
+ * active company of a compatible legal form. Anything less clear stays "not found".
+ */
+function pickBySeat(name: string, hint: string | null, cands: { profile: CompanyProfile }[]): { profile: CompanyProfile } | null {
+	const q = seatTokens(name)
+	if (q.length < 2) return null
+	const brand = q.slice(0, -1)
+	const seat = q[q.length - 1]
+	const ok = cands.filter(({ profile }) => {
+		if (profile.status && profile.status !== "Aktivan") return false
+		if (hint && profile.legalForm && profile.legalForm !== hint) return false
+		const c = seatTokens(profile.name)
+		const suffix = c.length >= q.length && q.every((t, i) => c[c.length - q.length + i] === t)
+		const brandPrefixSeatSuffix = brand.length >= 2 && brand.every((t, i) => c[i] === t) && c[c.length - 1] === seat
+		return suffix || brandPrefixSeatSuffix
+	})
+	return ok.length === 1 ? ok[0] : null
+}
 /** MB given -> curated PIB->MB table -> clear name match with a compatible legal form. Never guesses between several companies. */
 export function findFirmProfile(q: { pib?: string; mb?: string; name?: string }): Promise<FirmMatch> {
 	const who = q.name?.trim() || (q.mb ? `MB ${q.mb}` : q.pib ? `PIB ${q.pib}` : "firma")
@@ -85,7 +115,10 @@ async function matchFirmProfile(q: { pib?: string; mb?: string; name?: string })
 		if (p && (!hint || !p.legalForm || p.legalForm === hint)) {
 			return { profile: p, basis: "jasno poklapanje naziva u APR (PIB nije u otvorenim podacima APR); proveriti MB" }
 		}
-		const cands = await apr.searchCompanies(q.name, 3)
+		const wide = await apr.searchCompanies(q.name, 12)
+		const seat = pickBySeat(q.name, hint, wide)
+		if (seat) return { profile: seat.profile, basis: "naziv, pravni oblik i sedište poklapaju se samo sa jednom firmom u APR (PIB nije u otvorenim podacima APR); proveriti MB" }
+		const cands = wide.slice(0, 3)
 		return {
 			profile: null,
 			basis: "nije pouzdano pronađen u APR",

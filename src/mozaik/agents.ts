@@ -50,9 +50,13 @@ REAKCIJA NA TUĐI NALAZ: ako prva poruka počinje sa "Povod: nalaz Nabavke: ..."
 3) Ako članak navodi funkciju neke osobe (npr. "generalni direktor X"), dodaj claim {subject: X, predicate: "funkcija", value: funkcija tačno kako je navedena u članku}. Urednik će je uporediti sa zvaničnim registrom.
 4) Na kraju JEDAN nalaz "Pregled medija": add_finding (section "mediji", severity "info", bez signalCode) sa title i text prepisanim iz pregled.naslov i pregled.tekst (ne dodaj ništa od sebe) i sa svim objektima iz pregled.izvori kao sources (izdanje, datum i URL svakog članka).
 REAKCIJA NA TUĐI NALAZ: ako prva poruka počinje sa "Povod: nalaz Kadrovik: ..." (nalaz VD_PREKO_ROKA ili VD_LANAC o osobi), NE radi gornje korake, samo ovo:
-1) vesti_imenovanje({ime}) sa imenom osobe iz poruke (ciljana provera medija o imenovanju i nazivu funkcije).
-2) Ako alat vrati bar jedan članak: JEDAN add_finding (section "mediji", severity "paznja" i signalCode "MEDIJSKI_NAVOD" ako neko izdanje navodi "direktor" bez oznake v.d., inače "info") koji kaže koliko izdanja navodi v.d. a koliko direktor, sa člancima iz polja clanci kao sources. Ako je navodFunkcije popunjen a navodVecUDosijeu nije true, dodaj claim {subject: ime, predicate: "funkcija", value: navodFunkcije}, da Urednik uporedi navod sa registrom. Ne tvrdi ko je u pravu.
-3) Ako nema članaka, odgovori jednom rečenicom i ništa ne dodaj.`,
+1) vesti_imenovanje({ime}) sa imenom osobe iz poruke (ciljana provera medija o imenovanju i nazivu funkcije). Alat broji samo članke čiji naslov ili uvod pominje osobu uz reč o imenovanju ili funkciji.
+2) Ako alat vrati bar jedan članak: JEDAN add_finding (section "mediji", severity "info", bez signalCode i bez claim) koji neutralno kaže koliko izdanja navodi v.d. a koliko direktor, sa člancima iz polja clanci kao sources. Ako je clanakSaFunkcijom popunjen a navodVecUDosijeu nije true, dodaj još JEDAN add_finding samo za taj članak (izvor je samo taj članak; severity "paznja", signalCode "MEDIJSKI_NAVOD") sa claim {subject: ime, predicate: "funkcija", value: navodFunkcije}, da Urednik uporedi navod sa registrom. Ne tvrdi ko je u pravu.
+3) Ako nema članaka, odgovori jednom rečenicom i ništa ne dodaj.
+REAKCIJA NA NALAZ REVIZORA: ako prva poruka počinje sa "Povod: nalaz Revizor: ..." (nalaz DRI o javnim nabavkama ili vršiocima dužnosti, poruka navodi "Tema revizije"), NE radi gornje korake, samo ovo:
+1) dosije_pregled (šta su drugi već našli o toj temi).
+2) vesti_tema_revizije({tema}) sa temom iz poruke: pretraga medija o istoj temi za instituciju.
+3) Ako alat vrati bar jedan članak: JEDAN add_finding (section "mediji", severity "info", bez signalCode) koji neutralno kaže koliko članaka pominje temu, da su članci zaseban izvor (ne potvrđuju niti pobijaju nalaz DRI) i sa člancima iz polja clanci kao sources. Bez članaka nema nalaza: odgovori jednom rečenicom.`,
 	medijiOsoba: `Zadatak: šta mediji pišu o osobi (poslednje 2 godine).
 1) vesti_pretraga (tip "osoba", days 730) sa punim imenom osobe; ako je osoba vlasnik firme, u kontekst stavi naziv firme. Alat vraća samo članke koji pominju osobu ZAJEDNO sa institucijom ili firmom (imenjaci su česti).
 2) Ako članak navodi funkciju osobe (npr. "generalni direktor X"), add_finding (section "mediji") sa izvorom i datumom i claim {subject: ime, predicate: "funkcija", value: funkcija tačno kako je navedena u članku}; Urednik će je uporediti sa zvaničnim registrom. Za zahteve ili navode drugih u kojima se osoba pominje: severity "paznja", signalCode "MEDIJSKI_NAVOD".
@@ -62,7 +66,7 @@ REAKCIJA NA TUĐI NALAZ: ako prva poruka počinje sa "Povod: nalaz Kadrovik: ...
 2) add_finding (section "firme", "info"): profil (osnovana, delatnost, opština, zaposleni, prihod) i ugovori sa institucijom.
 3) Za svaki signal iz alata: add_finding (severity "paznja" ili "signal", odgovarajući signalCode).
 4) Vlasnici nisu dostupni iz otvorenih podataka (APR pretraga je iza reCAPTCHA). Ako firma ima bar jedan signal ili je među 3 najveća dobavljača (rang 1-3): ask_human sa pitanjem "Ko su vlasnici firme <naziv> (MB <mb>)? Nema automatskog izvora." i linkom na APR pretragu.
-Kad stigne odgovor novinarke ("Novinarka je odgovorila na pitanje ..."): add_entity (kind "osoba", role "vlasnik", attrs {firma}) i add_finding (section "firme", "info", izvor kind "novinar" + link APR pretrage).`,
+Kad stigne odgovor novinarke ("Novinarka je odgovorila na pitanje ..."): iz slobodnog teksta izdvoji samo IMENA OSOBA (npr. "Marko Marković, 100%" je jedna osoba; "Petar Petrović 60%, Jovan Jovanović 40%" su dve; "Ana Anić i Mila Milić" su dve). Procenat, udeo i reči poput "vlasnik" nisu deo imena: udeo stavi u attrs.udeo. Za svaku osobu JEDAN add_entity (kind "osoba", role "vlasnik", attrs {firma, udeo?}), pa JEDAN add_finding (section "firme", "info", izvor kind "novinar" + link APR pretrage). Ako u odgovoru nema imena osobe (npr. samo "100%" ili "ne znam"), ne dodaj ništa.`,
 	imovina: `Zadatak: imovina i prihodi funkcionera prema izveštajima ACAS.
 1) acas_imovina.
 2) add_finding (section "rukovodstvo", "info"): datum poslednjeg izveštaja i kratak pregled (bez adresa). Ako nema izveštaja posle stupanja na funkciju: add_finding ("paznja", signalCode "IMOVINA"): "Nije pronađen izveštaj o imovini nakon stupanja na funkciju, proveriti."`,
@@ -231,11 +235,16 @@ export interface ReactionTrigger {
 	title: string
 	person?: string
 	position?: string
+	/** Mediji <- Revizor: the audit topic of the DRI finding ("javne nabavke", "vršioci dužnosti") */
+	tema?: string
 }
 
 /** First message of a reaction loop: "Povod: nalaz <agent>: <title>" (the id and code in brackets let a tool find the finding). */
 export function reactionMessage(group: "mediji" | "revizor", t: ReactionTrigger, ref: ResolvedInstitution): string {
 	const povod = `Povod: nalaz ${t.agent}: ${t.title.replace(/[.\s]+$/u, "")} [${t.findingId} · ${t.signalCode}].`
+	if (group === "mediji" && t.tema) {
+		return `${povod} Tema revizije: ${t.tema}. Institucija: ${ref.name}. Zadatak: pročitaj dosije_pregled, pa u medijima potraži izveštavanje o toj temi revizije za instituciju.`
+	}
 	if (group === "mediji") {
 		return `${povod} Osoba: ${t.person} (funkcija prema ACAS: „${t.position ?? "nepoznata"}“). Institucija: ${ref.name}. Zadatak: ciljana provera medija o imenovanju i nazivu funkcije (v.d. ili direktor).`
 	}

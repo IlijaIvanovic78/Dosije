@@ -12,7 +12,10 @@ import { config } from "../../config"
 import type { NewsSearchOptions } from "../../data/sources/news"
 import { asciiFold, cyrToLat } from "../../data/translit"
 import { n } from "../../shared/plural"
+import { findUnordered, nameTokens, wordsOf } from "../../data/newsMatch"
+import { isHeadPosition } from "../../data/analysis/vd"
 import { S, type ToolCtx } from "../domain"
+import { driFindingExcerpts, opinionQuote } from "../driText"
 import { clip, normClaim } from "../util"
 import { buildTool, srcOut, str, uniqueSources } from "./helpers"
 
@@ -28,7 +31,7 @@ const looksLikePerson = (q: string) => /^\p{Lu}\p{L}+(?:\s+\p{Lu}\p{L}+(?:-\p{Lu
 /** Which media search an agent's request stands for: the case institution (with aliases), a person tied to it, or a free topic. */
 function newsPlanFor(query: string, args: Record<string, unknown>): { query: string; opts: NewsSearchOptions } {
 	const ref = S().institutionRef
-	const inst = ref ? { slug: ref.slug, name: ref.name, shortName: ref.shortName } : undefined
+	const inst = ref ? { slug: ref.slug, name: ref.name, shortName: ref.shortName, aliases: ref.aliases } : undefined
 	const tip = str(args.tip)
 	const days = typeof args.days === "number" && args.days > 0 ? Math.round(args.days) : undefined
 	const names = inst ? data.institutionNames(inst) : undefined
@@ -58,16 +61,41 @@ export function functionLabel(text: string, title: string): { relevant: boolean;
 	return { relevant, naziv: "drugo" }
 }
 
+/** The headline or the lead names the person: given name AND surname (inflection and Cyrillic allowed), within a few words. */
+export function namesPerson(text: string, person: string): boolean {
+	return findUnordered(wordsOf(text), nameTokens(person, { person: true }), 4)
+}
+
+const APPOINTMENT_WORDS = /imenovan|postavljen|direktor|vrsilac|vrsioc|(^|[^a-z])v\.?\s?d\.?(?=[^a-z]|$)/
+
+/**
+ * Is this article about the person's appointment or function? Only if the headline or the lead (snippet) names the person AND
+ * contains an appointment/function word (imenovan, postavljen, direktor, v.d., vršilac). `naziv` says how the person is called.
+ */
+export function appointmentLabel(item: { title: string; snippet?: string }, person: string): { relevant: boolean; naziv: "v.d." | "direktor" | "drugo"; fraza?: string } {
+	const lead = item.snippet ?? ""
+	const named = namesPerson(item.title, person) || namesPerson(lead, person)
+	const relevant = named && APPOINTMENT_WORDS.test(asciiFold(`${item.title} ${lead}`))
+	return { ...functionLabel(`${item.title} ${lead}`, item.title), relevant }
+}
+
+/** What an article must be about to count as coverage of a DRI audit topic (patterns run on ASCII-folded headline + lead). */
+export const AUDIT_NEWS_TOPICS = {
+	"javne nabavke": /nabavk|tender|javn\w+ poziv|pregovara|dodel\w+|ugovor\w*|raspisal\w*|izvodjac\w*|posao vredan|poslov\w+ od \d|ponud\w*|konkurs/,
+	"vršioci dužnosti": /(^|[^a-z])v\.?\s?d\.?(?=[^a-z]|$)|vrsilac|vrsioc|imenovan|postavljen|razresen|smenjen|novi (generaln\w+ )?direktor/,
+} as const
+export type AuditTopic = keyof typeof AUDIT_NEWS_TOPICS
+
 const jnInst = () => {
 	const r = instRef()
-	return { name: r.name, jnId: r.jnId, pib: r.pib }
+	return { name: r.name, jnId: r.jnId, pib: r.pib, aliases: r.aliases }
 }
 
 const pct = (share: number) => Math.round(share * 1000) / 10
 
 async function officialsOfInstitution(): Promise<Official[]> {
 	const r = instRef()
-	return data.acas.getOfficials({ acasId: r.acasId, name: r.name, nameCyr: r.nameCyr })
+	return data.acas.getOfficials({ acasId: r.acasId, altIds: r.acasAltIds, name: r.name, nameCyr: r.nameCyr })
 }
 
 // ─── Kadrovik ────────────────────────────────────────────────────────────────
@@ -84,12 +112,18 @@ export function kadrovikTools(ctx: ToolCtx): Tool[] {
 				const generic = officials[0] ? { ...officials[0].source, publishedAt: undefined } : undefined
 				const inOffice = new Set(data.analysis.currentOfficials(officials))
 				const stale = data.analysis.supersededOpen(officials)
+				const headOfficial = data.analysis.pickHead(officials)
+				const pastVd = data.analysis.pastActingOverLimit(officials, r.legalType)
+				// the head first, then the other people in office, then recent former ones: the 14 shown must never cut the head off
+				const rankOf = (o: Official) => (o === headOfficial ? 0 : inOffice.has(o) ? 1 : 2)
+				const shown = [...officials].sort((a, b) => rankOf(a) - rankOf(b)).slice(0, 14)
 				return {
 					institution: r.name,
 					acasId: r.acasId,
 					legalType: r.legalType,
 					count: officials.length,
-					officials: officials.slice(0, 14).map((o) => ({
+					headPersonId: headOfficial?.id,
+					officials: shown.map((o) => ({
 						personId: o.id,
 						name: o.fullName,
 						position: o.position,
@@ -99,6 +133,9 @@ export function kadrovikTools(ctx: ToolCtx): Tool[] {
 						current: inOffice.has(o),
 						appointedBy: o.appointedBy,
 					})),
+					ponovljenVd: headOfficial?.isActing && ['javno_preduzece', 'drustvo_kapitala_drzavno', 'zdravstvena_ustanova'].includes(r.legalType) ? data.analysis.earlierActingTerms(officials, headOfficial) : [],
+					ranijiVd: pastVd.terms.slice(0, 3).map((x) => ({ name: x.name, position: x.position, from: x.from, to: x.to, months: x.months, days: x.days, maxMonths: x.maxMonths, law: x.law, article: x.article })),
+					ranijiVdIzvori: pastVd.terms.length && pastVd.rule ? [srcOut(data.analysis.ruleSource(pastVd.rule))] : [],
 					napomena: stale.size ? `Bez datuma prestanka, ali zamenjeno kasnijim zapisom za istu funkciju (ne računa se kao tekuće): ${n(stale.size, "zapis")}.` : undefined,
 					sources: generic ? [srcOut(generic)] : [],
 				}
@@ -118,7 +155,7 @@ export function kadrovikTools(ctx: ToolCtx): Tool[] {
 				if (!person) return { ok: false, error: "personId nije među funkcionerima institucije." }
 				const check = data.analysis.checkVd(person, { legalType: r.legalType })
 				const head = data.analysis.pickHead(officials)
-				const chain = head && head.id === person.id ? data.analysis.analyzeVdChain(officials) : null
+				const chain = head && head.id === person.id ? data.analysis.analyzeVdChain(officials, undefined, r.legalType) : null
 				const { sources, ...rest } = check
 				return {
 					...rest,
@@ -192,7 +229,7 @@ export function nabavkeTools(ctx: ToolCtx): Tool[] {
 			properties: {},
 			handler: async () => {
 				const inst = jnInst()
-				const links = await data.iw.getLinksForAuthority({ name: inst.name, pib: inst.pib }).catch(() => [])
+				const links = await data.iw.getLinksForAuthority({ name: inst.name, pib: inst.pib, aliases: inst.aliases }).catch(() => [])
 				const a = await data.analysis.analyzeProcurement(inst, links)
 				const picks = pickFirmCandidates(a.candidates, config.budget.maxFirme, 2)
 				const nwp = a.withoutPublication
@@ -200,6 +237,7 @@ export function nabavkeTools(ctx: ToolCtx): Tool[] {
 				const largest = nwp.largest
 				return {
 					institution: a.institution,
+					obuhvat: a.coverage,
 					totalContracts: a.totalContracts,
 					totalValueRsd: Math.round(a.totalValueRsd),
 					period: a.period,
@@ -265,7 +303,7 @@ export function nabavkeTools(ctx: ToolCtx): Tool[] {
 			properties: {},
 			handler: async () => {
 				const inst = jnInst()
-				const links = await data.iw.getLinksForAuthority({ name: inst.name, pib: inst.pib })
+				const links = await data.iw.getLinksForAuthority({ name: inst.name, pib: inst.pib, aliases: inst.aliases })
 				const byPib = new Map<string, { supplierName: string; pib?: string; mb?: string; kinds: string[]; contracts: number; valueRsd?: number; detail: string; own: typeof links[number]["source"][] }>()
 				for (const l of links) {
 					const k = l.supplierPib ?? l.supplierName
@@ -319,7 +357,7 @@ export function revizorTools(ctx: ToolCtx): Tool[] {
 			properties: {},
 			handler: async () => {
 				const r = instRef()
-				const reports = await data.dri.getReports({ name: r.name, nameCyr: r.nameCyr })
+				const reports = await data.dri.getReports({ name: r.name, nameCyr: r.nameCyr, aliases: r.aliases })
 				S().registerSources(reports.map((x) => x.source))
 				return {
 					total: reports.length,
@@ -341,13 +379,14 @@ export function revizorTools(ctx: ToolCtx): Tool[] {
 				const trigger = state.findings.get(state.mergedAway.get(id) ?? id)
 				const topic = trigger?.signalCode ? DRI_TOPICS_FOR[trigger.signalCode] : undefined
 				if (!trigger || !topic) return { ok: false, error: "Nalaz povoda nije pronađen ili nije BEZ_OBJAVE/KONCENTRACIJA." }
-				const reports = await data.dri.getReports({ name: r.name, nameCyr: r.nameCyr })
+				const reports = await data.dri.getReports({ name: r.name, nameCyr: r.nameCyr, aliases: r.aliases })
 				const processed = await data.dri.getCachedExcerpts(reports)
 				// one excerpt backs up one finding: an excerpt another reaction of this case already took is not offered again
 				const claimKey = (rep: { id: string }, excerpt: string) => `dri:${rep.id}:${excerpt.slice(0, 80)}`
 				const best = processed
 					.flatMap((rep) =>
-						rep.excerpts.map((excerpt) => {
+						// only whole-sentence quotes that describe an irregularity or a recommendation (src/mozaik/driText.ts)
+						driFindingExcerpts(rep.excerpts).map((excerpt) => {
 							const t = asciiFold(excerpt)
 							const core = topic.core.test(t)
 							// the topic of the other trigger is a worse match for this one when something else exists
@@ -367,7 +406,7 @@ export function revizorTools(ctx: ToolCtx): Tool[] {
 					povod: { id: trigger.id, signalCode: trigger.signalCode, title: trigger.title, agent: trigger.agentName },
 					tema: topic.label,
 					pregledanoIzvestaja: processed.length,
-					nalazi: hits.map((h) => ({ reportId: h.rep.id, kind: h.rep.kind, period: h.rep.period, publishedAt: h.rep.publishedAt, excerpt: clip(h.excerpt, 360), izvori: sourcesOf(h.rep) })),
+					nalazi: hits.map((h) => ({ reportId: h.rep.id, kind: h.rep.kind, period: h.rep.period, publishedAt: h.rep.publishedAt, excerpt: h.excerpt, izvori: sourcesOf(h.rep) })),
 					izvoriPovoda: uniqueSources(trigger.sources.filter((s) => s.kind === "jnportal").slice(0, 1)).map(srcOut),
 					napomena: "Povezanost je tematska: izvod iz izveštaja ne govori nužno o istim postupcima kao nalaz Nabavke.",
 				}
@@ -380,7 +419,7 @@ export function revizorTools(ctx: ToolCtx): Tool[] {
 			required: ["reportId"],
 			handler: async (args) => {
 				const r = instRef()
-				const reports = await data.dri.getReports({ name: r.name, nameCyr: r.nameCyr })
+				const reports = await data.dri.getReports({ name: r.name, nameCyr: r.nameCyr, aliases: r.aliases })
 				const report = reports.find((x) => x.id === str(args.reportId))
 				if (!report) return { ok: false, error: "Izveštaj sa tim id nije pronađen." }
 				const full = await data.dri.getReportFindings(report)
@@ -392,7 +431,10 @@ export function revizorTools(ctx: ToolCtx): Tool[] {
 					publishedAt: full.publishedAt,
 					kind: full.kind,
 					opinion: full.opinion,
-					excerpts: full.excerpts.slice(0, 5).map((e) => clip(e, 360)),
+					// whole-sentence quotes that describe an irregularity or a recommendation; neutral or positive statements and PDF
+					// artifacts are left out (src/mozaik/driText.ts)
+					excerpts: driFindingExcerpts(full.excerpts).slice(0, 5),
+					misljenjeIzvod: opinionQuote(full.excerpts),
 					sources: [srcOut({ ...full.source, publishedAt: full.source.publishedAt ?? full.publishedAt }), srcOut({ ...pdf, publishedAt: full.publishedAt })],
 				}
 			},
@@ -429,7 +471,9 @@ export function medijiTools(ctx: ToolCtx): Tool[] {
 				const recent = items.filter((i) => i.publishedAt && Date.now() - Date.parse(i.publishedAt) <= 90 * dayMs).sort((a, b) => (b.publishedAt ?? "").localeCompare(a.publishedAt ?? "")).slice(0, 6)
 				// articles that state a function ("generalni direktor ...") are always shown: they feed the comparison with the official register
 				const withRole = items.filter((i) => /generaln\w*\s+direktor/.test(asciiFold(i.title))).slice(0, 3)
-				const shown = [...new Map([...items.filter((i) => !i.unresolved).slice(0, 5), ...recent.slice(0, 5), ...withRole].map((i) => [i.url, i])).values()].slice(0, 10)
+				const direct = items.filter((i) => !i.unresolved)
+				const pool = direct.length >= 3 ? direct : items
+				const shown = [...new Map([...pool.slice(0, 5), ...recent.slice(0, 5), ...withRole].map((i) => [i.url, i])).values()].slice(0, 10)
 				const topics = ov.topics.length ? `; najčešće teme: ${ov.topics.join(", ")}` : ""
 				return {
 					query: plan.query,
@@ -462,7 +506,7 @@ export function medijiTools(ctx: ToolCtx): Tool[] {
 			name: "vesti_imenovanje",
 			max: 6000,
 			description:
-				"Reakcija na nalaz Kadrovika (VD_PREKO_ROKA ili VD_LANAC): ciljana provera medija o imenovanju osobe. Vraća članke koji pominju osobu zajedno sa institucijom i govore o imenovanju ili funkciji, i kako ih izdanja nazivaju: 'v.d.' (vršilac dužnosti) ili 'direktor' bez oznake v.d.",
+				"Reakcija na nalaz Kadrovika (VD_PREKO_ROKA ili VD_LANAC): ciljana provera medija o imenovanju osobe. Vraća samo članke čiji naslov ili uvod pominje osobu uz reč o imenovanju ili funkciji (imenovan, postavljen, direktor, v.d., vršilac), i kako ih izdanja nazivaju: 'v.d.' (vršilac dužnosti) ili 'direktor' bez oznake v.d.; poseban članak koji navodi funkciju (clanakSaFunkcijom) služi za poređenje sa registrom.",
 			properties: { ime: { type: "string", description: "puno ime osobe iz poruke 'Povod'" } },
 			required: ["ime"],
 			handler: async (args) => {
@@ -472,31 +516,88 @@ export function medijiTools(ctx: ToolCtx): Tool[] {
 				const plan = newsPlanFor(ime, { tip: "osoba", days: 730 })
 				const items = await data.news.searchNews(plan.query, plan.opts)
 				S().registerSources(items.map((i) => i.source))
+				// only articles whose headline or lead names the person AND an appointment/function word: an article about something else
+				// (a ticket, a modernisation) that merely mentions the institution is not coverage of the appointment
 				const about = items
 					.filter((i) => !i.unresolved)
-					.map((i) => ({ i, f: functionLabel(`${i.title} ${i.snippet ?? ""}`, i.title) }))
+					.map((i) => ({ i, f: appointmentLabel(i, ime) }))
 					.filter((x) => x.f.relevant)
 				const count = (naziv: string) => about.filter((x) => x.f.naziv === naziv).length
-				const claim = about.find((x) => x.f.naziv === "direktor")?.f.fraza
+				const out = ({ i, f }: (typeof about)[number]) => ({
+					outlet: cyrToLat(i.outlet),
+					publishedAt: i.publishedAt?.slice(0, 10),
+					title: clip(cyrToLat(i.title), 120),
+					url: i.url,
+					naziv: f.naziv,
+				})
+				// the conflict mark against the register comes from ONE article that states the function, never from the aggregate
+				const stating = about.find((x) => x.f.naziv === "direktor" && x.f.fraza === "generalni direktor") ?? about.find((x) => x.f.naziv === "direktor")
+				const claim = stating?.f.fraza
 				const existing = claim
 					? S()
 							.findingList()
 							.some((f) => f.claim?.predicate === "funkcija" && normClaim(f.claim.subject) === normClaim(ime) && normClaim(f.claim.value) === normClaim(claim))
 					: false
+				const shown = [...new Map([...about.slice(0, 5), ...(stating ? [stating] : [])].map((x) => [x.i.url, x])).values()].slice(0, 6)
 				return {
 					ime,
 					ukupno: items.length,
-					clanci: about.slice(0, 6).map(({ i, f }) => ({
-						outlet: cyrToLat(i.outlet),
-						publishedAt: i.publishedAt?.slice(0, 10),
-						title: clip(cyrToLat(i.title), 120),
-						url: i.url,
-						naziv: f.naziv,
-					})),
+					brojClanaka: about.length,
+					clanci: shown.map(out),
 					nazivi: { vd: count("v.d."), direktor: count("direktor"), drugo: count("drugo") },
+					clanakSaFunkcijom: stating ? { ...out(stating), fraza: claim } : undefined,
 					navodFunkcije: claim,
 					navodVecUDosijeu: existing,
-					napomena: "naziv je prema naslovu ili opisu članka: 'v.d.' ili 'direktor' (bez oznake v.d.). Prazan rezultat znači samo da pretraga nije našla članke.",
+					napomena:
+						"Brojani su samo članci čiji naslov ili uvod pominje osobu uz reč o imenovanju ili funkciji. naziv je prema naslovu ili uvodu: 'v.d.' ili 'direktor' (bez oznake v.d.). Prazan rezultat znači samo da pretraga nije našla takve članke.",
+				}
+			},
+		}),
+		buildTool(ctx, {
+			name: "vesti_tema_revizije",
+			max: 6000,
+			description:
+				"Reakcija na nalaz Revizora (DRI o javnim nabavkama ili vršiocima dužnosti): pretraga medija o istoj temi za instituciju slučaja. Vraća samo članke čiji naslov ili uvod pominje temu (i instituciju, ili čelnika uz instituciju), plus koliko nalaza o toj temi je već u dosijeu.",
+			properties: { tema: { type: "string", enum: Object.keys(AUDIT_NEWS_TOPICS), description: "tema revizije iz poruke 'Povod'" } },
+			required: ["tema"],
+			handler: async (args) => {
+				const tema = str(args.tema) as AuditTopic | undefined
+				const topic = tema ? AUDIT_NEWS_TOPICS[tema] : undefined
+				if (!tema || !topic) return { ok: false, error: `tema mora biti jedna od: ${Object.keys(AUDIT_NEWS_TOPICS).join(", ")}` }
+				const state = S()
+				const r = instRef()
+				// the same cached institution search as the core Mediji loop; for acting heads also the search for the head the dossier already holds
+				const plan = newsPlanFor(r.name, { tip: "institucija", days: 365 })
+				const pools = [await data.news.searchNews(plan.query, plan.opts)]
+				const head = tema === "vršioci dužnosti" ? [...state.entities.values()].find((e) => e.kind === "osoba" && e.role === "funkcioner" && isHeadPosition(String(e.attrs.position ?? "")))?.name : undefined
+				if (head) {
+					const pp = newsPlanFor(head, { tip: "osoba", days: 730 })
+					pools.push(await data.news.searchNews(pp.query, pp.opts).catch(() => []))
+				}
+				const items = [...new Map(pools.flat().map((i) => [i.url, i])).values()]
+				state.registerSources(items.map((i) => i.source))
+				const matches = items
+					.filter((i) => !i.unresolved && topic.test(asciiFold(`${i.title} ${i.snippet ?? ""}`)))
+					.sort((a, b) => (b.publishedAt ?? "").localeCompare(a.publishedAt ?? ""))
+				const all = state.findingList()
+				return {
+					tema,
+					institucija: r.name,
+					osoba: head,
+					pretrazenoClanaka: items.length,
+					brojClanaka: matches.length,
+					clanci: matches.slice(0, 6).map((i) => ({
+						outlet: cyrToLat(i.outlet),
+						publishedAt: i.publishedAt?.slice(0, 10),
+						title: clip(cyrToLat(i.title), 130),
+						url: i.url,
+					})),
+					uDosijeu: {
+						nalaziONabavkama: all.filter((f) => f.section === "novac").length,
+						nalaziRevizije: all.filter((f) => f.section === "revizija").length,
+						nalaziORukovodstvu: all.filter((f) => f.section === "rukovodstvo").length,
+					},
+					napomena: "Prazan rezultat znači samo da pretraga nije našla takve članke. Članci su zaseban izvor: ne potvrđuju niti pobijaju nalaz DRI.",
 				}
 			},
 		}),

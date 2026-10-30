@@ -17,6 +17,7 @@ import type {
 	SignalCode,
 	SourceRef,
 } from "../shared/types"
+import { parseOwnerAnswer } from "./owners"
 import { resolveRuntime, sendEvent } from "./runtime"
 import { computeStatus, type DosijeState } from "./state"
 import { clip, logError, nowIso, slug } from "./util"
@@ -182,9 +183,17 @@ export function addEntity(
 	if (!state.isCurrent(ctx.caseId)) return { ok: false, error: "Slučaj je zatvoren ili zamenjen novim." }
 	const kind = args.kind as EntityKind
 	if (kind !== "osoba" && kind !== "firma" && kind !== "institucija") return { ok: false, error: "kind mora biti osoba ili firma" }
-	const name = typeof args.name === "string" ? clip(args.name, 120) : ""
+	let name = typeof args.name === "string" ? clip(args.name, 120) : ""
 	if (name.length < 2) return { ok: false, error: "name je obavezan" }
 	const attrs = cleanAttrs(args.attrs)
+	if (kind === "osoba" && args.role === "vlasnik") {
+		// an owner is a person: "100%" or "vlasnik" is never a name, and the share is an attribute, not part of the name
+		const owners = parseOwnerAnswer(name)
+		if (owners.length === 0) return { ok: false, error: "name nije ime osobe (npr. bez procenta ili reči vlasnik): upiši samo ime i prezime, a udeo stavi u attrs.udeo" }
+		if (owners.length > 1) return { ok: false, error: `jedno ime po pozivu add_entity; pozovi alat posebno za: ${owners.map((o) => o.name).join(", ")}` }
+		name = owners[0].name
+		if (owners[0].share && attrs.udeo === undefined) attrs.udeo = owners[0].share
+	}
 	const id = entityIdFor(kind, name, attrs)
 	const existing = state.entities.get(id)
 	if (existing) return { ok: true, entityId: id, duplicate: true, entity: existing }

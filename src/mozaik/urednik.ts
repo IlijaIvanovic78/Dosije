@@ -17,7 +17,8 @@ import {
 } from "./domain"
 import { handler } from "./handlers"
 import { startAgentLoop } from "./loop"
-import { mapaLoopEnded } from "./mapa"
+import { finalizeActivities } from "./activity"
+import { mapaLoopEnded, updateLinks } from "./mapa"
 import { buildReport } from "./report"
 import { leave } from "./runtime"
 import { computeStatus, mergeSources } from "./state"
@@ -144,9 +145,13 @@ function resolveConflict(a: Finding, b: Finding): void {
 
 const isRefuted = (f: Finding): boolean => f.status === "demantovano"
 
+// Only single-valued facts can contradict each other. "drugo"/"status"/"vrednost" claims from a model are free text
+// about different things (two different audit findings are not a conflict).
+const COMPARABLE = new Set(["funkcija", "datum_imenovanja", "organ_imenovanja", "vlasnik", "datum_osnivanja"])
+
 function detectConflicts(f: Finding): void {
 	const state = S()
-	if (!f.claim || f.status === "demantovano") return
+	if (!f.claim || f.status === "demantovano" || !COMPARABLE.has(f.claim.predicate)) return
 	const subject = normClaim(f.claim.subject)
 	const value = normClaim(f.claim.value)
 	for (const other of state.findingList()) {
@@ -351,6 +356,8 @@ export async function finalizeCase(reason: "idle" | "zatvori"): Promise<void> {
 		state.status = "done"
 		state.refreshStats()
 		leaveAllDynamic()
+		// no request may stay "u_toku" in the live-search feed after "Završeno"
+		finalizeActivities(state.caseId, "prekinuto: dosije završen")
 		emit("dosije.zavrsen", ids.urednik, { caseId: state.caseId, report: structuredClone(state.report) })
 		bus.emitStats(state.stats, state.budget)
 		log("dosije", `završen (${reason}): ${n(state.findings.size, "nalaz")}, vrhunac ${n(state.stats.peakConcurrentLoops, "petlja")}, ${Math.round(state.stats.elapsedMs / 1000)} s`)
@@ -360,6 +367,7 @@ export async function finalizeCase(reason: "idle" | "zatvori"): Promise<void> {
 			state.finishedAtMs = Date.now()
 			state.report = buildReport(state, defaultSummary(state))
 			state.status = "done"
+			finalizeActivities(state.caseId, "prekinuto: dosije završen")
 			emit("dosije.zavrsen", ids.urednik, { caseId: state.caseId, report: structuredClone(state.report) })
 		}
 	}
@@ -373,6 +381,8 @@ export function urednikHandlers(): SituationHandler[] {
 		handler(["message_received.started"], "urednik.loop+", ({ event }) => onLoopStarted(event.payload as { loopId?: string }, event.producerId)),
 		handler(["model.answer"], "urednik.loop-", ({ event }) => onLoopEnded(event.payload as { loopId?: string }, event.producerId)),
 		handler(["odgovor.coveka"], "urednik.odgovor", ({ event }) => onAnswer(event.payload as { taskId?: string; decision?: "approve" | "reject"; answer?: string })),
+		// Mapa prioriteta: the same supplier among the top suppliers of 2+ institutions -> mapa.veza + points on the affected rows
+		handler(["mapa.red"], "urednik.mapa.veze", () => updateLinks()),
 		handler(["dosije.zatvori"], "urednik.zatvori", () => {
 			void finalizeCase("zatvori")
 		}),

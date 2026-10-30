@@ -2,60 +2,66 @@
 
 import { h, fmtElapsed, fmtNum, createScheduler } from "./format.js"
 import { state, on, activeCount, peakCount, openTasks, elapsedMs, runStatus } from "./store.js"
+import { t, pl, getLang, onLang } from "./i18n.js"
 
 const isMapa = () => state.runKind === "mapa"
 const mapaRows = () => [...state.mapa.rows.values()]
 
-/** Serbian plural: pick one / few / many form for n. */
-export function plural(n, one, few, many) {
-	const a = n % 10
-	const b = n % 100
-	if (a === 1 && b !== 11) return one
-	if (a >= 2 && a <= 4 && !(b >= 12 && b <= 14)) return few
-	return many
-}
-
-let root, main, budget
+let main, budget
 let lastMain = ""
 let partEls = []
 let lastBudget = ""
 
 function compute() {
 	const st = runStatus()
-	const word = { running: "U toku", finalizing: "Završava se", done: "Završeno" }[st] || "Spremno"
+	const done = st === "done"
+	const word = { running: t("U toku"), finalizing: t("Završava se"), done: t("Završeno") }[st] || t("Spremno")
 	const active = activeCount()
 	const peak = peakCount()
 	const parts = [word, fmtElapsed(elapsedMs())]
 	const nodes = []
-	const verb = plural(active, "radi", "rade", "radi")
-	parts.push(`${active} ${plural(active, "agent", "agenta", "agenata")} ${verb} istovremeno (vrhunac ${peak})`)
+	if (done) {
+		// nothing is "working" any more: report the peak instead of a live count of zero
+		parts.push(getLang() === "en" ? `peak: ${peak} ${pl(peak, [], ["agent", "agents"])} at once` : `vrhunac: ${peak} ${pl(peak, ["agent", "agenta", "agenata"])} istovremeno`)
+	} else {
+		parts.push(
+			getLang() === "en"
+				? `${active} ${pl(active, [], ["agent", "agents"])} working at once (peak ${peak})`
+				: `${active} ${pl(active, ["agent", "agenta", "agenata"])} ${pl(active, ["radi", "rade", "radi"])} istovremeno (vrhunac ${peak})`,
+		)
+	}
 	let right
+	let tail = ""
 	if (isMapa()) {
 		const rows = mapaRows()
-		const done = rows.filter((r) => r.status === "done" || r.status === "error").length
+		const finished = rows.filter((r) => r.status === "done" || r.status === "error").length
 		const over = rows.filter((r) => r.signals?.vdOver).length
-		parts.push(`${done}/${rows.length} institucija gotovo`)
-		nodes.push({ t: `${over} sa v.d. preko roka`, cls: over ? "sig" : "" })
+		parts.push(t("{done}/{n} institucija gotovo", { done: finished, n: rows.length }))
+		nodes.push({ t: t("{n} sa v.d. preko roka", { n: over }), cls: over ? "sig" : "" })
 		const b = state.budget
-		right = `petlje ${b?.loops ?? 0}/${b?.maxLoops ?? 0} · alati ${b?.toolCalls ?? 0}/${b?.maxToolCalls ?? 0}`
+		right = `${t("petlje")} ${b?.loops ?? 0}/${b?.maxLoops ?? 0} · ${t("alati")} ${b?.toolCalls ?? 0}/${b?.maxToolCalls ?? 0}`
 	} else {
 		const signals = [...state.findings.values()].filter((f) => f.severity === "signal").length
 		const open = openTasks().length
 		const nf = state.findings.size
-		parts.push(`${nf} ${plural(nf, "nalaz", "nalaza", "nalaza")}`)
-		nodes.push({ t: `${signals} ${plural(signals, "signal", "signala", "signala")}`, cls: signals ? "sig" : "" })
-		nodes.push({ t: `${open} ${plural(open, "pitanje", "pitanja", "pitanja")}`, cls: open ? "wait" : "" })
+		parts.push(`${nf} ${pl(nf, ["nalaz", "nalaza", "nalaza"], ["finding", "findings"])}`)
+		nodes.push({ t: `${signals} ${pl(signals, ["signal", "signala", "signala"], ["signal", "signals"])}`, cls: signals ? "sig" : "" })
+		if (!done || open) nodes.push({ t: `${open} ${pl(open, ["pitanje", "pitanja", "pitanja"], ["question", "questions"])}`, cls: open ? "wait" : "" })
 		const b = state.budget
-		right = `firme ${b?.firme ?? 0}/${b?.maxFirme ?? 0} · osobe ${b?.osobe ?? 0}/${b?.maxOsobe ?? 0} · alati ${b?.toolCalls ?? 0}/${b?.maxToolCalls ?? 0}`
+		right = `${t("firme")} ${b?.firme ?? 0}/${b?.maxFirme ?? 0} · ${t("osobe")} ${b?.osobe ?? 0}/${b?.maxOsobe ?? 0} · ${t("alati")} ${b?.toolCalls ?? 0}/${b?.maxToolCalls ?? 0}`
 	}
-	const ev = Math.max(state.stats?.events ?? 0, state.eventCount)
-	return { lead: parts, nodes, tail: `${fmtNum(ev)} ${plural(ev, "događaj", "događaja", "događaja")}`, right }
+	if (!done) {
+		const ev = Math.max(state.stats?.events ?? 0, state.eventCount)
+		tail = `${fmtNum(ev)} ${pl(ev, ["događaj", "događaja", "događaja"], ["event", "events"])}`
+	}
+	return { lead: parts, nodes, tail, right }
 }
 
 function update() {
 	const v = compute()
 	// parts: [text, class, quiet]; the clock and the event counter tick all the time, so they stay out of the live region
-	const parts = [...v.lead.map((t, i) => [t, i === 0 ? "state" : "", i === 1]), ...v.nodes.map((n) => [n.t, n.cls, false]), [v.tail, "", true]]
+	const parts = [...v.lead.map((p, i) => [p, i === 0 ? "state" : "", i === 1]), ...v.nodes.map((n) => [n.t, n.cls, false])]
+	if (v.tail) parts.push([v.tail, "", true])
 	const shape = parts.map((p) => `${p[1]}|${p[2]}`).join(",")
 	if (shape !== lastMain) {
 		lastMain = shape
@@ -79,7 +85,7 @@ function update() {
 }
 
 export function initMetrics() {
-	root = document.getElementById("statusLine")
+	const root = document.getElementById("statusLine")
 	main = document.getElementById("slMain")
 	budget = document.getElementById("slBudget")
 	const schedule = createScheduler(() => {
@@ -87,6 +93,7 @@ export function initMetrics() {
 		update()
 	})
 	setInterval(schedule, 500)
-	for (const t of ["meta", "snapshot", "finding", "tasks", "mapa", "view"]) on(t, schedule)
+	for (const ev of ["meta", "snapshot", "finding", "tasks", "mapa", "view"]) on(ev, schedule)
+	onLang(schedule)
 	schedule()
 }

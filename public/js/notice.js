@@ -4,6 +4,7 @@
 import { h } from "./format.js"
 import { state } from "./store.js"
 import { api } from "./api.js"
+import { t } from "./i18n.js"
 
 export function clearNotice(host) {
 	if (host) host.replaceChildren()
@@ -23,7 +24,7 @@ export function showNotice(host, { text, kind = "error", actions = [] }) {
 					actions.map((a) => h("button", { class: "btn small", type: "button", onclick: a.onClick }, a.label)),
 				)
 			: null,
-		kind === "error" ? h("button", { class: "link-btn n-close", type: "button", onclick: () => clearNotice(host) }, "Zatvori") : null,
+		kind === "error" ? h("button", { class: "link-btn n-close", type: "button", onclick: () => clearNotice(host) }, t("Zatvori")) : null,
 	)
 	host.replaceChildren(box)
 }
@@ -40,7 +41,7 @@ function waitFor(cond, ms = 60000) {
 				resolve()
 			} else if (Date.now() - t0 > ms) {
 				clearInterval(timer)
-				reject(new Error("Dosije se još završava. Pokušaj ponovo za nekoliko sekundi."))
+				reject(new Error(t("Dosije se još završava. Pokušaj ponovo za nekoliko sekundi.")))
 			}
 		}, 250)
 	})
@@ -48,7 +49,7 @@ function waitFor(cond, ms = 60000) {
 
 /** The one-click way out of the case/map exclusivity: close the running case, wait until it is done, then retry. */
 export async function finishCaseThen(host, retry) {
-	showNotice(host, { kind: "info", text: "Završavam dosije…" })
+	showNotice(host, { kind: "info", text: t("Završavam dosije…") })
 	try {
 		try {
 			await api.finish()

@@ -296,13 +296,13 @@ function sameAuthority(a: string, b: string): boolean {
 	return normalizeName(a) === normalizeName(b) || nameSimilarity(a, b) >= 0.85
 }
 
-export async function getLinksForAuthority(inst: { name: string; pib?: string }): Promise<IntegrityWatchLink[]> {
+export async function getLinksForAuthority(inst: { name: string; pib?: string; aliases?: string[] }): Promise<IntegrityWatchLink[]> {
 	return (await derived(
-		cacheKey("authority", inst.name),
+		cacheKey("authority", inst.name, inst.aliases?.length ? `a${inst.aliases.length}` : undefined),
 		async () => {
 			const { index, retrievedAt } = await loadIndex()
 			return index.pairs
-				.filter((p) => sameAuthority(p.authority, inst.name))
+				.filter((p) => [inst.name, ...(inst.aliases ?? [])].some((nm) => sameAuthority(p.authority, nm)))
 				.sort(byWeight)
 				.flatMap((p) => linksFromPair(p, index, retrievedAt))
 		},

@@ -4,7 +4,7 @@
 
 import type { Tool } from "@mozaik-ai/core"
 import * as data from "../../data"
-import type { MapaSignals, SourceRef } from "../../shared/types"
+import type { MapaSignals, MapaSupplier, SourceRef } from "../../shared/types"
 import { S, type ToolCtx } from "../domain"
 import { scrubText } from "../gate"
 import { finishRow, recordTriage, triageComplete, type TriagePart } from "../mapa"
@@ -37,6 +37,19 @@ async function step(ctx: ToolCtx, part: TriagePart, run: (ref: ReturnType<typeof
 
 const MISSING = /sa rezervom|negativno|uzdržavanje/i
 
+/** Suppliers that count as "top" for the cross-institution link: the 8 biggest participants (without public systems). */
+export const TOP_SUPPLIERS = 8
+
+/** Top suppliers with their rank among ALL non-public participants; only those with a real PIB can be matched across institutions. */
+export function topSuppliersOf(a: { suppliers: { name: string; pib?: string; participationValueRsd: number; publicSystem: boolean }[]; nonPublic: { valueRsd: number } }): MapaSupplier[] {
+	const base = a.nonPublic.valueRsd
+	return a.suppliers
+		.filter((s) => !s.publicSystem && s.participationValueRsd > 0)
+		.slice(0, TOP_SUPPLIERS)
+		.map((s, i) => ({ name: clip(s.name, 60), pib: s.pib, rank: i + 1, valueRsd: Math.round(s.participationValueRsd), share: base > 0 ? s.participationValueRsd / base : 0 }))
+		.filter((s) => !!s.pib && /^\d{8,9}$/.test(s.pib))
+}
+
 export function trijazaTools(ctx: ToolCtx): Tool[] {
 	return [
 		buildTool(ctx, {
@@ -46,7 +59,7 @@ export function trijazaTools(ctx: ToolCtx): Tool[] {
 			properties: {},
 			handler: () =>
 				step(ctx, "rukovodstvo", async (ref) => {
-					const officials = await data.acas.getOfficials({ acasId: ref.acasId, name: ref.name, nameCyr: ref.nameCyr })
+					const officials = await data.acas.getOfficials({ acasId: ref.acasId, altIds: ref.acasAltIds, name: ref.name, nameCyr: ref.nameCyr })
 					const head = data.analysis.pickHead(officials)
 					const signals: MapaSignals = {}
 					const sources: SourceRef[] = []
@@ -110,6 +123,9 @@ export function trijazaTools(ctx: ToolCtx): Tool[] {
 						signals.topSupplierName = clip(a.concentration.topName, 60)
 						signals.topSupplierShare = a.concentration.topShare
 					}
+					// the top suppliers go into the shared state: the Urednik compares them across the institutions of the map
+					const topSuppliers = topSuppliersOf(a)
+					signals.topSuppliers = topSuppliers
 					const largest = nwp.largest
 					return {
 						out: {
@@ -125,6 +141,7 @@ export function trijazaTools(ctx: ToolCtx): Tool[] {
 								najveci: largest ? { title: clip(largest.title, 80), valueRsd: largest.valueRsd, signedAt: largest.signedAt } : undefined,
 							},
 							najveciDobavljac: a.concentration.topName ? { name: clip(a.concentration.topName, 40), sharePct: pct(a.concentration.topShare), napomena: "udeo u vrednosti bez državnih preduzeća" } : null,
+							najveciDobavljaci: topSuppliers.slice(0, 5).map((s) => ({ rank: s.rank, name: clip(s.name, 30), pib: s.pib, sharePct: pct(s.share) })),
 							integrityWatch: { oznacenihDobavljaca: flagged.size },
 						},
 						signals,
@@ -140,7 +157,7 @@ export function trijazaTools(ctx: ToolCtx): Tool[] {
 			properties: {},
 			handler: () =>
 				step(ctx, "revizija", async (ref) => {
-					const reports = await data.dri.getReports({ name: ref.name, nameCyr: ref.nameCyr })
+					const reports = await data.dri.getReports({ name: ref.name, nameCyr: ref.nameCyr, aliases: ref.aliases })
 					const opinions = await data.dri.getCachedOpinions(reports)
 					const qualified = [...opinions.values()].filter((o) => MISSING.test(o))
 					const withOpinion = reports.filter((r) => opinions.has(r.id))

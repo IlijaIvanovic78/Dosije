@@ -6,6 +6,7 @@ import { showNotice, clearNotice } from "./notice.js"
 import { openInbox } from "./inbox.js"
 import { openReport } from "./report.js"
 import { api } from "./api.js"
+import { t, pl, getLang, onLang } from "./i18n.js"
 
 const SEV_RANK = { signal: 3, paznja: 2, info: 1 }
 const STATUS_RANK = { zvanicno: 4, potvrdjeno: 3, nepotvrdjeno: 2, demantovano: 1 }
@@ -25,7 +26,7 @@ function findingSig(f) {
 
 function shortSource(f) {
 	const src = f?.sources?.[0]
-	if (!src) return "izvor"
+	if (!src) return t("izvor")
 	return src.kind === "vesti" ? truncate(splitSourceTitle(src).outlet, 20) : SOURCE_LABEL[src.kind] || src.kind
 }
 
@@ -46,31 +47,32 @@ function conflictNote(f) {
 	const winnerVal = c.values[wi]
 	const otherVal = c.values[1 - wi]
 	const official = c.rule === "zvanicni_izvor_ima_prednost"
-	const first = official ? `Zvanični registar (${shortSource(winner)})` : shortSource(winner)
-	const second = f.id === other?.id ? "ovaj izvor" : f.id === winner?.id ? shortSource(other) : "drugi izvor"
-	return h("div", { class: "note conflict" }, h("b", null, "Neslaganje izvora: "), `${first} navodi „${winnerVal}“; ${second} navodi „${otherVal}“. ${RULE_WINNER[c.rule] || RULE_LABEL[c.rule] || ""}`)
+	const first = official ? t("Zvanični registar ({src})", { src: shortSource(winner) }) : shortSource(winner)
+	const second = f.id === other?.id ? t("ovaj izvor") : f.id === winner?.id ? shortSource(other) : t("drugi izvor")
+	const verdict = RULE_WINNER[c.rule] ? t(RULE_WINNER[c.rule]) : RULE_LABEL[c.rule] || ""
+	return h("div", { class: "note conflict" }, h("b", null, `${t("Neslaganje izvora")}: `), `${t("{first} navodi „{a}“; {second} navodi „{b}“.", { first, a: winnerVal, second, b: otherVal })} ${verdict}`)
 }
 
 function approvalNote(f) {
-	if (f.approval === "pending") return h("span", { class: "appr pending" }, "čeka odobrenje novinara")
-	if (f.approval === "approved") return h("span", { class: "appr" }, "odobrio novinar")
-	if (f.approval === "rejected") return h("span", { class: "appr rejected" }, "odbio novinar")
+	if (f.approval === "pending") return h("span", { class: "appr pending" }, t("čeka odobrenje novinara"))
+	if (f.approval === "approved") return h("span", { class: "appr" }, t("odobrio novinar"))
+	if (f.approval === "rejected") return h("span", { class: "appr rejected" }, t("odbio novinar"))
 	return null
 }
 
 function cardChildren(f) {
 	const created = parseIso(f.createdAt)
 	const merged = f.mergedFrom?.length
-	const code = f.signalCode ? SIGNAL_LABEL[f.signalCode] || f.signalCode : f.severity === "signal" ? "signal" : f.severity === "paznja" ? "pažnja" : ""
+	const code = f.signalCode ? SIGNAL_LABEL[f.signalCode] || f.signalCode : f.severity === "signal" ? t("signal") : f.severity === "paznja" ? t("pažnja") : ""
 	const conflict = conflictNote(f)
 	return [
 		h("div", { class: "f-meta" }, h("span", { class: "sect" }, SECTION_LABEL[f.section] || f.section), code ? h("span", { class: `code ${f.severity}` }, code) : null, statusTag(f.status), approvalNote(f)),
 		h("h3", { class: "f-title" }, f.title),
 		h("p", { class: "f-text" }, f.text),
 		conflict,
-		f.note && !conflict ? h("div", { class: "note" }, h("b", null, "Napomena urednika: "), f.note) : null,
+		f.note && !conflict ? h("div", { class: "note" }, h("b", null, `${t("Napomena urednika")}: `), f.note) : null,
 		sourceLinks(f.sources, f.id),
-		h("div", { class: "f-foot" }, `dodao ${f.agentName || "agent"}`, created ? ` · ${fmtClock(created)}` : "", merged ? ` · spojeno iz ${merged + 1} nalaza` : ""),
+		h("div", { class: "f-foot" }, t("dodao {a}", { a: f.agentName || "agent" }), created ? ` · ${fmtClock(created)}` : "", merged ? ` · ${t("spojeno iz {n} nalaza", { n: merged + 1 })}` : ""),
 	]
 }
 
@@ -111,19 +113,19 @@ function renderInst() {
 	const sig = JSON.stringify([i, status, state.focus, state.input])
 	if (sig === lastInst) return
 	lastInst = sig
-	const statusLabel = { idle: "čeka", running: "u toku", finalizing: "završava se", done: "završeno" }[status] || status
+	const statusLabel = t({ idle: "čeka", running: "u toku", finalizing: "završava se", done: "završeno" }[status] || status)
 	const ids = []
 	if (i) {
 		for (const [lab, v] of [["PIB", i.pib], ["MB", i.mb], ["ACAS", i.acasId], ["JN", i.jnId]]) if (v) ids.push(`${lab} ${v}`)
 	}
 	const nodes = [
-		h("div", { class: "label" }, "Dosije ", h("span", { class: `stat ${status}` }, h("i"), statusLabel)),
-		h("h2", { class: "serif-title" }, i?.name || state.input || "Učitavam instituciju…"),
+		h("div", { class: "label" }, `${t("Dosije")} `, h("span", { class: `stat ${status}` }, h("i"), statusLabel)),
+		h("h2", { class: "serif-title" }, i?.name || state.input || t("Učitavam instituciju…")),
 		i?.nameCyr ? h("div", { class: "inst-cyr" }, i.nameCyr) : null,
 		i?.legalType ? h("div", { class: "inst-legal" }, i.legalType) : null,
 		ids.length ? h("div", { class: "meta-line" }, ids.join(" · ")) : null,
-		state.focus ? h("div", { class: "meta-sub" }, h("b", null, "Fokus: "), state.focus) : null,
-		state.input && i && state.input !== i.name ? h("div", { class: "meta-sub" }, h("b", null, "Upit: "), truncate(state.input, 140)) : null,
+		state.focus ? h("div", { class: "meta-sub" }, h("b", null, `${t("Fokus")}: `), state.focus) : null,
+		state.input && i && state.input !== i.name ? h("div", { class: "meta-sub" }, h("b", null, `${t("Upit")}: `), truncate(state.input, 140)) : null,
 	]
 	el.inst.replaceChildren(...nodes.filter(Boolean))
 }
@@ -159,9 +161,37 @@ function groupTitle(code, members) {
 	const shown = names.slice(0, 3)
 	const rest = names.length - shown.length
 	const list = `${shown.join(", ")}${rest > 0 ? `, +${rest}` : ""}`
-	if (code === "POLITICKA_VEZA" && members.every((m) => m.sources?.some((s) => s.kind === "integrity_watch"))) return `Integrity Watch Srbija: ${n} dobavljača označeno (${list})`
+	if (code === "POLITICKA_VEZA" && members.every((m) => m.sources?.some((s) => s.kind === "integrity_watch"))) return t("Integrity Watch Srbija: {n} dobavljača označeno ({list})", { n, list })
 	const label = SIGNAL_LABEL[code] || code
-	return `${label[0].toUpperCase()}${label.slice(1)}: ${n} nalaza (${list})`
+	return t("{label}: {n} nalaza ({list})", { label: `${label[0].toUpperCase()}${label.slice(1)}`, n, list })
+}
+
+let ledeOpen = false
+
+/** The report lede: small and calm, three lines, "više" expands (the numbered list carries the hierarchy). */
+function ledeBlock(text) {
+	const long = text.length > 230
+	const p = h("p", { class: `lede${long && !ledeOpen ? " clamp" : ""}` }, text)
+	if (!long) return h("div", { class: "lede-box" }, p)
+	return h(
+		"div",
+		{ class: "lede-box" },
+		p,
+		h(
+			"button",
+			{
+				class: "link-btn lede-more",
+				type: "button",
+				"aria-expanded": String(ledeOpen),
+				onclick: () => {
+					ledeOpen = !ledeOpen
+					lastSignals = ""
+					renderSignals()
+				},
+			},
+			ledeOpen ? t("manje") : t("više"),
+		),
+	)
 }
 
 /** Live signals: findings sharing a signalCode collapse into one row (when 2 or more); max 5 rows. */
@@ -225,17 +255,17 @@ function renderSignals() {
 	let nodes
 	let count
 	if (done) {
-		sig = `done|${report.generatedAt}|${report.topSignals.length}|${report.topSignals.map((s) => state.findings.get(s.findingId)?.status).join("")}`
+		sig = `done|${getLang()}|${ledeOpen}|${report.generatedAt}|${report.topSignals.length}|${report.topSignals.map((s) => state.findings.get(s.findingId)?.status).join("")}`
 		count = report.topSignals.length
-		nodes = [report.lede ? h("p", { class: "lede" }, report.lede) : null, h("ol", { class: "sig-list" }, report.topSignals.map((s, i) => signalRow(i + 1, s.findingId, s.headline, state.findings.get(s.findingId))))]
+		nodes = [report.lede ? ledeBlock(report.lede) : null, h("ol", { class: "sig-list" }, report.topSignals.map((s, i) => signalRow(i + 1, s.findingId, s.headline, state.findings.get(s.findingId))))]
 	} else {
 		// live ranking: official sources first, then leadership > money > firms > audit > media, then newest
 		const { rows, total } = liveSignalRows()
 		count = total
-		sig = `live|${rows.map((r) => `${r.key}:${r.status}:${r.title}:${r.members.length}:${expandedGroups.has(r.key)}`).join(",")}|${state.status}`
+		sig = `live|${getLang()}|${rows.map((r) => `${r.key}:${r.status}:${r.title}:${r.members.length}:${expandedGroups.has(r.key)}`).join(",")}|${state.status}`
 		nodes = rows.length
 			? [h("ol", { class: "sig-list" }, rows.map((r, i) => (r.members.length > 1 ? groupRow(i + 1, r) : signalRow(i + 1, r.members[0].id, r.title, r.members[0]))))]
-			: [h("p", { class: "empty-line" }, state.status === "idle" ? "Nema aktivnog dosijea." : "Agenti traže prve signale za proveru…")]
+			: [h("p", { class: "empty-line" }, state.status === "idle" ? t("Nema aktivnog dosijea.") : t("Agenti traže prve signale za proveru…"))]
 	}
 	if (sig === lastSignals) return
 	lastSignals = sig
@@ -254,7 +284,7 @@ function renderEntities() {
 				{
 					class: `ent ${e.kind}${state.live && fresh.has(e.id) ? " enter" : ""}`,
 					type: "button",
-					title: `${e.name} · ${e.kind === "firma" ? "firma" : "osoba"}${e.role ? ` · ${ROLE_LABEL[e.role] || e.role}` : ""} · klik filtrira nalaze`,
+					title: `${e.name} · ${e.kind === "firma" ? t("firma") : t("osoba")}${e.role ? ` · ${ROLE_LABEL[e.role] || e.role}` : ""} · ${t("klik filtrira nalaze")}`,
 					onclick: () => setFilter("entityId", e.id),
 				},
 				h("span", { class: "e-name" }, truncate(e.name, 34)),
@@ -287,10 +317,10 @@ function counts() {
 function renderTabs() {
 	const c = counts()
 	const active = state.filters.section
-	const sig = `${active}|${JSON.stringify(c)}`
+	const sig = `${getLang()}|${active}|${JSON.stringify(c)}`
 	if (sig === lastTabs) return
 	lastTabs = sig
-	const defs = [{ id: "all", label: "Sve" }, ...SECTIONS, { id: "verify", label: "Šta još proveriti" }]
+	const defs = [{ id: "all", label: t("Sve") }, ...SECTIONS.map((s) => ({ id: s.id, label: t(s.label) })), { id: "verify", label: t("Šta još proveriti") }]
 	el.tabs.replaceChildren(
 		...defs.map((d) =>
 			h(
@@ -307,14 +337,14 @@ function renderFilterBar() {
 	const parts = []
 	if (state.filters.agentId) {
 		const a = state.agents.get(state.filters.agentId)
-		parts.push(h("button", { class: "fchip", type: "button", onclick: () => setFilter("agentId", state.filters.agentId) }, `Agent: ${a?.name || "?"} ×`))
+		parts.push(h("button", { class: "fchip", type: "button", onclick: () => setFilter("agentId", state.filters.agentId) }, `${t("Agent")}: ${a?.name || "?"} ×`))
 	}
 	if (state.filters.entityId) {
 		const e = state.entities.get(state.filters.entityId)
 		parts.push(h("button", { class: "fchip", type: "button", onclick: () => setFilter("entityId", state.filters.entityId) }, `${truncate(e?.name || "?", 30)} ×`))
 	}
 	el.filterBar.hidden = !parts.length
-	if (parts.length) el.filterBar.replaceChildren(h("span", { class: "f-lab" }, "Filter:"), ...parts, h("button", { class: "link-btn", type: "button", onclick: clearFilters }, "ukloni sve"))
+	if (parts.length) el.filterBar.replaceChildren(h("span", { class: "f-lab" }, `${t("Filter")}:`), ...parts, h("button", { class: "link-btn", type: "button", onclick: clearFilters }, t("ukloni sve")))
 }
 
 function renderFindings() {
@@ -333,10 +363,10 @@ function renderFindings() {
 		const c = cards.get(f.id)
 		c.el.classList.toggle("dimmed", !!hl && f.agentId !== hl)
 	}
-	const t = Date.now()
-	for (const [id, ts] of fresh) if (t - ts > 4000) fresh.delete(id)
+	const tm = Date.now()
+	for (const [id, ts] of fresh) if (tm - ts > 4000) fresh.delete(id)
 	if (!els.length) {
-		const msg = state.status === "idle" ? "Nema aktivnog dosijea." : state.findings.size ? "Nema nalaza za izabrani filter." : "Nalazi će se pojaviti ovde čim ih agenti dodaju, svaki sa izvorom i statusom."
+		const msg = state.status === "idle" ? t("Nema aktivnog dosijea.") : state.findings.size ? t("Nema nalaza za izabrani filter.") : t("Nalazi će se pojaviti ovde čim ih agenti dodaju, svaki sa izvorom i statusom.")
 		reconcile(el.findList, [h("div", { class: "empty-line" }, msg)])
 		return
 	}
@@ -351,21 +381,21 @@ function renderVerify() {
 	const tasks = openTasks()
 	const unconfirmed = [...state.findings.values()].filter((f) => f.status === "nepotvrdjeno")
 	const toVerify = state.report?.toVerify || []
-	const sig = JSON.stringify([tasks.map((t) => t.id), unconfirmed.map((f) => f.id + f.title), toVerify])
+	const sig = JSON.stringify([getLang(), tasks.map((k) => k.id), unconfirmed.map((f) => f.id + f.title), toVerify])
 	if (sig === lastVerify) return
 	lastVerify = sig
 	const blocks = [
 		h(
 			"section",
 			{ class: "v-block" },
-			h("h4", { class: "sec-title sm" }, "Otvorena pitanja za tebe", h("span", { class: "count" }, String(tasks.length))),
-			tasks.length ? tasks.map((t) => verifyRow(t.kind === "odobrenje" ? "odobrenje" : "pitanje", `${t.fromAgentName}: ${truncate(t.title || t.question, 120)}`, "otvori", () => openInbox())) : h("p", { class: "empty-line" }, "Nema otvorenih pitanja."),
+			h("h4", { class: "sec-title sm" }, t("Otvorena pitanja za tebe"), h("span", { class: "count" }, String(tasks.length))),
+			tasks.length ? tasks.map((k) => verifyRow(k.kind === "odobrenje" ? t("odobrenje") : t("pitanje"), `${k.fromAgentName}: ${truncate(k.title || k.question, 120)}`, t("otvori"), () => openInbox())) : h("p", { class: "empty-line" }, t("Nema otvorenih pitanja.")),
 		),
 		h(
 			"section",
 			{ class: "v-block" },
-			h("h4", { class: "sec-title sm" }, "Nepotvrđeni nalazi", h("span", { class: "count" }, String(unconfirmed.length))),
-			unconfirmed.length ? unconfirmed.map((f) => verifyRow("nepotvrđeno", f.title, "prikaži", () => focusFinding(f.id))) : h("p", { class: "empty-line" }, "Svi nalazi imaju potvrdu ili zvaničan izvor."),
+			h("h4", { class: "sec-title sm" }, t("Nepotvrđeni nalazi"), h("span", { class: "count" }, String(unconfirmed.length))),
+			unconfirmed.length ? unconfirmed.map((f) => verifyRow(t("nepotvrđeno"), f.title, t("prikaži"), () => focusFinding(f.id))) : h("p", { class: "empty-line" }, t("Svi nalazi imaju potvrdu ili zvaničan izvor.")),
 		),
 	]
 	if (toVerify.length || state.status === "done") {
@@ -373,8 +403,8 @@ function renderVerify() {
 			h(
 				"section",
 				{ class: "v-block" },
-				h("h4", { class: "sec-title sm" }, "Preporuka urednika: šta još proveriti", h("span", { class: "count" }, String(toVerify.length))),
-				toVerify.length ? h("ul", { class: "v-list" }, toVerify.map((t) => h("li", null, t))) : h("p", { class: "empty-line" }, "Nema dodatnih preporuka."),
+				h("h4", { class: "sec-title sm" }, t("Preporuka urednika: šta još proveriti"), h("span", { class: "count" }, String(toVerify.length))),
+				toVerify.length ? h("ul", { class: "v-list" }, toVerify.map((k) => h("li", null, k))) : h("p", { class: "empty-line" }, t("Nema dodatnih preporuka.")),
 			),
 		)
 	}
@@ -446,7 +476,7 @@ export function initDosije() {
 			await api.finish()
 		} catch (e) {
 			el.btnFinish.disabled = false
-			showNotice(el.notice, { text: `Dosije nije završen. ${e.message}` })
+			showNotice(el.notice, { text: `${t("Dosije nije završen.")} ${e.message}` })
 		}
 	})
 
@@ -459,7 +489,14 @@ export function initDosije() {
 		if (e?.id) fresh.set(e.id, Date.now())
 		schedule()
 	})
-	for (const t of ["conflict", "meta", "tasks", "filters", "done", "agents"]) on(t, schedule)
+	for (const ev of ["conflict", "meta", "tasks", "filters", "done", "agents"]) on(ev, schedule)
+	onLang(() => {
+		cards.clear()
+		chipCache.clear()
+		fresh.clear()
+		lastInst = lastSignals = lastVerify = lastTabs = ""
+		schedule()
+	})
 	on("snapshot", ({ newCase }) => {
 		if (newCase) {
 			cards.clear()

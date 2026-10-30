@@ -139,13 +139,14 @@ describe("full scripted case (IŽS, cached data)", () => {
 
 	test("agents react to each other: Mediji to a Kadrovik finding, Revizor to a Nabavke finding", () => {
 		const snap = getSnapshot()
-		const reactions = events.filter((e) => e.type === "agent.reakcija").map((e) => e.payload as { agentName: string; reaction: { fromAgent: string; signalCode: string; findingId: string } })
-		const mediji = reactions.find((r) => r.agentName === "Mediji")
+		const reactions = events.filter((e) => e.type === "agent.reakcija").map((e) => e.payload as { agentName: string; reaction: { fromAgent: string; signalCode: string; findingId: string; tema?: string } })
+		const mediji = reactions.find((r) => r.agentName === "Mediji" && r.reaction.fromAgent === "Kadrovik")
 		const revizor = reactions.find((r) => r.agentName === "Revizor")
-		assert.ok(mediji && mediji.reaction.fromAgent === "Kadrovik" && ["VD_PREKO_ROKA", "VD_LANAC"].includes(mediji.reaction.signalCode), "Mediji reacted to a Kadrovik acting-head finding")
+		assert.ok(mediji && ["VD_PREKO_ROKA", "VD_LANAC"].includes(mediji.reaction.signalCode), "Mediji reacted to a Kadrovik acting-head finding")
 		assert.ok(revizor && revizor.reaction.fromAgent === "Nabavke" && ["BEZ_OBJAVE", "KONCENTRACIJA"].includes(revizor.reaction.signalCode), "Revizor reacted to a Nabavke finding")
+		assert.ok(reactions.some((r) => r.agentName === "Mediji" && r.reaction.fromAgent === "Revizor" && r.reaction.signalCode === "DRI_NALAZ" && r.reaction.tema), "Mediji reacted to a Revizor DRI finding (audit topic)")
 		const perKey = new Map<string, number>()
-		for (const r of reactions) perKey.set(`${r.agentName}:${r.reaction.signalCode}`, (perKey.get(`${r.agentName}:${r.reaction.signalCode}`) ?? 0) + 1)
+		for (const r of reactions) perKey.set(`${r.agentName}:${r.reaction.signalCode}:${r.reaction.tema ?? ""}`, (perKey.get(`${r.agentName}:${r.reaction.signalCode}:${r.reaction.tema ?? ""}`) ?? 0) + 1)
 		assert.ok([...perKey.values()].every((c) => c === 1), `each reaction fires once per trigger code: ${[...perKey].join(", ")}`)
 
 		// a new loop of the existing core agent, started by the finding: the first message names it, the lane is visible in the timeline
@@ -154,6 +155,7 @@ describe("full scripted case (IŽS, cached data)", () => {
 		assert.ok(povod("Mediji", "Kadrovik"), "Mediji loop started with 'Povod: nalaz Kadrovik: ...'")
 		assert.ok(povod("Revizor", "Nabavke"), "Revizor loop started with 'Povod: nalaz Nabavke: ...'")
 		assert.ok(snap.agents.find((a) => a.name === "Mediji")?.reactions?.length, "AgentInfo of Mediji lists the reaction")
+		assert.ok(povod("Mediji", "Revizor"), "Mediji loop started with 'Povod: nalaz Revizor: ...'")
 		assert.ok(snap.agents.find((a) => a.name === "Revizor")?.reactions?.length, "AgentInfo of Revizor lists the reaction")
 
 		// Revizor's corroboration: DRI report AND the procurement source, so it stands on two official sources

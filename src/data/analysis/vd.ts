@@ -64,7 +64,7 @@ export interface VdCheck {
 	months: number
 	days: number
 	applicable: boolean // false when the person is not acting or no rule exists for the legal type
-	rule?: { id: string; law: string; article: string; maxMonths: number; summary: string }
+	rule?: { id: string; law: string; article: string; maxMonths: number; extensionMonths?: number; summary: string }
 	alsoPossible: { id: string; law: string; article: string; maxMonths: number }[]
 	overLimit: boolean
 	daysOver: number
@@ -120,7 +120,7 @@ export function checkVd(official: Official, inst: { legalType: LegalType }, toda
 	return {
 		...withTime,
 		applicable: true,
-		rule: { id: rule.id, law: rule.law, article: rule.article, maxMonths: rule.maxMonths, summary: rule.summary },
+		rule: { id: rule.id, law: rule.law, article: rule.article, maxMonths: rule.maxMonths, extensionMonths: rule.extensionMonths, summary: rule.summary },
 		alsoPossible,
 		overLimit,
 		daysOver,
@@ -133,11 +133,19 @@ export function checkVd(official: Official, inst: { legalType: LegalType }, toda
 
 // ─── head of the institution + chain of acting heads ────────────────────────
 
-const HEAD_POSITION = /(direktor|predsednik|na[čc]elnik)/i
-const NOT_HEAD = /(skup[šs]tin|odbor|[čc]lan|zamenik|pomo[ćc]nik|savet|komisij)/i
+const HEAD_POSITION = /(direktor|predsednik|na[čc]elnik|ministar)/i
+const NOT_HEAD = /(skup[šs]tin|odbor|[čc]lan|zamenik|pomo[ćc]nik|savet|komisij|sekretar|izvr[šs]n|sektor|slu[žz]b|odeljenj|jedinic|v\.?d\.?\s+na[čc]elnik\w*\s+(uprav|odeljenj|slu))/i
 
 export function isHeadPosition(position: string): boolean {
 	return HEAD_POSITION.test(position) && !NOT_HEAD.test(position)
+}
+
+/** 3 = mayor / minister / municipality head, 2 = director or president of the body, 1 = načelnik (of a department), 0 = not a head. */
+export function headRank(position: string): number {
+	if (!isHeadPosition(position)) return 0
+	if (/ministar|gradona[čc]elnik|predsednik\s+op[šs]tin/i.test(position)) return 3
+	if (/direktor|predsednik/i.test(position)) return 2
+	return 1
 }
 
 // One person holds these roles at a time; the register sometimes never closes the earlier record when a successor is entered
@@ -151,7 +159,7 @@ export function supersededOpen(officials: Official[]): Set<Official> {
 	const out = new Set<Official>()
 	for (const o of officials) {
 		if (o.to || !o.from || !SINGULAR_ROLE.test(o.position)) continue
-		const successor = officials.some((p) => p !== o && !!p.from && p.from > o.from! && (isHeadPosition(o.position) ? isHeadPosition(p.position) : samePosition(o, p)))
+		const successor = officials.some((p) => p !== o && !!p.from && p.from > o.from! && (isHeadPosition(o.position) ? headRank(p.position) >= headRank(o.position) : samePosition(o, p)))
 		if (successor) out.add(o)
 	}
 	return out
@@ -168,8 +176,12 @@ export function pickHead(officials: Official[]): Official | undefined {
 	const current = currentOfficials(officials)
 	const latest = (list: Official[]) => [...list].sort((a, b) => (b.from ?? "").localeCompare(a.from ?? ""))[0]
 	const heads = current.filter((o) => isHeadPosition(o.position))
-	if (heads.length) return latest(heads)
-	return current.find((o) => /direktor|predsednik|na[čc]elnik/i.test(o.position))
+	if (heads.length) {
+		const best = Math.max(...heads.map((o) => headRank(o.position)))
+		return latest(heads.filter((o) => headRank(o.position) === best))
+	}
+	// a board chair is not the head: with no director in the register the head is unknown (never guessed)
+	return undefined
 }
 
 export function pickOthers(officials: Official[], head: Official | undefined, n = 2): Official[] {
@@ -178,6 +190,49 @@ export function pickOthers(officials: Official[], head: Official | undefined, n 
 		.slice(0, n)
 }
 
+export interface PastVd {
+	name: string
+	position: string
+	from: string
+	to: string
+	months: number
+	days: number
+	maxMonths: number
+	law: string
+	article: string
+}
+
+/** Finished terms of acting heads that lasted longer than the limit for this legal form (facts from the register's dates, newest first). */
+export function pastActingOverLimit(officials: Official[], legalType: LegalType): { terms: PastVd[]; rule?: VdRule } {
+	const rule = ruleFor(legalType)
+	if (!rule) return { terms: [] }
+	const max = rule.maxMonths + (rule.extensionMonths ?? 0)
+	const seen = new Set<string>()
+	const terms: PastVd[] = []
+	for (const o of officials) {
+		if (!o.isActing || !o.from || !o.to || !isHeadPosition(o.position)) continue
+		const key = `${o.fullName}|${o.from}|${o.to}`
+		if (seen.has(key)) continue
+		seen.add(key)
+		const { months, days } = monthsBetween(o.from, o.to)
+		if (months > max) terms.push({ name: o.fullName, position: o.position, from: o.from, to: o.to, months, days, maxMonths: max, law: rule.law, article: rule.article })
+	}
+	return { terms: terms.sort((a, b) => b.from.localeCompare(a.from)), rule }
+}
+/** Earlier acting terms of the same person in a head position, before the current record (the laws for public enterprises and health care allow one acting mandate). */
+export function earlierActingTerms(officials: Official[], head: Official): { from: string; to?: string }[] {
+	const seen = new Set<string>()
+	const out: { from: string; to?: string }[] = []
+	for (const o of officials) {
+		if (o.id !== head.id || o === head || !o.isActing || !o.from || !isHeadPosition(o.position)) continue
+		if (head.from && o.from >= head.from) continue
+		const key = `${o.from}|${o.to ?? ""}`
+		if (seen.has(key)) continue
+		seen.add(key)
+		out.push({ from: o.from, to: o.to })
+	}
+	return out.sort((a, b) => a.from.localeCompare(b.from))
+}
 export interface VdChain {
 	heads: { name: string; personId: string; position: string; from?: string; to?: string; months: number; days: number; acting: boolean; endInferred?: boolean }[]
 	actingCount: number
@@ -192,7 +247,7 @@ export interface VdChain {
 }
 
 /** Chain of consecutive acting heads from the ACAS history. null when there is nothing to report (fewer than 2 heads or any non-acting head). */
-export function analyzeVdChain(officials: Official[], today = todayIso()): VdChain | null {
+export function analyzeVdChain(officials: Official[], today = todayIso(), legalType?: LegalType): VdChain | null {
 	const heads = officials
 		.filter((o) => isHeadPosition(o.position) && o.from)
 		.sort((a, b) => (a.from ?? "").localeCompare(b.from ?? ""))
@@ -221,7 +276,7 @@ export function analyzeVdChain(officials: Official[], today = todayIso()): VdCha
 	const current = rows.find((r) => !r.to)
 	const list = rows.map((r) => `${r.name} (${formatDate(r.from)} do ${r.to ? formatDate(r.to) : "danas"}${r.endInferred ? ", kraj nije upisan u registru: uzet je početak sledećeg v.d." : ""})`).join("; ")
 	const gapText = gaps.length ? ` U registru postoje prekidi duži od 30 dana: ${gaps.map((g) => `${daysLabel(g.days)} (${formatDate(g.from)} do ${formatDate(g.to)})`).join("; ")}.` : ""
-	const explanation = `Prema ACAS registru, od ${formatDate(since)} (${monthsLabel(total.months)}) instituciju vode isključivo vršioci dužnosti: ${n(rows.length, "uzastopniVd")} generalnog direktora, ${list}.${gapText} Činjenični obrazac za proveru, ne zaključak o kršenju propisa: Zakon o upravljanju privrednim društvima u vlasništvu RS (76/2023) primenjuje se tek od 15.09.2024, a registar sadrži samo funkcionere koji su podneli prijavu.`
+	const explanation = `Prema ACAS registru, od ${formatDate(since)} (${monthsLabel(total.months)}) instituciju vode isključivo vršioci dužnosti: ${n(rows.length, "uzastopniVd")} na čelu institucije, ${list}.${gapText} Činjenični obrazac za proveru, ne zaključak o kršenju propisa: ${legalType === "drustvo_kapitala_drzavno" ? "Zakon o upravljanju privrednim društvima u vlasništvu RS (76/2023) primenjuje se tek od 15.09.2024, a registar" : "registar"} sadrži samo funkcionere koji su podneli prijavu.`
 	return {
 		heads: rows,
 		actingCount: rows.length,
