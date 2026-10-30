@@ -1,22 +1,25 @@
-// "Sanduče": side panel with questions and approvals for the journalist, task history and the "Dodaj trag" form.
+// The journalist's decisions. Open questions and approvals render inline at the top of the dossier ("Čeka tvoju
+// odluku", one card open at a time); the "Sanduče" side panel lists them compactly, keeps the history of decisions
+// and the "Dodaj trag" form.
 
 import { h, reconcile, createScheduler, parseIso, fmtClock, truncate, safeUrl, avatar, sourceLinks, SIGNAL_LABEL, SECTION_LABEL } from "./format.js"
-import { state, on, openTasks, applySnapshot } from "./store.js"
+import { state, on, openTasks, applySnapshot, resumeCase, setView } from "./store.js"
 import { api } from "./api.js"
 import { toast, dismissToasts } from "./toast.js"
 import { showNotice, clearNotice } from "./notice.js"
-import { t, onLang } from "./i18n.js"
+import { t, pl, getLang, onLang } from "./i18n.js"
 
-let root, backdrop, listEl, historyEl, historyCount, countEl, emptyEl, inboxBtn
+let root, backdrop, listEl, historyEl, historyCount, openCountEl, countEl, emptyEl, inboxBtn, dock, dockList, dockTitle
 const cardCache = new Map() // taskId -> { el }
+let expandedId = null
+let schedule = () => {}
 
 export function openInbox() {
 	root.classList.add("open")
 	backdrop.classList.add("open")
 	root.setAttribute("aria-hidden", "false")
 	document.body.classList.add("inbox-open")
-	dismissToasts(".toast.ask, .toast.approve")
-	setTimeout(() => root.querySelector("textarea, .btn.primary, input")?.focus({ preventScroll: true }), 30)
+	setTimeout(() => root.querySelector(".open-row .btn, #leadForm input")?.focus({ preventScroll: true }), 30)
 }
 
 export function closeInbox() {
@@ -27,6 +30,22 @@ export function closeInbox() {
 }
 
 const isOpen = () => root.classList.contains("open")
+
+const sortedOpen = () => openTasks().sort((a, b) => Number(b.blocking) - Number(a.blocking) || (parseIso(a.createdAt) || 0) - (parseIso(b.createdAt) || 0))
+
+/** Bring the decision cards into view (opening `taskId` when given) and focus its first control. */
+export function focusDecisions(taskId) {
+	closeInbox()
+	dismissToasts(".toast.ask, .toast.approve")
+	if (state.ui.fresh) resumeCase()
+	if (state.ui.view !== "dosije") setView("dosije")
+	if (taskId && state.tasks.get(taskId)?.status === "open") expandedId = taskId
+	render()
+	if (dock.hidden) return
+	dock.scrollIntoView({ block: "start", behavior: "smooth" })
+	const card = dockList.querySelector(".task.expanded")
+	setTimeout(() => card?.querySelector("textarea, .btn.primary")?.focus({ preventScroll: true }), 350)
+}
 
 async function send(task, payload, card) {
 	const buttons = card.querySelectorAll("button, textarea")
@@ -72,7 +91,6 @@ function draftBlock(draft) {
 			draft.signalCode ? h("span", { class: `code ${sev}` }, SIGNAL_LABEL[draft.signalCode] || draft.signalCode) : null,
 			h("span", { class: "appr pending" }, t("nacrt")),
 		),
-		draft.title ? h("h3", { class: "f-title" }, draft.title) : null,
 		draft.text ? h("p", { class: "f-text" }, draft.text) : null,
 		draft.sources?.length ? sourceLinks(draft.sources) : null,
 	)
@@ -84,31 +102,46 @@ function buildTaskCard(task) {
 	const created = parseIso(task.createdAt)
 	const card = h("article", { class: `task ${task.kind}${task.blocking ? " blocking" : ""}`, dataset: { id: task.id } })
 
-	const parts = [
-		h("div", { class: "task-head" }, avatar(agent), h("b", null, task.fromAgentName), h("span", { class: "task-time" }, created ? fmtClock(created) : ""), h("span", { class: `kind ${task.kind}` }, approval ? t("odobrenje") : t("pitanje"))),
-	]
-	if (task.blocking) {
-		parts.push(h("p", { class: "hold-line" }, h("b", null, `${t("{agent} čeka tvoju odluku", { agent: task.fromAgentName })}.`), ` ${t("Ostali agenti nastavljaju.")}`))
-	}
-	parts.push(h("h4", { class: "task-title" }, approval ? (task.findingDraft ? t("Urednik predlaže signal za izveštaj") : `${t("Urednik predlaže signal")}: ${task.title}`) : task.title))
-	if (approval && task.findingDraft) parts.push(draftBlock(task.findingDraft))
-	if (task.question) parts.push(h("p", { class: "task-q" }, task.question))
-	if (task.hint) parts.push(h("p", { class: "task-hint" }, h("b", null, `${t("Savet")}: `), task.hint))
+	const head = h(
+		"button",
+		{
+			class: "task-head",
+			type: "button",
+			"aria-expanded": "false",
+			onclick: () => {
+				expandedId = expandedId === task.id ? null : task.id
+				render()
+			},
+		},
+		avatar(agent),
+		h("b", null, task.fromAgentName),
+		h("span", { class: `kind ${task.kind}` }, approval ? t("traži odobrenje") : t("ima pitanje")),
+		h("span", { class: "task-time" }, created ? fmtClock(created) : ""),
+		h("span", { class: "task-chev", "aria-hidden": "true" }),
+	)
+	// an approval shows the draft's own title here; the draft below carries its text and sources
+	const title = h("h4", { class: "task-title" }, approval ? task.findingDraft?.title || `${t("Urednik predlaže signal")}: ${task.title}` : task.title)
+
+	const body = []
+	if (task.blocking) body.push(h("p", { class: "hold-line" }, h("b", null, `${t("{agent} je pauziran dok ne odlučiš", { agent: task.fromAgentName })}.`)))
+	if (approval && task.findingDraft) body.push(draftBlock(task.findingDraft))
+	if (task.question) body.push(h("p", { class: "task-q" }, task.question))
+	if (task.hint) body.push(h("p", { class: "task-hint" }, h("b", null, `${t("Savet")}: `), task.hint))
 	if (task.links?.length) {
-		parts.push(
+		body.push(
 			h(
 				"ul",
 				{ class: "task-links" },
 				task.links.map((l) => {
 					const url = safeUrl(l.url)
-					return url ? h("li", null, h("a", { href: url, target: "_blank", rel: "noopener noreferrer" }, l.label)) : null
+					return url ? h("li", null, h("a", { href: url, target: "_blank", rel: "noopener noreferrer" }, `${l.label} ↗`)) : null
 				}),
 			),
 		)
 	}
 
 	if (approval) {
-		parts.push(
+		body.push(
 			h(
 				"div",
 				{ class: "task-actions" },
@@ -123,10 +156,22 @@ function buildTaskCard(task) {
 		ta.addEventListener("keydown", (e) => {
 			if (e.key === "Enter" && (e.ctrlKey || e.metaKey) && ta.value.trim()) submit.click()
 		})
-		parts.push(h("div", { class: "task-answer" }, ta, h("div", { class: "task-actions" }, submit, h("button", { class: "btn", type: "button", onclick: () => send(task, { decision: "reject" }, card) }, t("Preskoči")))))
+		body.push(h("div", { class: "task-answer" }, ta, h("div", { class: "task-actions" }, submit, h("button", { class: "btn", type: "button", onclick: () => send(task, { decision: "reject" }, card) }, t("Preskoči")), h("span", { class: "task-kbd" }, t("Ctrl+Enter šalje")))))
 	}
-	card.append(...parts)
+	card.append(head, title, h("div", { class: "task-body" }, ...body))
 	return card
+}
+
+/** Compact row in the side panel: the full card lives on the dossier. */
+function openRow(task) {
+	const agent = state.agents.get(task.fromAgentId) || { name: task.fromAgentName, group: "sistem" }
+	return h(
+		"div",
+		{ class: `open-row${task.blocking ? " blocking" : ""}` },
+		avatar(agent),
+		h("div", { class: "or-main" }, h("div", { class: "or-title" }, truncate(task.title, 90)), h("div", { class: "or-sub" }, `${task.fromAgentName} · ${task.kind === "odobrenje" ? t("traži odobrenje") : t("ima pitanje")}`)),
+		h("button", { class: "btn small primary", type: "button", onclick: () => focusDecisions(task.id) }, task.kind === "odobrenje" ? t("Odluči") : t("Odgovori")),
+	)
 }
 
 function historyItem(task) {
@@ -142,30 +187,54 @@ function historyItem(task) {
 	)
 }
 
+function dockHeading(open) {
+	const n = open.length
+	if (n === 1) return open[0].kind === "odobrenje" ? t("{agent} traži tvoje odobrenje", { agent: open[0].fromAgentName }) : t("{agent} ima pitanje za tebe", { agent: open[0].fromAgentName })
+	return getLang() === "en" ? `${n} decisions are waiting for you` : `${n} ${pl(n, ["odluka čeka", "odluke čekaju", "odluka čeka"])} na tebe`
+}
+
 function render() {
-	const open = openTasks().sort((a, b) => Number(b.blocking) - Number(a.blocking) || (parseIso(b.createdAt) || 0) - (parseIso(a.createdAt) || 0))
+	const open = sortedOpen()
 	const done = [...state.tasks.values()].filter((k) => k.status !== "open").sort((a, b) => (parseIso(b.answeredAt) || 0) - (parseIso(a.answeredAt) || 0))
 
+	if (!open.some((k) => k.id === expandedId)) expandedId = open[0]?.id ?? null
 	const els = open.map((k) => {
 		let c = cardCache.get(k.id)
 		if (!c) {
 			c = { el: buildTaskCard(k) }
 			cardCache.set(k.id, c)
 		}
+		const exp = k.id === expandedId
+		c.el.classList.toggle("expanded", exp)
+		c.el.querySelector(".task-head").setAttribute("aria-expanded", String(exp))
 		return c.el
 	})
 	for (const id of [...cardCache.keys()]) if (!open.some((k) => k.id === id)) cardCache.delete(id)
-	reconcile(listEl, els)
-	emptyEl.hidden = els.length > 0
+	reconcile(dockList, els)
+	dock.hidden = els.length === 0
+	const heading = els.length ? dockHeading(open) : ""
+	if (dockTitle.textContent !== heading) dockTitle.textContent = heading
+
+	reconcile(listEl, open.map(openRow))
+	emptyEl.hidden = open.length > 0
+	openCountEl.textContent = String(open.length)
 
 	historyEl.replaceChildren(...done.map(historyItem))
 	historyCount.textContent = String(done.length)
 	historyEl.parentElement.hidden = done.length === 0
 
 	countEl.textContent = open.length ? String(open.length) : ""
-	countEl.classList.toggle("wait", open.length > 0)
+	inboxBtn.classList.toggle("has-open", open.length > 0)
 	inboxBtn.setAttribute("aria-label", open.length ? t("Sanduče, {n} otvorenih zadataka", { n: open.length }) : t("Sanduče"))
 	document.title = `${open.length ? `(${open.length}) ` : ""}Dosije · ${t("istraživački tim agenata")}`
+}
+
+/** Is the decision dock on screen right now? (then a toast would only repeat it) */
+function dockVisible() {
+	if (document.body.dataset.view !== "case" || state.ui.view !== "dosije" || state.ui.fresh) return false
+	// the dock sits right under the dossier header (which is always rendered): on screen unless scrolled past it
+	const r = document.querySelector("#dosijePanel .doc-head").getBoundingClientRect()
+	return r.bottom > -40 && r.bottom < window.innerHeight - 120
 }
 
 export function initInbox() {
@@ -174,8 +243,12 @@ export function initInbox() {
 	listEl = document.getElementById("taskList")
 	historyEl = document.getElementById("taskHistory")
 	historyCount = document.getElementById("historyCount")
+	openCountEl = document.getElementById("openCount")
 	countEl = document.getElementById("inboxCount")
 	emptyEl = document.getElementById("inboxEmpty")
+	dock = document.getElementById("decisionDock")
+	dockList = document.getElementById("dockList")
+	dockTitle = document.getElementById("dockTitle")
 	const btn = document.getElementById("btnInbox")
 	inboxBtn = btn
 
@@ -207,23 +280,29 @@ export function initInbox() {
 		}
 	})
 
-	const schedule = createScheduler(render)
+	schedule = createScheduler(render)
 	on("tasks", (e) => {
 		schedule()
 		const task = e?.task
-		if (e?.isNew && task && task.status === "open") {
+		if (!e?.isNew || !task || task.status !== "open") return
+		// decide after the dock has rendered: a question already on screen needs no toast
+		setTimeout(() => {
+			if (dockVisible() || state.tasks.get(task.id)?.status !== "open") return
 			const approval = task.kind === "odobrenje"
 			toast({
 				kind: approval ? "approve" : "ask",
 				title: approval ? t("{agent} čeka tvoje odobrenje", { agent: task.fromAgentName }) : t("{agent} ima pitanje za tebe", { agent: task.fromAgentName }),
 				text: truncate(task.title, 110),
 				ttl: approval ? 12000 : 6000,
-				actions: [{ label: approval ? t("Odluči") : t("Odgovori"), onClick: openInbox }],
+				actions: [{ label: approval ? t("Odluči") : t("Odgovori"), onClick: () => focusDecisions(task.id) }],
 			})
-		}
+		}, 150)
 	})
 	on("snapshot", ({ newCase }) => {
-		if (newCase) cardCache.clear()
+		if (newCase) {
+			cardCache.clear()
+			expandedId = null
+		}
 		schedule()
 	})
 	onLang(() => {

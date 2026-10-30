@@ -1,10 +1,9 @@
 // Report modal: Markdown render, download, print/PDF, copy.
 
 import { renderMarkdown } from "./markdown.js"
-import { state, on } from "./store.js"
+import { state } from "./store.js"
 import { api } from "./api.js"
 import { toast, dismissToasts } from "./toast.js"
-import { fmtClock } from "./format.js"
 import { t } from "./i18n.js"
 
 let modal, body, copyBtn, titleEl
@@ -28,7 +27,7 @@ export function closeReport() {
 	modal.hidden = true
 }
 
-async function download() {
+export async function downloadReport() {
 	let text = state.report?.markdown || ""
 	try {
 		const remote = await api.reportMd()
@@ -77,7 +76,7 @@ export function initReport() {
 	copyBtn = document.getElementById("reportCopy")
 	titleEl = document.getElementById("reportTitle")
 	document.getElementById("reportClose").addEventListener("click", closeReport)
-	document.getElementById("reportDownload").addEventListener("click", download)
+	document.getElementById("reportDownload").addEventListener("click", downloadReport)
 	document.getElementById("reportPrint").addEventListener("click", print)
 	copyBtn.addEventListener("click", copy)
 	modal.addEventListener("mousedown", (e) => {
@@ -85,16 +84,5 @@ export function initReport() {
 	})
 	document.addEventListener("keydown", (e) => {
 		if (e.key === "Escape" && !modal.hidden) closeReport()
-	})
-	on("done", (report) => {
-		if (!report) return
-		if (state.replay) return // replayed history after a page load
-		toast({
-			kind: "done",
-			title: t("Dosije je spreman"),
-			text: t("Izveštaj generisan u {time}. Pregledaj signale i šta još treba proveriti.", { time: fmtClock(Date.parse(report.generatedAt) || Date.now()) }),
-			ttl: 16000,
-			actions: [{ label: t("Otvori izveštaj"), onClick: openReport }],
-		})
 	})
 }

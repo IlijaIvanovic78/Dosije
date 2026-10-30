@@ -1,10 +1,10 @@
 // "Dosije": the case file as a document: institution header, main signals, entities, section tabs, finding rows.
 
-import { h, reconcile, createScheduler, parseIso, fmtClock, truncate, statusTag, sourceLinks, splitSourceTitle, SECTIONS, SECTION_LABEL, STATUS_LABEL, SIGNAL_LABEL, RULE_LABEL, ROLE_LABEL, SOURCE_LABEL } from "./format.js"
-import { state, on, openTasks, setFilter, clearFilters, startFresh } from "./store.js"
+import { h, reconcile, createScheduler, parseIso, fmtClock, fmtElapsed, truncate, statusTag, sourceLinks, splitSourceTitle, SECTIONS, SECTION_LABEL, STATUS_LABEL, SIGNAL_LABEL, RULE_LABEL, ROLE_LABEL, SOURCE_LABEL } from "./format.js"
+import { state, on, openTasks, setFilter, setFilterValue, clearFilters, elapsedMs, peakCount } from "./store.js"
 import { showNotice, clearNotice } from "./notice.js"
-import { openInbox } from "./inbox.js"
-import { openReport } from "./report.js"
+import { focusDecisions } from "./inbox.js"
+import { openReport, downloadReport } from "./report.js"
 import { api } from "./api.js"
 import { t, pl, getLang, onLang } from "./i18n.js"
 
@@ -19,6 +19,7 @@ let lastInst = ""
 let lastSignals = ""
 let lastVerify = ""
 let lastTabs = ""
+let lastDone = ""
 
 function findingSig(f) {
 	return [f.title, f.text, f.status, f.severity, f.approval, f.updatedAt, f.note, f.conflictId, f.mergedFrom?.length, f.sources?.length, f.signalCode].join("|")
@@ -125,7 +126,8 @@ function renderInst() {
 		i?.legalType ? h("div", { class: "inst-legal" }, i.legalType) : null,
 		ids.length ? h("div", { class: "meta-line" }, ids.join(" · ")) : null,
 		state.focus ? h("div", { class: "meta-sub" }, h("b", null, `${t("Fokus")}: `), state.focus) : null,
-		state.input && i && state.input !== i.name ? h("div", { class: "meta-sub" }, h("b", null, `${t("Upit")}: `), truncate(state.input, 140)) : null,
+		// the original query only when it says more than the name (a news link, a nickname)
+		state.input && i && !i.name.toLowerCase().startsWith(state.input.trim().toLowerCase()) ? h("div", { class: "meta-sub" }, h("b", null, `${t("Upit")}: `), truncate(state.input, 140)) : null,
 	]
 	el.inst.replaceChildren(...nodes.filter(Boolean))
 }
@@ -389,7 +391,7 @@ function renderVerify() {
 			"section",
 			{ class: "v-block" },
 			h("h4", { class: "sec-title sm" }, t("Otvorena pitanja za tebe"), h("span", { class: "count" }, String(tasks.length))),
-			tasks.length ? tasks.map((k) => verifyRow(k.kind === "odobrenje" ? t("odobrenje") : t("pitanje"), `${k.fromAgentName}: ${truncate(k.title || k.question, 120)}`, t("otvori"), () => openInbox())) : h("p", { class: "empty-line" }, t("Nema otvorenih pitanja.")),
+			tasks.length ? tasks.map((k) => verifyRow(k.kind === "odobrenje" ? t("odobrenje") : t("pitanje"), `${k.fromAgentName}: ${truncate(k.title || k.question, 120)}`, t("odluči"), () => focusDecisions(k.id))) : h("p", { class: "empty-line" }, t("Nema otvorenih pitanja.")),
 		),
 		h(
 			"section",
@@ -412,11 +414,57 @@ function renderVerify() {
 }
 
 function renderActions() {
-	el.btnReport.hidden = !state.report
+	// once the case is done the "Dosije je spreman" card carries the report actions
+	el.btnReport.hidden = !state.report || state.status === "done"
 	const live = state.status === "running" || state.status === "finalizing"
 	el.btnFinish.hidden = !live
 	el.btnFinish.disabled = state.status === "finalizing"
-	el.btnFresh.hidden = state.status !== "done"
+}
+
+const CHECK_ICON = '<svg viewBox="0 0 20 20" aria-hidden="true"><path d="M5 10.5 8.5 14 15 6.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>'
+
+function showVerify() {
+	setFilterValue("section", "verify")
+	el.tabs.scrollIntoView({ block: "start", behavior: "smooth" })
+}
+
+/** The end of the flow: what the team did, and the three things to do next. */
+function renderDone() {
+	const report = state.report
+	const show = state.status === "done" && !!report
+	const agents = [...state.lanes.values()].filter((l) => l.info.role !== "human" && l.info.group !== "sistem").length
+	const nf = state.findings.size
+	const signals = [...state.findings.values()].filter((f) => f.severity === "signal" && f.status !== "demantovano" && f.approval !== "rejected").length
+	const verify = counts().verify
+	const peak = peakCount()
+	const time = fmtElapsed(elapsedMs())
+	const sig = JSON.stringify([show, getLang(), agents, nf, signals, verify, peak, time, report?.generatedAt])
+	if (sig === lastDone) return
+	lastDone = sig
+	el.done.hidden = !show
+	if (!show) return
+	const summary =
+		getLang() === "en"
+			? `A team of ${agents} ${pl(agents, [], ["agent", "agents"])} finished in ${time}, with up to ${peak} working at the same time. ${nf} ${pl(nf, [], ["finding", "findings"])}, ${signals} ${pl(signals, [], ["signal", "signals"])} to verify.`
+			: `Tim od ${agents} ${pl(agents, ["agenta", "agenata", "agenata"])} završio je za ${time}, najviše ${peak} istovremeno. ${nf} ${pl(nf, ["nalaz", "nalaza", "nalaza"])}, ${signals} ${pl(signals, ["signal", "signala", "signala"])} za proveru.`
+	const icon = h("span", { class: "done-icon" })
+	icon.innerHTML = CHECK_ICON
+	el.done.replaceChildren(
+		icon,
+		h(
+			"div",
+			{ class: "done-main" },
+			h("h3", { class: "done-title" }, t("Dosije je spreman")),
+			h("p", { class: "done-text" }, summary),
+			h(
+				"div",
+				{ class: "done-actions" },
+				h("button", { class: "btn primary", type: "button", onclick: () => openReport() }, t("Otvori izveštaj")),
+				h("button", { class: "btn", type: "button", onclick: () => downloadReport() }, t("Preuzmi .md")),
+				h("button", { class: "link-btn", type: "button", onclick: showVerify }, `${t("Šta još proveriti")} (${verify})`),
+			),
+		),
+	)
 }
 
 function render() {
@@ -427,6 +475,7 @@ function render() {
 	renderFilterBar()
 	renderFindings()
 	renderActions()
+	renderDone()
 }
 
 export function focusFinding(id) {
@@ -457,18 +506,10 @@ export function initDosije() {
 		verifyPanel: document.getElementById("verifyPanel"),
 		btnReport: document.getElementById("btnReport"),
 		btnFinish: document.getElementById("btnFinish"),
-		btnFresh: document.getElementById("btnFresh"),
 		notice: document.getElementById("docNotice"),
+		done: document.getElementById("doneCard"),
 	}
 	el.btnReport.addEventListener("click", () => openReport())
-	el.btnFresh.addEventListener("click", () => {
-		clearNotice(el.notice)
-		clearNotice(document.getElementById("topNotice"))
-		document.getElementById("inInst").value = ""
-		document.getElementById("inFocus").value = ""
-		startFresh()
-		document.getElementById("inInst").focus()
-	})
 	el.btnFinish.addEventListener("click", async () => {
 		el.btnFinish.disabled = true
 		clearNotice(el.notice)
@@ -494,7 +535,7 @@ export function initDosije() {
 		cards.clear()
 		chipCache.clear()
 		fresh.clear()
-		lastInst = lastSignals = lastVerify = lastTabs = ""
+		lastInst = lastSignals = lastVerify = lastTabs = lastDone = ""
 		schedule()
 	})
 	on("snapshot", ({ newCase }) => {
@@ -503,7 +544,7 @@ export function initDosije() {
 			chipCache.clear()
 			fresh.clear()
 			expandedGroups.clear()
-			lastInst = lastSignals = lastVerify = lastTabs = ""
+			lastInst = lastSignals = lastVerify = lastTabs = lastDone = ""
 		}
 		schedule()
 	})

@@ -318,10 +318,13 @@ at most 4 times per second.
 - one accent color, red only for signals, amber only for "waiting for you";
 - no emojis (initials avatars) and almost no motion.
 
-**Layout:**
-- **Top bar:** wordmark, input, "Napravi dosije", "Mapa prioriteta", "Sanduče N" and the mode text.
-- **Status line:** state, elapsed time, agents working at once (peak), findings, signals, questions and events, plus
-  budget use.
+**Layout (the flow is: start, the team investigates, you decide, the dossier is ready):**
+- **Start screen:** a large input for an institution or a news link (an optional focus behind "+ Dodaj fokus"), four
+  example institutions, "Kako radi" in four steps, the public sources and a way into "Mapa prioriteta".
+- **Top bar:** wordmark, the "Dosije | Mapa prioriteta" switch, "+ Novi dosije", "Sanduče N" and SR | EN. A connection
+  note appears only when the server connection drops.
+- **Run bar:** the steps "Tim istražuje → Tvoje odluke → Dosije je spreman" (clickable: step 2 opens the decisions,
+  step 3 the report), plus agents working at once (peak), findings, signals and Mozaik events.
 - **Left column, "Tim":**
   - a small concurrency chart;
   - one lane per agent, with the core agents first and dynamic agents grouped under "Firme", "Imovina", "Mediji ·
@@ -330,12 +333,16 @@ at most 4 times per second.
   - the approval banner ("Kadrovik čeka tvoju odluku. Ostali agenti nastavljaju.");
   - **"Pretraga uživo"**: `izvor.upit` requests with source, label, link and status.
 - **Right column, "Dosije":**
-  - institution header and "Glavni signali", where repeated signal codes are grouped;
+  - institution header;
+  - **"Čeka tvoju odluku"**: the open questions (answer or skip) and approvals ("Ubaci u izveštaj" / "Odbaci") right
+    on the dossier, one card open at a time; only the asking agent is paused;
+  - **"Dosije je spreman"** once the report exists: what the team did, "Otvori izveštaj", "Preuzmi .md" and "Šta još
+    proveriti";
+  - "Glavni signali", where repeated signal codes are grouped;
   - section tabs (Rukovodstvo, Novac, Firme, Revizija, Mediji, Šta još proveriti);
   - finding rows with a severity rule, status, sources (a compact article list when there are four or more), merge
     and conflict notes.
-- **Inbox:** a right panel with questions (answer or skip) and approvals ("Ubaci u izveštaj" / "Odbaci"), plus
-  "Dodaj trag".
+- **Sanduče:** a side panel with the open decisions as short rows, the decision history and "Dodaj trag".
 - **Report modal:** a printable document, with "Preuzmi .md", "Štampaj / PDF" (prints only the report) and "Kopiraj".
 - **Mapa prioriteta:** the institution list, "Pokreni mapu" and a live ranking table with signal chips, details and
   "Otvori dosije".

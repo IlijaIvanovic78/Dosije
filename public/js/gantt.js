@@ -371,6 +371,8 @@ export function initGantt() {
 	onLang(() => {
 		lastConc = ""
 		markDirty()
+		// the lanes rebuild their rows on the next frame; draw again once they exist (a finished run never redraws on its own)
+		setTimeout(markDirty, 120)
 	})
 
 	let last = -MIN_FRAME_MS

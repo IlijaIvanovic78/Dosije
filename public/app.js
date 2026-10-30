@@ -2,47 +2,73 @@
 
 import { h } from "./js/format.js"
 import { api } from "./js/api.js"
-import { state, on, applySnapshot } from "./js/store.js"
+import { state, on, applySnapshot, setView, startFresh, resumeCase } from "./js/store.js"
 import { startStream } from "./js/sse.js"
 import { initLanes } from "./js/lanes.js"
 import { initGantt } from "./js/gantt.js"
 import { initDosije } from "./js/dosije.js"
-import { initInbox } from "./js/inbox.js"
+import { initInbox, openInbox } from "./js/inbox.js"
 import { initEventLog } from "./js/eventlog.js"
 import { initReport } from "./js/report.js"
 import { initMapa } from "./js/mapa.js"
 import { initMetrics } from "./js/metrics.js"
 import { initSearch } from "./js/search.js"
 import { showNotice, clearNotice, finishCaseThen, caseBusy } from "./js/notice.js"
-import { t, setLang, getLang, onLang, applyStatic } from "./js/i18n.js"
+import { t, setLang, onLang, applyStatic } from "./js/i18n.js"
 
 const $ = (id) => document.getElementById(id)
 
+/** What kind of institution each demo is (shown under its name on the start screen). */
+const DEMO_KIND = {
+	"infrastruktura-zeleznice-srbije": "Državno preduzeće · železnička infrastruktura",
+	srbijavoz: "Državno preduzeće · putnički prevoz",
+	"univerzitetski-klinicki-centar-vojvodine": "Zdravstvena ustanova",
+	"grad-novi-sad": "Lokalna samouprava",
+}
+
+/** The top bar only speaks up when the connection to the server is in trouble. */
 function renderMode() {
-	const c = state.config
 	const el = $("modeText")
-	if (state.conn !== "up") {
-		el.className = `mode-text ${state.conn === "down" ? "down" : ""}`
-		el.textContent = state.conn === "down" ? t("veza prekinuta, povezujem…") : t("povezujem…")
-		el.title = t("Veza sa serverom (SSE)")
-		return
-	}
-	el.className = "mode-text"
-	if (!c) {
+	if (state.conn === "up") {
+		el.hidden = true
 		el.textContent = ""
 		return
 	}
-	const dm = t({ cache: "keš", live: "uživo", auto: "auto" }[c.dataMode] || c.dataMode)
-	el.textContent = c.mode === "llm" ? `OpenAI · ${c.model}` : `${t("bez ključa")} · ${dm}`
-	el.title =
-		c.mode === "llm"
-			? `${t("Radnici")}: ${c.model} · ${t("urednik")}: ${c.editorModel} · ${t("podaci")}: ${dm}${c.searchProviders?.length ? ` · ${t("pretraga vesti")}: ${c.searchProviders.join(", ")}` : ""}`
-			: `${t("Nije podešen API ključ: agenti rade po skripti, ali sa istim alatima, kapijom i događajima")} · ${t("podaci")}: ${dm}`
+	el.hidden = false
+	el.className = `conn-text ${state.conn === "down" ? "down" : ""}`
+	el.textContent = state.conn === "down" ? t("veza prekinuta, povezujem…") : t("povezujem…")
+	el.title = t("Veza sa serverom (SSE)")
 }
 
 function renderDemoChips() {
 	const demos = state.config?.demoInstitutions || []
-	$("heroChips").replaceChildren(...demos.map((d) => h("button", { class: "demo-btn", type: "button", onclick: () => startCase(d.name) }, d.name)))
+	$("heroChips").replaceChildren(
+		...demos.map((d, i) =>
+			h(
+				"button",
+				{ class: "example", type: "button", onclick: () => startCase(d.name) },
+				h("span", { class: "ex-name" }, d.name),
+				DEMO_KIND[d.slug] ? h("span", { class: "ex-kind" }, t(DEMO_KIND[d.slug])) : null,
+				i === 0 ? h("span", { class: "ex-tag" }, t("najbolji demo")) : null,
+				h("span", { class: "ex-go", "aria-hidden": "true" }, "→"),
+			),
+		),
+	)
+}
+
+/** On the empty state, a case the server still holds stays one click away. */
+function renderResume() {
+	const el = $("heroResume")
+	const show = !!state.caseId && state.ui.fresh
+	el.hidden = !show
+	if (!show) return
+	const name = state.institution?.name || state.input
+	const running = state.status === "running" || state.status === "finalizing"
+	el.replaceChildren(
+		h("span", { class: `stat ${running ? "running" : "done"}` }, h("i"), running ? t("u toku") : t("završeno")),
+		h("span", { class: "resume-text" }, h("b", null, name)),
+		h("button", { class: "link-btn", type: "button", onclick: resumeCase }, `${t("Vrati se na dosije")} →`),
+	)
 }
 
 /** POST /api/dosije; a refusal stays visible under the top bar, with a one-click way out when a case is still running. */
@@ -81,14 +107,35 @@ async function startCase(inputValue) {
 		setTimeout(() => {
 			starting = false
 			btn.disabled = false
-			btn.textContent = t("Napravi dosije")
+			btn.textContent = t("Pokreni istragu")
 		}, 900)
 	}
+}
+
+function goHome() {
+	clearNotice($("topNotice"))
+	$("inInst").value = ""
+	$("inFocus").value = ""
+	startFresh()
+	$("inInst").focus()
 }
 
 function renderView() {
 	const hasCase = (!!state.caseId || state.ui.view === "mapa") && !state.ui.fresh
 	document.body.dataset.view = hasCase ? "case" : "hero"
+	const dosije = state.ui.view !== "mapa"
+	$("btnNavDosije").setAttribute("aria-pressed", String(dosije))
+	$("btnNew").hidden = !hasCase || !state.caseId || !dosije
+	renderResume()
+}
+
+function toggleFocus(open) {
+	const input = $("inFocus")
+	const btn = $("btnFocusToggle")
+	input.hidden = !open
+	btn.hidden = open
+	btn.setAttribute("aria-expanded", String(open))
+	if (open) input.focus()
 }
 
 async function boot() {
@@ -97,11 +144,29 @@ async function boot() {
 		startCase()
 	})
 	$("inInst").addEventListener("input", (e) => e.target.classList.remove("invalid"))
+	$("btnFocusToggle").addEventListener("click", () => toggleFocus(true))
+	$("inFocus").addEventListener("blur", (e) => {
+		if (!e.target.value.trim()) toggleFocus(false)
+	})
+	$("btnNew").addEventListener("click", goHome)
+	$("brandHome").addEventListener("click", () => {
+		if (state.caseId) goHome()
+		else setView("dosije")
+	})
+	$("btnNavDosije").addEventListener("click", () => setView("dosije"))
+	$("btnHeroMapa").addEventListener("click", () => setView("mapa"))
+	$("btnAddLead").addEventListener("click", () => {
+		openInbox()
+		const input = document.querySelector("#leadForm input[name=name]")
+		document.getElementById("leadSection").scrollIntoView({ block: "start" })
+		setTimeout(() => input?.focus({ preventScroll: true }), 40)
+	})
 	for (const b of document.querySelectorAll(".lang-btn")) b.addEventListener("click", () => setLang(b.dataset.lang))
 	applyStatic()
 	onLang(() => {
 		renderMode()
 		renderDemoChips()
+		renderResume()
 	})
 
 	initMetrics()
@@ -127,7 +192,6 @@ async function boot() {
 
 	try {
 		state.config = await api.config()
-		renderMode()
 		renderDemoChips()
 	} catch (e) {
 		console.warn("config unavailable", e)

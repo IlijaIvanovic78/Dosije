@@ -1,99 +1,117 @@
-// Status line under the top bar: one quiet sentence instead of metric tiles, plus the budget on the right.
+// Run bar under the top bar: where the run is in its flow (the team investigates, you decide, the dossier is ready)
+// and one quiet line of numbers that show the agents working at the same time.
 
 import { h, fmtElapsed, fmtNum, createScheduler } from "./format.js"
 import { state, on, activeCount, peakCount, openTasks, elapsedMs, runStatus } from "./store.js"
+import { focusDecisions } from "./inbox.js"
+import { openReport } from "./report.js"
 import { t, pl, getLang, onLang } from "./i18n.js"
 
 const isMapa = () => state.runKind === "mapa"
-const mapaRows = () => [...state.mapa.rows.values()]
+const CHECK = "✓"
 
-let main, budget
-let lastMain = ""
-let partEls = []
-let lastBudget = ""
+let stepsEl, statsEl
+let lastSig = ""
+let lastNums = ""
+let clockEls = []
 
-function compute() {
-	const st = runStatus()
+function caseSteps(st, clock) {
+	const open = openTasks().length
+	const resolved = [...state.tasks.values()].filter((k) => k.status !== "open").length
+	// every agent is idle and only the journalist's answers keep the case open: the investigation step is over
+	const running = st === "running" && !(open && activeCount() === 0)
 	const done = st === "done"
-	const word = { running: t("U toku"), finalizing: t("Završava se"), done: t("Završeno") }[st] || t("Spremno")
+	const s1 = running
+		? { state: "active", label: t("Tim istražuje"), sub: clock }
+		: { state: st === "idle" ? "todo" : "done", label: t("Istraga"), sub: clock }
+	let s2
+	if (open) s2 = { state: "wait", label: t("Tvoje odluke"), sub: getLang() === "en" ? `${open} waiting` : `${open} ${pl(open, ["čeka", "čekaju", "čeka"])}`, onClick: () => focusDecisions() }
+	else if (resolved) s2 = { state: "done", label: t("Tvoje odluke"), sub: getLang() === "en" ? `${resolved} resolved` : `${resolved} ${pl(resolved, ["rešena", "rešene", "rešeno"])}` }
+	else s2 = { state: done ? "done" : "todo", label: t("Tvoje odluke"), sub: done ? t("nije bilo pitanja") : t("kad agent pita") }
+	let s3
+	if (done) s3 = { state: "done", label: t("Dosije je spreman"), sub: t("otvori izveštaj"), onClick: () => openReport() }
+	else if (st === "finalizing") s3 = { state: "active", label: t("Dosije"), sub: t("urednik piše izveštaj") }
+	else s3 = { state: "todo", label: t("Dosije"), sub: t("posle istrage") }
+	return [s1, s2, s3]
+}
+
+function mapaSteps(clock) {
+	const rows = [...state.mapa.rows.values()]
+	const finished = rows.filter((r) => r.status === "done" || r.status === "error").length
+	const done = state.mapa.status === "done"
+	return [
+		{ state: done ? "done" : "active", label: t("Trijaža institucija"), sub: `${finished}/${rows.length} · ${clock}` },
+		{ state: done ? "done" : "todo", label: t("Rang lista"), sub: done ? t("gde prvo gledati") : t("posle trijaže") },
+	]
+}
+
+function stats(st) {
+	const done = st === "done"
 	const active = activeCount()
 	const peak = peakCount()
-	const parts = [word, fmtElapsed(elapsedMs())]
-	const nodes = []
-	if (done) {
-		// nothing is "working" any more: report the peak instead of a live count of zero
-		parts.push(getLang() === "en" ? `peak: ${peak} ${pl(peak, [], ["agent", "agents"])} at once` : `vrhunac: ${peak} ${pl(peak, ["agent", "agenta", "agenata"])} istovremeno`)
-	} else {
-		parts.push(
-			getLang() === "en"
-				? `${active} ${pl(active, [], ["agent", "agents"])} working at once (peak ${peak})`
-				: `${active} ${pl(active, ["agent", "agenta", "agenata"])} ${pl(active, ["radi", "rade", "radi"])} istovremeno (vrhunac ${peak})`,
-		)
-	}
-	let right
-	let tail = ""
+	const en = getLang() === "en"
+	// [text before the number, number, text after, tone]
+	const out = []
+	if (done) out.push([en ? "peak" : "vrhunac", peak, en ? `${pl(peak, [], ["agent", "agents"])} at once` : `${pl(peak, ["agent", "agenta", "agenata"])} istovremeno`, ""])
+	else out.push(["", active, en ? `${pl(active, [], ["agent", "agents"])} working at once` : `${pl(active, ["agent radi", "agenta radi", "agenata radi"])} istovremeno`, "is-live"], [en ? "peak" : "vrhunac", peak, "", "is-dim"])
 	if (isMapa()) {
-		const rows = mapaRows()
-		const finished = rows.filter((r) => r.status === "done" || r.status === "error").length
-		const over = rows.filter((r) => r.signals?.vdOver).length
-		parts.push(t("{done}/{n} institucija gotovo", { done: finished, n: rows.length }))
-		nodes.push({ t: t("{n} sa v.d. preko roka", { n: over }), cls: over ? "sig" : "" })
-		const b = state.budget
-		right = `${t("petlje")} ${b?.loops ?? 0}/${b?.maxLoops ?? 0} · ${t("alati")} ${b?.toolCalls ?? 0}/${b?.maxToolCalls ?? 0}`
+		const over = [...state.mapa.rows.values()].filter((r) => r.signals?.vdOver).length
+		out.push(["", over, t("sa v.d. preko roka"), over ? "is-sig" : ""])
 	} else {
-		const signals = [...state.findings.values()].filter((f) => f.severity === "signal").length
-		const open = openTasks().length
 		const nf = state.findings.size
-		parts.push(`${nf} ${pl(nf, ["nalaz", "nalaza", "nalaza"], ["finding", "findings"])}`)
-		nodes.push({ t: `${signals} ${pl(signals, ["signal", "signala", "signala"], ["signal", "signals"])}`, cls: signals ? "sig" : "" })
-		if (!done || open) nodes.push({ t: `${open} ${pl(open, ["pitanje", "pitanja", "pitanja"], ["question", "questions"])}`, cls: open ? "wait" : "" })
-		const b = state.budget
-		right = `${t("firme")} ${b?.firme ?? 0}/${b?.maxFirme ?? 0} · ${t("osobe")} ${b?.osobe ?? 0}/${b?.maxOsobe ?? 0} · ${t("alati")} ${b?.toolCalls ?? 0}/${b?.maxToolCalls ?? 0}`
+		const signals = [...state.findings.values()].filter((f) => f.severity === "signal").length
+		out.push(["", nf, pl(nf, ["nalaz", "nalaza", "nalaza"], ["finding", "findings"]), ""], ["", signals, pl(signals, ["signal", "signala", "signala"], ["signal", "signals"]), signals ? "is-sig" : ""])
 	}
-	if (!done) {
-		const ev = Math.max(state.stats?.events ?? 0, state.eventCount)
-		tail = `${fmtNum(ev)} ${pl(ev, ["događaj", "događaja", "događaja"], ["event", "events"])}`
-	}
-	return { lead: parts, nodes, tail, right }
+	const ev = Math.max(state.stats?.events ?? 0, state.eventCount)
+	out.push(["", ev, en ? "Mozaik events" : `Mozaik ${pl(ev, ["događaj", "događaja", "događaja"])}`, "is-muted"])
+	return out
+}
+
+function stepNode(s, i) {
+	const inner = [h("span", { class: "step-n", "aria-hidden": "true" }, s.state === "done" ? CHECK : String(i + 1)), h("span", { class: "step-txt" }, h("b", null, s.label), h("small", { class: s.clock ? "js-clock" : null }, s.sub))]
+	const body = s.onClick ? h("button", { class: "step-btn", type: "button", onclick: s.onClick }, ...inner) : h("span", { class: "step-btn" }, ...inner)
+	return h("li", { class: `step is-${s.state}`, "aria-current": s.state === "active" || s.state === "wait" ? "step" : null }, body)
 }
 
 function update() {
-	const v = compute()
-	// parts: [text, class, quiet]; the clock and the event counter tick all the time, so they stay out of the live region
-	const parts = [...v.lead.map((p, i) => [p, i === 0 ? "state" : "", i === 1]), ...v.nodes.map((n) => [n.t, n.cls, false])]
-	if (v.tail) parts.push([v.tail, "", true])
-	const shape = parts.map((p) => `${p[1]}|${p[2]}`).join(",")
-	if (shape !== lastMain) {
-		lastMain = shape
-		const out = []
-		partEls = parts.map((p, i) => {
-			const el = h("span", { class: p[1] || null, "aria-hidden": p[2] ? "true" : null })
-			if (i) out.push(h("span", { class: "sep", "aria-hidden": "true" }, " · "))
-			out.push(el)
-			return el
-		})
-		main.replaceChildren(...out)
+	const st = runStatus()
+	const clock = fmtElapsed(elapsedMs())
+	const list = isMapa() ? mapaSteps("\u0000") : caseSteps(st, "\u0000")
+	// the clock ticks every half second: it is patched in place, everything else rebuilds only when it changes
+	for (const s of list) if (s.sub.includes("\u0000")) s.clock = true
+	const sig = JSON.stringify([getLang(), list.map((s) => [s.state, s.label, s.sub, !!s.onClick])])
+	if (sig !== lastSig) {
+		lastSig = sig
+		stepsEl.replaceChildren(...list.map(stepNode))
+		clockEls = list.map((s, i) => (s.clock ? { el: stepsEl.children[i].querySelector("small"), tpl: s.sub } : null)).filter(Boolean)
 	}
-	// update in place: only a changed text is announced, not the whole line
-	parts.forEach((p, i) => {
-		if (partEls[i].textContent !== p[0]) partEls[i].textContent = p[0]
-	})
-	if (v.right !== lastBudget) {
-		lastBudget = v.right
-		budget.textContent = v.right
+	const nums = stats(st)
+	const numSig = JSON.stringify([getLang(), nums])
+	if (numSig !== lastNums) {
+		lastNums = numSig
+		statsEl.replaceChildren(...nums.map(([pre, n, post, cls]) => h("span", { class: `rs-item ${cls}`.trim() }, pre ? `${pre} ` : null, h("b", null, fmtNum(n)), post ? ` ${post}` : null)))
+	}
+	for (const c of clockEls) {
+		const text = c.tpl.replace("\u0000", clock)
+		if (c.el.textContent !== text) c.el.textContent = text
 	}
 }
 
 export function initMetrics() {
 	const root = document.getElementById("statusLine")
-	main = document.getElementById("slMain")
-	budget = document.getElementById("slBudget")
+	stepsEl = document.getElementById("runSteps")
+	statsEl = document.getElementById("slMain")
 	const schedule = createScheduler(() => {
-		root.hidden = document.body.dataset.view === "hero"
+		// the bar follows the run on screen: a finished case's steps would only confuse the map view
+		root.hidden = document.body.dataset.view === "hero" || (state.ui.view === "mapa" && !isMapa())
+		document.body.dataset.run = runStatus()
 		update()
 	})
 	setInterval(schedule, 500)
 	for (const ev of ["meta", "snapshot", "finding", "tasks", "mapa", "view"]) on(ev, schedule)
-	onLang(schedule)
+	onLang(() => {
+		lastSig = lastNums = ""
+		schedule()
+	})
 	schedule()
 }

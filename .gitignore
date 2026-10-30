@@ -6,3 +6,4 @@ out/
 # large raw downloads (only compact/normalized caches are committed)
 data/raw/
 scratch/
+.claude/

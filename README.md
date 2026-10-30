@@ -15,14 +15,19 @@ npm install
 npm start          # open http://localhost:3000
 ```
 
-1. Click **"Infrastruktura železnice Srbije"**. Four agents start in the same instant. Every supplier and official
-   they find spawns another agent.
-2. Watch **"Pretraga uživo"**: every request to a public register appears live, with the agent that made it and a link.
-3. After about 10 s you will see **"Kadrovik čeka tvoju odluku"**. Open **Sanduče** and approve. Only that agent
-   paused; the rest kept working.
+The bar under the top bar walks you through the flow: **Tim istražuje → Tvoje odluke → Dosije je spreman**.
+
+1. On the start screen, click the example **"Infrastruktura železnice Srbije"** (or type any institution or paste a
+   news link). Four agents start in the same instant. Every supplier and official they find spawns another agent.
+2. Watch the left column: one timeline lane per agent, and **"Pretraga uživo"**, where every request to a public
+   register appears live with the agent that made it and a link.
+3. After about 10 s, **"Tvoje odluke"** lights up and the question appears at the top of the dossier: **"Kadrovik traži
+   tvoje odobrenje"**. Click **Ubaci u izveštaj**. Only the Kadrovik paused; the rest kept working. Skip or answer the
+   owner questions the same way.
 4. The Mediji and Revizor lanes show **"reaguje na nalaz"**: agents react to each other's findings.
-5. Open **Izveštaj** (exports to `.md` or PDF), then try **Mapa prioriteta**, which runs six institutions in parallel.
-   Use **SR | EN** in the top bar to switch the interface language.
+5. When the bar turns green, the **"Dosije je spreman"** card opens the report (exports to `.md` or PDF) and the list
+   of what still needs checking. Then switch to **Mapa prioriteta** in the top bar: six institutions in parallel.
+   **SR | EN** switches the interface language.
 
 **How it runs without a key, and with one:**
 - Without a key, a deterministic inference runner sits in Mozaik's official runner slot. Everything else is real: the
@@ -70,9 +75,11 @@ The concept-by-concept map to the code is in [docs/HOW_IT_WORKS.md](docs/HOW_IT_
 | 1,537 contracts (65.36 bn RSD). Ten negotiated procedures without a public call. | Portal javnih nabavki |
 | The media say "generalni direktor", the register says "v.d.". The claim is marked as differing from the register. | ACAS vs RTV |
 
-| ![Inbox](docs/img/02-inbox-approval.png) | ![Report](docs/img/05-report.png) | ![Mapa prioriteta](docs/img/06-mapa.png) |
+| ![Start](docs/img/00-start.png) | ![Decisions](docs/img/02-inbox-approval.png) | ![Dossier ready](docs/img/04-done.png) |
 |---|---|---|
-| Only the asking agent pauses for approval. | The report, with sources and a verification checklist. | Six triage agents at once, one ranking. |
+| Start: an institution or a news link, or one of the examples. | Your decision, on the dossier. Only the asking agent pauses. | The dossier is ready: report, export and what to verify. |
+| ![Report](docs/img/05-report.png) | ![Mapa prioriteta](docs/img/06-mapa.png) | ![English](docs/img/07-en.png) |
+| The report, with sources and a verification checklist. | Six triage agents at once, one ranking. | The same interface in English. |
 
 ## Commands
 

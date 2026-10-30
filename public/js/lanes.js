@@ -3,7 +3,7 @@
 
 import { h, reconcile, createScheduler, avatar, truncate } from "./format.js"
 import { state, on, now, openTasks, setFilter, CORE_ORDER } from "./store.js"
-import { openInbox } from "./inbox.js"
+import { focusDecisions } from "./inbox.js"
 import { t, pl, getLang, onLang } from "./i18n.js"
 
 const DYN_GROUPS = [
@@ -139,7 +139,7 @@ function renderBanner() {
 	const sig = `${getLang()}|${who}`
 	if (banner.dataset.sig !== sig) {
 		banner.dataset.sig = sig
-		banner.replaceChildren(h("span", null, h("b", null, `${who}.`), ` ${t("Ostali agenti nastavljaju.")}`), h("button", { class: "link-btn", type: "button", onclick: () => openInbox() }, t("Odluči u sandučetu")))
+		banner.replaceChildren(h("span", null, h("b", null, `${who}.`), ` ${t("Ostali agenti nastavljaju.")}`), h("button", { class: "btn small wait", type: "button", onclick: () => focusDecisions(open[0].id) }, t("Odluči")))
 	}
 	banner.hidden = false
 }

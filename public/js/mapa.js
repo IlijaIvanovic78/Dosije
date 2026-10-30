@@ -276,7 +276,6 @@ export function initMapa() {
 		btn: document.getElementById("btnMapa"),
 		panel: document.getElementById("mapaPanel"),
 		dosije: document.getElementById("dosijePanel"),
-		back: document.getElementById("btnMapaBack"),
 		form: document.getElementById("mapaForm"),
 		input: document.getElementById("mapaInput"),
 		run: document.getElementById("btnMapaRun"),
@@ -288,8 +287,7 @@ export function initMapa() {
 		status: document.getElementById("mapaStatus"),
 		progress: document.getElementById("mapaProgress"),
 	}
-	el.btn.addEventListener("click", () => setView(state.ui.view === "mapa" ? "dosije" : "mapa"))
-	el.back.addEventListener("click", () => setView("dosije"))
+	el.btn.addEventListener("click", () => setView("mapa"))
 	el.form.addEventListener("submit", run)
 	el.input.addEventListener("input", () => {
 		dirty = true

@@ -93,7 +93,7 @@ Severity is a 3px left rule on a finding row: signal = `--signal`, pažnja = `--
 - **Report modal.** It should look like a printed document: serif, max 70ch, generous margins.
 
 ## Simplicity rules (the user explicitly asked for a much simpler, calmer UI)
-- **Show less at once.** One top bar, one status line, two columns, one collapsible drawer. Nothing else is always
+- **Show less at once.** One top bar, one run bar, two columns, one collapsible drawer. Nothing else is always
   on screen.
 - **Motion budget.** There are only two allowed animations:
   - a 150 ms opacity fade-in for new rows;
@@ -123,17 +123,25 @@ Every public-source request an agent makes arrives as an `izvor.upit` event (`So
 - Keep this panel quiet: monospace time, sans text, no icons beyond the initials.
 
 ## Layout
-- **Top bar** (white, hairline bottom):
-  - left: the serif wordmark "Dosije" plus a muted "istraživački tim agenata";
-  - center: a wide input and the primary button;
-  - right: the text buttons "Mapa prioriteta" and "Sanduče 3", plus a muted mode text ("bez ključa · keš" or
-    "OpenAI · gpt-5.4-mini").
-- **Status line** under the top bar, small and quiet, replacing the metric tiles: "U toku · 0:41 · 9 agenata radi
-  istovremeno (vrhunac 13) · 36 nalaza · 8 signala · 3 pitanja · 412 događaja", with a thin budget text
-  "firme 8/8 · osobe 3/6 · alati 92/400".
-- **Columns.** Left (about 40%) "Tim": the concurrency chart, then the lanes. Right (about 60%) "Dosije" as a document:
+The screen follows one flow: **start → the team investigates → you decide → the dossier is ready**. Each step has one
+obvious place on screen, so a first-time user never has to hunt for what to do next.
+
+- **Top bar** (white, hairline bottom): the logo mark and serif wordmark "Dosije" (back to the start screen), a
+  segmented switch "Dosije | Mapa prioriteta", then "+ Novi dosije", "Sanduče" (an amber count badge when something
+  waits) and SR | EN. No model or mode text: a connection note appears only when the server connection drops.
+- **Run bar** under the top bar: three numbered steps "Tim istražuje → Tvoje odluke → Dosije je spreman" (blue =
+  running, amber = waiting for you, green check = done; step 2 opens the decisions, step 3 the report), and on the
+  right the numbers that show concurrency: "9 agenata radi istovremeno · vrhunac 13 · 36 nalaza · 8 signala · 412
+  Mozaik događaja".
+- **Columns.** Left (about 40%) "Tim agenata": the concurrency chart, the legend, then the lanes and "Pretraga uživo".
+  Right (about 60%) "Dosije" as a document:
   - an article-style header: label, institution in serif, metadata line in mono;
+  - **"Čeka tvoju odluku"** (amber tint, one card open at a time) while an agent waits for the journalist;
+  - **"Dosije je spreman"** (green tint) at the end: a one-line summary, "Otvori izveštaj", "Preuzmi .md", "Šta još
+    proveriti";
   - "Glavni signali" as a numbered serif list;
   - section tabs, then the findings as rows.
-- **Empty state.** An editorial intro: a serif headline, one paragraph, the demo institutions as quiet buttons, and
-  "Kako radi" as three numbered lines. No hero gradient.
+- **Start screen.** A serif headline, one paragraph, a large search field with the primary button, the demo
+  institutions as cards, and "Kako radi" as four numbered steps (step 3, "Ti odlučuješ", in amber). Below: the public
+  sources as tags and a pointer to "Mapa prioriteta". No hero gradient.
+- **Phones.** One column: the dossier (and its decisions) first, the team below; the start form stacks.

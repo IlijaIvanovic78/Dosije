@@ -104,6 +104,13 @@ export function startFresh() {
 	emit("view", "dosije")
 }
 
+/** Back from the empty state to the case the server still holds. */
+export function resumeCase() {
+	state.ui.fresh = false
+	state.ui.view = "dosije"
+	emit("view", "dosije")
+}
+
 export function laneEnd() {
 	if (isDone() && state.tEnd) return state.tEnd
 	return now()
