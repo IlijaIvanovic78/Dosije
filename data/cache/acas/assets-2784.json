@@ -1,0 +1,102 @@
+{
+ "source": "acas",
+ "key": "assets-2784",
+ "retrievedAt": "2026-10-30T13:41:29.312Z",
+ "data": [
+  {
+   "personId": "2784",
+   "fullName": "Perica Đorđević",
+   "reportDate": "2015-09-01",
+   "reason": "stupanje na javnu funkciju",
+   "source": {
+    "kind": "acas",
+    "title": "ACAS – Izveštaj o imovini i prihodima funkcionera (2015-09-01)",
+    "url": "https://publicacas.acas.rs/#/acas/funkcionerIzvestajDetails/29667",
+    "retrievedAt": "2026-10-30T13:41:28.221Z",
+    "publishedAt": "2015-09-01",
+    "official": true
+   },
+   "summary": [
+    "Prihod od javne funkcije (Član skupštine, Akcionarsko društvo Železnice Srbije, Beograd): 43.000 RSD, od 04.08.2015.",
+    "Prihod od javne funkcije (Akcionarsko društvo Železnice Srbije, Beograd): 60.000 RSD, od 22.03.1987.",
+    "Nepokretna imovina: nije prijavljena"
+   ],
+   "incomes": [
+    {
+     "source": "Član skupštine, Akcionarsko društvo Železnice Srbije, Beograd",
+     "amountRsd": 43000,
+     "period": "od 04.08.2015."
+    },
+    {
+     "source": "Akcionarsko društvo Železnice Srbije, Beograd",
+     "amountRsd": 60000,
+     "period": "od 22.03.1987."
+    }
+   ]
+  },
+  {
+   "personId": "2784",
+   "fullName": "Perica Đorđević",
+   "reportDate": "2014-04-10",
+   "reason": "prestanak javne funkcije",
+   "source": {
+    "kind": "acas",
+    "title": "ACAS – Izveštaj o imovini i prihodima funkcionera (2014-04-10)",
+    "url": "https://publicacas.acas.rs/#/acas/funkcionerIzvestajDetails/21527",
+    "retrievedAt": "2026-10-30T13:41:28.564Z",
+    "publishedAt": "2014-04-10",
+    "official": true
+   },
+   "summary": [
+    "Prihod od javne funkcije (Član upravnog odbora, JP Železnice Srbije Beograd): 43.000 RSD, 02.03.2009. - 30.12.2013.",
+    "Prihod od javne funkcije (JP Železnice Srbije Beograd): 58.000 RSD, od 01.07.2010.",
+    "Nepokretna imovina: nije prijavljena"
+   ],
+   "incomes": [
+    {
+     "source": "Član upravnog odbora, JP Železnice Srbije Beograd",
+     "amountRsd": 43000,
+     "period": "02.03.2009. - 30.12.2013."
+    },
+    {
+     "source": "JP Železnice Srbije Beograd",
+     "amountRsd": 58000,
+     "period": "od 01.07.2010."
+    }
+   ]
+  },
+  {
+   "personId": "2784",
+   "fullName": "Perica Đorđević",
+   "reportDate": "2010-01-27",
+   "reason": "stupanje na javnu funkciju",
+   "source": {
+    "kind": "acas",
+    "title": "ACAS – Izveštaj o imovini i prihodima funkcionera (2010-01-27)",
+    "url": "https://publicacas.acas.rs/#/acas/funkcionerIzvestajDetails/2805",
+    "retrievedAt": "2026-10-30T13:41:28.915Z",
+    "publishedAt": "2010-01-27",
+    "official": true
+   },
+   "summary": [
+    "Prihod od javne funkcije (Član upravnog odbora, JP Železnice Srbije Beograd): 34.000 RSD, od 01.04.2009.",
+    "Prihod od javne funkcije (JP Železnice Srbije Beograd): 31.000 RSD, od 01.01.1987.",
+    "Nepokretna imovina: nije prijavljena",
+    "Pokretna imovina (registrovana): 1 (ostalo Lada - Niva 2005)",
+    "Pravo korišćenja nepokretnosti: 1 stavka"
+   ],
+   "incomes": [
+    {
+     "source": "Član upravnog odbora, JP Železnice Srbije Beograd",
+     "amountRsd": 34000,
+     "period": "od 01.04.2009."
+    },
+    {
+     "source": "JP Železnice Srbije Beograd",
+     "amountRsd": 31000,
+     "period": "od 01.01.1987."
+    }
+   ]
+  }
+ ]
+}

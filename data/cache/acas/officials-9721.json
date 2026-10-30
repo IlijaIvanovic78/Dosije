@@ -1,0 +1,200 @@
+{
+ "source": "acas",
+ "key": "officials-9721",
+ "retrievedAt": "2026-10-30T13:41:22.824Z",
+ "data": [
+  {
+   "id": "5043326",
+   "fullName": "Bojan Stegnjaja",
+   "fullNameCyr": "Бојан Стегњаја",
+   "position": "Član skupštine",
+   "positionCyr": "Члан Скупштине",
+   "isActing": false,
+   "institutionName": "Infrastruktura železnice Srbije a.d. Beograd",
+   "from": "2026-07-31",
+   "appointedBy": "Ministarstvo privrede",
+   "source": {
+    "kind": "acas",
+    "title": "ACAS – Registar funkcionera: Infrastruktura železnice Srbije a.d. Beograd",
+    "url": "https://publicacas.acas.rs/#/acas/funkcioner",
+    "retrievedAt": "2026-10-30T13:41:22.822Z",
+    "publishedAt": "2026-07-31",
+    "official": true
+   }
+  },
+  {
+   "id": "5036367",
+   "fullName": "Zoran Jevtić",
+   "fullNameCyr": "Зоран Јевтић",
+   "position": "v.d. generalnog direktora",
+   "positionCyr": "В.Д. Генералног Директора",
+   "isActing": true,
+   "institutionName": "Infrastruktura železnice Srbije a.d. Beograd",
+   "from": "2025-05-22",
+   "appointedBy": "Vlada Republike Srbije",
+   "source": {
+    "kind": "acas",
+    "title": "ACAS – Registar funkcionera: Infrastruktura železnice Srbije a.d. Beograd",
+    "url": "https://publicacas.acas.rs/#/acas/funkcioner",
+    "retrievedAt": "2026-10-30T13:41:22.823Z",
+    "publishedAt": "2025-05-22",
+    "official": true
+   }
+  },
+  {
+   "id": "34861",
+   "fullName": "Vladimir Maksimović",
+   "fullNameCyr": "Владимир Максимовић",
+   "position": "v.d. generalnog direktora",
+   "positionCyr": "В.Д. Генералног Директора",
+   "isActing": true,
+   "institutionName": "Infrastruktura železnice Srbije a.d. Beograd",
+   "from": "2024-12-05",
+   "to": "2025-05-22",
+   "appointedBy": "Vlada Republike Srbije",
+   "source": {
+    "kind": "acas",
+    "title": "ACAS – Registar funkcionera: Infrastruktura železnice Srbije a.d. Beograd",
+    "url": "https://publicacas.acas.rs/#/acas/funkcioner",
+    "retrievedAt": "2026-10-30T13:41:22.823Z",
+    "publishedAt": "2024-12-05",
+    "official": true
+   }
+  },
+  {
+   "id": "38486",
+   "fullName": "Jelena Tanasković",
+   "fullNameCyr": "Јелена Танасковић",
+   "position": "v.d. generalnog direktora",
+   "positionCyr": "В.Д. Генералног Директора",
+   "isActing": true,
+   "institutionName": "Infrastruktura železnice Srbije a.d. Beograd",
+   "from": "2024-05-07",
+   "to": "2024-11-29",
+   "appointedBy": "Vlada Republike Srbije",
+   "source": {
+    "kind": "acas",
+    "title": "ACAS – Registar funkcionera: Infrastruktura železnice Srbije a.d. Beograd",
+    "url": "https://publicacas.acas.rs/#/acas/funkcioner",
+    "retrievedAt": "2026-10-30T13:41:22.824Z",
+    "publishedAt": "2024-05-07",
+    "official": true
+   }
+  },
+  {
+   "id": "33152",
+   "fullName": "Nebojša Šurlan",
+   "fullNameCyr": "Небојша Шурлан",
+   "position": "v.d. generalnog direktora",
+   "positionCyr": "В.Д. Генералног Директора",
+   "isActing": true,
+   "institutionName": "Infrastruktura železnice Srbije a.d. Beograd",
+   "from": "2020-05-28",
+   "to": "2024-03-29",
+   "appointedBy": "Vlada Republike Srbije",
+   "source": {
+    "kind": "acas",
+    "title": "ACAS – Registar funkcionera: Infrastruktura železnice Srbije a.d. Beograd",
+    "url": "https://publicacas.acas.rs/#/acas/funkcioner",
+    "retrievedAt": "2026-10-30T13:41:22.824Z",
+    "publishedAt": "2020-05-28",
+    "official": true
+   }
+  },
+  {
+   "id": "38175",
+   "fullName": "Petar Milovanović",
+   "fullNameCyr": "Петар Миловановић",
+   "position": "Član skupštine",
+   "positionCyr": "Члан Скупштине",
+   "isActing": false,
+   "institutionName": "Infrastruktura železnice Srbije a.d. Beograd",
+   "from": "2015-08-07",
+   "appointedBy": "Vlada Republike Srbije",
+   "source": {
+    "kind": "acas",
+    "title": "ACAS – Registar funkcionera: Infrastruktura železnice Srbije a.d. Beograd",
+    "url": "https://publicacas.acas.rs/#/acas/funkcioner",
+    "retrievedAt": "2026-10-30T13:41:22.824Z",
+    "publishedAt": "2015-08-07",
+    "official": true
+   }
+  },
+  {
+   "id": "38174",
+   "fullName": "Irena Injac",
+   "fullNameCyr": "Ирена Ињац",
+   "position": "Član skupštine",
+   "positionCyr": "Члан Скупштине",
+   "isActing": false,
+   "institutionName": "Infrastruktura železnice Srbije a.d. Beograd",
+   "from": "2015-08-07",
+   "appointedBy": "Vlada Republike Srbije",
+   "source": {
+    "kind": "acas",
+    "title": "ACAS – Registar funkcionera: Infrastruktura železnice Srbije a.d. Beograd",
+    "url": "https://publicacas.acas.rs/#/acas/funkcioner",
+    "retrievedAt": "2026-10-30T13:41:22.824Z",
+    "publishedAt": "2015-08-07",
+    "official": true
+   }
+  },
+  {
+   "id": "38173",
+   "fullName": "Slavica Manojlović",
+   "fullNameCyr": "Славица Манојловић",
+   "position": "Član skupštine",
+   "positionCyr": "Члан Скупштине",
+   "isActing": false,
+   "institutionName": "Infrastruktura železnice Srbije a.d. Beograd",
+   "from": "2015-08-07",
+   "appointedBy": "Vlada Republike Srbije",
+   "source": {
+    "kind": "acas",
+    "title": "ACAS – Registar funkcionera: Infrastruktura železnice Srbije a.d. Beograd",
+    "url": "https://publicacas.acas.rs/#/acas/funkcioner",
+    "retrievedAt": "2026-10-30T13:41:22.824Z",
+    "publishedAt": "2015-08-07",
+    "official": true
+   }
+  },
+  {
+   "id": "2784",
+   "fullName": "Perica Đorđević",
+   "fullNameCyr": "Перица Ђорђевић",
+   "position": "Član skupštine",
+   "positionCyr": "Члан Скупштине",
+   "isActing": false,
+   "institutionName": "Infrastruktura železnice Srbije a.d. Beograd",
+   "from": "2015-08-07",
+   "appointedBy": "Vlada Republike Srbije",
+   "source": {
+    "kind": "acas",
+    "title": "ACAS – Registar funkcionera: Infrastruktura železnice Srbije a.d. Beograd",
+    "url": "https://publicacas.acas.rs/#/acas/funkcioner",
+    "retrievedAt": "2026-10-30T13:41:22.824Z",
+    "publishedAt": "2015-08-07",
+    "official": true
+   }
+  },
+  {
+   "id": "38172",
+   "fullName": "Nebojša Bojović",
+   "fullNameCyr": "Небојша Бојовић",
+   "position": "Predsednik skupštine",
+   "positionCyr": "Председник Скупштине",
+   "isActing": false,
+   "institutionName": "Infrastruktura železnice Srbije a.d. Beograd",
+   "from": "2015-08-07",
+   "appointedBy": "Vlada Republike Srbije",
+   "source": {
+    "kind": "acas",
+    "title": "ACAS – Registar funkcionera: Infrastruktura železnice Srbije a.d. Beograd",
+    "url": "https://publicacas.acas.rs/#/acas/funkcioner",
+    "retrievedAt": "2026-10-30T13:41:22.824Z",
+    "publishedAt": "2015-08-07",
+    "official": true
+   }
+  }
+ ]
+}

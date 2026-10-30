@@ -1,0 +1,115 @@
+{
+ "source": "acas",
+ "key": "assets-38486",
+ "retrievedAt": "2026-10-30T13:41:25.092Z",
+ "data": [
+  {
+   "personId": "38486",
+   "fullName": "Jelena Tanasković",
+   "reportDate": "2024-12-06",
+   "reason": "prestanak javne funkcije",
+   "source": {
+    "kind": "acas",
+    "title": "ACAS – Izveštaj o imovini i prihodima funkcionera (2024-12-06)",
+    "url": "https://publicacas.acas.rs/#/acas/funkcionerIzvestajDetails/5029837",
+    "retrievedAt": "2026-10-30T13:41:24.042Z",
+    "publishedAt": "2024-12-06",
+    "official": true
+   },
+   "summary": [
+    "Prihod od javne funkcije (v.d. generalnog direktora, Infrastruktura železnice Srbije a.d. Beograd): 196.091 RSD mesečno, 07.05.2024. - 29.11.2024.",
+    "Nepokretna imovina: 2 stavki (kuća, garaža)",
+    "Objekti: kuća 276 m2; garaža 29 m2"
+   ],
+   "incomes": [
+    {
+     "source": "v.d. generalnog direktora, Infrastruktura železnice Srbije a.d. Beograd",
+     "amountRsd": 196091,
+     "period": "mesečno, 07.05.2024. - 29.11.2024."
+    }
+   ]
+  },
+  {
+   "personId": "38486",
+   "fullName": "Jelena Tanasković",
+   "reportDate": "2024-05-29",
+   "reason": "stupanje na javnu funkciju",
+   "source": {
+    "kind": "acas",
+    "title": "ACAS – Izveštaj o imovini i prihodima funkcionera (2024-05-29)",
+    "url": "https://publicacas.acas.rs/#/acas/funkcionerIzvestajDetails/5026176",
+    "retrievedAt": "2026-10-30T13:41:24.402Z",
+    "publishedAt": "2024-05-29",
+    "official": true
+   },
+   "summary": [
+    "Prihod od javne funkcije (Ministar, Ministarstvo poljoprivrede, šumarstva i vodoprivrede): 123.995,58 RSD mesečno, 26.10.2022. - 02.05.2024.",
+    "Prihod od javne funkcije (Ministarstvo za evropske integracije): 36.000 RSD mesečno, 13.05.2021. - 28.10.2022.",
+    "Prihod od javne funkcije (Član upravnog odbora, Fond za razvoj Republike Srbije): 74.981 RSD mesečno, 12.01.2023. - 02.05.2024.",
+    "Prihod od javne funkcije (v.d. generalnog direktora, Infrastruktura železnice Srbije a.d. Beograd): 196.091 RSD mesečno, od 07.05.2024.",
+    "Nepokretna imovina: 2 stavki (kuća, garaža)",
+    "Objekti: kuća 276 m2; garaža 29 m2"
+   ],
+   "incomes": [
+    {
+     "source": "Ministar, Ministarstvo poljoprivrede, šumarstva i vodoprivrede",
+     "amountRsd": 123995.58,
+     "period": "mesečno, 26.10.2022. - 02.05.2024."
+    },
+    {
+     "source": "Ministarstvo za evropske integracije",
+     "amountRsd": 36000,
+     "period": "mesečno, 13.05.2021. - 28.10.2022."
+    },
+    {
+     "source": "Član upravnog odbora, Fond za razvoj Republike Srbije",
+     "amountRsd": 74981,
+     "period": "mesečno, 12.01.2023. - 02.05.2024."
+    },
+    {
+     "source": "v.d. generalnog direktora, Infrastruktura železnice Srbije a.d. Beograd",
+     "amountRsd": 196091,
+     "period": "mesečno, od 07.05.2024."
+    }
+   ]
+  },
+  {
+   "personId": "38486",
+   "fullName": "Jelena Tanasković",
+   "reportDate": "2023-02-07",
+   "reason": "promene u toku vršenja funkcije",
+   "source": {
+    "kind": "acas",
+    "title": "ACAS – Izveštaj o imovini i prihodima funkcionera (2023-02-07)",
+    "url": "https://publicacas.acas.rs/#/acas/funkcionerIzvestajDetails/5017308",
+    "retrievedAt": "2026-10-30T13:41:24.754Z",
+    "publishedAt": "2023-02-07",
+    "official": true
+   },
+   "summary": [
+    "Prihod od javne funkcije (Ministar, Ministarstvo poljoprivrede, šumarstva i vodoprivrede): 123.995,58 RSD mesečno, od 26.10.2022.",
+    "Prihod od javne funkcije (Ministarstvo za evropske integracije): 36.000 RSD mesečno, od 13.05.2021.",
+    "Prihod od javne funkcije (Član upravnog odbora, Fond za razvoj Republike Srbije): 74.981 RSD mesečno, od 12.01.2023.",
+    "Nepokretna imovina: 2 stavki (kuća, garaža)",
+    "Objekti: kuća 276 m2; garaža 29 m2"
+   ],
+   "incomes": [
+    {
+     "source": "Ministar, Ministarstvo poljoprivrede, šumarstva i vodoprivrede",
+     "amountRsd": 123995.58,
+     "period": "mesečno, od 26.10.2022."
+    },
+    {
+     "source": "Ministarstvo za evropske integracije",
+     "amountRsd": 36000,
+     "period": "mesečno, od 13.05.2021."
+    },
+    {
+     "source": "Član upravnog odbora, Fond za razvoj Republike Srbije",
+     "amountRsd": 74981,
+     "period": "mesečno, od 12.01.2023."
+    }
+   ]
+  }
+ ]
+}

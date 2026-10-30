@@ -5,3 +5,4 @@ out/
 .DS_Store
 # large raw downloads (only compact/normalized caches are committed)
 data/raw/
+scratch/

@@ -35,6 +35,7 @@ export type Severity = "info" | "paznja" | "signal"; // signal = red flag that n
 export type SignalCode =
 	| "VD_PREKO_ROKA" // acting head (v.d.) longer than the legal maximum
 	| "VD_BLIZU_ROKA"
+	| "VD_LANAC" // the institution has been run only by consecutive acting heads
 	| "IMENOVANJE_NEPOZNATO"
 	| "BEZ_OBJAVE" // negotiated procedures without publication
 	| "KONCENTRACIJA" // supplier concentration

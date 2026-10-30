@@ -1,0 +1,65 @@
+{
+ "source": "acas",
+ "key": "assets-34861",
+ "retrievedAt": "2026-10-30T13:41:24.002Z",
+ "data": [
+  {
+   "personId": "34861",
+   "fullName": "Vladimir Maksimović",
+   "reportDate": "2025-09-22",
+   "reason": "promene u toku vršenja funkcije",
+   "source": {
+    "kind": "acas",
+    "title": "ACAS – Izveštaj o imovini i prihodima funkcionera (2025-09-22)",
+    "url": "https://publicacas.acas.rs/#/acas/funkcionerIzvestajDetails/5035481",
+    "retrievedAt": "2026-10-30T13:41:23.322Z",
+    "publishedAt": "2025-09-22",
+    "official": true
+   },
+   "summary": [
+    "Prihod od javne funkcije (v.d. generalnog direktora, Infrastruktura železnice Srbije a.d. Beograd): 240.000 RSD mesečno, 09.12.2024. - 22.05.2025.",
+    "Nepokretna imovina: 19 stavki (kuća, šuma, njiva ×3, voćnjak ×2, ostalo ×8, građevinsko zemljište, vikendica, poslovni prostor ×2)",
+    "Objekti: kuća 102 m2; ostalo 7460 m2; vikendica 16 m2; ostalo 19 m2; ostalo 28 m2; ostalo 64 m2; …(+6)",
+    "Pokretna imovina (registrovana): 1 (automobil Hyundai IX 35 2013)",
+    "Akcije i udeli u privrednim društvima: 3 (SMART AND GREEN SOLUTIONS 100%; TEKTIKO - U LIKVIDACIJI 25%; ELEKTROVIZIJA SOLAR 30%)",
+    "Samostalna delatnost / povezana privredna društva: Vladimir Maksimović PR konsultantske usluge Kragujevac / Konsultantske usluge"
+   ],
+   "incomes": [
+    {
+     "source": "v.d. generalnog direktora, Infrastruktura železnice Srbije a.d. Beograd",
+     "amountRsd": 240000,
+     "period": "mesečno, 09.12.2024. - 22.05.2025."
+    }
+   ]
+  },
+  {
+   "personId": "34861",
+   "fullName": "Vladimir Maksimović",
+   "reportDate": "2025-01-08",
+   "reason": "stupanje na javnu funkciju",
+   "source": {
+    "kind": "acas",
+    "title": "ACAS – Izveštaj o imovini i prihodima funkcionera (2025-01-08)",
+    "url": "https://publicacas.acas.rs/#/acas/funkcionerIzvestajDetails/5035480",
+    "retrievedAt": "2026-10-30T13:41:23.664Z",
+    "publishedAt": "2025-01-08",
+    "official": true
+   },
+   "summary": [
+    "Prihod od javne funkcije (v.d. generalnog direktora, Infrastruktura železnice Srbije a.d. Beograd): 190.000 RSD mesečno, od 09.12.2024.",
+    "Nepokretna imovina: 20 stavki (kuća ×2, šuma, njiva ×3, voćnjak ×2, ostalo ×8, građevinsko zemljište, vikendica, poslovni prostor ×2)",
+    "Objekti: kuća 230 m2; kuća 102 m2; ostalo 7460 m2; vikendica 16 m2; ostalo 19 m2; ostalo 28 m2; …(+7)",
+    "Pokretna imovina (registrovana): 1 (automobil Hyundai IX 35 2013)",
+    "Akcije i udeli u privrednim društvima: 3 (SMART AND GREEN SOLUTIONS 100%; TEKTIKO - U LIKVIDACIJI 25%; ELEKTROVIZIJA SOLAR 30%)",
+    "Samostalna delatnost / povezana privredna društva: Vladimir Maksimović PR konsultantske usluge Kragujevac / Konsultantske usluge"
+   ],
+   "incomes": [
+    {
+     "source": "v.d. generalnog direktora, Infrastruktura železnice Srbije a.d. Beograd",
+     "amountRsd": 190000,
+     "period": "mesečno, od 09.12.2024."
+    }
+   ]
+  }
+ ]
+}
