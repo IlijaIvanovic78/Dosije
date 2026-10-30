@@ -342,7 +342,7 @@ docs/                       architecture, agent behavior, per-source notes, scre
 | Criterion | Where to look |
 |---|---|
 | **Useful and original** (30) | A real newsroom workflow on real Serbian public data. Signals rather than verdicts. The journalist is a team member. A live demo on a story from this week. |
-| **Mozaik: parallel agents, shared state** (30) | Up to 21 agents with a peak of 13 concurrent loops, spawned by reaction to events, coordinating through `DosijeState`. An interceptor pauses one agent for a human while the others keep going. Conflicts are resolved in the shared state. |
+| **Mozaik: parallel agents, shared state** (30) | Up to 21 agents with a peak of 13 concurrent loops, spawned by reaction to events, coordinating through `DosijeState`. An interceptor pauses one agent for a human while the others keep going. Conflicts are resolved in the shared state. Mapa prioriteta runs one triage agent per institution, all at once, feeding one shared ranking. |
 | **It works from the README** (25) | `npm install && npm start` with no key and no internet dependency for the demo. `npm test` is green. There is a headless CLI. |
 | **README** (15) | You are reading it. |
 
