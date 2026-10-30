@@ -99,7 +99,8 @@ function updateLane(lane, t) {
 		rec.root.dataset.state = st.k
 	}
 	const recent = state.live && lane.info.dynamic && lane.spawnT && t - lane.spawnT < 10000
-	const note = recent ? spawnText(lane.info) : ""
+	const reacting = state.live && lane.reactT && t - lane.reactT < 10000
+	const note = reacting ? `reaguje na nalaz${lane.reactFrom ? ` · ${lane.reactFrom}` : ""}` : recent ? spawnText(lane.info) : ""
 	if (rec.spawnSig !== note) {
 		rec.spawnSig = note
 		rec.spawn.textContent = note

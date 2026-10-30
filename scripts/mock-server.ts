@@ -828,6 +828,17 @@ function kadrovikLoop(c: Case) {
 					approval: "approved",
 					claim: { subject: "Petar Petrović", predicate: "datum_imenovanja", value: "2025-05-22" },
 				})
+				// cross-agent reaction: an existing agent gets a new loop, its first message starts with "Povod:"
+				const reaction = runLoop(
+					c,
+					MEDIJI,
+					"Povod: nalaz Kadrovik: v.d. direktora na funkciji duže od zakonskog maksimuma. Proveri šta mediji pišu.",
+					[{ think: 700, tool: "vesti_pretraga", args: { query: "Petar Petrović v.d. direktora", days: 60 }, run: 1800, output: `{"items":4}` }],
+					"Pretraga po povodu nalaza završena.",
+				).catch((e) => {
+					if (!(e instanceof Abort)) console.error(e)
+				})
+				c.spawned.push(reaction)
 			},
 		},
 	]

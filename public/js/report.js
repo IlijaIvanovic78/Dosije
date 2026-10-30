@@ -1,7 +1,7 @@
 // Report modal: Markdown render, download, print/PDF, copy.
 
 import { renderMarkdown } from "./markdown.js"
-import { state, on } from "./store.js"
+import { state, on, now } from "./store.js"
 import { api } from "./api.js"
 import { toast, dismissToasts } from "./toast.js"
 import { fmtClock } from "./format.js"
@@ -87,6 +87,7 @@ export function initReport() {
 	})
 	on("done", (report) => {
 		if (!report) return
+		if (now() - (Date.parse(report.generatedAt) || 0) > 20000) return // replayed history after a page load
 		toast({
 			kind: "done",
 			title: "Dosije je spreman",

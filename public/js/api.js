@@ -12,7 +12,9 @@ async function request(method, url, body) {
 			const j = await res.json()
 			if (j?.error) msg = j.error
 		} catch {}
-		throw new Error(msg)
+		const err = new Error(msg)
+		err.status = res.status
+		throw err
 	}
 	const type = res.headers.get("content-type") || ""
 	return type.includes("json") ? res.json() : res.text()

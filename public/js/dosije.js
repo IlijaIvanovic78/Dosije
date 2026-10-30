@@ -1,11 +1,11 @@
 // "Dosije": the case file as a document: institution header, main signals, entities, section tabs, finding rows.
 
 import { h, reconcile, createScheduler, parseIso, fmtClock, truncate, statusTag, sourceLinks, splitSourceTitle, SECTIONS, SECTION_LABEL, STATUS_LABEL, SIGNAL_LABEL, RULE_LABEL, ROLE_LABEL, SOURCE_LABEL } from "./format.js"
-import { state, on, openTasks, setFilter, clearFilters } from "./store.js"
+import { state, on, openTasks, setFilter, clearFilters, startFresh } from "./store.js"
+import { showNotice, clearNotice } from "./notice.js"
 import { openInbox } from "./inbox.js"
 import { openReport } from "./report.js"
 import { api } from "./api.js"
-import { toast } from "./toast.js"
 
 const SEV_RANK = { signal: 3, paznja: 2, info: 1 }
 const STATUS_RANK = { zvanicno: 4, potvrdjeno: 3, nepotvrdjeno: 2, demantovano: 1 }
@@ -29,18 +29,26 @@ function shortSource(f) {
 	return src.kind === "vesti" ? truncate(splitSourceTitle(src).outlet, 20) : SOURCE_LABEL[src.kind] || src.kind
 }
 
+const RULE_WINNER = {
+	zvanicni_izvor_ima_prednost: "Prednost ima zvanični registar.",
+	vise_izvora: "Prednost ima nalaz sa više izvora.",
+	noviji_datum: "Prednost ima noviji podatak.",
+}
+
+/** "Zvanični registar (ACAS) navodi «A»; ovaj izvor navodi «B». Prednost ima zvanični registar." */
 function conflictNote(f) {
 	const c = f.conflictId ? state.conflicts.get(f.conflictId) : null
 	if (!c) return null
-	const [a, b] = c.findingIds
-	return h(
-		"div",
-		{ class: "note conflict" },
-		h("b", null, "Konflikt rešen: "),
-		`${shortSource(state.findings.get(a))} „${c.values[0]}“ naspram ${shortSource(state.findings.get(b))} „${c.values[1]}“`,
-		h("span", null, ` → ${RULE_LABEL[c.rule] || c.rule}.`),
-		c.explanation ? h("div", { class: "note-sub" }, c.explanation) : null,
-	)
+	const idx = c.findingIds.indexOf(c.winnerFindingId)
+	const wi = idx < 0 ? 0 : idx
+	const winner = state.findings.get(c.findingIds[wi])
+	const other = state.findings.get(c.findingIds[1 - wi])
+	const winnerVal = c.values[wi]
+	const otherVal = c.values[1 - wi]
+	const official = c.rule === "zvanicni_izvor_ima_prednost"
+	const first = official ? `Zvanični registar (${shortSource(winner)})` : shortSource(winner)
+	const second = f.id === other?.id ? "ovaj izvor" : f.id === winner?.id ? shortSource(other) : "drugi izvor"
+	return h("div", { class: "note conflict" }, h("b", null, "Neslaganje izvora: "), `${first} navodi „${winnerVal}“; ${second} navodi „${otherVal}“. ${RULE_WINNER[c.rule] || RULE_LABEL[c.rule] || ""}`)
 }
 
 function approvalNote(f) {
@@ -54,12 +62,13 @@ function cardChildren(f) {
 	const created = parseIso(f.createdAt)
 	const merged = f.mergedFrom?.length
 	const code = f.signalCode ? SIGNAL_LABEL[f.signalCode] || f.signalCode : f.severity === "signal" ? "signal" : f.severity === "paznja" ? "pažnja" : ""
+	const conflict = conflictNote(f)
 	return [
 		h("div", { class: "f-meta" }, h("span", { class: "sect" }, SECTION_LABEL[f.section] || f.section), code ? h("span", { class: `code ${f.severity}` }, code) : null, statusTag(f.status), approvalNote(f)),
 		h("h3", { class: "f-title" }, f.title),
 		h("p", { class: "f-text" }, f.text),
-		conflictNote(f),
-		f.note ? h("div", { class: "note" }, h("b", null, "Napomena urednika: "), f.note) : null,
+		conflict,
+		f.note && !conflict ? h("div", { class: "note" }, h("b", null, "Napomena urednika: "), f.note) : null,
 		sourceLinks(f.sources, f.id),
 		h("div", { class: "f-foot" }, `dodao ${f.agentName || "agent"}`, created ? ` · ${fmtClock(created)}` : "", merged ? ` · spojeno iz ${merged + 1} nalaza` : ""),
 	]
@@ -245,7 +254,7 @@ function renderEntities() {
 				{
 					class: `ent ${e.kind}${state.live && fresh.has(e.id) ? " enter" : ""}`,
 					type: "button",
-					title: `${e.kind === "firma" ? "firma" : "osoba"}${e.role ? ` · ${ROLE_LABEL[e.role] || e.role}` : ""} · klik filtrira nalaze`,
+					title: `${e.name} · ${e.kind === "firma" ? "firma" : "osoba"}${e.role ? ` · ${ROLE_LABEL[e.role] || e.role}` : ""} · klik filtrira nalaze`,
 					onclick: () => setFilter("entityId", e.id),
 				},
 				h("span", { class: "e-name" }, truncate(e.name, 34)),
@@ -377,6 +386,7 @@ function renderActions() {
 	const live = state.status === "running" || state.status === "finalizing"
 	el.btnFinish.hidden = !live
 	el.btnFinish.disabled = state.status === "finalizing"
+	el.btnFresh.hidden = state.status !== "done"
 }
 
 function render() {
@@ -417,15 +427,26 @@ export function initDosije() {
 		verifyPanel: document.getElementById("verifyPanel"),
 		btnReport: document.getElementById("btnReport"),
 		btnFinish: document.getElementById("btnFinish"),
+		btnFresh: document.getElementById("btnFresh"),
+		notice: document.getElementById("docNotice"),
 	}
 	el.btnReport.addEventListener("click", () => openReport())
+	el.btnFresh.addEventListener("click", () => {
+		clearNotice(el.notice)
+		clearNotice(document.getElementById("topNotice"))
+		document.getElementById("inInst").value = ""
+		document.getElementById("inFocus").value = ""
+		startFresh()
+		document.getElementById("inInst").focus()
+	})
 	el.btnFinish.addEventListener("click", async () => {
 		el.btnFinish.disabled = true
+		clearNotice(el.notice)
 		try {
 			await api.finish()
 		} catch (e) {
 			el.btnFinish.disabled = false
-			toast({ kind: "error", title: "Nije uspelo", text: e.message })
+			showNotice(el.notice, { text: `Dosije nije završen. ${e.message}` })
 		}
 	})
 

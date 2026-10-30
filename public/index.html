@@ -29,6 +29,8 @@
 			</nav>
 		</header>
 
+		<div id="topNotice" class="notice-host top"></div>
+
 		<div id="statusLine" class="statusline" role="status" aria-live="polite" hidden>
 			<span id="slMain" class="sl-main"></span>
 			<span id="slBudget" class="sl-budget"></span>
@@ -76,6 +78,7 @@
 								<button id="btnMapaPreset" class="link-btn" type="button">vrati preset: transportni sektor</button>
 								<span id="mapaProgress" class="mapa-progress"></span>
 							</div>
+							<div id="mapaNotice" class="notice-host"></div>
 						</form>
 						<div id="mapaTable" class="mapa-table" role="table" aria-label="Rang lista institucija">
 							<div class="mhead" role="row"><span>#</span><span>Institucija</span><span>Ocena</span><span>Signali</span><span>Status</span><span></span></div>
@@ -90,10 +93,12 @@
 						<header class="doc-head">
 							<div id="instCard" class="doc-title"></div>
 							<div class="doc-actions">
+								<button id="btnFresh" class="link-btn" type="button" hidden title="Vraća prazan ekran; server zadržava dosije">Novi dosije</button>
 								<button id="btnFinish" class="btn" type="button" hidden>Završi sada</button>
 								<button id="btnReport" class="btn primary" type="button" hidden>Izveštaj</button>
 							</div>
 						</header>
+						<div id="docNotice" class="notice-host"></div>
 						<section class="signals">
 							<h3 class="sec-title">Glavni signali<span id="signalsCount" class="count">0</span></h3>
 							<div id="signalsBody"></div>
@@ -196,6 +201,7 @@
 						<label><input type="radio" name="kind" value="firma"><span>firma</span></label>
 					</div>
 					<button class="btn primary" type="submit">Dodaj trag</button>
+					<div id="leadNotice" class="notice-host"></div>
 				</form>
 			</section>
 		</div>

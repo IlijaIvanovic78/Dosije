@@ -4,6 +4,7 @@ import { h, reconcile, createScheduler, parseIso, fmtClock, truncate, safeUrl, a
 import { state, on, openTasks, applySnapshot } from "./store.js"
 import { api } from "./api.js"
 import { toast, dismissToasts } from "./toast.js"
+import { showNotice, clearNotice } from "./notice.js"
 
 let root, backdrop, listEl, historyEl, historyCount, countEl, emptyEl, inboxBtn
 const cardCache = new Map() // taskId -> { el }
@@ -43,7 +44,18 @@ async function send(task, payload, card) {
 	} catch (e) {
 		buttons.forEach((b) => (b.disabled = false))
 		card.classList.remove("sending")
-		toast({ kind: "error", title: "Odgovor nije poslat", text: e.message })
+		let host = card.querySelector(".notice-host")
+		if (!host) {
+			host = h("div", { class: "notice-host" })
+			card.append(host)
+		}
+		showNotice(host, { text: `Odgovor nije poslat. ${e.message}` })
+		// "already resolved" (409) or "no such task" (404): the screen is out of date, refresh it
+		if (e.status === 409 || e.status === 404) {
+			try {
+				applySnapshot(await api.state())
+			} catch {}
+		}
 	}
 }
 
@@ -179,13 +191,15 @@ export function initInbox() {
 		const kind = leadForm.elements.kind.value
 		if (!name) return
 		const submit = leadForm.querySelector("button[type=submit]")
+		const notice = document.getElementById("leadNotice")
 		submit.disabled = true
+		clearNotice(notice)
 		try {
 			await api.lead(name, kind)
 			leadForm.elements.name.value = ""
-			toast({ kind: "done", title: "Trag dodat", text: `${name}: tim ga već proverava.`, ttl: 4500 })
+			showNotice(notice, { kind: "info", text: `Trag dodat: ${name}. Tim ga već proverava.` })
 		} catch (err) {
-			toast({ kind: "error", title: "Trag nije dodat", text: err.message })
+			showNotice(notice, { text: `Trag nije dodat. ${err.message}` })
 		} finally {
 			submit.disabled = false
 		}

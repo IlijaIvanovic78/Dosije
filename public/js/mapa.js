@@ -4,7 +4,7 @@
 import { h, createScheduler, sourceLinks, fmtNum, fmtElapsed } from "./format.js"
 import { state, on, setView, activeCount, peakCount, elapsedMs } from "./store.js"
 import { api } from "./api.js"
-import { toast } from "./toast.js"
+import { showNotice, clearNotice, finishCaseThen, caseBusy } from "./notice.js"
 
 const MAX_SCORE = 100 // bar scale: at least 100 points, or the highest score on screen
 const rows = new Map() // slug -> { root, parts, sig }
@@ -103,7 +103,7 @@ async function openDosije(r) {
 		await api.start(r.name)
 		setView("dosije")
 	} catch (e) {
-		toast({ kind: "error", title: "Dosije nije pokrenut", text: e.message })
+		showNotice(el.notice, { text: `Dosije nije pokrenut. ${e.message}` })
 	}
 }
 
@@ -209,14 +209,22 @@ async function run(e) {
 		el.input.focus()
 		return
 	}
+	await startMapa(names)
+}
+
+/** POST /api/mapa; a refusal stays visible under the form, with a one-click way out when a case is still running. */
+async function startMapa(names) {
+	clearNotice(el.notice)
 	el.run.disabled = true
 	try {
 		await api.mapa(names)
 		dirty = false
 		editing = false
 	} catch (err) {
-		toast({ kind: "error", title: "Mapa nije pokrenuta", text: err.message })
 		el.run.disabled = false
+		const actions = []
+		if (err.status === 409 && caseBusy()) actions.push({ label: "Završi dosije pa pokreni mapu", onClick: () => finishCaseThen(el.notice, () => startMapa(names)) })
+		showNotice(el.notice, { text: `Mapa nije pokrenuta. ${err.message}`, actions })
 	}
 }
 
@@ -231,6 +239,7 @@ export function initMapa() {
 		run: document.getElementById("btnMapaRun"),
 		preset: document.getElementById("btnMapaPreset"),
 		edit: document.getElementById("btnMapaEdit"),
+		notice: document.getElementById("mapaNotice"),
 		rows: document.getElementById("mapaRows"),
 		status: document.getElementById("mapaStatus"),
 		progress: document.getElementById("mapaProgress"),

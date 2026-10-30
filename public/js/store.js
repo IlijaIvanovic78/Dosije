@@ -27,7 +27,7 @@ export const state = {
 	// "Mapa prioriteta" (separate from the case): runKind says which run the lanes / Gantt / metrics belong to
 	runKind: "case",
 	mapa: { id: null, status: "idle", startedAt: null, finishedAt: null, rows: new Map() },
-	ui: { view: "dosije" }, // right column: "dosije" | "mapa"
+	ui: { view: "dosije", fresh: false }, // right column: "dosije" | "mapa"; fresh = client-side "Novi dosije" (empty state shown)
 
 	lanes: new Map(),
 	acts: new Map(), // live search: request id -> SourceActivity (+ t0), in order of first appearance
@@ -85,9 +85,21 @@ export const isRunning = () => runStatus() === "running" || runStatus() === "fin
 export const isDone = () => runStatus() === "done"
 
 export function setView(view) {
-	if (state.ui.view === view) return
+	if (view === "mapa") state.ui.fresh = false
+	if (state.ui.view === view) {
+		emit("view", view)
+		return
+	}
 	state.ui.view = view
 	emit("view", view)
+}
+
+/** "Novi dosije": back to the empty state on this screen only (the server keeps its state). */
+export function startFresh() {
+	state.ui.fresh = true
+	state.ui.view = "dosije"
+	clearFilters()
+	emit("view", "dosije")
 }
 
 export function laneEnd() {
@@ -128,6 +140,9 @@ function newLane(info) {
 		error: false,
 		left: false,
 		blockedUntil: 0,
+		reactT: 0,
+		reactFrom: "",
+		spawnT: 0,
 		findings: 0,
 		joinedAt: parseIso(info.joinedAt) || Date.now(),
 	}
@@ -246,7 +261,10 @@ export function applySnapshot(snap) {
 	if (!snap) return
 	const prevMapa = state.mapa.id
 	const newCase = snap.caseId !== state.caseId || (!snap.caseId && (snap.mapa?.id || null) !== prevMapa)
-	if (newCase) resetDerived()
+	if (newCase) {
+		resetDerived()
+		state.ui.fresh = false
+	}
 	if (snap.mapa) {
 		state.mapa = { id: snap.mapa.id, status: snap.mapa.status, startedAt: snap.mapa.startedAt || null, finishedAt: snap.mapa.finishedAt || null, rows: new Map((snap.mapa.rows || []).map((r) => [r.slug, r])) }
 	}
@@ -376,6 +394,12 @@ export function applyEvent(ev) {
 				lane.loopsOpen++
 				lane.answered = false
 				lane.error = false
+				// a cross-agent reaction: the loop's first message is "Povod: nalaz <agent>: <title>"
+				const povod = String(p.content || "").match(/^Povod:\s*nalaz\s+(.+?):\s/)
+				if (povod || /^Povod:/.test(String(p.content || ""))) {
+					lane.reactT = t
+					lane.reactFrom = povod ? povod[1] : ""
+				}
 				refreshActive(t)
 			}
 			emit("lane", lane.id)
@@ -474,6 +498,7 @@ export function applyEvent(ev) {
 				emit("snapshot", { newCase: true })
 			}
 			state.runKind = "mapa"
+			state.ui.fresh = false
 			state.mapa.status = "running"
 			state.t0 = t
 			state.tEnd = null
@@ -516,6 +541,7 @@ export function applyEvent(ev) {
 		}
 		case "dosije.started": {
 			state.runKind = "case"
+			state.ui.fresh = false
 			state.ui.view = "dosije"
 			emit("view", "dosije")
 			if (p.caseId && p.caseId !== state.caseId) {
@@ -591,7 +617,7 @@ export function applyEvent(ev) {
 			state.tasks.set(p.task.id, p.task)
 			const lane = state.lanes.get(p.task.fromAgentId)
 			if (lane) refreshWait(lane, t)
-			emit("tasks", { task: p.task, isNew: true })
+			emit("tasks", { task: p.task, isNew: now() - t < 20000 }) // replayed history after a page load must not toast
 			emit("lane", lane?.id)
 			break
 		}

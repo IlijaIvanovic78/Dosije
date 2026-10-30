@@ -13,7 +13,7 @@ import { initReport } from "./js/report.js"
 import { initMapa } from "./js/mapa.js"
 import { initMetrics } from "./js/metrics.js"
 import { initSearch } from "./js/search.js"
-import { toast } from "./js/toast.js"
+import { showNotice, clearNotice, finishCaseThen, caseBusy } from "./js/notice.js"
 
 const $ = (id) => document.getElementById(id)
 
@@ -44,6 +44,19 @@ function renderDemoChips() {
 	$("heroChips").replaceChildren(...demos.map((d) => h("button", { class: "demo-btn", type: "button", onclick: () => startCase(d.name) }, d.name)))
 }
 
+/** POST /api/dosije; a refusal stays visible under the top bar, with a one-click way out when a case is still running. */
+async function doStart(value, focusValue) {
+	const host = $("topNotice")
+	clearNotice(host)
+	try {
+		await api.start(value, focusValue || undefined)
+	} catch (e) {
+		const actions = []
+		if (e.status === 409 && caseBusy()) actions.push({ label: "Završi dosije pa pokreni novi", onClick: () => finishCaseThen(host, () => doStart(value, focusValue)) })
+		showNotice(host, { text: `Dosije nije pokrenut. ${e.message}`, actions })
+	}
+}
+
 let starting = false
 async function startCase(inputValue) {
 	const inst = $("inInst")
@@ -62,9 +75,7 @@ async function startCase(inputValue) {
 	btn.disabled = true
 	btn.textContent = "Pokrećem…"
 	try {
-		await api.start(value, focus.value.trim())
-	} catch (e) {
-		toast({ kind: "error", title: "Dosije nije pokrenut", text: e.message })
+		await doStart(value, focus.value.trim())
 	} finally {
 		setTimeout(() => {
 			starting = false
@@ -75,7 +86,7 @@ async function startCase(inputValue) {
 }
 
 function renderView() {
-	const hasCase = !!state.caseId || state.ui.view === "mapa"
+	const hasCase = (!!state.caseId || state.ui.view === "mapa") && !state.ui.fresh
 	document.body.dataset.view = hasCase ? "case" : "hero"
 }
 

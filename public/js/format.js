@@ -145,7 +145,7 @@ export const STATUS_LABEL = {
 	zvanicno: "Zvanično",
 	potvrdjeno: "Potvrđeno",
 	nepotvrdjeno: "Nepotvrđeno",
-	demantovano: "Demantovano",
+	demantovano: "Odstupa od registra",
 }
 
 export const SEVERITY_LABEL = { info: "info", paznja: "pažnja", signal: "signal" }
