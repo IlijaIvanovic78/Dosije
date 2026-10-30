@@ -114,6 +114,7 @@ const EN = {
 	"Čeka samo agent koji pita. Ostali nastavljaju.": "Only the asking agent waits. The others carry on.",
 	"+ Dodaj trag": "+ Add a lead",
 	"Tim agenata": "Agent team",
+	"najvažnije za proveru": "the most important to verify",
 	"pretražuje izvor": "searching a source",
 	"novi agent": "new agent",
 	"Pitanja agenata, tvoje odluke i tragovi koje dodaješ timu.": "The agents' questions, your decisions and the leads you add to the team.",

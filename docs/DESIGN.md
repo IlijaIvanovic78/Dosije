@@ -1,106 +1,77 @@
-# Dosije design system: "editorial newsroom tool"
+# Dosije design system: "a clean, modern research tool"
 
-The product is a research instrument for journalists. It should feel like a quality newspaper's internal tool or a
-public-interest data project (ProPublica, The Markup, OCCRP Aleph, KRIK), **not** a sci-fi AI dashboard.
+The product is a research instrument for journalists. It should feel like a well-made modern product (clean cards,
+clear states, generous spacing) that a newsroom would trust, **not** a sci-fi AI dashboard and not a bare HTML page.
+Anyone looking at the screen for five seconds should be able to say what is happening: how many agents work right now,
+who waits for the journalist, and what the dossier already says.
 
-**What to avoid** (the "AI dashboard" look):
-- dark navy with neon purple or cyan;
-- glows, gradients, glassmorphism, shimmer;
-- pulsing rings;
+**What to avoid:**
+- dark navy with neon purple or cyan, glows, glassmorphism, shimmer, pulsing rings;
 - emojis as icons;
-- pills on everything;
-- giant metric tiles;
-- marketing copy.
+- giant metric tiles and marketing copy;
+- old-blog typography (system serif headings on a beige page).
 
 ## Principles
-1. **Typography carries the hierarchy.** Use color and boxes sparingly.
-2. **One accent color.** Red is reserved for signals; amber is reserved for "waiting for you".
-3. **Hairlines, not cards.** Use 1px separators and whitespace instead of nested rounded boxes with shadows.
-4. **Calm motion.** Use 150-200 ms fades and a pale highlight for new items. Nothing pulses, bounces or glows.
-5. **No emojis anywhere in the UI.** Use small monochrome inline SVG icons (`currentColor`, 1.5px stroke, 16px) or
-   2-letter initials.
-6. **Data looks like data.** Numbers use tabular figures, identifiers are monospace, and dates are `dd.mm.yyyy`.
+1. **One flow, always visible.** The run bar shows where the run is: the team investigates → you decide → the dossier
+   is ready. Each step has one obvious place on screen.
+2. **Cards on a light gray page.** White cards (14px radius, 1px `--rule` border, a faint shadow) group what belongs
+   together: the team, live search, the dossier header, decisions, signals, people and firms, findings.
+3. **Color means state.** Blue = working / selected, amber = waiting for you, red = signal, green = official / done.
+   States are soft tinted pills with text, never color alone.
+4. **Calm motion.** Only a 150 ms fade for new items and a pale highlight that fades out on new findings. Nothing
+   pulses, bounces or slides.
+5. **No emojis.** Small monochrome inline SVG icons (`currentColor`, 1.6px stroke) or 2-letter initials.
+6. **Data looks like data.** Numbers use tabular figures, identifiers are monospace, dates are `dd.mm.yyyy`.
 
 ## Tokens
 
 | token | value | use |
 |---|---|---|
-| `--paper` | `#FBFAF7` | page background |
-| `--surface` | `#FFFFFF` | panels, inputs, modal |
-| `--ink` | `#1C1B19` | primary text, primary button |
-| `--ink-2` | `#55534E` | secondary text |
-| `--ink-3` | `#8A8780` | labels, axis, meta |
-| `--rule` | `#E6E3DC` | hairlines |
-| `--rule-strong` | `#D3CFC6` | input borders |
-| `--accent` | `#1F4E79` | links, focus, selected tab, tool bars |
-| `--signal` | `#B42318` | signal severity, demantovano, "now" line |
-| `--wait` | `#B45309` | waiting for the journalist (amber) |
-| `--ok` | `#2F6B3A` | zvanično / done |
-| `--warn` | `#8A6100` | pažnja |
-| `--think` | `#CFCBC2` | inference bars (neutral gray) |
-| `--highlight` | `#FFF4C2` | fade-out background of a new item |
+| `--bg` | `#F4F5F7` | page background |
+| `--surface` | `#FFFFFF` | cards, inputs, modal |
+| `--sunk` / `--hover` | `#F1F3F6` / `#F8F9FB` | neutral pills, segmented controls, row hover |
+| `--ink` / `--ink-2` / `--ink-3` | `#111827` / `#4B5563` / `#8B95A5` | text, secondary text, labels and meta |
+| `--rule` / `--rule-strong` | `#E7E9EE` / `#D6DAE1` | card borders and separators / input borders |
+| `--accent` (+ `-ink`, `-tint`) | `#2563EB` | links, focus, the active step, tool bars, the live agent count |
+| `--signal` (+ `-tint`) | `#DC2626` | signals, "odstupa od registra", the "now" line |
+| `--wait` (+ `-ink`, `-tint`) | `#D97706` | waiting for the journalist |
+| `--ok` (+ `-ink`, `-tint`) | `#16A34A` | zvanično, done |
+| `--warn` (+ `-tint`) | `#A16207` | nepotvrđeno, pažnja |
+| `--think` | `#D5DBE4` | inference bars |
 
-Statuses are text plus a small dot, optionally in a very light tinted 4px-radius chip (tint at 8-10% of the color):
-- **Zvanično**: `--ok`
-- **Potvrđeno**: `--accent`
-- **Nepotvrđeno**: `--warn`
-- **Demantovano**: `--signal`, with the finding title struck through
-
-Severity is a 3px left rule on a finding row: signal = `--signal`, pažnja = `--warn`, info = `--rule-strong`.
+Statuses are pills (dot + text) on a tint of their color: **Zvanično** green, **Potvrđeno** blue, **Nepotvrđeno**
+amber-brown, **Odstupa od registra** red. Severity is a 3px rule on the left edge of a finding: signal = red,
+pažnja = amber, info = gray.
 
 ## Typography
-- Headings and the dossier/report body: `"Source Serif 4", "Source Serif Pro", "Iowan Old Style", Charter, Georgia, "Times New Roman", serif`.
-- UI: `system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif`.
+- UI and headings: `"Inter", "Segoe UI Variable", "Segoe UI", system-ui, -apple-system, Roboto, sans-serif` (headings
+  bold with slightly negative letter-spacing). No webfont downloads: the app must work offline.
+- The printed report uses a book serif (`"Source Serif 4"`, Charter, Georgia); on screen it uses the UI font.
 - Data and IDs: `ui-monospace, "SF Mono", "Cascadia Mono", Consolas, monospace`.
-- No webfont downloads: the app must work offline.
-- Sizes:
-
-  | role | size / line-height |
-  |---|---|
-  | body | 15/1.55 |
-  | small | 13 |
-  | labels | 11px uppercase, letter-spacing .06em, `--ink-3` |
-  | page title (institution) | 28px serif |
-  | section titles | 19px serif |
-  | finding titles | 16px serif, 600 |
-
-- Use `font-variant-numeric: tabular-nums` for every number that updates.
+- Sizes: body 14.5/1.55, small 12.5-13, labels 11px uppercase with letter-spacing .07em, institution title 28px bold,
+  card titles 16px semibold, finding titles 15.5px semibold, start headline 50px extra-bold.
 
 ## Components
-- **Buttons.** Primary: solid `--ink` with white text, 6px radius, no shadow. Secondary: white with a 1px
-  `--rule-strong` border. Text buttons: `--accent`, underline on hover.
-- **Inputs.** White, 1px `--rule-strong`, 6px radius, a 2px focus ring in `--accent` at 35%.
-- **Tabs.** Plain text with a 2px underline for the active tab, counts in `--ink-3`.
-- **Agent avatar.** A 22px circle with 2-letter initials, a neutral tint per group (all tints muted, low chroma),
-  and no emoji.
-- **Agent status.** Small text on the right of the lane:
-  - "razmišlja" in `--ink-3`;
-  - "alat: <name>" in `--accent`;
-  - "čeka tebe" in `--wait`;
-  - "gotovo" in `--ok`;
-  - "blokirano" in `--signal`, briefly.
-  - An active agent shows a small 6px dot in `--accent`. It does not pulse; it may fade.
-- **Timeline (Gantt).** Newspaper data-viz style:
-  - thin 8px bars, think = `--think`, tool = `--accent`, waiting = `--wait` with a 45° hatch;
-  - a finding is a 2px `--ink` tick, and a spawn is a small hollow circle;
-  - the axis is thin with mm:ss labels in `--ink-3`, and the "now" line is 1px `--signal`;
-  - no glow.
-- **Concurrency chart.** A small, quiet area chart in `--ink` at 12% fill with a 1px line, labeled "istovremeno
-  aktivnih: 9 (vrhunac 13)".
-- **Toasts.** White, 1px border, small shadow (`0 2px 8px rgba(0,0,0,.08)`), and an action link.
-- **Inbox.** A right-side panel, white. Each task is a block separated by hairlines. An approval shows the draft
-  finding as it will appear in the report. The banner reads: "Kadrovik čeka tvoju odluku. Ostali agenti nastavljaju."
-- **Report modal.** It should look like a printed document: serif, max 70ch, generous margins.
+- **Buttons.** Primary: solid `--ink`, white text, 9px radius. Secondary: white with a 1px border. Text buttons in
+  `--accent`. "Odluči" on a waiting banner is solid amber.
+- **Inputs.** White, 1px `--rule-strong`, 9px radius, a 3px focus ring in `--accent` at 15%. The start search is one
+  large field with the primary button inside it.
+- **Agent avatar.** A 22-24px rounded square with 2-letter initials, one soft tint per agent group.
+- **Agent status.** A pill on the right of each lane: "razmišlja" gray, the current request ("ACAS · funkcioneri …")
+  blue, "čeka tebe" solid amber, "gotovo" green, "blokirano" red.
+- **Team card.** The headline is the live count ("4 agenta rade upravo sada · vrhunac 15", the number in blue; after
+  the run: "15 agenata istovremeno u vrhuncu"), then a small area chart (blue line, 10% fill), the legend and the
+  timeline.
+- **Timeline (Gantt).** Rounded 10px bars on a shared mm:ss axis: think = `--think`, tool = `--accent`, waiting =
+  amber with a 45° hatch; a finding is a 2px dark tick, a spawn a hollow circle, "now" a 1px red line.
+- **Decisions.** An amber-tinted card on the dossier ("3 odluke čekaju na tebe"), one task open at a time; an approval
+  shows the draft finding as it will appear in the report.
+- **Done card.** Green-tinted, a check icon, a one-line summary and the next actions.
+- **Toasts.** White, 12px radius, a soft shadow; question toasts have an amber left edge.
 
-## Simplicity rules (the user explicitly asked for a much simpler, calmer UI)
-- **Show less at once.** One top bar, one run bar, two columns, one collapsible drawer. Nothing else is always
-  on screen.
-- **Motion budget.** There are only two allowed animations:
-  - a 150 ms opacity fade-in for new rows;
-  - a pale `--highlight` background that fades out over 1.5 s on new findings.
-
-  No slide-ins, pulses, glows, shimmer, bouncing counters or animated gradients. The timeline redraws at most 4 times
-  per second.
+## Simplicity rules
+- **Show less at once.** One top bar, one run bar, two columns of cards, one collapsible drawer.
+- **Motion budget.** Only the two animations above. The timeline redraws at most 4 times per second.
 - **Labels, not decoration.** Every colored mark has a text equivalent.
 - **Copy** is short, plain Serbian, the way a newsroom colleague would write it. No hype and no "AI" buzzwords in
   headings.
@@ -108,40 +79,29 @@ Severity is a 3px left rule on a finding row: signal = `--signal`, pažnja = `--
 ## Live search ("Pretraga uživo")
 Every public-source request an agent makes arrives as an `izvor.upit` event (`SourceActivity` in
 `src/shared/types.ts`). There are two events per request with the same `id`: `u_toku`, then `ok`, `kes` or `greska`.
-- **In the left column, under the lanes,** a plain list "Pretraga uživo" shows the most recent requests, newest on
-  top, about 10 visible with a scroll for more. Each row reads:
+- **A card under the team**, newest on top. Each row reads:
 
-  `12:04:31  KA  ACAS · pretraga  funkcioneri: Infrastruktura železnice Srbije  ✓ 0,4 s · 9`
+  `12:04:31  KA  ACAS  pretraga · funkcioneri: Infrastruktura železnice Srbije  [✓ 0,4 s · 9]`
 
-  - `KA` is the agent's initials avatar;
-  - the source label;
-  - the action;
-  - the label, which links to `url` when present;
-  - the status: a spinner-free "…" while `u_toku`, then "✓ 0,4 s" or "keš 30.10." or "greška" in `--signal`.
-- **Agent lanes** show the agent's current request as its status text ("ACAS: funkcioneri …"), falling back to
-  "alat: <tool>" or "razmišlja".
-- Keep this panel quiet: monospace time, sans text, no icons beyond the initials.
+  the time, the agent's initials, the source, the action and label (a link when there is a `url`), and a status pill:
+  "…" while `u_toku`, then green "✓ 0,4 s", gray "keš 30.10." or red "greška".
+- **Agent lanes** show the agent's current request as their status pill, falling back to "alat: <tool>" or
+  "razmišlja".
 
 ## Layout
-The screen follows one flow: **start → the team investigates → you decide → the dossier is ready**. Each step has one
-obvious place on screen, so a first-time user never has to hunt for what to do next.
+The screen follows one flow: **start → the team investigates → you decide → the dossier is ready**.
 
-- **Top bar** (white, hairline bottom): the logo mark and serif wordmark "Dosije" (back to the start screen), a
-  segmented switch "Dosije | Mapa prioriteta", then "+ Novi dosije", "Sanduče" (an amber count badge when something
-  waits) and SR | EN. No model or mode text: a connection note appears only when the server connection drops.
+- **Top bar** (white): the logo mark and wordmark "Dosije" (back to the start screen), a segmented switch "Dosije |
+  Mapa prioriteta", then "+ Novi dosije", "Sanduče" (an amber count badge when something waits) and SR | EN. No model
+  or mode text: a connection note appears only when the server connection drops.
 - **Run bar** under the top bar: three numbered steps "Tim istražuje → Tvoje odluke → Dosije je spreman" (blue =
   running, amber = waiting for you, green check = done; step 2 opens the decisions, step 3 the report), and on the
-  right the numbers that show concurrency: "9 agenata radi istovremeno · vrhunac 13 · 36 nalaza · 8 signala · 412
-  Mozaik događaja".
-- **Columns.** Left (about 40%) "Tim agenata": the concurrency chart, the legend, then the lanes and "Pretraga uživo".
-  Right (about 60%) "Dosije" as a document:
-  - an article-style header: label, institution in serif, metadata line in mono;
-  - **"Čeka tvoju odluku"** (amber tint, one card open at a time) while an agent waits for the journalist;
-  - **"Dosije je spreman"** (green tint) at the end: a one-line summary, "Otvori izveštaj", "Preuzmi .md", "Šta još
-    proveriti";
-  - "Glavni signali" as a numbered serif list;
-  - section tabs, then the findings as rows.
-- **Start screen.** A serif headline, one paragraph, a large search field with the primary button, the demo
-  institutions as cards, and "Kako radi" as four numbered steps (step 3, "Ti odlučuješ", in amber). Below: the public
-  sources as tags and a pointer to "Mapa prioriteta". No hero gradient.
+  right the numbers as pills: "6 agenata radi istovremeno", "vrhunac 15", "31 nalaz", "5 signala", "642 Mozaik
+  događaja".
+- **Columns.** Left (about 40%): the team card and the live search card. Right (about 60%), a column of cards: the
+  institution header, "Čeka tvoju odluku" while an agent waits, "Dosije je spreman" at the end, "Glavni signali",
+  "Osobe i firme", then the findings with section tabs.
+- **Start screen.** A bold headline, one paragraph, the large search field, the demo institutions as cards with an
+  icon, and "Kako radi" as four numbered steps (step 3, "Ti odlučuješ", in amber). Below: the public sources as tags
+  and a pointer to "Mapa prioriteta". A very faint blue glow at the top of the page is the only gradient.
 - **Phones.** One column: the dossier (and its decisions) first, the team below; the start form stacks.

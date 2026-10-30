@@ -312,11 +312,10 @@ Defined in `src/shared/types.ts` (`WireEvent`, `WirePayloads`, `DosijeSnapshot`,
 build, no CDN and no webfont, so it works offline. It is vanilla JS with small render helpers, and the timeline redraws
 at most 4 times per second.
 
-**Look and feel:** the design system is [`docs/DESIGN.md`](DESIGN.md), a calm editorial newsroom tool:
-- light paper background, ink text, serif headings and dossier;
-- hairlines instead of cards;
-- one accent color, red only for signals, amber only for "waiting for you";
-- no emojis (initials avatars) and almost no motion.
+**Look and feel:** the design system is [`docs/DESIGN.md`](DESIGN.md), a clean, modern research tool:
+- white cards on a light gray page, a bold sans-serif type scale (the printed report keeps a book serif);
+- color means state: blue working, amber waiting for you, red signal, green official or done, always as text pills;
+- no emojis (initials avatars, small SVG icons) and almost no motion.
 
 **Layout (the flow is: start, the team investigates, you decide, the dossier is ready):**
 - **Start screen:** a large input for an institution or a news link (an optional focus behind "+ Dodaj fokus"), four

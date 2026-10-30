@@ -53,7 +53,7 @@ function stats(st) {
 	// [text before the number, number, text after, tone]
 	const out = []
 	if (done) out.push([en ? "peak" : "vrhunac", peak, en ? `${pl(peak, [], ["agent", "agents"])} at once` : `${pl(peak, ["agent", "agenta", "agenata"])} istovremeno`, ""])
-	else out.push(["", active, en ? `${pl(active, [], ["agent", "agents"])} working at once` : `${pl(active, ["agent radi", "agenta radi", "agenata radi"])} istovremeno`, "is-live"], [en ? "peak" : "vrhunac", peak, "", "is-dim"])
+	else out.push(["", active, en ? `${pl(active, [], ["agent", "agents"])} working at once` : `${pl(active, ["agent radi", "agenta rade", "agenata radi"])} istovremeno`, "is-live"], [en ? "peak" : "vrhunac", peak, "", "is-dim"])
 	if (isMapa()) {
 		const over = [...state.mapa.rows.values()].filter((r) => r.signals?.vdOver).length
 		out.push(["", over, t("sa v.d. preko roka"), over ? "is-sig" : ""])

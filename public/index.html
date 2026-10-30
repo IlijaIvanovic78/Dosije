@@ -5,7 +5,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<title>Dosije · istraživački tim agenata</title>
 	<meta name="description" content="Tim agenata istovremeno proverava javne izvore i gradi dosije o instituciji. Svaka tvrdnja ima izvor, datum i status.">
-	<meta name="theme-color" content="#F6F5F1">
+	<meta name="theme-color" content="#FFFFFF">
 	<link rel="icon" href="favicon.svg" type="image/svg+xml">
 	<link rel="stylesheet" href="styles.css">
 </head>
@@ -167,58 +167,65 @@
 
 						<section id="doneCard" class="done-card" hidden></section>
 
-						<section class="signals">
-							<h3 class="sec-title"><span data-i18n>Glavni signali</span><span id="signalsCount" class="count">0</span></h3>
+						<section class="card signals">
+							<header class="card-head">
+								<h3 class="sec-title"><span data-i18n>Glavni signali</span><span id="signalsCount" class="count">0</span></h3>
+								<span class="card-hint" data-i18n>najvažnije za proveru</span>
+							</header>
 							<div id="signalsBody"></div>
 						</section>
-						<section id="entitiesWrap" class="entities-wrap" hidden>
-							<div class="ent-head">
-								<h3 class="label"><span data-i18n>Osobe i firme</span> <span id="entitiesCount" class="count">0</span></h3>
+						<section id="entitiesWrap" class="card entities-wrap" hidden>
+							<header class="card-head">
+								<h3 class="sec-title sm"><span data-i18n>Osobe i firme</span><span id="entitiesCount" class="count">0</span></h3>
 								<button id="btnAddLead" class="link-btn" type="button"><span data-i18n>+ Dodaj trag</span></button>
-							</div>
+							</header>
 							<div id="entities" class="entities"></div>
 						</section>
-						<div class="tabs-bar">
-							<div id="tabs" class="tabs" role="tablist"></div>
-							<div id="filterBar" class="filter-bar" hidden></div>
-						</div>
-						<div id="findList" class="find-list"></div>
-						<div id="verifyPanel" class="verify-panel" hidden></div>
+						<section class="card findings-card">
+							<div class="tabs-bar">
+								<div id="tabs" class="tabs" role="tablist"></div>
+								<div id="filterBar" class="filter-bar" hidden></div>
+							</div>
+							<div id="findList" class="find-list"></div>
+							<div id="verifyPanel" class="verify-panel" hidden></div>
+						</section>
 						<p class="disclaimer" data-i18n>Signali su polazna tačka za proveru, ne zaključak. Svaka tvrdnja ima izvor; konačnu odluku donosi novinar.</p>
 					</div>
 				</section>
 
 				<section id="teamPanel" class="col team" aria-label="Tim" data-i18n-attr="aria-label">
-					<header class="col-head">
-						<div>
-							<h2 class="col-title" data-i18n>Tim agenata</h2>
+					<div class="card team-card">
+						<header class="col-head">
+							<div class="col-head-top">
+								<h2 class="col-title" data-i18n>Tim agenata</h2>
+								<span class="live-tag" aria-hidden="true"><i></i><span data-i18n>uživo</span></span>
+							</div>
 							<div id="concLabel" class="conc-label"></div>
+						</header>
+						<div id="holdBanner" class="hold" role="status" aria-live="polite" hidden></div>
+						<div class="conc">
+							<div id="sparkPlot" class="spark"></div>
 						</div>
-						<span class="live-tag" aria-hidden="true"><i></i><span data-i18n>uživo</span></span>
-					</header>
-					<div id="holdBanner" class="hold" role="status" aria-live="polite" hidden></div>
-					<div class="conc">
-						<div id="sparkPlot" class="spark"></div>
-					</div>
-					<div class="legend" aria-hidden="true">
-						<span><i class="sw inf"></i><span data-i18n>razmišlja</span></span>
-						<span><i class="sw tool"></i><span data-i18n>pretražuje izvor</span></span>
-						<span><i class="sw wait"></i><span data-i18n>čeka tebe</span></span>
-						<span><i class="sw tick"></i><span data-i18n>nalaz</span></span>
-						<span><i class="sw spawn"></i><span data-i18n>novi agent</span></span>
-					</div>
-					<div id="ganttWrap" class="gantt-wrap">
-						<canvas id="gantt" aria-label="Vremenska osa agenata" data-i18n-attr="aria-label"></canvas>
-						<div class="ruler-gap"></div>
-						<div id="lanesCore" class="lanes-core"></div>
-						<div class="dyn-wrap">
-							<div id="lanesDyn" class="lanes-dyn"></div>
-							<div id="dynEmpty" class="dyn-empty" data-i18n>Novi agenti se pokreću kad se pojavi nova firma ili osoba.</div>
+						<div class="legend" aria-hidden="true">
+							<span><i class="sw inf"></i><span data-i18n>razmišlja</span></span>
+							<span><i class="sw tool"></i><span data-i18n>pretražuje izvor</span></span>
+							<span><i class="sw wait"></i><span data-i18n>čeka tebe</span></span>
+							<span><i class="sw tick"></i><span data-i18n>nalaz</span></span>
+							<span><i class="sw spawn"></i><span data-i18n>novi agent</span></span>
+						</div>
+						<div id="ganttWrap" class="gantt-wrap">
+							<canvas id="gantt" aria-label="Vremenska osa agenata" data-i18n-attr="aria-label"></canvas>
+							<div class="ruler-gap"></div>
+							<div id="lanesCore" class="lanes-core"></div>
+							<div class="dyn-wrap">
+								<div id="lanesDyn" class="lanes-dyn"></div>
+								<div id="dynEmpty" class="dyn-empty" data-i18n>Novi agenti se pokreću kad se pojavi nova firma ili osoba.</div>
+							</div>
 						</div>
 					</div>
-					<section id="livePanel" class="live" aria-label="Pretraga uživo" data-i18n-attr="aria-label">
+					<section id="livePanel" class="card live" aria-label="Pretraga uživo" data-i18n-attr="aria-label">
 						<header class="live-head">
-							<h3 class="label" data-i18n>Pretraga uživo</h3>
+							<h3 class="sec-title sm" data-i18n>Pretraga uživo</h3>
 							<span id="liveFilter" class="live-filter" hidden></span>
 							<span id="liveCount" class="live-count"></span>
 						</header>

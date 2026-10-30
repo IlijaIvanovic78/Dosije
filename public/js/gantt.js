@@ -3,8 +3,8 @@
 
 import { state, on, laneEnd, activeCount, peakCount, isRunning } from "./store.js"
 import { laneRows } from "./lanes.js"
-import { s, parseIso, fmtDur, truncate } from "./format.js"
-import { t, onLang } from "./i18n.js"
+import { h, s, parseIso, fmtDur, truncate } from "./format.js"
+import { t, pl, getLang, onLang } from "./i18n.js"
 
 const RULER_H = 22
 const PAD_L = 1
@@ -12,16 +12,16 @@ const PAD_R = 8
 const BAR_H = 10
 const MIN_FRAME_MS = 250 // 4 fps at most
 const C = {
-	inf: "#CFCBC2",
-	tool: "#1F4E79",
-	wait: "#B45309",
-	tick: "#1C1B19",
-	spawn: "#55534E",
-	signal: "#B42318",
-	axis: "#8A8780",
-	grid: "#EFEDE7",
-	rule: "#E6E3DC",
-	paper: "#FBFAF7",
+	inf: "#D5DBE4",
+	tool: "#2563EB",
+	wait: "#D97706",
+	tick: "#111827",
+	spawn: "#64748B",
+	signal: "#DC2626",
+	axis: "#8B95A5",
+	grid: "#F0F2F5",
+	rule: "#E7E9EE",
+	paper: "#FFFFFF",
 }
 const STEPS = [1, 2, 5, 10, 15, 30, 60, 120, 300, 600, 1200, 3600]
 const MONO = 'ui-monospace, "SF Mono", "Cascadia Mono", Consolas, monospace'
@@ -41,7 +41,7 @@ function makeStripePattern(c) {
 	const off = document.createElement("canvas")
 	off.width = off.height = 8
 	const x = off.getContext("2d")
-	x.fillStyle = "rgba(180,83,9,.16)"
+	x.fillStyle = "rgba(217,119,6,.16)"
 	x.fillRect(0, 0, 8, 8)
 	x.strokeStyle = C.wait
 	x.lineWidth = 1.5
@@ -165,6 +165,17 @@ function draw() {
 	ctx.fillText(label, lx + 3, 8)
 }
 
+/** A softly rounded bar (plain rectangle where the browser has no roundRect). */
+function bar(x, y, w, hgt) {
+	if (!ctx.roundRect || w < 4) {
+		ctx.fillRect(x, y, w, hgt)
+		return
+	}
+	ctx.beginPath()
+	ctx.roundRect(x, y, w, hgt, Math.min(3, w / 2))
+	ctx.fill()
+}
+
 function drawRow(lane, r, ax, end) {
 	const { X } = ax
 	const { y0, cy } = r
@@ -200,7 +211,7 @@ function drawRow(lane, r, ax, end) {
 			ctx.strokeRect(x1 + 0.5, y + 0.5, Math.max(1, w - 1), BAR_H - 1)
 		} else {
 			ctx.fillStyle = seg.k === "inf" ? C.inf : C.tool
-			ctx.fillRect(x1, y, w, BAR_H)
+			bar(x1, y, w, BAR_H)
 		}
 		hits.push({
 			x: x1,
@@ -270,10 +281,23 @@ function buildSpark() {
 function drawSpark() {
 	const now = activeCount()
 	const peak = peakCount()
-	const label = t("istovremeno aktivnih: {n} (vrhunac {peak})", { n: now, peak })
+	// the headline of the team card: how many agents work right now (or the peak, once the run is over)
+	const live = isRunning()
+	const n = live ? now : peak
+	const en = getLang() === "en"
+	const text = live
+		? en
+			? `${pl(n, [], ["agent", "agents"])} working right now`
+			: `${pl(n, ["agent radi", "agenta rade", "agenata radi"])} upravo sada`
+		: en
+			? `${pl(n, [], ["agent", "agents"])} at once at the peak`
+			: `${pl(n, ["agent", "agenta", "agenata"])} istovremeno u vrhuncu`
+	const label = `${n}|${text}|${live ? peak : ""}`
 	if (label !== lastConc) {
 		lastConc = label
-		concLabel.textContent = label
+		const parts = [h("b", { class: `conc-n${live ? " is-live" : ""}` }, String(n)), h("span", { class: "conc-text" }, text)]
+		if (live) parts.push(h("span", { class: "conc-peak" }, `${en ? "peak" : "vrhunac"} ${peak}`))
+		concLabel.replaceChildren(...parts)
 	}
 	const W = sparkWrap.clientWidth
 	const H = sparkWrap.clientHeight

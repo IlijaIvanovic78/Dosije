@@ -40,6 +40,15 @@ function renderMode() {
 	el.title = t("Veza sa serverom (SSE)")
 }
 
+const BUILDING_ICON =
+	'<svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" aria-hidden="true"><path d="M3 17h14M4.5 17V8.5L10 4.5l5.5 4V17"/><path d="M8 17v-4h4v4M7.5 9.5h1M11.5 9.5h1"/></svg>'
+
+function exampleIcon() {
+	const el = h("span", { class: "ex-icon" })
+	el.innerHTML = BUILDING_ICON
+	return el
+}
+
 function renderDemoChips() {
 	const demos = state.config?.demoInstitutions || []
 	$("heroChips").replaceChildren(
@@ -47,6 +56,7 @@ function renderDemoChips() {
 			h(
 				"button",
 				{ class: "example", type: "button", onclick: () => startCase(d.name) },
+				exampleIcon(),
 				h("span", { class: "ex-name" }, d.name),
 				DEMO_KIND[d.slug] ? h("span", { class: "ex-kind" }, t(DEMO_KIND[d.slug])) : null,
 				i === 0 ? h("span", { class: "ex-tag" }, t("najbolji demo")) : null,
