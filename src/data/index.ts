@@ -1,0 +1,15 @@
+// Data facade used by tools, scripts and the server: the adapters as namespaces + resolver + deterministic analysis.
+
+export * as acas from "./sources/acas"
+export * as jn from "./sources/jnportal"
+export * as iw from "./sources/integrityWatch"
+export * as apr from "./sources/apr"
+export * as dri from "./sources/dri"
+export * as news from "./sources/news"
+export * as pep from "./sources/pep"
+export * as paragraf from "./sources/paragraf"
+export * as rules from "./rules/vdRules"
+export * as analysis from "./analysis"
+export { resolveInstitution, resolveByName, listStaticInstitutions, searchName, LEGAL_LABELS } from "./resolver"
+export type { ResolvedInstitution, MentionedOfficial } from "./resolver"
+export { getDataMode } from "./cache"

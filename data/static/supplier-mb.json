@@ -1,0 +1,16 @@
+{
+	"_comment": "PIB -> matični broj (MB) for IŽS suppliers that the Firme agents check. The Portal javnih nabavki has PIB only and the APR open data has MB only, so the pairs were matched by name and only confident matches are listed (same core name + same legal form/municipality where the portal gives it, a single plausible APR candidate, or the PIB-MB pair published by Integrity Watch). Everything else stays unmapped: the tool then says 'nije pouzdano pronađen u APR'. Verify before quoting.",
+	"112519168": { "mb": "21691658", "name": "ZGOP DOO Novi Sad", "basis": "isti naziv, jedini aktivan kandidat u APR; osnovan 2021, što odgovara rasponu PIB-a 112…" },
+	"105171908": { "mb": "20330279", "name": "Extra - Auto Transport d.o.o. Vrbas", "basis": "isti osnovni naziv, jedini kandidat sa tim nazivom; osnovan 2007, što odgovara rasponu PIB-a 105…" },
+	"100000571": { "mb": "07007060", "name": "Antikor DOO Beograd", "basis": "isti naziv; isti MB navodi Integrity Watch (companies_income.json)" },
+	"113080389": { "mb": "21798029", "name": "T&M Group Solutions doo Beograd", "basis": "isti naziv; isti MB navodi Integrity Watch (companies_income.json)" },
+	"106983968": { "mb": "20718749", "name": "KBV Datacom d.o.o. Beograd", "basis": "isti naziv; isti MB navodi Integrity Watch (companies_income.json)" },
+	"100293623": { "mb": "06008046", "name": "Trioprojekt d.o.o. Beograd", "basis": "isti osnovni naziv, jedini kandidat; osnovan 1992, što odgovara rasponu PIB-a 100…" },
+	"107859729": { "mb": "20884860", "name": "Prointer Sistem DOO Beograd", "basis": "isti naziv; isti MB navodi Integrity Watch (companies_income.json)" },
+	"101031730": { "mb": "17358774", "name": "Anding Trade DOO Beograd (Čukarica)", "basis": "isti osnovni naziv, jedini kandidat; opština Čukarica je u Beogradu kao u nazivu sa portala" },
+	"100003172": { "mb": "07451342", "name": "Saobraćajni institut CIP DOO Beograd (Savski Venac)", "basis": "identičan naziv sa oznakom opštine" },
+	"110752628": { "mb": "21382914", "name": "ILV PU DOO Beograd-Savski Venac", "basis": "identičan naziv sa oznakom opštine" },
+	"100034634": { "mb": "07264534", "name": "Institut Goša DOO Beograd (Zvezdara)", "basis": "isti osnovni naziv; isti MB navodi Integrity Watch (companies_income.json)" },
+	"100206540": { "mb": "07032358", "name": "Jadran DOO Beograd", "basis": "isti MB navodi Integrity Watch (companies_income.json); naziv u APR je duži opisni naziv" },
+	"104075834": { "mb": "20001917", "name": "MVM Južna Bačka d.o.o. Novi Sad", "basis": "MB navodi Integrity Watch (companies_income.json) za Energotehnika-Južna Bačka; u APR je isti MB upisan pod novim nazivom, proveriti promenu naziva" }
+}

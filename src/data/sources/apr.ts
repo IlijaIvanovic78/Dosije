@@ -230,6 +230,61 @@ export async function getCompany(q: { mb?: string; pib?: string; name?: string }
 	return null
 }
 
+export interface CompanyCandidate {
+	profile: CompanyProfile
+	score: number // 0..1.1, higher is better
+	match: "exact" | "contains" | "similar"
+}
+
+/**
+ * Ranked name candidates for a company name (several companies can share a name; the caller decides).
+ * Ranking: normalized-name equality, then "every query token is in the name", then token similarity >= 0.6.
+ * Small tie-breaks: same municipality as `opts.municipality`, active status.
+ */
+export async function searchCompanies(name: string, limit = 5, opts: { municipality?: string } = {}): Promise<CompanyCandidate[]> {
+	const idx = await loadIndex()
+	if (!idx) return []
+	const qn = aprNormalize(name)
+	if (!qn) return []
+	const qTokens = qn.split(" ")
+	const qSet = new Set(qTokens)
+	const hint = legalFormHint(name)
+	const wantMun = opts.municipality ? aprNormalize(opts.municipality) : ""
+
+	const scored = new Map<string, CompanyCandidate>()
+	const add = (mb: string, base: number, match: CompanyCandidate["match"]) => {
+		const row = idx.raw.rows[mb]
+		if (!row) return
+		const profile = toProfile(idx, mb)
+		if (!profile) return
+		let score = base
+		if (isActive(idx, row)) score += 0.01
+		if (hint && idx.raw.legalForms[row[4]] === hint) score += 0.01
+		if (wantMun && profile.municipality && aprNormalize(profile.municipality) === wantMun) score += 0.02
+		const prev = scored.get(mb)
+		if (!prev || prev.score < score) scored.set(mb, { profile, score, match })
+	}
+
+	const exact = idx.raw.names[qn]
+	if (exact !== undefined) for (const mb of Array.isArray(exact) ? exact : [exact]) add(mb, 1, "exact")
+
+	const postings = postingsOf(idx)
+	const probe = rareTokens(idx, qTokens, 2).filter((t) => postings.has(t))
+	const keyIdxs = new Set<number>()
+	for (const t of probe) for (const i of (postings.get(t) ?? []).slice(0, 4000)) keyIdxs.add(i)
+	for (const i of keyIdxs) {
+		const ct = new Set(idx.keyTokens[i])
+		let inter = 0
+		for (const t of qSet) if (ct.has(t)) inter++
+		const sim = inter / Math.max(qSet.size, ct.size)
+		const containsAll = inter === qSet.size
+		if (!containsAll && sim < 0.6) continue
+		const base = containsAll ? 0.7 + 0.25 * sim : sim * 0.9
+		for (const mb of mbsOfKey(idx, i)) add(mb, base, containsAll ? "contains" : "similar")
+	}
+	return [...scored.values()].sort((a, b) => b.score - a.score).slice(0, Math.max(1, limit))
+}
+
 /** Like getCompany by name, but also accepts a shorter name contained in the official one (active companies only). */
 export async function findInstitutionCompany(name: string): Promise<CompanyProfile | null> {
 	const idx = await loadIndex()
