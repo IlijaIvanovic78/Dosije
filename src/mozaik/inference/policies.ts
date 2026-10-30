@@ -8,6 +8,7 @@ import { asciiFold } from "../../data/translit"
 import { n } from "../../shared/plural"
 import { headline } from "../../shared/text"
 import { entityIdFor } from "../domain"
+import { buildLede } from "../summary"
 import { clip } from "../util"
 
 export interface Step {
@@ -595,11 +596,14 @@ async function* urednik(): AsyncGenerator<Step, string, ToolResult> {
 	const c = pr.counts
 	const top = (pr.preporucenTopSignala ?? []) as { id: string; title: string }[]
 	const conflicts = (pr.konflikti ?? []) as unknown[]
-	const lede =
-		`U dosijeu o ${pr.institucija} tim agenata je prikupio ${n(c.nalaza, "nalaz")} (signala za proveru: ${c.signala}, pažnje: ${c.pazni})` +
-		`${conflicts.length ? `; konflikata između izvora, rešenih u korist zvaničnog registra: ${conflicts.length}` : ""}. ` +
-		(top.length ? `Najvažnije za proveru: ${top.slice(0, 3).map((t) => clip(t.title, 80)).join("; ")}. ` : "") +
-		"To su signali za verifikaciju, ne zaključci; odluku donosi novinar."
+	const lede = buildLede({
+		institution: String(pr.institucija ?? "institucija"),
+		findings: Number(c.nalaza) || 0,
+		signals: Number(c.signala) || 0,
+		attention: Number(c.pazni) || 0,
+		conflicts: conflicts.length,
+		heads: top.slice(0, 3).map((t) => clip(t.title, 80)),
+	})
 	yield call("napisi_sazetak", {
 		lede,
 		topSignals: top.map((t) => ({ findingId: t.id, headline: t.title })),
