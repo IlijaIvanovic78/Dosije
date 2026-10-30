@@ -276,74 +276,50 @@ per tool call is unchanged. `npm run cli -- "<institution>" --pretraga` prints o
 ## 6. Wire protocol
 Defined in `src/shared/types.ts` (`WireEvent`, `WirePayloads`, `DosijeSnapshot`, REST list at the bottom).
 
-## 7. UI spec (frontend)
+## 7. UI (frontend)
 
-**Goal:** a judge looks at one screen and sees (a) several agents working **at the same time**, (b) the shared case
-file filling up live, (c) the human as a team member (inbox, approvals that pause one agent while the others keep
-going), (d) real Mozaik events under the hood.
+**Goal:** a judge looks at one screen and sees four things:
+- several agents working **at the same time**;
+- the shared case file filling up live;
+- the human as a team member, through the inbox and approvals that pause one agent while the others keep going;
+- what each agent is **searching right now**, plus the raw Mozaik events under the hood.
 
-**Tech:** `public/index.html` + `public/styles.css` + `public/app.js` (ES modules under `public/js/`). No build, no
-CDN (must work offline). Vanilla JS with small render helpers; batch DOM work per animation frame.
+**Tech:** `public/index.html` + `public/styles.css` + `public/app.js`, with ES modules under `public/js/`. There is no
+build, no CDN and no webfont, so it works offline. It is vanilla JS with small render helpers, and the timeline redraws
+at most 4 times per second.
 
-**Theme:** dark newsroom. bg `#070b14`, panels `#0d1322`, borders `#1c2540`, text `#e6ebf5`, muted `#8b97b3`,
-accent `#7aa2ff`; signal red `#ff5d6c`, amber `#ffb547`, green `#3ddc97`, inference violet `#a78bfa`, tool cyan
-`#38bdf8`. System UI font; monospace for the event log.
+**Look and feel:** the design system is [`docs/DESIGN.md`](DESIGN.md), a calm editorial newsroom tool:
+- light paper background, ink text, serif headings and dossier;
+- hairlines instead of cards;
+- one accent color, red only for signals, amber only for "waiting for you";
+- no emojis (initials avatars) and almost no motion.
 
-**Header (sticky):** wordmark "DOSIJE" + "tim AI agenata · Mozaik"; form: input "Institucija ili link vesti…",
-input "Fokus (opciono)", button "Napravi dosije"; demo chips from `/api/config`; mode badges ("OpenAI ·
-gpt-5.4-mini" or "Bez ključa · skriptovani agenti", "Podaci: keš/uživo"); inbox button with badge.
+**Layout:**
+- **Top bar:** wordmark, input, "Napravi dosije", "Mapa prioriteta", "Sanduče N" and the mode text.
+- **Status line:** state, elapsed time, agents working at once (peak), findings, signals, questions and events, plus
+  budget use.
+- **Left column, "Tim":**
+  - a small concurrency chart;
+  - one lane per agent, with the core agents first and dynamic agents grouped under "Firme", "Imovina", "Mediji ·
+    osobe", "Provera" and "Trijaža", each with a thin timeline: think, tool, waiting (hatched), findings (ticks) and
+    spawn (hollow circle);
+  - the approval banner ("Kadrovik čeka tvoju odluku. Ostali agenti nastavljaju.");
+  - **"Pretraga uživo"**: `izvor.upit` requests with source, label, link and status.
+- **Right column, "Dosije":**
+  - institution header and "Glavni signali", where repeated signal codes are grouped;
+  - section tabs (Rukovodstvo, Novac, Firme, Revizija, Mediji, Šta još proveriti);
+  - finding rows with a severity rule, status, sources (a compact article list when there are four or more), merge
+    and conflict notes.
+- **Inbox:** a right panel with questions (answer or skip) and approvals ("Ubaci u izveštaj" / "Odbaci"), plus
+  "Dodaj trag".
+- **Report modal:** a printable document, with "Preuzmi .md", "Štampaj / PDF" (prints only the report) and "Kopiraj".
+- **Mapa prioriteta:** the institution list, "Pokreni mapu" and a live ranking table with signal chips, details and
+  "Otvori dosije".
+- **Bottom drawer:** the raw Mozaik event log, collapsed by default.
 
-**Metrics strip** (when a case exists): big animated "agenata radi istovremeno" (agents with an active loop),
-"vrhunac paralelnosti", findings, signals, open questions, tool calls, Mozaik events, elapsed time; budget bars
-(Firme 6/8, Osobe 2/6, Alati 120/400).
-
-**Left column, about 42%: "Tim uživo".**
-- A concurrency sparkline (active loops over time, SVG area chart, peak label).
-- One lane per participant: the Novinar on top; core agents in fixed order (Kadrovik, Nabavke, Revizor, Mediji,
-  Urednik); dynamic agents grouped under headers ("Firme (6)", "Imovina (1)", "Mediji · osobe (2)", "Provera (1)");
-  observers (Fabrika, SSE most, Zapisničar) in a compact "Posmatrači" row.
-- Lane: emoji avatar with a pulsing ring while active, name, source chips, status pill: `čeka` (grey),
-  `razmišlja` (violet, inference), `alat: <tool>` (cyan), `čeka novinara ⏸` (amber, awaiting human in
-  interception), `blokirano` (red flash on `claim.blocked`), `gotovo ✓` (green), `greška` (red).
-- **Live Gantt track** on a shared time axis (case start to now, rescaled at ~10 fps): inference = violet bar, tool
-  call = cyan bar (tooltip: tool name + args), awaiting human = amber striped bar, finding added = white dot,
-  spawn = green diamond, plus a vertical "now" line. Overlapping bars across lanes are the visual proof of concurrency.
-- New dynamic lanes slide in with "← pokrenuo: entity.added · Nabavke".
-- Clicking a lane filters the event log and highlights that agent's findings.
-
-**Right column, about 58%: "Dosije".**
-- Institution card: name (+ Cyrillic), legal type, PIB, MB, ACAS ID, JN ID, case status pill, focus.
-- "Glavni signali": live list of `signal` findings while running; after `dosije.zavrsen`, `report.lede` and
-  `report.topSignals`.
-- Tabs with counts: Sve · Rukovodstvo · Novac · Firme · Revizija · Mediji · Šta još proveriti (open tasks,
-  nepotvrđeno findings, `report.toVerify`).
-- Finding card: left bar by severity; title; text; status badge (ZVANIČNO blue, POTVRĐENO green, NEPOTVRĐENO amber,
-  DEMANTOVANO red with the title struck through); human label for the signal code ("v.d. preko roka", "bez objave",
-  ...); approval chip; source chips "ACAS · 22.05.2025" (links, `target=_blank rel=noopener`); footer "dodao
-  Kadrovik · 10:42:13"; "spojeno iz N nalaza"; inline conflict box "⚖ Konflikt rešen: ACAS «v.d. generalnog
-  direktora» vs N1 «generalni direktor» → prednost zvaničnom izvoru". New cards fade/slide in with a glow; updated
-  cards pulse.
-- Entity chips (people / companies). Clicking one filters findings.
-
-**Inbox "Sanduče"** (slide-over panel + toast on each new task):
-- Question (`pitanje`): agent emoji + name, question, hint, links (e.g. APR search), textarea, "Pošalji timu" ->
-  `POST /api/odgovor {taskId, answer}`; "Preskoči" -> `{taskId, decision:"reject"}`.
-- Approval (`odobrenje`): "Urednik predlaže signal: …" + draft text + sources; "Ubaci u izveštaj" /
-  "Odbaci"; banner "⏸ <agent> čeka tvoju odluku: ostali agenti nastavljaju da rade".
-- History of answered tasks; a "Dodaj trag" form (name + osoba/firma) -> `POST /api/trag`.
-
-**Report modal** (toast "Dosije je spreman" on `dosije.zavrsen`): renders `report.markdown` with a small built-in
-Markdown renderer; buttons "Preuzmi .md" (`/api/report.md`), "Štampaj / PDF" (print stylesheet prints only the
-report), "Kopiraj".
-
-**Bottom drawer "Ispod haube: Mozaik događaji":** collapsible live log (`HH:MM:SS.mmm`, colored type, producer,
-short detail); filter chips (petlja / alati / domen / interception) and by agent; auto-scroll with pause on hover;
-capped at 2,000 rows.
-
-**Empty state:** hero "Od vesti do dosijea za nekoliko minuta", three steps, the demo chip, and the line "Sistem ne
-presuđuje: pokazuje signale za proveru, odluka ostaje na čoveku."
-
-**Robustness:** EventSource auto-reconnect, re-fetch `/api/state` on reconnect, dedupe by `seq`, throttled renders.
+**Robustness:** the EventSource reconnects automatically, and the server replays the current case's events after the
+snapshot, so a reload rebuilds the timeline. Events are deduped by `seq`, every untrusted string is inserted as text,
+and the Markdown renderer escapes first.
 
 ## 8. Config
 See `.env.example`. With no key: scripted agents + cached data. `OPENAI_API_KEY` switches to real LLM agents.
