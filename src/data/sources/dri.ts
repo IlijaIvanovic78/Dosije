@@ -8,6 +8,7 @@
 // getReportFindings() downloads the PDF, extracts text with unpdf and keeps a few verbatim excerpts (cached; the PDF is not).
 
 import { extractText, getDocumentProxy } from "unpdf"
+import { SRC, shortInstitution, trackActivity } from "../activity"
 import { cached, cacheKey, readCache } from "../cache"
 import { getBuffer, getText } from "../http"
 import { asciiFold, cyrToLat, normalizeName, sameWord } from "../translit"
@@ -151,8 +152,12 @@ const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms))
 async function crawlSubject(subject: Subject): Promise<ListedReport[]> {
 	const all: ListedReport[] = []
 	for (let page = 1; page <= 15; page++) {
-		const html = await getText(`${BASE}/izvestaji?subjects=${subject.id}${page > 1 ? `&page=${page}` : ""}`, { timeoutMs: 40000 })
-		const { reports, hasNext } = parseListing(html)
+		const pageUrl = `${BASE}/izvestaji?subjects=${subject.id}${page > 1 ? `&page=${page}` : ""}`
+		const { reports, hasNext } = await trackActivity({ ...SRC.dri, action: "preuzimanje", label: `spisak izveštaja, strana ${page}`, url: pageUrl }, async (h) => {
+			const parsed = parseListing(await getText(pageUrl, { timeoutMs: 40000 }))
+			h.items(parsed.reports.length)
+			return parsed
+		})
 		all.push(...reports)
 		if (!hasNext || reports.length === 0) break
 		await sleep(300)
@@ -198,8 +203,14 @@ export async function getReports(inst: { name: string; nameCyr?: string }): Prom
 			}
 		}
 		return [...byId.values()].sort((a, b) => (b.publishedAt ?? "").localeCompare(a.publishedAt ?? ""))
-	})
+	}, { activity: { ...SRC.dri, action: "pretraga", label: `DRI izveštaji: ${shortInstitution(inst.name || inst.nameCyr || "")}`, url: `${BASE}/izvestaji`, after: (d, h) => h.items(d.length) } })
 	return env.data
+}
+
+/** "Izveštaj o reviziji pravilnosti poslovanja" without the auditee's name (which makes DRI titles 300 characters long). */
+function shortReportTitle(title: string): string {
+	const head = title.split(/\s+(?:Akcionarsk|Društv|Javn\w+ preduze|Preduze|Ustanov|Republi|Grad |Opštin)/i)[0].trim()
+	return head.length > 64 ? `${head.slice(0, 63).trimEnd()}…` : head
 }
 
 // ── PDF findings ────────────────────────────────────────────────────────────
@@ -350,13 +361,19 @@ async function extractReportText(url: string): Promise<string> {
 }
 
 /** Opinions that are already cached for these reports (report id -> opinion). Never downloads a PDF. */
-export async function getCachedOpinions(reports: AuditReport[]): Promise<Map<string, string>> {
-	const out = new Map<string, string>()
-	for (const r of reports) {
-		const hit = await readCache<Pick<AuditReport, "opinion">>(SOURCE, cacheKey("findings", r.id))
-		if (hit?.data?.opinion) out.set(r.id, hit.data.opinion)
-	}
-	return out
+export function getCachedOpinions(reports: AuditReport[]): Promise<Map<string, string>> {
+	return trackActivity({ ...SRC.dri, action: "dokument", label: `mišljenja revizora iz već obrađenih PDF-ova (${reports.length} izveštaja)`, url: `${BASE}/izvestaji` }, async (h) => {
+		const out = new Map<string, string>()
+		let latest: string | undefined
+		for (const r of reports) {
+			const hit = await readCache<Pick<AuditReport, "opinion">>(SOURCE, cacheKey("findings", r.id))
+			if (hit?.data?.opinion) out.set(r.id, hit.data.opinion)
+			if (hit && (!latest || hit.retrievedAt > latest)) latest = hit.retrievedAt
+		}
+		h.cached(latest)
+		h.items(out.size)
+		return out
+	})
 }
 
 /** Downloads the PDF, extracts the opinion and 3-6 short verbatim excerpts (Latin script). Cached per report id. */
@@ -366,7 +383,7 @@ export async function getReportFindings(report: AuditReport): Promise<AuditRepor
 		const { opinion, sentence } = findOpinion(raw)
 		const excerpts = pickExcerpts(flatten(raw), sentence ? flatten(sentence) : undefined).map(latinize)
 		return { opinion, excerpts }
-	})
+	}, { activity: { ...SRC.dri, action: "dokument", label: `PDF: ${shortReportTitle(report.title)}${report.year ? ` (${report.year})` : ""}`, url: report.url, after: (d, h) => h.items(d.excerpts?.length) } })
 	return { ...report, opinion: env.data.opinion ?? report.opinion, excerpts: env.data.excerpts }
 }
 

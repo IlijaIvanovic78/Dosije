@@ -3,7 +3,7 @@
 
 import type { SemanticEvent } from "@mozaik-ai/core"
 import type { DosijeState } from "./state"
-import type { AgentInfo, Budget, DosijeSnapshot, RunStats, WireEvent } from "../shared/types"
+import type { AgentInfo, Budget, DosijeSnapshot, RunStats, SourceActivity, WireEvent } from "../shared/types"
 import { clip } from "./util"
 
 type Listener<T> = (data: T) => void
@@ -174,6 +174,27 @@ function sanitize(event: SemanticEvent, p: Record<string, unknown>, state: Dosij
 		}
 		case "interception.finished":
 			return { loopId, nextStateId: String(p.nextStateId ?? ""), rewritten: !!p.input && typeof p.input === "object" && rewrittenInputs.has(p.input as object) }
+		case "izvor.upit": {
+			// live search: a small, flat SourceActivity; copied field by field so nothing else can ride along
+			const a = p as unknown as SourceActivity
+			return {
+				id: a.id,
+				agentId: a.agentId,
+				agentName: a.agentName,
+				tool: a.tool,
+				source: clip(String(a.source ?? ""), 60),
+				kind: a.kind,
+				action: a.action,
+				label: clip(String(a.label ?? ""), 200),
+				url: typeof a.url === "string" && a.url.length <= 700 ? a.url : undefined,
+				status: a.status,
+				ms: a.ms,
+				items: a.items,
+				cachedAt: a.cachedAt,
+				error: a.error ? clip(String(a.error), 160) : undefined,
+				at: a.at,
+			} satisfies SourceActivity
+		}
 		default:
 			// custom domain events carry plain, already clone-safe objects
 			return event.payload

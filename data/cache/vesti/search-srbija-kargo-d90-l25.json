@@ -1,0 +1,47 @@
+{
+ "source": "vesti",
+ "key": "search-srbija-kargo-d90-l25",
+ "retrievedAt": "2026-10-30T15:41:42.908Z",
+ "data": [
+  {
+   "id": "f9e644312739",
+   "title": "SSP: Srbija Kargo otpustila 359 zaposlenih, u najavi još 200 otkaza",
+   "url": "https://www.vranjenews.rs/news/ssp-srbija-kargo-otpustila-359-zaposlenih-u-najavi-jo%C5%A1-200-otkaza",
+   "outlet": "VRANJENEWS |",
+   "publishedAt": "2026-08-04T07:00:00.000Z",
+   "matched": [
+    "srbija",
+    "kargo"
+   ],
+   "provider": "google-news-rss",
+   "source": {
+    "kind": "vesti",
+    "title": "VRANJENEWS |: SSP: Srbija Kargo otpustila 359 zaposlenih, u najavi još 200 otkaza",
+    "url": "https://www.vranjenews.rs/news/ssp-srbija-kargo-otpustila-359-zaposlenih-u-najavi-jo%C5%A1-200-otkaza",
+    "retrievedAt": "2026-10-30T15:41:26.356Z",
+    "publishedAt": "2026-08-04T07:00:00.000Z",
+    "official": false
+   }
+  },
+  {
+   "id": "37f99c7154db",
+   "title": "Otpušteni nakon 25 i 30 godina rada u Srbija Kargo: \"Samo neki brojevi i šifre - tako smo shvatili da smo otpisani\"",
+   "url": "https://n1info.rs/vesti/otpusteni-srbija-kargo/",
+   "outlet": "N1",
+   "publishedAt": "2026-08-03T07:00:00.000Z",
+   "matched": [
+    "srbija",
+    "kargo"
+   ],
+   "provider": "google-news-rss",
+   "source": {
+    "kind": "vesti",
+    "title": "N1: Otpušteni nakon 25 i 30 godina rada u Srbija Kargo: \"Samo neki brojevi i šifre - tako smo shvatili da smo otpisani\"",
+    "url": "https://n1info.rs/vesti/otpusteni-srbija-kargo/",
+    "retrievedAt": "2026-10-30T15:41:26.356Z",
+    "publishedAt": "2026-08-03T07:00:00.000Z",
+    "official": false
+   }
+  }
+ ]
+}

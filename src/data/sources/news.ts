@@ -5,6 +5,7 @@
 
 import crypto from "node:crypto"
 import { XMLParser } from "fast-xml-parser"
+import { trackActivity, type ActivityDescriptor } from "../activity"
 import { cached, cacheKey } from "../cache"
 import { getText, httpRequest } from "../http"
 import { asciiFold, cyrToLat, hasCyrillic, latToCyr, normalizeName, sameWord } from "../translit"
@@ -351,6 +352,25 @@ async function fetchBrave(q: string, days: number): Promise<RawItem[]> {
 
 // ── search ──────────────────────────────────────────────────────────────────
 
+/** Source label of a merged search (what a cached result stands for). */
+export function searchSourceLabel(): string {
+	return `Vesti (${["RSS", "Google News", "GDELT", process.env.SERPER_API_KEY ? "Serper" : "", process.env.BRAVE_API_KEY ? "Brave" : ""].filter(Boolean).join(", ")})`
+}
+
+/** "Srbija Kargo" or, for the Cyrillic variant of the query, "Srbija Kargo (ćirilica)". */
+function variantLabel(v: string): string {
+	return hasCyrillic(v) ? `pretraga: ${cyrToLat(v)} (ćirilica)` : `pretraga: ${v}`
+}
+
+/** One provider request of a live search ("N1 (RSS)", "Google News", "GDELT", ...) as a live-search activity. */
+function tracked(desc: Omit<ActivityDescriptor, "kind">, run: () => Promise<RawItem[]>): Promise<RawItem[]> {
+	return trackActivity({ ...desc, kind: "vesti" }, async (h) => {
+		const items = await run()
+		h.items(items.length)
+		return items
+	})
+}
+
 const PROVIDER_RANK = (p: string) => (p.startsWith("rss:") ? 0 : p === "serper" || p === "brave" ? 1 : p === "google-news-rss" ? 2 : 3)
 
 export async function searchNews(query: string, opts: { days?: number; limit?: number } = {}): Promise<NewsItem[]> {
@@ -371,23 +391,29 @@ export async function searchNews(query: string, opts: { days?: number; limit?: n
 			labels.push(label)
 			jobs.push(p)
 		}
-		for (const feed of FEEDS) job(feed.provider, fetchFeed(feed))
-		job("rss:raspadsistema", fetchRaspadSistema())
-		for (const v of variants) job(`google-news-rss(${hasCyrillic(v) ? "cyr" : "lat"})`, fetchGoogleNews(engineQuery(v, tokens), days, "sr"))
+		const what = query.trim()
+		for (const feed of FEEDS) job(feed.provider, tracked({ source: `${feed.outlet} (RSS)`, action: "preuzimanje", label: `feed: ${what}`, url: feed.url }, () => fetchFeed(feed)))
+		job("rss:raspadsistema", tracked({ source: "raspadsistema.com", action: "preuzimanje", label: `feed: ${what}`, url: "https://raspadsistema.com/" }, fetchRaspadSistema))
+		for (const v of variants) {
+			const gnUrl = `https://news.google.com/search?q=${encodeURIComponent(`${engineQuery(v, tokens)} when:${Math.max(1, Math.round(days))}d`)}&hl=sr&gl=RS&ceid=RS:sr`
+			job(`google-news-rss(${hasCyrillic(v) ? "cyr" : "lat"})`, tracked({ source: "Google News", action: "pretraga", label: variantLabel(v), url: gnUrl }, () => fetchGoogleNews(engineQuery(v, tokens), days, "sr")))
+		}
 		job(
 			"gdelt",
 			(async () => {
 				const out: RawItem[] = []
 				// GDELT is best effort: it rate-limits to one request per 5 s (often 429), so the whole provider gets a time budget
 				const work = (async () => {
-					for (const v of variants) out.push(...(await fetchGdelt(tokens.length <= 3 ? `"${v}"` : v, days).catch(() => [])))
+					for (const v of variants) {
+						out.push(...(await tracked({ source: "GDELT", action: "pretraga", label: variantLabel(v) }, () => fetchGdelt(tokens.length <= 3 ? `"${v}"` : v, days)).catch(() => [])))
+					}
 				})()
 				await Promise.race([work, new Promise((r) => setTimeout(r, 16000))])
 				return out
 			})(),
 		)
-		if (process.env.SERPER_API_KEY) for (const v of variants) job("serper", fetchSerper(v, days))
-		if (process.env.BRAVE_API_KEY) for (const v of variants) job("brave", fetchBrave(v, days))
+		if (process.env.SERPER_API_KEY) for (const v of variants) job("serper", tracked({ source: "Serper", action: "pretraga", label: variantLabel(v) }, () => fetchSerper(v, days)))
+		if (process.env.BRAVE_API_KEY) for (const v of variants) job("brave", tracked({ source: "Brave", action: "pretraga", label: variantLabel(v) }, () => fetchBrave(v, days)))
 
 		const settled = await Promise.allSettled(jobs)
 		if (process.env.NEWS_DEBUG) settled.forEach((r, i) => console.error(`  [news] ${labels[i]}: ${r.status === "fulfilled" ? `${r.value.length} items` : `FAILED ${String(r.reason).slice(0, 100)}`}`))
@@ -422,6 +448,15 @@ export async function searchNews(query: string, opts: { days?: number; limit?: n
 			kept.push(i)
 		}
 		return kept.sort((a, b) => (b.publishedAt ?? "").localeCompare(a.publishedAt ?? "")).slice(0, limit)
+	}, {
+		activity: {
+			source: searchSourceLabel(),
+			kind: "vesti",
+			action: "pretraga",
+			label: `vesti: ${query.trim()} (${days} dana)`,
+			url: `https://news.google.com/search?q=${encodeURIComponent(query.trim())}&hl=sr&gl=RS&ceid=RS:sr`,
+			after: (d, h) => h.items(d.length),
+		},
 	})
 	return env.data
 }
@@ -437,6 +472,19 @@ const OUTLET_NAMES: Record<string, string> = {
 function outletFromUrl(url: string): string {
 	const host = new URL(url).hostname.replace(/^www\./, "")
 	return OUTLET_NAMES[host] ?? host
+}
+
+function hostOutlet(url: string): string {
+	try {
+		return outletFromUrl(url)
+	} catch {
+		return "članak"
+	}
+}
+
+function shortTitle(title: string): string {
+	const t = title.replace(/\s+/g, " ").trim()
+	return t.length > 70 ? `${t.slice(0, 69).trimEnd()}…` : t
 }
 
 function metaContent(html: string, names: string[]): string | undefined {
@@ -535,6 +583,15 @@ export async function fetchArticle(url: string): Promise<ArticleText> {
 			text,
 			source: { kind: "vesti", title: `${outlet}: ${title}`.slice(0, 200), url: finalUrl, retrievedAt: new Date().toISOString(), publishedAt, official: false },
 		}
+	}, {
+		activity: {
+			source: hostOutlet(url),
+			kind: "vesti",
+			action: "dokument",
+			label: `članak: ${hostOutlet(url)}`,
+			url,
+			after: (d, h) => h.label(`članak: ${cyrToLat(d.outlet)} – ${cyrToLat(shortTitle(d.title))}`),
+		},
 	})
 	return env.data
 }

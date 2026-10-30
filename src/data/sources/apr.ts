@@ -14,6 +14,7 @@ import { aprNormalize } from "./aprNames"
 export const APR_INDEX_FILE = path.resolve(process.cwd(), "data", "static", "apr-index.json.gz")
 
 const COMPANIES_PAGE = "https://data.gov.rs/sr/datasets/api-za-registar-privrednikh-drushtava/"
+export const APR_OPEN_DATA_URL = COMPANIES_PAGE
 const FINANCIALS_PAGE = "https://data.gov.rs/sr/datasets/api-za-registar-finansijskikh-izveshtaja-baza-fi-za-privredna-drushtva/"
 const MIN_SIMILARITY = 0.8
 

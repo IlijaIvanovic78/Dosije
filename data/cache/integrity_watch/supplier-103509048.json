@@ -1,0 +1,667 @@
+{
+ "source": "integrity_watch",
+ "key": "supplier-103509048",
+ "retrievedAt": "2026-10-30T15:41:27.963Z",
+ "data": [
+  {
+   "supplierName": "DOBERGARD DOO",
+   "supplierPib": "103509048",
+   "supplierMb": "17569775",
+   "contractingAuthority": "JP Pošta Srbije Beograd",
+   "linkType": "povezanost sa političkim subjektom",
+   "detail": "Integrity Watch označava ponuđača kao kompaniju povezanu sa političkim subjektom; izvor povezivanja: https://inmedija.rs/vlasnik-firmi-za-obezbedjenje-blizak-sns-a-pokrenuo-medij/; označenih ugovora kod naručioca: 8; od toga u zajedničkoj ponudi: 8 (vrednost cele ponude 1,622,496,384 RSD, nije pripisana firmi); period: 2021-09-06 do 2023-11-01; najveći: 2023-54544/54 (2023-11-01, 1,017,876,384 RSD)",
+   "contracts": 8,
+   "source": {
+    "kind": "integrity_watch",
+    "title": "Integrity Watch Srbija – DOBERGARD DOO / JP Pošta Srbije Beograd",
+    "url": "https://integritywatchserbia.org.rs/companies.php?l=sr",
+    "retrievedAt": "2026-10-30T13:47:26.488Z",
+    "official": false
+   }
+  },
+  {
+   "supplierName": "DOBERGARD DOO",
+   "supplierPib": "103509048",
+   "supplierMb": "17569775",
+   "contractingAuthority": "Nacionalna služba za zapošljavanje",
+   "linkType": "povezanost sa političkim subjektom",
+   "detail": "Integrity Watch označava ponuđača kao kompaniju povezanu sa političkim subjektom; izvor povezivanja: https://inmedija.rs/vlasnik-firmi-za-obezbedjenje-blizak-sns-a-pokrenuo-medij/; označenih ugovora kod naručioca: 2; od toga u zajedničkoj ponudi: 2 (vrednost cele ponude 1,413,970,854 RSD, nije pripisana firmi); period: 2022-01-25 do 2024-07-10; najveći: 0094-40492-222/2024 (2024-07-10, 902,577,024 RSD)",
+   "contracts": 2,
+   "source": {
+    "kind": "integrity_watch",
+    "title": "Integrity Watch Srbija – DOBERGARD DOO / Nacionalna služba za zapošljavanje",
+    "url": "https://integritywatchserbia.org.rs/companies.php?l=sr",
+    "retrievedAt": "2026-10-30T13:47:26.488Z",
+    "official": false
+   }
+  },
+  {
+   "supplierName": "DOBERGARD DOO",
+   "supplierPib": "103509048",
+   "supplierMb": "17569775",
+   "contractingAuthority": "Republički fond za penzijsko i invalidsko osiguranje",
+   "linkType": "povezanost sa političkim subjektom",
+   "detail": "Integrity Watch označava ponuđača kao kompaniju povezanu sa političkim subjektom; izvor povezivanja: https://inmedija.rs/vlasnik-firmi-za-obezbedjenje-blizak-sns-a-pokrenuo-medij/; označenih ugovora kod naručioca: 3; od toga u zajedničkoj ponudi: 3 (vrednost cele ponude 1,022,758,317 RSD, nije pripisana firmi); period: 2021-03-15 do 2024-02-01; najveći: 404.1-19/24 (2024-02-01, 650,000,000 RSD)",
+   "contracts": 3,
+   "source": {
+    "kind": "integrity_watch",
+    "title": "Integrity Watch Srbija – DOBERGARD DOO / Republički fond za penzijsko i invalidsko osiguranje",
+    "url": "https://integritywatchserbia.org.rs/companies.php?l=sr",
+    "retrievedAt": "2026-10-30T13:47:26.488Z",
+    "official": false
+   }
+  },
+  {
+   "supplierName": "DOBERGARD DOO",
+   "supplierPib": "103509048",
+   "supplierMb": "17569775",
+   "contractingAuthority": "JAVNA MEDIJSKA USTANOVA RADIO TELEVIZIJA SRBIJE",
+   "linkType": "povezanost sa političkim subjektom",
+   "detail": "Integrity Watch označava ponuđača kao kompaniju povezanu sa političkim subjektom; izvor povezivanja: https://inmedija.rs/vlasnik-firmi-za-obezbedjenje-blizak-sns-a-pokrenuo-medij/; označenih ugovora kod naručioca: 2; od toga u zajedničkoj ponudi: 2 (vrednost cele ponude 699,668,200 RSD, nije pripisana firmi); period: 2024-01-25 do 2026-01-26; najveći: 0417 (2026-01-26, 449,670,000 RSD)",
+   "contracts": 2,
+   "source": {
+    "kind": "integrity_watch",
+    "title": "Integrity Watch Srbija – DOBERGARD DOO / JAVNA MEDIJSKA USTANOVA RADIO TELEVIZIJA SRBIJE",
+    "url": "https://integritywatchserbia.org.rs/companies.php?l=sr",
+    "retrievedAt": "2026-10-30T13:47:26.488Z",
+    "official": false
+   }
+  },
+  {
+   "supplierName": "DOBERGARD DOO",
+   "supplierPib": "103509048",
+   "supplierMb": "17569775",
+   "contractingAuthority": "Srbija Kargo a.d.",
+   "linkType": "povezanost sa političkim subjektom",
+   "detail": "Integrity Watch označava ponuđača kao kompaniju povezanu sa političkim subjektom; izvor povezivanja: https://inmedija.rs/vlasnik-firmi-za-obezbedjenje-blizak-sns-a-pokrenuo-medij/; označenih ugovora kod naručioca: 1; od toga u zajedničkoj ponudi: 1 (vrednost cele ponude 420,000,000 RSD, nije pripisana firmi); period: 2021-09-27 do 2021-09-27; najveći: 1/2021-4479 (2021-09-27, 420,000,000 RSD)",
+   "contracts": 1,
+   "source": {
+    "kind": "integrity_watch",
+    "title": "Integrity Watch Srbija – DOBERGARD DOO / Srbija Kargo a.d.",
+    "url": "https://integritywatchserbia.org.rs/companies.php?l=sr",
+    "retrievedAt": "2026-10-30T13:47:26.488Z",
+    "official": false
+   }
+  },
+  {
+   "supplierName": "DOBERGARD DOO",
+   "supplierPib": "103509048",
+   "supplierMb": "17569775",
+   "contractingAuthority": "Akcionarsko društvo Elektroprivreda Srbije, Beograd",
+   "linkType": "povezanost sa političkim subjektom",
+   "detail": "Integrity Watch označava ponuđača kao kompaniju povezanu sa političkim subjektom; izvor povezivanja: https://inmedija.rs/vlasnik-firmi-za-obezbedjenje-blizak-sns-a-pokrenuo-medij/; označenih ugovora kod naručioca: 1; od toga u zajedničkoj ponudi: 1 (vrednost cele ponude 355,026,560 RSD, nije pripisana firmi); period: 2024-06-12 do 2024-06-12; najveći: 12.01.186041/18-24 (2024-06-12, 355,026,560 RSD)",
+   "contracts": 1,
+   "source": {
+    "kind": "integrity_watch",
+    "title": "Integrity Watch Srbija – DOBERGARD DOO / Akcionarsko društvo Elektroprivreda Srbije, Beograd",
+    "url": "https://integritywatchserbia.org.rs/companies.php?l=sr",
+    "retrievedAt": "2026-10-30T13:47:26.488Z",
+    "official": false
+   }
+  },
+  {
+   "supplierName": "DOBERGARD DOO",
+   "supplierPib": "103509048",
+   "supplierMb": "17569775",
+   "contractingAuthority": "JAVNO PREDUZEĆE ZA OBAVLJANJE DELATNOSTI OD OPŠTEG INTERESA ZA GRAD BEOGRAD \"BEOGRADSKA TVRĐAVA\" BEOGRAD",
+   "linkType": "povezanost sa političkim subjektom",
+   "detail": "Integrity Watch označava ponuđača kao kompaniju povezanu sa političkim subjektom; izvor povezivanja: https://inmedija.rs/vlasnik-firmi-za-obezbedjenje-blizak-sns-a-pokrenuo-medij/; označenih ugovora kod naručioca: 4; od toga u zajedničkoj ponudi: 4 (vrednost cele ponude 302,707,680 RSD, nije pripisana firmi); period: 2021-02-18 do 2025-12-30; najveći: 4082-1/25 (2025-12-30, 126,144,000 RSD)",
+   "contracts": 4,
+   "source": {
+    "kind": "integrity_watch",
+    "title": "Integrity Watch Srbija – DOBERGARD DOO / JAVNO PREDUZEĆE ZA OBAVLJANJE DELATNOSTI OD OPŠTEG INTERESA ZA GRAD BEOGRAD \"BEOGRADSKA TVRĐAVA\" BEOGRAD",
+    "url": "https://integritywatchserbia.org.rs/companies.php?l=sr",
+    "retrievedAt": "2026-10-30T13:47:26.488Z",
+    "official": false
+   }
+  },
+  {
+   "supplierName": "DOBERGARD DOO",
+   "supplierPib": "103509048",
+   "supplierMb": "17569775",
+   "contractingAuthority": "REPUBLIČKI GEODETSKI ZAVOD",
+   "linkType": "povezanost sa političkim subjektom",
+   "detail": "Integrity Watch označava ponuđača kao kompaniju povezanu sa političkim subjektom; izvor povezivanja: https://inmedija.rs/vlasnik-firmi-za-obezbedjenje-blizak-sns-a-pokrenuo-medij/; označenih ugovora kod naručioca: 2; od toga u zajedničkoj ponudi: 2 (vrednost cele ponude 262,000,000 RSD, nije pripisana firmi); period: 2024-02-06 do 2025-07-04; najveći: 06 404-126/2024-7 (2025-07-04, 131,000,000 RSD)",
+   "contracts": 2,
+   "source": {
+    "kind": "integrity_watch",
+    "title": "Integrity Watch Srbija – DOBERGARD DOO / REPUBLIČKI GEODETSKI ZAVOD",
+    "url": "https://integritywatchserbia.org.rs/companies.php?l=sr",
+    "retrievedAt": "2026-10-30T13:47:26.488Z",
+    "official": false
+   }
+  },
+  {
+   "supplierName": "DOBERGARD DOO",
+   "supplierPib": "103509048",
+   "supplierMb": "17569775",
+   "contractingAuthority": "Republički fond za zdravstveno osiguranje",
+   "linkType": "povezanost sa političkim subjektom",
+   "detail": "Integrity Watch označava ponuđača kao kompaniju povezanu sa političkim subjektom; izvor povezivanja: https://inmedija.rs/vlasnik-firmi-za-obezbedjenje-blizak-sns-a-pokrenuo-medij/; označenih ugovora kod naručioca: 3; od toga u zajedničkoj ponudi: 3 (vrednost cele ponude 215,000,933 RSD, nije pripisana firmi); period: 2021-07-20 do 2025-07-18; najveći: 405-380/2025-11 (2025-07-18, 215,000,000 RSD)",
+   "contracts": 3,
+   "source": {
+    "kind": "integrity_watch",
+    "title": "Integrity Watch Srbija – DOBERGARD DOO / Republički fond za zdravstveno osiguranje",
+    "url": "https://integritywatchserbia.org.rs/companies.php?l=sr",
+    "retrievedAt": "2026-10-30T13:47:26.488Z",
+    "official": false
+   }
+  },
+  {
+   "supplierName": "DOBERGARD DOO",
+   "supplierPib": "103509048",
+   "supplierMb": "17569775",
+   "contractingAuthority": "JAVNO KOMUNALNO PREDUZEĆE \"BEOGRADSKI VODOVOD I KANALIZACIJA\"",
+   "linkType": "povezanost sa političkim subjektom",
+   "detail": "Integrity Watch označava ponuđača kao kompaniju povezanu sa političkim subjektom; izvor povezivanja: https://inmedija.rs/vlasnik-firmi-za-obezbedjenje-blizak-sns-a-pokrenuo-medij/; označenih ugovora kod naručioca: 3; od toga u zajedničkoj ponudi: 3 (vrednost cele ponude 206,000,000 RSD, nije pripisana firmi); period: 2021-10-29 do 2025-02-14; najveći: 9141 (2024-02-14, 80,000,000 RSD)",
+   "contracts": 3,
+   "source": {
+    "kind": "integrity_watch",
+    "title": "Integrity Watch Srbija – DOBERGARD DOO / JAVNO KOMUNALNO PREDUZEĆE \"BEOGRADSKI VODOVOD I KANALIZACIJA\"",
+    "url": "https://integritywatchserbia.org.rs/companies.php?l=sr",
+    "retrievedAt": "2026-10-30T13:47:26.488Z",
+    "official": false
+   }
+  },
+  {
+   "supplierName": "DOBERGARD DOO",
+   "supplierPib": "103509048",
+   "supplierMb": "17569775",
+   "contractingAuthority": "JAVNO KOMUNALNO PREDUZEĆE \"BEOGRADSKE PIJACE\"",
+   "linkType": "povezanost sa političkim subjektom",
+   "detail": "Integrity Watch označava ponuđača kao kompaniju povezanu sa političkim subjektom; izvor povezivanja: https://inmedija.rs/vlasnik-firmi-za-obezbedjenje-blizak-sns-a-pokrenuo-medij/; označenih ugovora kod naručioca: 1; od toga u zajedničkoj ponudi: 1 (vrednost cele ponude 150,000,000 RSD, nije pripisana firmi); period: 2021-03-30 do 2021-03-30; najveći: 1638/1 (2021-03-30, 150,000,000 RSD)",
+   "contracts": 1,
+   "source": {
+    "kind": "integrity_watch",
+    "title": "Integrity Watch Srbija – DOBERGARD DOO / JAVNO KOMUNALNO PREDUZEĆE \"BEOGRADSKE PIJACE\"",
+    "url": "https://integritywatchserbia.org.rs/companies.php?l=sr",
+    "retrievedAt": "2026-10-30T13:47:26.488Z",
+    "official": false
+   }
+  },
+  {
+   "supplierName": "DOBERGARD DOO",
+   "supplierPib": "103509048",
+   "supplierMb": "17569775",
+   "contractingAuthority": "Javno komunalno preduzeće Zelenilo-Beograd Beograd",
+   "linkType": "povezanost sa političkim subjektom",
+   "detail": "Integrity Watch označava ponuđača kao kompaniju povezanu sa političkim subjektom; izvor povezivanja: https://inmedija.rs/vlasnik-firmi-za-obezbedjenje-blizak-sns-a-pokrenuo-medij/; označenih ugovora kod naručioca: 4; od toga u zajedničkoj ponudi: 4 (vrednost cele ponude 134,873,120 RSD, nije pripisana firmi); period: 2021-11-17 do 2025-06-11; najveći: 14-175/25 (2025-06-11, 68,678,400 RSD)",
+   "contracts": 4,
+   "source": {
+    "kind": "integrity_watch",
+    "title": "Integrity Watch Srbija – DOBERGARD DOO / Javno komunalno preduzeće Zelenilo-Beograd Beograd",
+    "url": "https://integritywatchserbia.org.rs/companies.php?l=sr",
+    "retrievedAt": "2026-10-30T13:47:26.488Z",
+    "official": false
+   }
+  },
+  {
+   "supplierName": "DOBERGARD DOO",
+   "supplierPib": "103509048",
+   "supplierMb": "17569775",
+   "contractingAuthority": "AGENCIJA ZA PRIVREDNE REGISTRE",
+   "linkType": "povezanost sa političkim subjektom",
+   "detail": "Integrity Watch označava ponuđača kao kompaniju povezanu sa političkim subjektom; izvor povezivanja: https://inmedija.rs/vlasnik-firmi-za-obezbedjenje-blizak-sns-a-pokrenuo-medij/; označenih ugovora kod naručioca: 5; od toga u zajedničkoj ponudi: 4 (vrednost cele ponude 84,583,334 RSD, nije pripisana firmi); period: 2021-06-09 do 2025-07-17; najveći: 08-3-72/25 (2025-07-17, 25,000,000 RSD)",
+   "contracts": 5,
+   "valueRsd": 24166667,
+   "source": {
+    "kind": "integrity_watch",
+    "title": "Integrity Watch Srbija – DOBERGARD DOO / AGENCIJA ZA PRIVREDNE REGISTRE",
+    "url": "https://integritywatchserbia.org.rs/companies.php?l=sr",
+    "retrievedAt": "2026-10-30T13:47:26.488Z",
+    "official": false
+   }
+  },
+  {
+   "supplierName": "DOBERGARD DOO",
+   "supplierPib": "103509048",
+   "supplierMb": "17569775",
+   "contractingAuthority": "UPRAVA ZA ZAJEDNIČKE POSLOVE REPUBLIČKIH ORGANA",
+   "linkType": "povezanost sa političkim subjektom",
+   "detail": "Integrity Watch označava ponuđača kao kompaniju povezanu sa političkim subjektom; izvor povezivanja: https://inmedija.rs/vlasnik-firmi-za-obezbedjenje-blizak-sns-a-pokrenuo-medij/; označenih ugovora kod naručioca: 8; od toga u zajedničkoj ponudi: 8 (vrednost cele ponude 70,754,000 RSD, nije pripisana firmi); period: 2021-02-18 do 2021-04-05; najveći: 404-00-545-2/20 (2021-02-18, 13,196,000 RSD)",
+   "contracts": 8,
+   "source": {
+    "kind": "integrity_watch",
+    "title": "Integrity Watch Srbija – DOBERGARD DOO / UPRAVA ZA ZAJEDNIČKE POSLOVE REPUBLIČKIH ORGANA",
+    "url": "https://integritywatchserbia.org.rs/companies.php?l=sr",
+    "retrievedAt": "2026-10-30T13:47:26.488Z",
+    "official": false
+   }
+  },
+  {
+   "supplierName": "DOBERGARD DOO",
+   "supplierPib": "103509048",
+   "supplierMb": "17569775",
+   "contractingAuthority": "Sportski centar \"Tašmajdan\" d.o.o.",
+   "linkType": "povezanost sa političkim subjektom",
+   "detail": "Integrity Watch označava ponuđača kao kompaniju povezanu sa političkim subjektom; izvor povezivanja: https://inmedija.rs/vlasnik-firmi-za-obezbedjenje-blizak-sns-a-pokrenuo-medij/; označenih ugovora kod naručioca: 2; od toga u zajedničkoj ponudi: 2 (vrednost cele ponude 50,050,000 RSD, nije pripisana firmi); period: 2024-10-07 do 2025-12-30; najveći: 2496 (2025-12-30, 27,300,000 RSD)",
+   "contracts": 2,
+   "source": {
+    "kind": "integrity_watch",
+    "title": "Integrity Watch Srbija – DOBERGARD DOO / Sportski centar \"Tašmajdan\" d.o.o.",
+    "url": "https://integritywatchserbia.org.rs/companies.php?l=sr",
+    "retrievedAt": "2026-10-30T13:47:26.488Z",
+    "official": false
+   }
+  },
+  {
+   "supplierName": "DOBERGARD DOO",
+   "supplierPib": "103509048",
+   "supplierMb": "17569775",
+   "contractingAuthority": "MUZEJ GRADA BEOGRADA",
+   "linkType": "povezanost sa političkim subjektom",
+   "detail": "Integrity Watch označava ponuđača kao kompaniju povezanu sa političkim subjektom; izvor povezivanja: https://inmedija.rs/vlasnik-firmi-za-obezbedjenje-blizak-sns-a-pokrenuo-medij/; označenih ugovora kod naručioca: 1; od toga u zajedničkoj ponudi: 1 (vrednost cele ponude 31,762,944 RSD, nije pripisana firmi); period: 2021-03-26 do 2021-03-26; najveći: 02 br 611/2 (2021-03-26, 31,762,944 RSD)",
+   "contracts": 1,
+   "source": {
+    "kind": "integrity_watch",
+    "title": "Integrity Watch Srbija – DOBERGARD DOO / MUZEJ GRADA BEOGRADA",
+    "url": "https://integritywatchserbia.org.rs/companies.php?l=sr",
+    "retrievedAt": "2026-10-30T13:47:26.488Z",
+    "official": false
+   }
+  },
+  {
+   "supplierName": "DOBERGARD DOO",
+   "supplierPib": "103509048",
+   "supplierMb": "17569775",
+   "contractingAuthority": "JAVNO PREDUZEĆE PUTEVI SRBIJE",
+   "linkType": "povezanost sa političkim subjektom",
+   "detail": "Integrity Watch označava ponuđača kao kompaniju povezanu sa političkim subjektom; izvor povezivanja: https://inmedija.rs/vlasnik-firmi-za-obezbedjenje-blizak-sns-a-pokrenuo-medij/; označenih ugovora kod naručioca: 1; period: 2025-03-31 do 2025-03-31; najveći: 454-257 (2025-03-31, 24,142,560 RSD)",
+   "contracts": 1,
+   "valueRsd": 24142560,
+   "source": {
+    "kind": "integrity_watch",
+    "title": "Integrity Watch Srbija – DOBERGARD DOO / JAVNO PREDUZEĆE PUTEVI SRBIJE",
+    "url": "https://integritywatchserbia.org.rs/companies.php?l=sr",
+    "retrievedAt": "2026-10-30T13:47:26.488Z",
+    "official": false
+   }
+  },
+  {
+   "supplierName": "DOBERGARD DOO",
+   "supplierPib": "103509048",
+   "supplierMb": "17569775",
+   "contractingAuthority": "\"RATEL\" REGULATORNO TELO ZA ELEKTRONSKE KOMUNIKACIJE I POŠTANSKE USLUGE",
+   "linkType": "povezanost sa političkim subjektom",
+   "detail": "Integrity Watch označava ponuđača kao kompaniju povezanu sa političkim subjektom; izvor povezivanja: https://inmedija.rs/vlasnik-firmi-za-obezbedjenje-blizak-sns-a-pokrenuo-medij/; označenih ugovora kod naručioca: 1; od toga u zajedničkoj ponudi: 1 (vrednost cele ponude 18,000,000 RSD, nije pripisana firmi); period: 2025-10-06 do 2025-10-06; najveći: 002392619 2025 18 022 (2025-10-06, 18,000,000 RSD)",
+   "contracts": 1,
+   "source": {
+    "kind": "integrity_watch",
+    "title": "Integrity Watch Srbija – DOBERGARD DOO / \"RATEL\" REGULATORNO TELO ZA ELEKTRONSKE KOMUNIKACIJE I POŠTANSKE USLUGE",
+    "url": "https://integritywatchserbia.org.rs/companies.php?l=sr",
+    "retrievedAt": "2026-10-30T13:47:26.488Z",
+    "official": false
+   }
+  },
+  {
+   "supplierName": "DOBERGARD DOO",
+   "supplierPib": "103509048",
+   "supplierMb": "17569775",
+   "contractingAuthority": "JKP JAVNO OSVETLJENJE BEOGRAD",
+   "linkType": "povezanost sa političkim subjektom",
+   "detail": "Integrity Watch označava ponuđača kao kompaniju povezanu sa političkim subjektom; izvor povezivanja: https://inmedija.rs/vlasnik-firmi-za-obezbedjenje-blizak-sns-a-pokrenuo-medij/; označenih ugovora kod naručioca: 3; od toga u zajedničkoj ponudi: 2 (vrednost cele ponude 8,567,280 RSD, nije pripisana firmi); period: 2022-09-16 do 2025-09-18; najveći: 5003 (2025-09-18, 4,896,840 RSD)",
+   "contracts": 3,
+   "valueRsd": 3495240,
+   "source": {
+    "kind": "integrity_watch",
+    "title": "Integrity Watch Srbija – DOBERGARD DOO / JKP JAVNO OSVETLJENJE BEOGRAD",
+    "url": "https://integritywatchserbia.org.rs/companies.php?l=sr",
+    "retrievedAt": "2026-10-30T13:47:26.488Z",
+    "official": false
+   }
+  },
+  {
+   "supplierName": "DOBERGARD DOO",
+   "supplierPib": "103509048",
+   "supplierMb": "17569775",
+   "contractingAuthority": "Gradska opština Grocka",
+   "linkType": "povezanost sa političkim subjektom",
+   "detail": "Integrity Watch označava ponuđača kao kompaniju povezanu sa političkim subjektom; izvor povezivanja: https://inmedija.rs/vlasnik-firmi-za-obezbedjenje-blizak-sns-a-pokrenuo-medij/; označenih ugovora kod naručioca: 1; period: 2021-05-25 do 2021-05-25; najveći: 031-87 (2021-05-25, 11,988,000 RSD)",
+   "contracts": 1,
+   "valueRsd": 11988000,
+   "source": {
+    "kind": "integrity_watch",
+    "title": "Integrity Watch Srbija – DOBERGARD DOO / Gradska opština Grocka",
+    "url": "https://integritywatchserbia.org.rs/companies.php?l=sr",
+    "retrievedAt": "2026-10-30T13:47:26.488Z",
+    "official": false
+   }
+  },
+  {
+   "supplierName": "DOBERGARD DOO",
+   "supplierPib": "103509048",
+   "supplierMb": "17569775",
+   "contractingAuthority": "Javno preduzeće \"Službeni glasnik\"",
+   "linkType": "povezanost sa političkim subjektom",
+   "detail": "Integrity Watch označava ponuđača kao kompaniju povezanu sa političkim subjektom; izvor povezivanja: https://inmedija.rs/vlasnik-firmi-za-obezbedjenje-blizak-sns-a-pokrenuo-medij/; označenih ugovora kod naručioca: 1; od toga u zajedničkoj ponudi: 1 (vrednost cele ponude 11,536,920 RSD, nije pripisana firmi); period: 2021-06-14 do 2021-06-14; najveći: 07-5544 (2021-06-14, 11,536,920 RSD)",
+   "contracts": 1,
+   "source": {
+    "kind": "integrity_watch",
+    "title": "Integrity Watch Srbija – DOBERGARD DOO / Javno preduzeće \"Službeni glasnik\"",
+    "url": "https://integritywatchserbia.org.rs/companies.php?l=sr",
+    "retrievedAt": "2026-10-30T13:47:26.488Z",
+    "official": false
+   }
+  },
+  {
+   "supplierName": "DOBERGARD DOO",
+   "supplierPib": "103509048",
+   "supplierMb": "17569775",
+   "contractingAuthority": "MF-UPRAVA CARINA",
+   "linkType": "povezanost sa političkim subjektom",
+   "detail": "Integrity Watch označava ponuđača kao kompaniju povezanu sa političkim subjektom; izvor povezivanja: https://inmedija.rs/vlasnik-firmi-za-obezbedjenje-blizak-sns-a-pokrenuo-medij/; označenih ugovora kod naručioca: 2; od toga u zajedničkoj ponudi: 1 (vrednost cele ponude 6,060,000 RSD, nije pripisana firmi); period: 2024-01-11 do 2025-01-16; najveći: 148-14-404-03-218/5/2023 (2024-01-11, 6,060,000 RSD)",
+   "contracts": 2,
+   "valueRsd": 5388800,
+   "source": {
+    "kind": "integrity_watch",
+    "title": "Integrity Watch Srbija – DOBERGARD DOO / MF-UPRAVA CARINA",
+    "url": "https://integritywatchserbia.org.rs/companies.php?l=sr",
+    "retrievedAt": "2026-10-30T13:47:26.488Z",
+    "official": false
+   }
+  },
+  {
+   "supplierName": "DOBERGARD DOO",
+   "supplierPib": "103509048",
+   "supplierMb": "17569775",
+   "contractingAuthority": "UNIVERZITET U BEOGRADU - EKONOMSKI FAKULTET",
+   "linkType": "povezanost sa političkim subjektom",
+   "detail": "Integrity Watch označava ponuđača kao kompaniju povezanu sa političkim subjektom; izvor povezivanja: https://inmedija.rs/vlasnik-firmi-za-obezbedjenje-blizak-sns-a-pokrenuo-medij/; označenih ugovora kod naručioca: 1; period: 2024-07-09 do 2024-07-09; najveći: 2746/1 (2024-07-09, 9,500,000 RSD)",
+   "contracts": 1,
+   "valueRsd": 9500000,
+   "source": {
+    "kind": "integrity_watch",
+    "title": "Integrity Watch Srbija – DOBERGARD DOO / UNIVERZITET U BEOGRADU - EKONOMSKI FAKULTET",
+    "url": "https://integritywatchserbia.org.rs/companies.php?l=sr",
+    "retrievedAt": "2026-10-30T13:47:26.488Z",
+    "official": false
+   }
+  },
+  {
+   "supplierName": "DOBERGARD DOO",
+   "supplierPib": "103509048",
+   "supplierMb": "17569775",
+   "contractingAuthority": "UNIVERZITETSKI KLINIČKI CENTAR SRBIJE",
+   "linkType": "povezanost sa političkim subjektom",
+   "detail": "Integrity Watch označava ponuđača kao kompaniju povezanu sa političkim subjektom; izvor povezivanja: https://inmedija.rs/vlasnik-firmi-za-obezbedjenje-blizak-sns-a-pokrenuo-medij/; označenih ugovora kod naručioca: 1; od toga u zajedničkoj ponudi: 1 (vrednost cele ponude 9,000,000 RSD, nije pripisana firmi); period: 2023-06-09 do 2023-06-09; najveći: 8850 (2023-06-09, 9,000,000 RSD)",
+   "contracts": 1,
+   "source": {
+    "kind": "integrity_watch",
+    "title": "Integrity Watch Srbija – DOBERGARD DOO / UNIVERZITETSKI KLINIČKI CENTAR SRBIJE",
+    "url": "https://integritywatchserbia.org.rs/companies.php?l=sr",
+    "retrievedAt": "2026-10-30T13:47:26.488Z",
+    "official": false
+   }
+  },
+  {
+   "supplierName": "DOBERGARD DOO",
+   "supplierPib": "103509048",
+   "supplierMb": "17569775",
+   "contractingAuthority": "Gradska uprava grada Požarevca",
+   "linkType": "povezanost sa političkim subjektom",
+   "detail": "Integrity Watch označava ponuđača kao kompaniju povezanu sa političkim subjektom; izvor povezivanja: https://inmedija.rs/vlasnik-firmi-za-obezbedjenje-blizak-sns-a-pokrenuo-medij/; označenih ugovora kod naručioca: 3; period: 2022-08-30 do 2023-09-08; najveći: 404-488/23-015 (2023-09-08, 2,995,920 RSD)",
+   "contracts": 3,
+   "valueRsd": 8190600,
+   "source": {
+    "kind": "integrity_watch",
+    "title": "Integrity Watch Srbija – DOBERGARD DOO / Gradska uprava grada Požarevca",
+    "url": "https://integritywatchserbia.org.rs/companies.php?l=sr",
+    "retrievedAt": "2026-10-30T13:47:26.488Z",
+    "official": false
+   }
+  },
+  {
+   "supplierName": "DOBERGARD DOO",
+   "supplierPib": "103509048",
+   "supplierMb": "17569775",
+   "contractingAuthority": "Institut za ispitivanje materijala ad",
+   "linkType": "povezanost sa političkim subjektom",
+   "detail": "Integrity Watch označava ponuđača kao kompaniju povezanu sa političkim subjektom; izvor povezivanja: https://inmedija.rs/vlasnik-firmi-za-obezbedjenje-blizak-sns-a-pokrenuo-medij/; označenih ugovora kod naručioca: 1; period: 2024-04-19 do 2024-04-19; najveći: 20-4266 (2024-04-19, 7,700,568 RSD)",
+   "contracts": 1,
+   "valueRsd": 7700568,
+   "source": {
+    "kind": "integrity_watch",
+    "title": "Integrity Watch Srbija – DOBERGARD DOO / Institut za ispitivanje materijala ad",
+    "url": "https://integritywatchserbia.org.rs/companies.php?l=sr",
+    "retrievedAt": "2026-10-30T13:47:26.488Z",
+    "official": false
+   }
+  },
+  {
+   "supplierName": "DOBERGARD DOO",
+   "supplierPib": "103509048",
+   "supplierMb": "17569775",
+   "contractingAuthority": "POZORIŠTE \"BOŠKO BUHA\"",
+   "linkType": "povezanost sa političkim subjektom",
+   "detail": "Integrity Watch označava ponuđača kao kompaniju povezanu sa političkim subjektom; izvor povezivanja: https://inmedija.rs/vlasnik-firmi-za-obezbedjenje-blizak-sns-a-pokrenuo-medij/; označenih ugovora kod naručioca: 2; period: 2021-03-29 do 2022-04-01; najveći: 33-N (2022-04-01, 2,816,667 RSD)",
+   "contracts": 2,
+   "valueRsd": 4900000,
+   "source": {
+    "kind": "integrity_watch",
+    "title": "Integrity Watch Srbija – DOBERGARD DOO / POZORIŠTE \"BOŠKO BUHA\"",
+    "url": "https://integritywatchserbia.org.rs/companies.php?l=sr",
+    "retrievedAt": "2026-10-30T13:47:26.488Z",
+    "official": false
+   }
+  },
+  {
+   "supplierName": "DOBERGARD DOO",
+   "supplierPib": "103509048",
+   "supplierMb": "17569775",
+   "contractingAuthority": "JAVNO PREDUZEĆE LJUBIČEVO",
+   "linkType": "povezanost sa političkim subjektom",
+   "detail": "Integrity Watch označava ponuđača kao kompaniju povezanu sa političkim subjektom; izvor povezivanja: https://inmedija.rs/vlasnik-firmi-za-obezbedjenje-blizak-sns-a-pokrenuo-medij/; označenih ugovora kod naručioca: 2; od toga u zajedničkoj ponudi: 1 (vrednost cele ponude 2,622,160 RSD, nije pripisana firmi); period: 2022-03-31 do 2024-04-15; najveći: 300 (2024-04-15, 2,622,160 RSD)",
+   "contracts": 2,
+   "valueRsd": 1979760,
+   "source": {
+    "kind": "integrity_watch",
+    "title": "Integrity Watch Srbija – DOBERGARD DOO / JAVNO PREDUZEĆE LJUBIČEVO",
+    "url": "https://integritywatchserbia.org.rs/companies.php?l=sr",
+    "retrievedAt": "2026-10-30T13:47:26.488Z",
+    "official": false
+   }
+  },
+  {
+   "supplierName": "DOBERGARD DOO",
+   "supplierPib": "103509048",
+   "supplierMb": "17569775",
+   "contractingAuthority": "JAVNO VODOPRIVREDNO PREDUZEĆE \"SRBIJAVODE\"",
+   "linkType": "povezanost sa političkim subjektom",
+   "detail": "Integrity Watch označava ponuđača kao kompaniju povezanu sa političkim subjektom; izvor povezivanja: https://inmedija.rs/vlasnik-firmi-za-obezbedjenje-blizak-sns-a-pokrenuo-medij/; označenih ugovora kod naručioca: 1; period: 2025-05-07 do 2025-05-07; najveći: Ou.4902/3/7-2025 (2025-05-07, 4,500,000 RSD)",
+   "contracts": 1,
+   "valueRsd": 4500000,
+   "source": {
+    "kind": "integrity_watch",
+    "title": "Integrity Watch Srbija – DOBERGARD DOO / JAVNO VODOPRIVREDNO PREDUZEĆE \"SRBIJAVODE\"",
+    "url": "https://integritywatchserbia.org.rs/companies.php?l=sr",
+    "retrievedAt": "2026-10-30T13:47:26.488Z",
+    "official": false
+   }
+  },
+  {
+   "supplierName": "DOBERGARD DOO",
+   "supplierPib": "103509048",
+   "supplierMb": "17569775",
+   "contractingAuthority": "POZORIŠTE NA TERAZIJAMA",
+   "linkType": "povezanost sa političkim subjektom",
+   "detail": "Integrity Watch označava ponuđača kao kompaniju povezanu sa političkim subjektom; izvor povezivanja: https://inmedija.rs/vlasnik-firmi-za-obezbedjenje-blizak-sns-a-pokrenuo-medij/; označenih ugovora kod naručioca: 2; od toga u zajedničkoj ponudi: 1 (vrednost cele ponude 359 RSD, nije pripisana firmi); period: 2022-07-08 do 2023-06-16; najveći: 568 (2022-07-08, 3,483,332 RSD)",
+   "contracts": 2,
+   "valueRsd": 3483331.94,
+   "source": {
+    "kind": "integrity_watch",
+    "title": "Integrity Watch Srbija – DOBERGARD DOO / POZORIŠTE NA TERAZIJAMA",
+    "url": "https://integritywatchserbia.org.rs/companies.php?l=sr",
+    "retrievedAt": "2026-10-30T13:47:26.488Z",
+    "official": false
+   }
+  },
+  {
+   "supplierName": "DOBERGARD DOO",
+   "supplierPib": "103509048",
+   "supplierMb": "17569775",
+   "contractingAuthority": "INSTITUT ZA MENTALNO ZDRAVLJE",
+   "linkType": "povezanost sa političkim subjektom",
+   "detail": "Integrity Watch označava ponuđača kao kompaniju povezanu sa političkim subjektom; izvor povezivanja: https://inmedija.rs/vlasnik-firmi-za-obezbedjenje-blizak-sns-a-pokrenuo-medij/; označenih ugovora kod naručioca: 1; period: 2022-10-10 do 2022-10-10; najveći: 2336/4 (2022-10-10, 3,057,240 RSD)",
+   "contracts": 1,
+   "valueRsd": 3057240,
+   "source": {
+    "kind": "integrity_watch",
+    "title": "Integrity Watch Srbija – DOBERGARD DOO / INSTITUT ZA MENTALNO ZDRAVLJE",
+    "url": "https://integritywatchserbia.org.rs/companies.php?l=sr",
+    "retrievedAt": "2026-10-30T13:47:26.488Z",
+    "official": false
+   }
+  },
+  {
+   "supplierName": "DOBERGARD DOO",
+   "supplierPib": "103509048",
+   "supplierMb": "17569775",
+   "contractingAuthority": "JP ETV BEOGRAD",
+   "linkType": "povezanost sa političkim subjektom",
+   "detail": "Integrity Watch označava ponuđača kao kompaniju povezanu sa političkim subjektom; izvor povezivanja: https://inmedija.rs/vlasnik-firmi-za-obezbedjenje-blizak-sns-a-pokrenuo-medij/; označenih ugovora kod naručioca: 1; period: 2024-05-20 do 2024-05-20; najveći: 2161/24 (2024-05-20, 2,998,800 RSD)",
+   "contracts": 1,
+   "valueRsd": 2998800,
+   "source": {
+    "kind": "integrity_watch",
+    "title": "Integrity Watch Srbija – DOBERGARD DOO / JP ETV BEOGRAD",
+    "url": "https://integritywatchserbia.org.rs/companies.php?l=sr",
+    "retrievedAt": "2026-10-30T13:47:26.488Z",
+    "official": false
+   }
+  },
+  {
+   "supplierName": "DOBERGARD DOO",
+   "supplierPib": "103509048",
+   "supplierMb": "17569775",
+   "contractingAuthority": "Gradska opština Savski venac",
+   "linkType": "povezanost sa političkim subjektom",
+   "detail": "Integrity Watch označava ponuđača kao kompaniju povezanu sa političkim subjektom; izvor povezivanja: https://inmedija.rs/vlasnik-firmi-za-obezbedjenje-blizak-sns-a-pokrenuo-medij/; označenih ugovora kod naručioca: 1; od toga u zajedničkoj ponudi: 1 (vrednost cele ponude 2,666,667 RSD, nije pripisana firmi); period: 2021-03-24 do 2021-03-24; najveći: 404-68/21 (2021-03-24, 2,666,667 RSD)",
+   "contracts": 1,
+   "source": {
+    "kind": "integrity_watch",
+    "title": "Integrity Watch Srbija – DOBERGARD DOO / Gradska opština Savski venac",
+    "url": "https://integritywatchserbia.org.rs/companies.php?l=sr",
+    "retrievedAt": "2026-10-30T13:47:26.488Z",
+    "official": false
+   }
+  },
+  {
+   "supplierName": "DOBERGARD DOO",
+   "supplierPib": "103509048",
+   "supplierMb": "17569775",
+   "contractingAuthority": "JAVNA USTANOVA \"USTANOVA ZA SPORT I OMLADINU\" LAJKOVAC",
+   "linkType": "povezanost sa političkim subjektom",
+   "detail": "Integrity Watch označava ponuđača kao kompaniju povezanu sa političkim subjektom; izvor povezivanja: https://inmedija.rs/vlasnik-firmi-za-obezbedjenje-blizak-sns-a-pokrenuo-medij/; označenih ugovora kod naručioca: 1; period: 2021-02-05 do 2021-02-05; najveći: 90/21 (2021-02-05, 2,268,840 RSD)",
+   "contracts": 1,
+   "valueRsd": 2268840,
+   "source": {
+    "kind": "integrity_watch",
+    "title": "Integrity Watch Srbija – DOBERGARD DOO / JAVNA USTANOVA \"USTANOVA ZA SPORT I OMLADINU\" LAJKOVAC",
+    "url": "https://integritywatchserbia.org.rs/companies.php?l=sr",
+    "retrievedAt": "2026-10-30T13:47:26.488Z",
+    "official": false
+   }
+  },
+  {
+   "supplierName": "DOBERGARD DOO",
+   "supplierPib": "103509048",
+   "supplierMb": "17569775",
+   "contractingAuthority": "Opština Lajkovac-Opštinska uprava Lajkovac",
+   "linkType": "povezanost sa političkim subjektom",
+   "detail": "Integrity Watch označava ponuđača kao kompaniju povezanu sa političkim subjektom; izvor povezivanja: https://inmedija.rs/vlasnik-firmi-za-obezbedjenje-blizak-sns-a-pokrenuo-medij/; označenih ugovora kod naručioca: 1; period: 2021-01-26 do 2021-01-26; najveći: 404-8/IV-21 (2021-01-26, 2,268,840 RSD)",
+   "contracts": 1,
+   "valueRsd": 2268840,
+   "source": {
+    "kind": "integrity_watch",
+    "title": "Integrity Watch Srbija – DOBERGARD DOO / Opština Lajkovac-Opštinska uprava Lajkovac",
+    "url": "https://integritywatchserbia.org.rs/companies.php?l=sr",
+    "retrievedAt": "2026-10-30T13:47:26.488Z",
+    "official": false
+   }
+  },
+  {
+   "supplierName": "DOBERGARD DOO",
+   "supplierPib": "103509048",
+   "supplierMb": "17569775",
+   "contractingAuthority": "TURISTIČKA ORGANIZACIJA LEBANE",
+   "linkType": "povezanost sa političkim subjektom",
+   "detail": "Integrity Watch označava ponuđača kao kompaniju povezanu sa političkim subjektom; izvor povezivanja: https://inmedija.rs/vlasnik-firmi-za-obezbedjenje-blizak-sns-a-pokrenuo-medij/; označenih ugovora kod naručioca: 1; period: 2025-03-31 do 2025-03-31; najveći: 386 (2025-03-31, 1,922,820 RSD)",
+   "contracts": 1,
+   "valueRsd": 1922820,
+   "source": {
+    "kind": "integrity_watch",
+    "title": "Integrity Watch Srbija – DOBERGARD DOO / TURISTIČKA ORGANIZACIJA LEBANE",
+    "url": "https://integritywatchserbia.org.rs/companies.php?l=sr",
+    "retrievedAt": "2026-10-30T13:47:26.488Z",
+    "official": false
+   }
+  },
+  {
+   "supplierName": "DOBERGARD DOO",
+   "supplierPib": "103509048",
+   "supplierMb": "17569775",
+   "contractingAuthority": "OSNOVNA ŠKOLA \"IVAN GORAN KOVAČIĆ\"",
+   "linkType": "povezanost sa političkim subjektom",
+   "detail": "Integrity Watch označava ponuđača kao kompaniju povezanu sa političkim subjektom; izvor povezivanja: https://inmedija.rs/vlasnik-firmi-za-obezbedjenje-blizak-sns-a-pokrenuo-medij/; označenih ugovora kod naručioca: 2; period: 2022-09-17 do 2024-10-18; najveći: 1063 (2024-10-18, 1,833,333 RSD)",
+   "contracts": 2,
+   "valueRsd": 1833662.33,
+   "source": {
+    "kind": "integrity_watch",
+    "title": "Integrity Watch Srbija – DOBERGARD DOO / OSNOVNA ŠKOLA \"IVAN GORAN KOVAČIĆ\"",
+    "url": "https://integritywatchserbia.org.rs/companies.php?l=sr",
+    "retrievedAt": "2026-10-30T13:47:26.488Z",
+    "official": false
+   }
+  },
+  {
+   "supplierName": "DOBERGARD DOO",
+   "supplierPib": "103509048",
+   "supplierMb": "17569775",
+   "contractingAuthority": "Gradska opština Palilula",
+   "linkType": "povezanost sa političkim subjektom",
+   "detail": "Integrity Watch označava ponuđača kao kompaniju povezanu sa političkim subjektom; izvor povezivanja: https://inmedija.rs/vlasnik-firmi-za-obezbedjenje-blizak-sns-a-pokrenuo-medij/; označenih ugovora kod naručioca: 1; od toga u zajedničkoj ponudi: 1 (vrednost cele ponude 1,650,880 RSD, nije pripisana firmi); period: 2024-07-31 do 2024-07-31; najveći: 404-218/2024-I-6b (2024-07-31, 1,650,880 RSD)",
+   "contracts": 1,
+   "source": {
+    "kind": "integrity_watch",
+    "title": "Integrity Watch Srbija – DOBERGARD DOO / Gradska opština Palilula",
+    "url": "https://integritywatchserbia.org.rs/companies.php?l=sr",
+    "retrievedAt": "2026-10-30T13:47:26.488Z",
+    "official": false
+   }
+  },
+  {
+   "supplierName": "DOBERGARD DOO",
+   "supplierPib": "103509048",
+   "supplierMb": "17569775",
+   "contractingAuthority": "NACIONALNA KORPORACIJA ZA OSIGURANJE STAMBENIH KREDITA",
+   "linkType": "povezanost sa političkim subjektom",
+   "detail": "Integrity Watch označava ponuđača kao kompaniju povezanu sa političkim subjektom; izvor povezivanja: https://inmedija.rs/vlasnik-firmi-za-obezbedjenje-blizak-sns-a-pokrenuo-medij/; označenih ugovora kod naručioca: 1; period: 2025-03-11 do 2025-03-11; najveći: 524 (2025-03-11, 1,068,000 RSD)",
+   "contracts": 1,
+   "valueRsd": 1068000,
+   "source": {
+    "kind": "integrity_watch",
+    "title": "Integrity Watch Srbija – DOBERGARD DOO / NACIONALNA KORPORACIJA ZA OSIGURANJE STAMBENIH KREDITA",
+    "url": "https://integritywatchserbia.org.rs/companies.php?l=sr",
+    "retrievedAt": "2026-10-30T13:47:26.488Z",
+    "official": false
+   }
+  },
+  {
+   "supplierName": "DOBERGARD DOO",
+   "supplierPib": "103509048",
+   "supplierMb": "17569775",
+   "contractingAuthority": "ZAVOD ZA ZAŠTITU SPOMENIKA KULTURE GRADA BEOGRADA",
+   "linkType": "povezanost sa političkim subjektom",
+   "detail": "Integrity Watch označava ponuđača kao kompaniju povezanu sa političkim subjektom; izvor povezivanja: https://inmedija.rs/vlasnik-firmi-za-obezbedjenje-blizak-sns-a-pokrenuo-medij/; označenih ugovora kod naručioca: 1; period: 2025-02-10 do 2025-02-10; najveći: 37-14/2025 (2025-02-10, 989,000 RSD)",
+   "contracts": 1,
+   "valueRsd": 989000,
+   "source": {
+    "kind": "integrity_watch",
+    "title": "Integrity Watch Srbija – DOBERGARD DOO / ZAVOD ZA ZAŠTITU SPOMENIKA KULTURE GRADA BEOGRADA",
+    "url": "https://integritywatchserbia.org.rs/companies.php?l=sr",
+    "retrievedAt": "2026-10-30T13:47:26.488Z",
+    "official": false
+   }
+  }
+ ]
+}

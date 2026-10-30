@@ -7,6 +7,7 @@ import { config, editorModelLabel, modelLabel } from "../config"
 import * as data from "../data"
 import { LEGAL_LABELS, listStaticInstitutions, type ResolvedInstitution } from "../data/resolver"
 import type { AgentInfo, DosijeReport, DosijeSnapshot, InstitutionView, MapaView, RuntimeConfigView } from "../shared/types"
+import { installActivityBridge } from "./activity"
 import { CORE_AGENTS, OBSERVERS, createCoreAgent } from "./agents"
 import { bus } from "./bus"
 import * as domain from "./domain"
@@ -70,6 +71,7 @@ export function boot(): Promise<void> {
 
 async function doBoot(): Promise<void> {
 	installSafetyNet()
+	installActivityBridge()
 	const state = new DosijeState()
 	const runner = config.mode === "llm" ? new ResilientInferenceRunner(state) : new ScriptedInferenceRunner()
 	initializeRuntime({ state, inferenceRunnerConfig: { runner } })

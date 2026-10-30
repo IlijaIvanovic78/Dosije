@@ -1,5 +1,6 @@
 import type { Tool } from "@mozaik-ai/core"
 import { config } from "../../config"
+import { withActivityContext } from "../../data/activity"
 import { CacheMissError } from "../../data/cache"
 import type { SourceRef } from "../../shared/types"
 import { S, type ToolCtx } from "../domain"
@@ -86,14 +87,32 @@ export function uniqueSources(list: (SourceRef | undefined)[]): SourceRef[] {
 
 const latencyCounters = new Map<string, number>()
 
-/** Scripted mode with cached data: simulate the 150-600 ms a real source call takes (seeded, scaled by DEMO_SPEED). */
-export async function sourceLatency(agentId: string): Promise<void> {
-	if (config.mode !== "scripted" || config.dataMode === "live") return
+/** The simulated latency of one tool call: spent inside the live-search activities of cache hits, the rest before the tool returns. */
+export interface LatencyPlan {
+	take(): Promise<void>
+	drain(): Promise<void>
+}
+
+/**
+ * Scripted mode with cached data: simulate the 150-600 ms a real source call takes (seeded, scaled by DEMO_SPEED).
+ * The pause happens INSIDE the activity window (u_toku -> kes), so the live feed shows the request in progress; the total
+ * per tool call stays what it was.
+ */
+export function planLatency(agentId: string): LatencyPlan | undefined {
+	if (config.mode !== "scripted" || config.dataMode === "live") return undefined
 	const n = (latencyCounters.get(agentId) ?? 0) + 1
 	latencyCounters.set(agentId, n)
 	const rnd = seeded(hashString(`${agentId}:${n}`))
-	const ms = (150 + rnd() * 450) * config.demoSpeed
-	if (ms >= 1) await sleep(ms)
+	const total = (150 + rnd() * 450) * config.demoSpeed
+	let remaining = total
+	const spend = async (ms: number) => {
+		remaining = Math.max(0, remaining - ms)
+		if (ms >= 1) await sleep(ms)
+	}
+	return {
+		take: () => spend(Math.min(remaining, total * 0.7)),
+		drain: () => spend(remaining),
+	}
 }
 
 export interface ToolSpec {
@@ -118,10 +137,18 @@ export function buildTool(ctx: ToolCtx, spec: ToolSpec): Tool {
 		invoke: async (args: unknown) => {
 			try {
 				const state = S()
-				const alive = ctx.group === "trijaza" ? state.mapaRunning(ctx.caseId) : state.isCurrent(ctx.caseId)
-				if (!alive) return fit({ ok: false, error: ctx.group === "trijaza" ? "Mapa je zatvorena ili zamenjena novom." : "Slučaj je zatvoren ili zamenjen novim." })
-				if (!spec.local) await sourceLatency(ctx.agentId)
-				const out = await spec.handler(args && typeof args === "object" ? (args as Record<string, unknown>) : {})
+				const isAlive = () => (ctx.group === "trijaza" ? state.mapaRunning(ctx.caseId) : state.isCurrent(ctx.caseId))
+				if (!isAlive()) return fit({ ok: false, error: ctx.group === "trijaza" ? "Mapa je zatvorena ili zamenjena novom." : "Slučaj je zatvoren ili zamenjen novim." })
+				const latency = spec.local ? undefined : planLatency(ctx.agentId)
+				// every public-source request the handler makes is attributed to this agent and tool (live search, "izvor.upit")
+				const out = await withActivityContext(
+					{ agentId: ctx.agentId, agentName: ctx.agentName, tool: spec.name, caseId: ctx.caseId, alive: isAlive, simulate: latency?.take },
+					async () => {
+						const result = await spec.handler(args && typeof args === "object" ? (args as Record<string, unknown>) : {})
+						await latency?.drain()
+						return result
+					},
+				)
 				return fit(out, spec.max)
 			} catch (err) {
 				return fit({ ok: false, error: friendlyError(err) })

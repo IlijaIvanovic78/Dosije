@@ -213,6 +213,8 @@ export interface RunStats {
 	blockedClaims: number;
 	conflicts: number;
 	events: number;
+	activities?: number; // live-search requests published ("izvor.upit"), at most 400 per case
+	activitiesDropped?: number; // requests over that cap (not published)
 	startedAt?: string;
 	finishedAt?: string;
 	elapsedMs: number;

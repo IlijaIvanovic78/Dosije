@@ -4,6 +4,7 @@
 // authorised by a per-visitor session: cookie ASP.NET_SessionId + header UserToken (hidden input #uiUserToken on any page).
 // Details and caveats: docs/data-sources/jnportal.md
 
+import { SRC, shortInstitution, trackActivity } from "../activity"
 import { cached, cacheKey, readCache, writeCache } from "../cache"
 import { getJson, HttpError, USER_AGENT } from "../http"
 import { cyrToLat, latToCyr, nameSimilarity, normalizeName } from "../translit"
@@ -101,16 +102,22 @@ async function grid<T>(name: string, params: Record<string, string>): Promise<Gr
 	throw lastErr
 }
 
-async function gridAll<T>(name: string, filter: unknown, sort: unknown): Promise<T[]> {
+/** One live activity per page of a crawl ("ugovori, strana 3/16"); no events outside a tool's activity context. */
+async function gridAll<T>(name: string, filter: unknown, sort: unknown, what = "podaci"): Promise<T[]> {
 	const rows: T[] = []
 	let total = Number.POSITIVE_INFINITY
 	for (let skip = 0, page = 0; skip < total && page < 400; skip += PAGE, page++) {
-		const res = await grid<T>(name, {
-			filter: JSON.stringify(filter),
-			sort: JSON.stringify(sort),
-			skip: String(skip),
-			take: String(PAGE),
-			requireTotalCount: "true",
+		const res = await trackActivity({ ...SRC.jn, action: "preuzimanje", label: `${what}, strana ${page + 1}`, url: `${BASE}/ugovori` }, async (h) => {
+			const r = await grid<T>(name, {
+				filter: JSON.stringify(filter),
+				sort: JSON.stringify(sort),
+				skip: String(skip),
+				take: String(PAGE),
+				requireTotalCount: "true",
+			})
+			h.items(r.data.length)
+			if (r.totalCount) h.label(`${what}, strana ${page + 1}/${Math.max(1, Math.ceil(r.totalCount / PAGE))}`)
+			return r
 		})
 		total = res.totalCount ?? res.data.length
 		if (res.data.length === 0) break
@@ -330,7 +337,7 @@ export async function findAuthority(nameOrPib: string): Promise<AuthorityRef[]> 
 		return rows
 			.filter((r) => r.IsContractingAuthority || r.IsContractingEntity)
 			.map((r): RawContractor => ({ Id: r.Id, Name: r.Name, IdentificationNumber: r.IdentificationNumber, City: r.City }))
-	})
+	}, { activity: { ...SRC.jn, action: "pretraga", label: `naručilac: ${q}`, url: `${BASE}/ugovori`, after: (d, h) => h.items(d.length) } })
 	const out = env.data.map((r) => toAuthority(r, env.retrievedAt))
 	if (!/^\d{8,9}$/.test(q)) out.sort((a, b) => nameSimilarity(b.name, q) - nameSimilarity(a.name, q))
 	for (const a of out.slice(0, 5)) await remember(a)
@@ -366,6 +373,8 @@ async function resolveAuthority(inst: InstLike): Promise<{ id: string; name: str
 interface Loaded {
 	store: Store
 	retrievedAt: string
+	/** this call read the committed/previous copy (or the in-memory copy of an earlier call) instead of crawling the portal */
+	fromCache?: boolean
 }
 
 const memo = new Map<string, Promise<Loaded>>()
@@ -388,9 +397,9 @@ function coreNameCyr(cyr: string): string {
 
 async function fetchStore(auth: { id: string; name: string; pib?: string }): Promise<string> {
 	const cyrName = latToCyr(auth.name)
-	let lots = await gridAll<RawLotContract>("VContracts", ["OfficialName", "=", cyrName], LOT_SORT)
-	if (lots.length === 0) lots = await gridAll<RawLotContract>("VContracts", ["OfficialName", "contains", cyrName], LOT_SORT)
-	const tenders = await gridAll<RawTender>("TendersAll", ["CAId", "=", Number(auth.id)], [{ selector: "Id", desc: false }])
+	let lots = await gridAll<RawLotContract>("VContracts", ["OfficialName", "=", cyrName], LOT_SORT, "ugovori")
+	if (lots.length === 0) lots = await gridAll<RawLotContract>("VContracts", ["OfficialName", "contains", cyrName], LOT_SORT, "ugovori")
+	const tenders = await gridAll<RawTender>("TendersAll", ["CAId", "=", Number(auth.id)], [{ selector: "Id", desc: false }], "postupci nabavki")
 
 	// A renamed authority (e.g. "Javno preduzeće Putevi Srbije" -> "Društvo sa ograničenom odgovornošću Putevi Srbije") keeps
 	// its CAId, but older contracts carry the old OfficialName. Add them only when the tender belongs to THIS authority's CAId.
@@ -401,7 +410,7 @@ async function fetchStore(auth: { id: string; name: string; pib?: string }): Pro
 			const mine = new Set(tenders.map((t) => t.Id))
 			const key = (l: RawLotContract) => `${l.TenderId}|${l.LotId}|${l.ContractNo}`
 			const have = new Set(lots.map(key))
-			const more = await gridAll<RawLotContract>("VContracts", ["OfficialName", "contains", core], LOT_SORT)
+			const more = await gridAll<RawLotContract>("VContracts", ["OfficialName", "contains", core], LOT_SORT, "ugovori (raniji naziv)")
 			lots = [...lots, ...more.filter((l) => mine.has(l.TenderId) && !have.has(key(l)))]
 		}
 	}
@@ -412,17 +421,32 @@ async function load(inst: InstLike): Promise<Loaded> {
 	const auth = await resolveAuthority(inst)
 	const key = cacheKey("contracts", auth.id)
 	let p = memo.get(key)
+	const first = !p
 	if (!p) {
 		p = (async () => {
 			const env = await cached<string>(SOURCE, key, () => fetchStore(auth), { meta: { authority: auth } })
 			const store = JSON.parse(env.data) as Store
 			await remember(store.authority)
-			return { store, retrievedAt: env.retrievedAt }
+			return { store, retrievedAt: env.retrievedAt, fromCache: env.fromCache }
 		})()
 		p.catch(() => memo.delete(key))
 		memo.set(key, p)
 	}
-	return p
+	const loaded = await p
+	return { ...loaded, fromCache: first ? loaded.fromCache : true }
+}
+
+/** One live-search request for the contracts of an institution: a crawl (per-page activities inside) or a read of the cache. */
+function loadTracked<T>(inst: InstLike, desc: { label: string; action?: "pretraga" | "preuzimanje" }, use: (l: Loaded) => T, after?: (result: T, l: Loaded) => { items?: number; label?: string }): Promise<T> {
+	return trackActivity({ ...SRC.jn, action: desc.action ?? "preuzimanje", label: desc.label, url: authorityUrl(inst.name) }, async (h) => {
+		const l = await load(inst)
+		if (l.fromCache) h.cached(l.retrievedAt)
+		const result = use(l)
+		const extra = after?.(result, l)
+		if (extra?.items !== undefined) h.items(extra.items)
+		if (extra?.label) h.label(extra.label)
+		return result
+	})
 }
 
 function contractUrl(tenderId: number): string {
@@ -479,9 +503,15 @@ function procedureOnly(p: StoredProcedure, l: Loaded): Contract {
 	}
 }
 
+const count = (n: number) => n.toLocaleString("sr-RS")
+
 export async function getContracts(inst: InstLike): Promise<Contract[]> {
-	const l = await load(inst)
-	return l.store.contracts.map((c) => toContract(c, l))
+	return loadTracked(
+		inst,
+		{ label: `ugovori naručioca: ${shortInstitution(inst.name)}` },
+		(l) => l.store.contracts.map((c) => toContract(c, l)),
+		(r) => ({ items: r.length, label: `ugovori naručioca: ${shortInstitution(inst.name)} (${count(r.length)})` }),
+	)
 }
 
 // ─── summary ─────────────────────────────────────────────────────────────────
@@ -489,8 +519,16 @@ export async function getContracts(inst: InstLike): Promise<Contract[]> {
 const round2 = (n: number) => Math.round(n * 100) / 100
 const byValueDesc = (a: Contract, b: Contract) => (b.valueRsd ?? -1) - (a.valueRsd ?? -1)
 
-export async function getSummary(inst: InstLike): Promise<ProcurementSummary> {
-	const l = await load(inst)
+export function getSummary(inst: InstLike): Promise<ProcurementSummary> {
+	return loadTracked(
+		inst,
+		{ label: `ugovori naručioca: ${shortInstitution(inst.name)}` },
+		(l) => summarize(l),
+		(r) => ({ items: r.totalContracts, label: `ugovori naručioca: ${shortInstitution(inst.name)} (${count(r.totalContracts)})` }),
+	)
+}
+
+function summarize(l: Loaded): ProcurementSummary {
 	const all = l.store.contracts
 	const contracts = all.map((c) => toContract(c, l))
 	const total = all.reduce((s, c) => s + (c.valueRsd ?? 0), 0)
@@ -545,8 +583,17 @@ export async function getSummary(inst: InstLike): Promise<ProcurementSummary> {
 
 // ─── by supplier ─────────────────────────────────────────────────────────────
 
-export async function getContractsWithSupplier(inst: InstLike, supplier: { pib?: string; mb?: string; name?: string }): Promise<Contract[]> {
-	const l = await load(inst)
+export function getContractsWithSupplier(inst: InstLike, supplier: { pib?: string; mb?: string; name?: string }): Promise<Contract[]> {
+	const who = supplier.name?.trim() || (supplier.pib ? `PIB ${supplier.pib}` : supplier.mb ? `MB ${supplier.mb}` : "dobavljač")
+	return loadTracked(
+		inst,
+		{ label: `ugovori dobavljača: ${who}`, action: "pretraga" },
+		(l) => contractsWithSupplier(l, supplier),
+		(r) => ({ items: r.length }),
+	)
+}
+
+function contractsWithSupplier(l: Loaded, supplier: { pib?: string; mb?: string; name?: string }): Contract[] {
 	const pib = supplier.pib?.replace(/\D/g, "")
 	const name = supplier.name?.trim()
 	const wanted = name ? normalizeName(name).split(" ").filter(Boolean) : []

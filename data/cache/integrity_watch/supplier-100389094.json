@@ -1,0 +1,494 @@
+{
+ "source": "integrity_watch",
+ "key": "supplier-100389094",
+ "retrievedAt": "2026-10-30T15:41:28.393Z",
+ "data": [
+  {
+   "supplierName": "ASEE Solutions d.o.o. Beograd",
+   "supplierPib": "100389094",
+   "supplierMb": "07432461",
+   "contractingAuthority": "MINISTARSTVO FINANSIJA - PORESKA UPRAVA",
+   "linkType": "povezanost sa političkim subjektom",
+   "detail": "Integrity Watch označava ponuđača kao kompaniju povezanu sa političkim subjektom; izvor povezivanja: https://birn.rs/poslovi-porodice-kisic/; označenih ugovora kod naručioca: 28; od toga u zajedničkoj ponudi: 22 (vrednost cele ponude 1,650,190,102 RSD, nije pripisana firmi); period: 2021-04-28 do 2026-02-05; najveći: 000-404-01-00725/2025-1100 (2025-12-11, 1,006,504,565 RSD)",
+   "contracts": 28,
+   "valueRsd": 103765750,
+   "source": {
+    "kind": "integrity_watch",
+    "title": "Integrity Watch Srbija – ASEE Solutions d.o.o. Beograd / MINISTARSTVO FINANSIJA - PORESKA UPRAVA",
+    "url": "https://integritywatchserbia.org.rs/companies.php?l=sr",
+    "retrievedAt": "2026-10-30T13:47:26.488Z",
+    "official": false
+   }
+  },
+  {
+   "supplierName": "ASEE Solutions d.o.o. Beograd",
+   "supplierPib": "100389094",
+   "supplierMb": "07432461",
+   "contractingAuthority": "Ministarstvo za rad, zapošljavanje, boračka i socijalna pitanja",
+   "linkType": "povezanost sa političkim subjektom",
+   "detail": "Integrity Watch označava ponuđača kao kompaniju povezanu sa političkim subjektom; izvor povezivanja: https://birn.rs/poslovi-porodice-kisic/; označenih ugovora kod naručioca: 4; od toga u zajedničkoj ponudi: 4 (vrednost cele ponude 869,931,601 RSD, nije pripisana firmi); period: 2024-02-09 do 2025-12-26; najveći: 003001124 2024 13400 009 003 405 029 18 006 (2024-12-16, 416,729,900 RSD)",
+   "contracts": 4,
+   "source": {
+    "kind": "integrity_watch",
+    "title": "Integrity Watch Srbija – ASEE Solutions d.o.o. Beograd / Ministarstvo za rad, zapošljavanje, boračka i socijalna pitanja",
+    "url": "https://integritywatchserbia.org.rs/companies.php?l=sr",
+    "retrievedAt": "2026-10-30T13:47:26.488Z",
+    "official": false
+   }
+  },
+  {
+   "supplierName": "Asseco SEE doo Beograd",
+   "supplierPib": "100389094",
+   "supplierMb": "07432461",
+   "contractingAuthority": "Ministarstvo prosvete",
+   "linkType": "povezanost sa političkim subjektom",
+   "detail": "Integrity Watch označava ponuđača kao kompaniju povezanu sa političkim subjektom; izvor povezivanja: https://birn.rs/poslovi-porodice-kisic/; označenih ugovora kod naručioca: 2; od toga u zajedničkoj ponudi: 2 (vrednost cele ponude 731,199,723 RSD, nije pripisana firmi); period: 2023-06-16 do 2023-12-08; najveći: 404-02-75/2023-08 (2023-12-08, 548,815,000 RSD)",
+   "contracts": 2,
+   "source": {
+    "kind": "integrity_watch",
+    "title": "Integrity Watch Srbija – Asseco SEE doo Beograd / Ministarstvo prosvete",
+    "url": "https://integritywatchserbia.org.rs/companies.php?l=sr",
+    "retrievedAt": "2026-10-30T13:47:26.488Z",
+    "official": false
+   }
+  },
+  {
+   "supplierName": "ASEE Solutions d.o.o. Beograd",
+   "supplierPib": "100389094",
+   "supplierMb": "07432461",
+   "contractingAuthority": "EMS AD Beograd",
+   "linkType": "povezanost sa političkim subjektom",
+   "detail": "Integrity Watch označava ponuđača kao kompaniju povezanu sa političkim subjektom; izvor povezivanja: https://birn.rs/poslovi-porodice-kisic/; označenih ugovora kod naručioca: 13; od toga u zajedničkoj ponudi: 1 (vrednost cele ponude 19,611,600 RSD, nije pripisana firmi); period: 2021-03-16 do 2025-12-25; najveći: 500-00-UGO-NAB-426/2024-001 (2025-02-28, 74,053,980 RSD)",
+   "contracts": 13,
+   "valueRsd": 414424592.12,
+   "source": {
+    "kind": "integrity_watch",
+    "title": "Integrity Watch Srbija – ASEE Solutions d.o.o. Beograd / EMS AD Beograd",
+    "url": "https://integritywatchserbia.org.rs/companies.php?l=sr",
+    "retrievedAt": "2026-10-30T13:47:26.488Z",
+    "official": false
+   }
+  },
+  {
+   "supplierName": "ASEE Solutions d.o.o. Beograd",
+   "supplierPib": "100389094",
+   "supplierMb": "07432461",
+   "contractingAuthority": "Ministarstvo finansija",
+   "linkType": "povezanost sa političkim subjektom",
+   "detail": "Integrity Watch označava ponuđača kao kompaniju povezanu sa političkim subjektom; izvor povezivanja: https://birn.rs/poslovi-porodice-kisic/; označenih ugovora kod naručioca: 8; od toga u zajedničkoj ponudi: 3 (vrednost cele ponude 316,820,320 RSD, nije pripisana firmi); period: 2021-10-18 do 2025-12-10; najveći: 404-02-145/6/2022 (2022-08-05, 113,800,000 RSD)",
+   "contracts": 8,
+   "valueRsd": 84664000,
+   "source": {
+    "kind": "integrity_watch",
+    "title": "Integrity Watch Srbija – ASEE Solutions d.o.o. Beograd / Ministarstvo finansija",
+    "url": "https://integritywatchserbia.org.rs/companies.php?l=sr",
+    "retrievedAt": "2026-10-30T13:47:26.488Z",
+    "official": false
+   }
+  },
+  {
+   "supplierName": "ASEE Solutions d.o.o. Beograd",
+   "supplierPib": "100389094",
+   "supplierMb": "07432461",
+   "contractingAuthority": "AGENCIJA ZA PRIVREDNE REGISTRE",
+   "linkType": "povezanost sa političkim subjektom",
+   "detail": "Integrity Watch označava ponuđača kao kompaniju povezanu sa političkim subjektom; izvor povezivanja: https://birn.rs/poslovi-porodice-kisic/; označenih ugovora kod naručioca: 8; od toga u zajedničkoj ponudi: 1 (vrednost cele ponude 97,250,450 RSD, nije pripisana firmi); period: 2021-05-12 do 2025-05-15; najveći: 08-3-206/21 (2021-08-27, 97,250,450 RSD)",
+   "contracts": 8,
+   "valueRsd": 196151900,
+   "source": {
+    "kind": "integrity_watch",
+    "title": "Integrity Watch Srbija – ASEE Solutions d.o.o. Beograd / AGENCIJA ZA PRIVREDNE REGISTRE",
+    "url": "https://integritywatchserbia.org.rs/companies.php?l=sr",
+    "retrievedAt": "2026-10-30T13:47:26.488Z",
+    "official": false
+   }
+  },
+  {
+   "supplierName": "ASEE Solutions d.o.o. Beograd",
+   "supplierPib": "100389094",
+   "supplierMb": "07432461",
+   "contractingAuthority": "Nacionalna služba za zapošljavanje",
+   "linkType": "povezanost sa političkim subjektom",
+   "detail": "Integrity Watch označava ponuđača kao kompaniju povezanu sa političkim subjektom; izvor povezivanja: https://birn.rs/poslovi-porodice-kisic/; označenih ugovora kod naručioca: 13; od toga u zajedničkoj ponudi: 6 (vrednost cele ponude 217,044,952 RSD, nije pripisana firmi); period: 2021-10-26 do 2026-01-14; najveći: 0094-40494-177/2021 (2021-10-26, 74,635,000 RSD)",
+   "contracts": 13,
+   "valueRsd": 74818370.54,
+   "source": {
+    "kind": "integrity_watch",
+    "title": "Integrity Watch Srbija – ASEE Solutions d.o.o. Beograd / Nacionalna služba za zapošljavanje",
+    "url": "https://integritywatchserbia.org.rs/companies.php?l=sr",
+    "retrievedAt": "2026-10-30T13:47:26.488Z",
+    "official": false
+   }
+  },
+  {
+   "supplierName": "ASEE Solutions d.o.o. Beograd",
+   "supplierPib": "100389094",
+   "supplierMb": "07432461",
+   "contractingAuthority": "Republički fond za penzijsko i invalidsko osiguranje",
+   "linkType": "povezanost sa političkim subjektom",
+   "detail": "Integrity Watch označava ponuđača kao kompaniju povezanu sa političkim subjektom; izvor povezivanja: https://birn.rs/poslovi-porodice-kisic/; označenih ugovora kod naručioca: 9; od toga u zajedničkoj ponudi: 2 (vrednost cele ponude 93,889,000 RSD, nije pripisana firmi); period: 2022-10-03 do 2025-07-08; najveći: 404.3-373/22 (2022-10-03, 69,920,500 RSD)",
+   "contracts": 9,
+   "valueRsd": 166899950,
+   "source": {
+    "kind": "integrity_watch",
+    "title": "Integrity Watch Srbija – ASEE Solutions d.o.o. Beograd / Republički fond za penzijsko i invalidsko osiguranje",
+    "url": "https://integritywatchserbia.org.rs/companies.php?l=sr",
+    "retrievedAt": "2026-10-30T13:47:26.488Z",
+    "official": false
+   }
+  },
+  {
+   "supplierName": "ASEE Solutions d.o.o. Beograd",
+   "supplierPib": "100389094",
+   "supplierMb": "07432461",
+   "contractingAuthority": "Akcionarsko društvo Elektroprivreda Srbije, Beograd",
+   "linkType": "povezanost sa političkim subjektom",
+   "detail": "Integrity Watch označava ponuđača kao kompaniju povezanu sa političkim subjektom; izvor povezivanja: https://birn.rs/poslovi-porodice-kisic/; označenih ugovora kod naručioca: 3; od toga u zajedničkoj ponudi: 2 (vrednost cele ponude 168,934,254 RSD, nije pripisana firmi); period: 2024-05-24 do 2025-09-17; najveći: 12.01.841182/16-24 (2024-12-25, 97,978,500 RSD)",
+   "contracts": 3,
+   "valueRsd": 59927480,
+   "source": {
+    "kind": "integrity_watch",
+    "title": "Integrity Watch Srbija – ASEE Solutions d.o.o. Beograd / Akcionarsko društvo Elektroprivreda Srbije, Beograd",
+    "url": "https://integritywatchserbia.org.rs/companies.php?l=sr",
+    "retrievedAt": "2026-10-30T13:47:26.488Z",
+    "official": false
+   }
+  },
+  {
+   "supplierName": "ASEE Solutions d.o.o. Beograd",
+   "supplierPib": "100389094",
+   "supplierMb": "07432461",
+   "contractingAuthority": "\"RATEL\" REGULATORNO TELO ZA ELEKTRONSKE KOMUNIKACIJE I POŠTANSKE USLUGE",
+   "linkType": "povezanost sa političkim subjektom",
+   "detail": "Integrity Watch označava ponuđača kao kompaniju povezanu sa političkim subjektom; izvor povezivanja: https://birn.rs/poslovi-porodice-kisic/; označenih ugovora kod naručioca: 12; od toga u zajedničkoj ponudi: 3 (vrednost cele ponude 70,768,700 RSD, nije pripisana firmi); period: 2023-08-01 do 2025-12-04; najveći: 002089807 2024 50911 006 000 405 001 04 011 (2024-10-24, 52,725,500 RSD)",
+   "contracts": 12,
+   "valueRsd": 131861980,
+   "source": {
+    "kind": "integrity_watch",
+    "title": "Integrity Watch Srbija – ASEE Solutions d.o.o. Beograd / \"RATEL\" REGULATORNO TELO ZA ELEKTRONSKE KOMUNIKACIJE I POŠTANSKE USLUGE",
+    "url": "https://integritywatchserbia.org.rs/companies.php?l=sr",
+    "retrievedAt": "2026-10-30T13:47:26.488Z",
+    "official": false
+   }
+  },
+  {
+   "supplierName": "Asseco SEE doo Beograd",
+   "supplierPib": "100389094",
+   "supplierMb": "07432461",
+   "contractingAuthority": "Ministarstvo pravde",
+   "linkType": "povezanost sa političkim subjektom",
+   "detail": "Integrity Watch označava ponuđača kao kompaniju povezanu sa političkim subjektom; izvor povezivanja: https://birn.rs/poslovi-porodice-kisic/; označenih ugovora kod naručioca: 3; od toga u zajedničkoj ponudi: 3 (vrednost cele ponude 185,091,502 RSD, nije pripisana firmi); period: 2021-01-04 do 2023-12-15; najveći: 404-02-133/2023-12/3 (2023-12-15, 85,117,908 RSD)",
+   "contracts": 3,
+   "source": {
+    "kind": "integrity_watch",
+    "title": "Integrity Watch Srbija – Asseco SEE doo Beograd / Ministarstvo pravde",
+    "url": "https://integritywatchserbia.org.rs/companies.php?l=sr",
+    "retrievedAt": "2026-10-30T13:47:26.488Z",
+    "official": false
+   }
+  },
+  {
+   "supplierName": "ASEE Solutions d.o.o. Beograd",
+   "supplierPib": "100389094",
+   "supplierMb": "07432461",
+   "contractingAuthority": "MINISTARSTVO INFORMISANjA I TELEKOMUNIKACIJA",
+   "linkType": "povezanost sa političkim subjektom",
+   "detail": "Integrity Watch označava ponuđača kao kompaniju povezanu sa političkim subjektom; izvor povezivanja: https://birn.rs/poslovi-porodice-kisic/; označenih ugovora kod naručioca: 7; od toga u zajedničkoj ponudi: 3 (vrednost cele ponude 100,042,070 RSD, nije pripisana firmi); period: 2023-07-07 do 2025-10-22; najveći: 000954008 2024 13460 001 001 405 001/4 (2024-05-14, 54,557,081 RSD)",
+   "contracts": 7,
+   "valueRsd": 70516802,
+   "source": {
+    "kind": "integrity_watch",
+    "title": "Integrity Watch Srbija – ASEE Solutions d.o.o. Beograd / MINISTARSTVO INFORMISANjA I TELEKOMUNIKACIJA",
+    "url": "https://integritywatchserbia.org.rs/companies.php?l=sr",
+    "retrievedAt": "2026-10-30T13:47:26.488Z",
+    "official": false
+   }
+  },
+  {
+   "supplierName": "ASEE Solutions d.o.o. Beograd",
+   "supplierPib": "100389094",
+   "supplierMb": "07432461",
+   "contractingAuthority": "Republički fond za zdravstveno osiguranje",
+   "linkType": "povezanost sa političkim subjektom",
+   "detail": "Integrity Watch označava ponuđača kao kompaniju povezanu sa političkim subjektom; izvor povezivanja: https://birn.rs/poslovi-porodice-kisic/; označenih ugovora kod naručioca: 6; od toga u zajedničkoj ponudi: 1 (vrednost cele ponude 20,738,060 RSD, nije pripisana firmi); period: 2021-01-23 do 2026-02-18; najveći: 141-1/20 (2021-01-23, 39,937,020 RSD)",
+   "contracts": 6,
+   "valueRsd": 148759092,
+   "source": {
+    "kind": "integrity_watch",
+    "title": "Integrity Watch Srbija – ASEE Solutions d.o.o. Beograd / Republički fond za zdravstveno osiguranje",
+    "url": "https://integritywatchserbia.org.rs/companies.php?l=sr",
+    "retrievedAt": "2026-10-30T13:47:26.488Z",
+    "official": false
+   }
+  },
+  {
+   "supplierName": "ASEE Solutions d.o.o. Beograd",
+   "supplierPib": "100389094",
+   "supplierMb": "07432461",
+   "contractingAuthority": "KANCELARIJA ZA INFORMACIONE TEHNOLOGIJE I ELEKTRONSKU UPRAVU",
+   "linkType": "povezanost sa političkim subjektom",
+   "detail": "Integrity Watch označava ponuđača kao kompaniju povezanu sa političkim subjektom; izvor povezivanja: https://birn.rs/poslovi-porodice-kisic/; označenih ugovora kod naručioca: 5; period: 2021-09-09 do 2025-12-10; najveći: 000123098 2023 10258 004 002 405 001 18 006 (2023-06-08, 34,999,992 RSD)",
+   "contracts": 5,
+   "valueRsd": 169347984,
+   "source": {
+    "kind": "integrity_watch",
+    "title": "Integrity Watch Srbija – ASEE Solutions d.o.o. Beograd / KANCELARIJA ZA INFORMACIONE TEHNOLOGIJE I ELEKTRONSKU UPRAVU",
+    "url": "https://integritywatchserbia.org.rs/companies.php?l=sr",
+    "retrievedAt": "2026-10-30T13:47:26.488Z",
+    "official": false
+   }
+  },
+  {
+   "supplierName": "Asseco SEE doo Beograd",
+   "supplierPib": "100389094",
+   "supplierMb": "07432461",
+   "contractingAuthority": "JP Pošta Srbije Beograd",
+   "linkType": "povezanost sa političkim subjektom",
+   "detail": "Integrity Watch označava ponuđača kao kompaniju povezanu sa političkim subjektom; izvor povezivanja: https://birn.rs/poslovi-porodice-kisic/; označenih ugovora kod naručioca: 7; od toga u zajedničkoj ponudi: 1 (vrednost cele ponude 91,967,400 RSD, nije pripisana firmi); period: 2021-12-02 do 2024-10-02; najveći: bb (2024-01-15, 91,967,400 RSD)",
+   "contracts": 7,
+   "valueRsd": 53218379.96,
+   "source": {
+    "kind": "integrity_watch",
+    "title": "Integrity Watch Srbija – Asseco SEE doo Beograd / JP Pošta Srbije Beograd",
+    "url": "https://integritywatchserbia.org.rs/companies.php?l=sr",
+    "retrievedAt": "2026-10-30T13:47:26.488Z",
+    "official": false
+   }
+  },
+  {
+   "supplierName": "Asseco SEE doo Beograd",
+   "supplierPib": "100389094",
+   "supplierMb": "07432461",
+   "contractingAuthority": "Srbija Kargo a.d.",
+   "linkType": "povezanost sa političkim subjektom",
+   "detail": "Integrity Watch označava ponuđača kao kompaniju povezanu sa političkim subjektom; izvor povezivanja: https://birn.rs/poslovi-porodice-kisic/; označenih ugovora kod naručioca: 6; od toga u zajedničkoj ponudi: 5 (vrednost cele ponude 122,032,786 RSD, nije pripisana firmi); period: 2021-12-16 do 2024-06-06; najveći: 1/2021-5493 (2021-12-16, 73,936,233 RSD)",
+   "contracts": 6,
+   "valueRsd": 2445000,
+   "source": {
+    "kind": "integrity_watch",
+    "title": "Integrity Watch Srbija – Asseco SEE doo Beograd / Srbija Kargo a.d.",
+    "url": "https://integritywatchserbia.org.rs/companies.php?l=sr",
+    "retrievedAt": "2026-10-30T13:47:26.488Z",
+    "official": false
+   }
+  },
+  {
+   "supplierName": "ASEE Solutions d.o.o. Beograd",
+   "supplierPib": "100389094",
+   "supplierMb": "07432461",
+   "contractingAuthority": "MF-UPRAVA ZA TREZOR",
+   "linkType": "povezanost sa političkim subjektom",
+   "detail": "Integrity Watch označava ponuđača kao kompaniju povezanu sa političkim subjektom; izvor povezivanja: https://birn.rs/poslovi-porodice-kisic/; označenih ugovora kod naručioca: 4; od toga u zajedničkoj ponudi: 4 (vrednost cele ponude 104,809,800 RSD, nije pripisana firmi); period: 2021-05-10 do 2024-07-16; najveći: 404-00-182-8/24-001-009 (2024-07-16, 39,988,800 RSD)",
+   "contracts": 4,
+   "source": {
+    "kind": "integrity_watch",
+    "title": "Integrity Watch Srbija – ASEE Solutions d.o.o. Beograd / MF-UPRAVA ZA TREZOR",
+    "url": "https://integritywatchserbia.org.rs/companies.php?l=sr",
+    "retrievedAt": "2026-10-30T13:47:26.488Z",
+    "official": false
+   }
+  },
+  {
+   "supplierName": "Asseco SEE doo Beograd",
+   "supplierPib": "100389094",
+   "supplierMb": "07432461",
+   "contractingAuthority": "\"RATEL\" REGULATORNA AGENCIJA ZA ELEKTRONSKE KOMUNIKACIJE I POŠTANSKE USLUGE",
+   "linkType": "povezanost sa političkim subjektom",
+   "detail": "Integrity Watch označava ponuđača kao kompaniju povezanu sa političkim subjektom; izvor povezivanja: https://birn.rs/poslovi-porodice-kisic/; označenih ugovora kod naručioca: 8; od toga u zajedničkoj ponudi: 1 (vrednost cele ponude 9,900,000 RSD, nije pripisana firmi); period: 2021-06-16 do 2022-12-12; najveći: 1-06-4042-79/22-9 (2022-12-12, 25,967,500 RSD)",
+   "contracts": 8,
+   "valueRsd": 92414933.94,
+   "source": {
+    "kind": "integrity_watch",
+    "title": "Integrity Watch Srbija – Asseco SEE doo Beograd / \"RATEL\" REGULATORNA AGENCIJA ZA ELEKTRONSKE KOMUNIKACIJE I POŠTANSKE USLUGE",
+    "url": "https://integritywatchserbia.org.rs/companies.php?l=sr",
+    "retrievedAt": "2026-10-30T13:47:26.488Z",
+    "official": false
+   }
+  },
+  {
+   "supplierName": "ASEE Solutions d.o.o. Beograd",
+   "supplierPib": "100389094",
+   "supplierMb": "07432461",
+   "contractingAuthority": "AGENCIJA ZA OSIGURANJE I FINANSIRANJE IZVOZA REPUBLIKE SRBIJE",
+   "linkType": "povezanost sa političkim subjektom",
+   "detail": "Integrity Watch označava ponuđača kao kompaniju povezanu sa političkim subjektom; izvor povezivanja: https://birn.rs/poslovi-porodice-kisic/; označenih ugovora kod naručioca: 11; period: 2021-04-20 do 2026-03-05; najveći: 568/26 (2026-03-05, 18,850,000 RSD)",
+   "contracts": 11,
+   "valueRsd": 91046468.89,
+   "source": {
+    "kind": "integrity_watch",
+    "title": "Integrity Watch Srbija – ASEE Solutions d.o.o. Beograd / AGENCIJA ZA OSIGURANJE I FINANSIRANJE IZVOZA REPUBLIKE SRBIJE",
+    "url": "https://integritywatchserbia.org.rs/companies.php?l=sr",
+    "retrievedAt": "2026-10-30T13:47:26.488Z",
+    "official": false
+   }
+  },
+  {
+   "supplierName": "Asseco SEE doo Beograd",
+   "supplierPib": "100389094",
+   "supplierMb": "07432461",
+   "contractingAuthority": "Javno preduzeće „Elektroprivreda Srbije”",
+   "linkType": "povezanost sa političkim subjektom",
+   "detail": "Integrity Watch označava ponuđača kao kompaniju povezanu sa političkim subjektom; izvor povezivanja: https://birn.rs/poslovi-porodice-kisic/; označenih ugovora kod naručioca: 1; od toga u zajedničkoj ponudi: 1 (vrednost cele ponude 81,780,950 RSD, nije pripisana firmi); period: 2021-06-07 do 2021-06-07; najveći: 20600-E.09.01.-10158/4-2021 (2021-06-07, 81,780,950 RSD)",
+   "contracts": 1,
+   "source": {
+    "kind": "integrity_watch",
+    "title": "Integrity Watch Srbija – Asseco SEE doo Beograd / Javno preduzeće „Elektroprivreda Srbije”",
+    "url": "https://integritywatchserbia.org.rs/companies.php?l=sr",
+    "retrievedAt": "2026-10-30T13:47:26.488Z",
+    "official": false
+   }
+  },
+  {
+   "supplierName": "ASEE Solutions d.o.o. Beograd",
+   "supplierPib": "100389094",
+   "supplierMb": "07432461",
+   "contractingAuthority": "CENTRALNI REGISTAR HOV AD BEOGRAD",
+   "linkType": "povezanost sa političkim subjektom",
+   "detail": "Integrity Watch označava ponuđača kao kompaniju povezanu sa političkim subjektom; izvor povezivanja: https://birn.rs/poslovi-porodice-kisic/; označenih ugovora kod naručioca: 1; period: 2021-05-24 do 2021-05-24; najveći:  60 br. 06/2020/4 (2021-05-24, 69,750,000 RSD)",
+   "contracts": 1,
+   "valueRsd": 69750000,
+   "source": {
+    "kind": "integrity_watch",
+    "title": "Integrity Watch Srbija – ASEE Solutions d.o.o. Beograd / CENTRALNI REGISTAR HOV AD BEOGRAD",
+    "url": "https://integritywatchserbia.org.rs/companies.php?l=sr",
+    "retrievedAt": "2026-10-30T13:47:26.488Z",
+    "official": false
+   }
+  },
+  {
+   "supplierName": "ASEE Solutions d.o.o. Beograd",
+   "supplierPib": "100389094",
+   "supplierMb": "07432461",
+   "contractingAuthority": "Ministarstvo državne uprave i lokalne samouprave",
+   "linkType": "povezanost sa političkim subjektom",
+   "detail": "Integrity Watch označava ponuđača kao kompaniju povezanu sa političkim subjektom; izvor povezivanja: https://birn.rs/poslovi-porodice-kisic/; označenih ugovora kod naručioca: 14; period: 2021-04-15 do 2026-01-29; najveći: 001445638 2024 14800 004 003 405 001 (2024-06-03, 9,988,200 RSD)",
+   "contracts": 14,
+   "valueRsd": 57111800,
+   "source": {
+    "kind": "integrity_watch",
+    "title": "Integrity Watch Srbija – ASEE Solutions d.o.o. Beograd / Ministarstvo državne uprave i lokalne samouprave",
+    "url": "https://integritywatchserbia.org.rs/companies.php?l=sr",
+    "retrievedAt": "2026-10-30T13:47:26.488Z",
+    "official": false
+   }
+  },
+  {
+   "supplierName": "Asseco SEE doo Beograd",
+   "supplierPib": "100389094",
+   "supplierMb": "07432461",
+   "contractingAuthority": "Elektrodistribucija Srbije d.o.o. Beograd",
+   "linkType": "povezanost sa političkim subjektom",
+   "detail": "Integrity Watch označava ponuđača kao kompaniju povezanu sa političkim subjektom; izvor povezivanja: https://birn.rs/poslovi-porodice-kisic/; označenih ugovora kod naručioca: 1; od toga u zajedničkoj ponudi: 1 (vrednost cele ponude 27,480,000 RSD, nije pripisana firmi); period: 2022-11-21 do 2022-11-21; najveći: 2460800-08.01-324053/6-22 (2022-11-21, 27,480,000 RSD)",
+   "contracts": 1,
+   "source": {
+    "kind": "integrity_watch",
+    "title": "Integrity Watch Srbija – Asseco SEE doo Beograd / Elektrodistribucija Srbije d.o.o. Beograd",
+    "url": "https://integritywatchserbia.org.rs/companies.php?l=sr",
+    "retrievedAt": "2026-10-30T13:47:26.488Z",
+    "official": false
+   }
+  },
+  {
+   "supplierName": "Asseco SEE doo Beograd",
+   "supplierPib": "100389094",
+   "supplierMb": "07432461",
+   "contractingAuthority": "Ministarstvo unutrašnje i spoljne trgovine",
+   "linkType": "povezanost sa političkim subjektom",
+   "detail": "Integrity Watch označava ponuđača kao kompaniju povezanu sa političkim subjektom; izvor povezivanja: https://birn.rs/poslovi-porodice-kisic/; označenih ugovora kod naručioca: 2; period: 2021-12-27 do 2022-09-21; najveći: 404-02-223/2022-02/5 (2022-09-21, 12,658,400 RSD)",
+   "contracts": 2,
+   "valueRsd": 20152400,
+   "source": {
+    "kind": "integrity_watch",
+    "title": "Integrity Watch Srbija – Asseco SEE doo Beograd / Ministarstvo unutrašnje i spoljne trgovine",
+    "url": "https://integritywatchserbia.org.rs/companies.php?l=sr",
+    "retrievedAt": "2026-10-30T13:47:26.488Z",
+    "official": false
+   }
+  },
+  {
+   "supplierName": "ASEE Solutions d.o.o. Beograd",
+   "supplierPib": "100389094",
+   "supplierMb": "07432461",
+   "contractingAuthority": "POŠTA SRBIJE DRUŠTVO S OGRANIČENOM ODGOVORNOŠĆU, BEOGRAD",
+   "linkType": "povezanost sa političkim subjektom",
+   "detail": "Integrity Watch označava ponuđača kao kompaniju povezanu sa političkim subjektom; izvor povezivanja: https://birn.rs/poslovi-porodice-kisic/; označenih ugovora kod naručioca: 1; period: 2026-03-12 do 2026-03-12; najveći: 2025-156950/21 (2026-03-12, 11,987,760 RSD)",
+   "contracts": 1,
+   "valueRsd": 11987760,
+   "source": {
+    "kind": "integrity_watch",
+    "title": "Integrity Watch Srbija – ASEE Solutions d.o.o. Beograd / POŠTA SRBIJE DRUŠTVO S OGRANIČENOM ODGOVORNOŠĆU, BEOGRAD",
+    "url": "https://integritywatchserbia.org.rs/companies.php?l=sr",
+    "retrievedAt": "2026-10-30T13:47:26.488Z",
+    "official": false
+   }
+  },
+  {
+   "supplierName": "Asseco SEE doo Beograd",
+   "supplierPib": "100389094",
+   "supplierMb": "07432461",
+   "contractingAuthority": "Ministarstvo trgovine, turizma i telekomunikacija",
+   "linkType": "povezanost sa političkim subjektom",
+   "detail": "Integrity Watch označava ponuđača kao kompaniju povezanu sa političkim subjektom; izvor povezivanja: https://birn.rs/poslovi-porodice-kisic/; označenih ugovora kod naručioca: 1; period: 2021-10-06 do 2021-10-06; najveći: 404-02-229/2021-02/4 (2021-10-06, 11,659,040 RSD)",
+   "contracts": 1,
+   "valueRsd": 11659040,
+   "source": {
+    "kind": "integrity_watch",
+    "title": "Integrity Watch Srbija – Asseco SEE doo Beograd / Ministarstvo trgovine, turizma i telekomunikacija",
+    "url": "https://integritywatchserbia.org.rs/companies.php?l=sr",
+    "retrievedAt": "2026-10-30T13:47:26.488Z",
+    "official": false
+   }
+  },
+  {
+   "supplierName": "Asseco SEE doo Beograd",
+   "supplierPib": "100389094",
+   "supplierMb": "07432461",
+   "contractingAuthority": "DIREKTORAT ZA RADIJACIONU I NUKLEARNU SIGURNOST I BEZBEDNOST SRBIJE",
+   "linkType": "povezanost sa političkim subjektom",
+   "detail": "Integrity Watch označava ponuđača kao kompaniju povezanu sa političkim subjektom; izvor povezivanja: https://birn.rs/poslovi-porodice-kisic/; označenih ugovora kod naručioca: 1; period: 2023-06-19 do 2023-06-19; najveći: 404-02-4/3/2023-02 (2023-06-19, 7,855,450 RSD)",
+   "contracts": 1,
+   "valueRsd": 7855450,
+   "source": {
+    "kind": "integrity_watch",
+    "title": "Integrity Watch Srbija – Asseco SEE doo Beograd / DIREKTORAT ZA RADIJACIONU I NUKLEARNU SIGURNOST I BEZBEDNOST SRBIJE",
+    "url": "https://integritywatchserbia.org.rs/companies.php?l=sr",
+    "retrievedAt": "2026-10-30T13:47:26.488Z",
+    "official": false
+   }
+  },
+  {
+   "supplierName": "Asseco SEE doo Beograd",
+   "supplierPib": "100389094",
+   "supplierMb": "07432461",
+   "contractingAuthority": "Ministarstvo unutrašnjih poslova",
+   "linkType": "povezanost sa političkim subjektom",
+   "detail": "Integrity Watch označava ponuđača kao kompaniju povezanu sa političkim subjektom; izvor povezivanja: https://birn.rs/poslovi-porodice-kisic/; označenih ugovora kod naručioca: 1; period: 2021-07-26 do 2021-07-26; najveći: 07-404-jn160/21-4 (2021-07-26, 4,087,000 RSD)",
+   "contracts": 1,
+   "valueRsd": 4087000,
+   "source": {
+    "kind": "integrity_watch",
+    "title": "Integrity Watch Srbija – Asseco SEE doo Beograd / Ministarstvo unutrašnjih poslova",
+    "url": "https://integritywatchserbia.org.rs/companies.php?l=sr",
+    "retrievedAt": "2026-10-30T13:47:26.488Z",
+    "official": false
+   }
+  },
+  {
+   "supplierName": "Asseco SEE doo Beograd",
+   "supplierPib": "100389094",
+   "supplierMb": "07432461",
+   "contractingAuthority": "Javno preduzeće \"Službeni glasnik\"",
+   "linkType": "povezanost sa političkim subjektom",
+   "detail": "Integrity Watch označava ponuđača kao kompaniju povezanu sa političkim subjektom; izvor povezivanja: https://birn.rs/poslovi-porodice-kisic/; označenih ugovora kod naručioca: 1; period: 2021-06-01 do 2021-06-01; najveći: 07-4984 (2021-06-01, 165,000 RSD)",
+   "contracts": 1,
+   "valueRsd": 165000,
+   "source": {
+    "kind": "integrity_watch",
+    "title": "Integrity Watch Srbija – Asseco SEE doo Beograd / Javno preduzeće \"Službeni glasnik\"",
+    "url": "https://integritywatchserbia.org.rs/companies.php?l=sr",
+    "retrievedAt": "2026-10-30T13:47:26.488Z",
+    "official": false
+   }
+  }
+ ]
+}

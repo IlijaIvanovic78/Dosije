@@ -6,6 +6,7 @@
 // fields explicitly, so none of that ever reaches the return values or the cache.
 // Endpoint notes: docs/data-sources/acas.md
 
+import { SRC, shortInstitution } from "../activity"
 import { cached, cacheKey } from "../cache"
 import { getJson } from "../http"
 import { asciiFold, cyrToLat, latToCyr, nameSimilarity } from "../translit"
@@ -166,7 +167,7 @@ export async function findInstitution(name: string): Promise<{ id: string; name:
 					official: true,
 				},
 			}))
-	})
+	}, { activity: { ...SRC.acas, action: "pretraga", label: `pretraga ustanove: ${name}`, url: REGISTER_URL, after: (d, h) => h.items(d.length) } })
 	return env.data
 }
 
@@ -197,7 +198,9 @@ export async function getOfficials(inst: { acasId?: string; name: string; nameCy
 	}
 	if (!orgId) return []
 	const id = orgId
-	const env = await cached(SOURCE, cacheKey("officials", id), async () => (await functionsBy({ organizacijaId: id })).map(toOfficial))
+	const env = await cached(SOURCE, cacheKey("officials", id), async () => (await functionsBy({ organizacijaId: id })).map(toOfficial), {
+		activity: { ...SRC.acas, action: "pretraga", label: `funkcioneri: ${shortInstitution(inst.name)}`, url: REGISTER_URL, after: (d, h) => h.items(d.length) },
+	})
 	return env.data
 }
 
@@ -230,7 +233,7 @@ export async function searchPerson(fullName: string): Promise<Official[]> {
 			if (wanted.every((t) => have.includes(t))) out.push(toOfficial(f))
 		}
 		return out
-	})
+	}, { activity: { ...SRC.acas, action: "pretraga", label: `pretraga osobe: ${fullName.trim()}`, url: REGISTER_URL, after: (d, h) => h.items(d.length) } })
 	return env.data
 }
 
@@ -390,6 +393,6 @@ export async function getAssetReports(personId: string, fullName?: string): Prom
 			await new Promise((res) => setTimeout(res, 150))
 		}
 		return out
-	})
+	}, { activity: { ...SRC.acas, action: "pretraga", label: `izveštaji o imovini: ${fullName?.trim() || `funkcioner ${pid}`}`, url: REGISTER_URL, after: (d, h) => h.items(d.length) } })
 	return env.data
 }

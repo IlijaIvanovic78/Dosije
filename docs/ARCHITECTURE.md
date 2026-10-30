@@ -257,6 +257,20 @@ summary. Outputs are compact JSON (<= 2,500 chars) with ready-made `sources`. A 
 "case id", so tools and gate treat the running map like a running case. A watchdog (`MAPA_TIMEOUT_MS`, default 10 min) turns
 unfinished rows into errors. The Zapisničar writes `out/trace-<mapaId>.jsonl`.
 
+### 5.11 Live search (`izvor.upit`)
+Every request an agent's tool makes to a public source is visible on the bus. `buildTool` runs each tool handler inside an
+`AsyncLocalStorage` context `{agentId, agentName, tool}` (`src/data/activity.ts`), so the data layer, which knows nothing about
+Mozaik, can attribute a request to the agent and tool that caused it, even through `Promise.all` and memoized crawls. Adapters
+wrap one request in `trackActivity()`; `cached()` takes an optional `activity` descriptor (source, kind, action, Serbian label,
+public URL). A call produces two events with the same `id`: `u_toku` at the start, then `ok` (live), `kes` (cache hit, with
+`cachedAt`) or `greska`, with `ms` and `items`. Live multi-page crawls add one nested activity per page ("ugovori, strana 3/16")
+and per news provider; nested cache hits stay silent. `src/mozaik/activity.ts` is the bridge: it publishes each report as a real
+`izvor.upit` SemanticEvent produced by the agent (so all participants see it, the SSE bridge forwards it and the Zapisničar traces
+it), drops requests of a closed case or map, and publishes at most 400 requests per case (the rest only counts in
+`stats.activitiesDropped`). Outside a tool (CLI probes, warm-cache, the resolver) nothing is emitted. In scripted mode the
+simulated source latency is spent inside the `u_toku` -> `kes` window, so the feed shows requests in progress while the total
+per tool call is unchanged. `npm run cli -- "<institution>" --pretraga` prints one line per request.
+
 ## 6. Wire protocol
 Defined in `src/shared/types.ts` (`WireEvent`, `WirePayloads`, `DosijeSnapshot`, REST list at the bottom).
 

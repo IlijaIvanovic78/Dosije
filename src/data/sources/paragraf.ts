@@ -7,6 +7,7 @@
 // used only to pick the date window (taken from the ACAS register); a match proves that SOME act of that type for
 // that institution was published in that window, not who it names. The date returned is the gazette issue date.
 
+import { SRC, shortInstitution } from "../activity"
 import { cached, cacheKey } from "../cache"
 import { getText, HttpError } from "../http"
 import { asciiFold, normalizeName, nameSimilarity } from "../translit"
@@ -62,7 +63,7 @@ async function issue(year: number, n: number): Promise<IssueData> {
 			if (err instanceof HttpError && err.status === 404) return { n, year, exists: false, acts: [] } satisfies IssueData
 			throw err
 		}
-	})
+	}, { activity: { ...SRC.sg, action: "dokument", label: `Službeni glasnik br. ${n}/${year}`, url: ISSUE_URL(year, n), after: (d, h) => h.items(d.acts.length) } })
 	return env.data
 }
 
@@ -161,6 +162,18 @@ export async function findAppointmentActs(institutionName: string, personName?: 
 			}
 		}
 		return acts.sort((a, b) => (b.date ?? "").localeCompare(a.date ?? ""))
+	}, {
+		activity: {
+			...SRC.sg,
+			action: "pretraga",
+			label: `akti o imenovanju: ${shortInstitution(institutionName)}${personName ? ` (${personName})` : ""}`,
+			url: "https://www.paragraf.rs/glasila/",
+			after: (d, h) => {
+				h.items(d.length)
+				const issues = [...new Set(d.map((a) => /br\. (\d+\/\d{4})/.exec(a.gazette ?? "")?.[1]).filter((x): x is string => !!x))].slice(0, 3)
+				if (issues.length) h.label(`akti o imenovanju: ${shortInstitution(institutionName)} · Sl. glasnik br. ${issues.join(", ")}`)
+			},
+		},
 	})
 	return env.data
 }

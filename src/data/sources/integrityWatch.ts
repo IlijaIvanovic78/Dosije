@@ -11,6 +11,7 @@ import fsp from "node:fs/promises"
 import path from "node:path"
 import { parse } from "csv-parse"
 import { parse as parseSync } from "csv-parse/sync"
+import { SRC, shortInstitution, trackActivity, type ActivityDescriptor } from "../activity"
 import { cached, cacheKey, getDataMode, readCache } from "../cache"
 import { getBuffer, getJson, getText } from "../http"
 import { nameSimilarity, normalizeName } from "../translit"
@@ -182,7 +183,10 @@ interface LoadedIndex {
 let indexPromise: Promise<LoadedIndex> | null = null
 
 function loadIndex(): Promise<LoadedIndex> {
-	indexPromise ??= cached<string>(SOURCE, "index", buildIndex, { meta: { csv: CSV_URL, note: "flagged suppliers only" } })
+	indexPromise ??= cached<string>(SOURCE, "index", buildIndex, {
+		meta: { csv: CSV_URL, note: "flagged suppliers only" },
+		activity: { ...SRC.iw, action: "preuzimanje", label: "baza ugovora 2021–2026 (CSV, preuzimanje)", url: `${IW}/?l=sr` },
+	})
 		.then((env) => ({ index: JSON.parse(env.data) as IwIndex, retrievedAt: env.retrievedAt }))
 		.catch((err) => {
 			indexPromise = null
@@ -250,12 +254,24 @@ function partyOnlyLink(pib: string, idx: IwIndex, retrievedAt: string): Integrit
 }
 
 /** Derived results are cached too, but a miss in DATA_MODE=cache falls back to the committed index. */
-async function derived<T>(key: string, compute: () => Promise<T>): Promise<T> {
+async function derived<T>(key: string, compute: () => Promise<T>, desc: ActivityDescriptor & { items?: (r: T) => number }): Promise<T> {
+	const after = (d: T, h: { items(n: number | undefined): void }) => h.items(desc.items?.(d))
 	if (getDataMode() === "cache") {
-		const hit = await readCache<T>(SOURCE, key)
-		return hit ? hit.data : compute()
+		return trackActivity(desc, async (h) => {
+			const hit = await readCache<T>(SOURCE, key)
+			if (hit) {
+				h.cached(hit.retrievedAt)
+				after(hit.data, h)
+				return hit.data
+			}
+			// no derived copy: filter the committed compact index (no request is made)
+			const data = await compute()
+			h.cached((await loadIndex()).retrievedAt)
+			after(data, h)
+			return data
+		})
 	}
-	return (await cached(SOURCE, key, compute)).data
+	return (await cached(SOURCE, key, compute, { activity: { ...desc, after } })).data
 }
 
 const byWeight = (a: IwPair, b: IwPair) => b.valueRsd + b.jointValueRsd - (a.valueRsd + a.jointValueRsd)
@@ -265,18 +281,23 @@ function sameAuthority(a: string, b: string): boolean {
 }
 
 export async function getLinksForAuthority(inst: { name: string; pib?: string }): Promise<IntegrityWatchLink[]> {
-	return derived(cacheKey("authority", inst.name), async () => {
-		const { index, retrievedAt } = await loadIndex()
-		return index.pairs
-			.filter((p) => sameAuthority(p.authority, inst.name))
-			.sort(byWeight)
-			.flatMap((p) => linksFromPair(p, index, retrievedAt))
-	})
+	return derived(
+		cacheKey("authority", inst.name),
+		async () => {
+			const { index, retrievedAt } = await loadIndex()
+			return index.pairs
+				.filter((p) => sameAuthority(p.authority, inst.name))
+				.sort(byWeight)
+				.flatMap((p) => linksFromPair(p, index, retrievedAt))
+		},
+		{ ...SRC.iw, action: "pretraga", label: `povezani dobavljači: ${shortInstitution(inst.name)}`, url: `${IW}/?l=sr`, items: (r) => r.length },
+	)
 }
 
 export async function getLinksForSupplier(s: { pib?: string; mb?: string; name?: string }): Promise<IntegrityWatchLink[]> {
 	const keyPart = s.pib ?? s.mb ?? s.name
 	if (!keyPart) return []
+	const who = s.name?.trim() || (s.pib ? `PIB ${s.pib}` : `MB ${s.mb}`)
 	return derived(cacheKey("supplier", keyPart), async () => {
 		const { index, retrievedAt } = await loadIndex()
 		let pib = s.pib?.replace(/\D/g, "")
@@ -287,5 +308,5 @@ export async function getLinksForSupplier(s: { pib?: string; mb?: string; name?:
 		const links = [...pairs].sort(byWeight).flatMap((p) => linksFromPair(p, index, retrievedAt))
 		if (links.length === 0 && pib && index.parties[pib]) links.push(partyOnlyLink(pib, index, retrievedAt))
 		return links
-	})
+	}, { ...SRC.iw, action: "pretraga", label: `veze dobavljača: ${who}`, url: `${IW}/companies.php?l=sr`, items: (r) => r.length })
 }

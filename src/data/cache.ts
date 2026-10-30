@@ -10,6 +10,7 @@
 import crypto from "node:crypto"
 import fs from "node:fs/promises"
 import path from "node:path"
+import { hasActivityContext, isNestedActivity, trackActivity, type ActivityDescriptor, type ActivityHandle } from "./activity"
 import { slugify } from "./translit"
 
 export type DataMode = "auto" | "cache" | "live"
@@ -64,23 +65,65 @@ export async function writeCache<T>(source: string, key: string, data: T, meta?:
 	return envelope
 }
 
+/** Live-search descriptor of one cached request (see data/activity.ts); `after` refines the label / item count from the data. */
+export interface CacheActivity<T> extends ActivityDescriptor {
+	after?: (data: T, h: ActivityHandle) => void
+}
+
+function settle<T>(act: CacheActivity<T>, data: T, h: ActivityHandle): void {
+	try {
+		act.after?.(data, h)
+	} catch {
+		// labels are cosmetic
+	}
+}
+
 /**
  * Cache-aware fetch. `source` is the adapter name ("acas", "jnportal", "apr", ...),
  * `key` must be deterministic from the inputs (use cacheKey()).
+ *
+ * With `activity` (and inside a tool's activity context) the call is one live-search request: a cache hit emits
+ * u_toku/kes, a live fetch u_toku/ok (or greska). Cache hits inside the fetcher of another activity stay silent.
  */
 export async function cached<T>(
 	source: string,
 	key: string,
 	fetcher: () => Promise<T>,
-	opts: { mode?: DataMode; meta?: Record<string, unknown> } = {},
+	opts: { mode?: DataMode; meta?: Record<string, unknown>; activity?: CacheActivity<T> } = {},
 ): Promise<CacheEnvelope<T> & { fromCache: boolean }> {
 	const mode = opts.mode ?? getDataMode()
+	const act = opts.activity
+	if (!act || !hasActivityContext()) {
+		if (mode !== "live") {
+			const hit = await readCache<T>(source, key)
+			if (hit) return { ...hit, fromCache: true }
+			if (mode === "cache") throw new CacheMissError(source, key)
+		}
+		const data = await fetcher()
+		const envelope = await writeCache(source, key, data, opts.meta)
+		return { ...envelope, fromCache: false }
+	}
 	if (mode !== "live") {
 		const hit = await readCache<T>(source, key)
-		if (hit) return { ...hit, fromCache: true }
-		if (mode === "cache") throw new CacheMissError(source, key)
+		if (hit) {
+			const result = { ...hit, fromCache: true }
+			if (isNestedActivity()) return result
+			return trackActivity(act, (h) => {
+				h.cached(hit.retrievedAt)
+				settle(act, hit.data, h)
+				return result
+			})
+		}
+		if (mode === "cache") {
+			return trackActivity(act, () => {
+				throw new CacheMissError(source, key)
+			})
+		}
 	}
-	const data = await fetcher()
-	const envelope = await writeCache(source, key, data, opts.meta)
-	return { ...envelope, fromCache: false }
+	return trackActivity(act, async (h) => {
+		const data = await fetcher()
+		const envelope = await writeCache(source, key, data, opts.meta)
+		settle(act, data, h)
+		return { ...envelope, fromCache: false }
+	})
 }

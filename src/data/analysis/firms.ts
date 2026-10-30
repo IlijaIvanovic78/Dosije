@@ -4,6 +4,7 @@
 import fs from "node:fs"
 import path from "node:path"
 import type { Severity, SignalCode, SourceRef } from "../../shared/types"
+import { SRC, trackActivity } from "../activity"
 import * as apr from "../sources/apr"
 import * as iw from "../sources/integrityWatch"
 import * as jn from "../sources/jnportal"
@@ -56,7 +57,18 @@ export interface FirmMatch {
 }
 
 /** MB given -> curated PIB->MB table -> clear name match with a compatible legal form. Never guesses between several companies. */
-export async function findFirmProfile(q: { pib?: string; mb?: string; name?: string }): Promise<FirmMatch> {
+export function findFirmProfile(q: { pib?: string; mb?: string; name?: string }): Promise<FirmMatch> {
+	const who = q.name?.trim() || (q.mb ? `MB ${q.mb}` : q.pib ? `PIB ${q.pib}` : "firma")
+	// the APR open data is a local, committed snapshot: reported as a cache read dated by the snapshot
+	return trackActivity({ ...SRC.apr, action: "pretraga", label: `dobavljač u APR: ${who}`, url: apr.APR_OPEN_DATA_URL }, async (h) => {
+		const m = await matchFirmProfile(q)
+		h.cached(m.profile?.source.retrievedAt)
+		h.items(m.profile ? 1 : m.candidates?.length ?? 0)
+		return m
+	})
+}
+
+async function matchFirmProfile(q: { pib?: string; mb?: string; name?: string }): Promise<FirmMatch> {
 	if (q.mb) {
 		const p = await apr.getCompany({ mb: q.mb })
 		if (p) return { profile: p, basis: "matični broj naveden u upitu" }
@@ -114,7 +126,8 @@ export async function analyzeFirm(inst: InstLike, query: { pib?: string; mb?: st
 	const q = { ...query, pib: query.pib?.replace(/\D/g, "") || undefined, mb: query.mb?.replace(/\D/g, "") || undefined }
 	const [match, contracts, iwLinks] = await Promise.all([
 		findFirmProfile(q),
-		jn.getContractsWithSupplier(inst, { pib: q.pib, name: q.pib ? undefined : q.name }).catch(() => [] as Contract[]),
+		// the name is only used for matching when there is no PIB (it is passed along for the live-search label)
+		jn.getContractsWithSupplier(inst, { pib: q.pib, name: q.name }).catch(() => [] as Contract[]),
 		iw.getLinksForSupplier({ pib: q.pib, mb: q.mb, name: q.name }).catch(() => [] as IntegrityWatchLink[]),
 	])
 	const profile = match.profile

@@ -1,4 +1,5 @@
-// Headless run: npm run cli -- "Infrastruktura železnice Srbije" [--focus "..."] [--owner "Petar Petrović"]
+// Headless run: npm run cli -- "Infrastruktura železnice Srbije" [--focus "..."] [--owner "Petar Petrović"] [--pretraga]
+// --pretraga also prints every public-source request of the agents (live search, "izvor.upit") as one compact line.
 // Prints compact live log lines, then an ASCII Gantt per agent (shows the agents really ran at the same time) and stats,
 // and writes out/dosije-<slug>.md. --owner answers the first owner question automatically (shows the Provera cascade).
 
@@ -18,6 +19,8 @@ function flag(name: string): string | undefined {
 	args.splice(i, 2)
 	return v
 }
+const showSearch = args.includes("--pretraga")
+if (showSearch) args.splice(args.indexOf("--pretraga"), 1)
 const focus = flag("focus")
 const owner = flag("owner")
 const input = args.join(" ").trim() || "Infrastruktura železnice Srbije"
@@ -71,6 +74,14 @@ function line(ev: WireEvent): string | undefined {
 			return `${head} ${color.bold}${color.green}dosije.zavrsen${color.reset}`
 		case "model.answer":
 			return `${head} ${color.dim}završio petlju: ${short(p.text, 90)}${color.reset}`
+		case "izvor.upit": {
+			if (!showSearch || p.status === "u_toku") return undefined
+			const secs = typeof p.ms === "number" ? ` ${(p.ms / 1000).toFixed(1).replace(".", ",")} s` : ""
+			const items = typeof p.items === "number" ? ` · ${p.items}` : ""
+			const state =
+				p.status === "greska" ? `${color.red}greška: ${short(p.error ?? "", 50)}${color.reset}` : p.status === "kes" ? `${color.amber}keš${secs}${color.reset}${items}` : `${color.green}ok${secs}${color.reset}${items}`
+			return `${color.dim}${rel(ev.t)}${color.reset} ${color.cyan}izvor${color.reset}  ${String(p.agentName).padEnd(22).slice(0, 22)} ${p.source} · ${short(p.label, 70)} · ${state}`
+		}
 		default:
 			return undefined
 	}
@@ -129,6 +140,7 @@ console.log(`\n${color.bold}Statistika${color.reset}`)
 console.log(`  vrhunac istovremenih petlji: ${color.bold}${s.peakConcurrentLoops}${color.reset} · petlji ukupno: ${s.totalLoops} · agenata: ${agents.length} (pokrenutih: ${agents.filter((a) => a.dynamic).length})`)
 console.log(`  pozivi alata: ${s.toolCalls} · zaključivanja: ${s.inferences} · interceptor: ${s.interceptions} · blokirano bez izvora: ${s.blockedClaims} · konflikata: ${s.conflicts}`)
 console.log(`  nalaza: ${snap.findings.length} (signala: ${snap.findings.filter((f) => f.severity === "signal").length}) · entiteta: ${snap.entities.length} · zadataka: ${snap.tasks.length} · Mozaik događaja: ${s.events}`)
+if (showSearch) console.log(`  izvori: ${s.activities ?? 0} upita${s.activitiesDropped ? ` (+${s.activitiesDropped} preko ograničenja, nisu prikazani)` : ""}`)
 console.log(`  trajanje: ${(s.elapsedMs / 1000).toFixed(1)} s`)
 
 const outDir = path.resolve(process.cwd(), "out")

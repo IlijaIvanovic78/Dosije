@@ -11,6 +11,7 @@ import fs from "node:fs"
 import path from "node:path"
 import { Readable } from "node:stream"
 import { parse } from "csv-parse"
+import { SRC, trackActivity } from "../activity"
 import { cached, cacheKey } from "../cache"
 import { getJson, getText, USER_AGENT } from "../http"
 import { asciiFold } from "../translit"
@@ -95,13 +96,28 @@ async function downloadKrikIndex(): Promise<KrikProfile[]> {
 let osMemo: Promise<OsList> | undefined
 let krikMemo: Promise<KrikProfile[]> | undefined
 
+// what the bulk lists cost: a download counts as live for the call that waited for it (see matchPep)
+const lists = { downloads: 0, at: undefined as string | undefined }
+
 function osList(): Promise<OsList> {
-	osMemo ??= cached(SOURCE, cacheKey("opensanctions", "rs"), downloadOpenSanctionsRs).then((e) => e.data)
+	osMemo ??= cached(SOURCE, cacheKey("opensanctions", "rs"), downloadOpenSanctionsRs, {
+		activity: { ...SRC.pep, action: "preuzimanje", label: "OpenSanctions: lista PEP za Srbiju", url: "https://www.opensanctions.org/datasets/peps/" },
+	}).then((e) => {
+		if (!e.fromCache) lists.downloads++
+		lists.at = !lists.at || e.retrievedAt > lists.at ? e.retrievedAt : lists.at
+		return e.data
+	})
 	return osMemo
 }
 
 function krikList(): Promise<KrikProfile[]> {
-	krikMemo ??= cached(SOURCE, cacheKey("krik", "profiles"), downloadKrikIndex).then((e) => e.data)
+	krikMemo ??= cached(SOURCE, cacheKey("krik", "profiles"), downloadKrikIndex, {
+		activity: { ...SRC.pep, action: "preuzimanje", label: "KRIK: spisak profila političara", url: KRIK_ROOT },
+	}).then((e) => {
+		if (!e.fromCache) lists.downloads++
+		lists.at = !lists.at || e.retrievedAt > lists.at ? e.retrievedAt : lists.at
+		return e.data
+	})
 	return krikMemo
 }
 
@@ -123,7 +139,18 @@ function nameScore(query: string[], candidate: string[]): number {
 	return 0
 }
 
-export async function matchPep(fullName: string): Promise<PepMatch[]> {
+export function matchPep(fullName: string): Promise<PepMatch[]> {
+	const url = `https://www.opensanctions.org/search/?q=${encodeURIComponent(fullName.trim())}&scope=peps`
+	return trackActivity({ ...SRC.pep, action: "pretraga", label: `PEP liste: ${fullName.trim()}`, url }, async (h) => {
+		const before = lists.downloads
+		const matches = await matchPepLists(fullName)
+		if (lists.downloads === before) h.cached(lists.at)
+		h.items(matches.length)
+		return matches
+	})
+}
+
+async function matchPepLists(fullName: string): Promise<PepMatch[]> {
 	const q = tokens(fullName)
 	if (q.length < 2) return []
 	const [os, krik] = await Promise.all([osList(), krikList()])
