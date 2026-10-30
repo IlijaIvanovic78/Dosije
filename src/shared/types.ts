@@ -167,6 +167,28 @@ export interface AgentInfo {
 	leftAt?: string;
 }
 
+/**
+ * Live search: one public-source request made by an agent's tool (published on the Mozaik bus as "izvor.upit",
+ * producer = the agent). Shown in the UI as "Pretraga uživo" and as the agent's current activity.
+ */
+export interface SourceActivity {
+	id: string; // stable per request: the "u_toku" event and the final event share it
+	agentId: string;
+	agentName: string;
+	tool: string; // e.g. "acas_funkcioneri"
+	source: string; // human label: "ACAS", "Portal javnih nabavki", "APR", "DRI", "Google News", "N1 (RSS)", "GDELT", ...
+	kind: SourceKind | "web";
+	action: "pretraga" | "preuzimanje" | "dokument"; // search query | data/listing download | document (PDF, article)
+	label: string; // Serbian, human-readable: "funkcioneri: Infrastruktura železnice Srbije", "ugovori, strana 3/16", "PDF: Izveštaj o reviziji … 2023"
+	url?: string; // public URL when meaningful (never an URL with credentials)
+	status: "u_toku" | "ok" | "kes" | "greska";
+	ms?: number; // duration (for "kes": time to read the cache, plus simulated latency in scripted mode)
+	items?: number; // results / rows returned when known
+	cachedAt?: string; // for "kes": when the cached copy was fetched (ISO)
+	error?: string; // short, for "greska"
+	at: string; // ISO time of this event
+}
+
 export interface Budget {
 	maxFirme: number;
 	firme: number;
@@ -341,6 +363,8 @@ export interface WirePayloads {
 	"budget.updated": { budget: Budget };
 	"dosije.zatvori": { caseId: string };
 	"dosije.zavrsen": { caseId: string; report: DosijeReport };
+	// live search: one event when a source request starts and one when it ends (same id; the UI upserts by id)
+	"izvor.upit": SourceActivity;
 	"mapa.started": { mapaId: string; institutions: { slug: string; name: string }[] };
 	"mapa.red": { mapaId: string; row: MapaRow }; // upsert, every time a row changes
 	"mapa.zavrsena": { mapaId: string; ranking: MapaRow[] }; // sorted by score, highest first
