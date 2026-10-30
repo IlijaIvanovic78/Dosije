@@ -1,0 +1,31 @@
+{
+  "name": "dosije",
+  "version": "0.1.0",
+  "description": "Dosije: a team of concurrent Mozaik agents that turns breaking news into a sourced dossier on a Serbian public institution in minutes. The journalist is a member of the team.",
+  "type": "module",
+  "private": true,
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "start": "tsx src/server.ts",
+    "dev": "tsx watch src/server.ts",
+    "cli": "tsx scripts/cli.ts",
+    "warm-cache": "tsx scripts/warm-cache.ts",
+    "test": "tsx --test test/*.test.ts",
+    "typecheck": "tsc --noEmit"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "@mozaik-ai/core": "4.2.0",
+    "csv-parse": "^7.0.3",
+    "dotenv": "^18.0.9",
+    "fast-xml-parser": "^5.11.2",
+    "unpdf": "^2.1.0"
+  },
+  "devDependencies": {
+    "@types/node": "^26.6.6",
+    "tsx": "^4.23.15",
+    "typescript": "^7.0.2"
+  }
+}

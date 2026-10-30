@@ -1,0 +1,7 @@
+node_modules/
+.env
+out/
+*.log
+.DS_Store
+# large raw downloads (only compact/normalized caches are committed)
+data/raw/
