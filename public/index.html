@@ -10,6 +10,7 @@
 	<link rel="stylesheet" href="styles.css">
 </head>
 <body data-view="hero">
+	<a class="skip" href="#dosijePanel">Preskoči na dosije</a>
 	<div id="app">
 		<header class="topbar">
 			<div class="brand">
@@ -23,12 +24,12 @@
 			</form>
 			<nav class="top-right" aria-label="Glavni meni">
 				<button id="btnMapa" class="link-btn nav-btn" type="button" aria-pressed="false" title="Lista institucija prolazi kroz isti tim agenata paralelno: gde prvo gledati">Mapa prioriteta</button>
-				<button id="btnInbox" class="link-btn nav-btn" type="button" aria-haspopup="dialog">Sanduče <span id="inboxCount" class="count" hidden>0</span></button>
+				<button id="btnInbox" class="link-btn nav-btn" type="button" aria-haspopup="dialog">Sanduče <span id="inboxCount" class="count" aria-live="polite"></span></button>
 				<span id="modeText" class="mode-text"></span>
 			</nav>
 		</header>
 
-		<div id="statusLine" class="statusline" hidden>
+		<div id="statusLine" class="statusline" role="status" aria-live="polite" hidden>
 			<span id="slMain" class="sl-main"></span>
 			<span id="slBudget" class="sl-budget"></span>
 		</div>
@@ -54,40 +55,6 @@
 			</section>
 
 			<div id="board" class="board">
-				<section id="teamPanel" class="col team" aria-label="Tim">
-					<header class="col-head">
-						<h2 class="label">Tim</h2>
-						<div class="legend" aria-hidden="true">
-							<span><i class="sw inf"></i>razmišlja</span>
-							<span><i class="sw tool"></i>alat</span>
-							<span><i class="sw wait"></i>čeka tebe</span>
-							<span><i class="sw tick"></i>nalaz</span>
-							<span><i class="sw spawn"></i>pokrenut agent</span>
-						</div>
-					</header>
-					<div id="holdBanner" class="hold" hidden></div>
-					<div class="conc">
-						<div id="concLabel" class="conc-label"></div>
-						<div id="sparkPlot" class="spark"></div>
-					</div>
-					<div id="ganttWrap" class="gantt-wrap">
-						<canvas id="gantt" aria-label="Vremenska osa agenata"></canvas>
-						<div class="ruler-gap"></div>
-						<div id="lanesCore" class="lanes-core"></div>
-						<div class="dyn-wrap">
-							<div id="lanesDyn" class="lanes-dyn"></div>
-							<div id="dynEmpty" class="dyn-empty">Novi agenti se pokreću kad se pojavi nova firma ili osoba.</div>
-						</div>
-					</div>
-					<section id="livePanel" class="live" aria-label="Pretraga uživo">
-						<header class="live-head">
-							<h3 class="label">Pretraga uživo</h3>
-							<span id="liveCount" class="live-count"></span>
-						</header>
-						<div id="liveList" class="live-list"></div>
-					</section>
-				</section>
-
 				<section id="mapaPanel" class="col doc mapa" aria-label="Mapa prioriteta" hidden>
 					<div id="mapaScroll" class="doc-scroll">
 						<header class="doc-head">
@@ -118,7 +85,7 @@
 					</div>
 				</section>
 
-				<section id="dosijePanel" class="col doc" aria-label="Dosije">
+				<section id="dosijePanel" class="col doc" aria-label="Dosije" tabindex="-1">
 					<div id="dosijeScroll" class="doc-scroll">
 						<header class="doc-head">
 							<div id="instCard" class="doc-title"></div>
@@ -144,6 +111,41 @@
 						<p class="disclaimer">Signali su polazna tačka za proveru, ne zaključak. Svaka tvrdnja ima izvor; konačnu odluku donosi novinar.</p>
 					</div>
 				</section>
+
+				<section id="teamPanel" class="col team" aria-label="Tim">
+					<header class="col-head">
+						<h2 class="label">Tim</h2>
+						<div class="legend" aria-hidden="true">
+							<span><i class="sw inf"></i>razmišlja</span>
+							<span><i class="sw tool"></i>alat</span>
+							<span><i class="sw wait"></i>čeka tebe</span>
+							<span><i class="sw tick"></i>nalaz</span>
+							<span><i class="sw spawn"></i>pokrenut agent</span>
+						</div>
+					</header>
+					<div id="holdBanner" class="hold" role="status" aria-live="polite" hidden></div>
+					<div class="conc">
+						<div id="concLabel" class="conc-label"></div>
+						<div id="sparkPlot" class="spark"></div>
+					</div>
+					<div id="ganttWrap" class="gantt-wrap">
+						<canvas id="gantt" aria-label="Vremenska osa agenata"></canvas>
+						<div class="ruler-gap"></div>
+						<div id="lanesCore" class="lanes-core"></div>
+						<div class="dyn-wrap">
+							<div id="lanesDyn" class="lanes-dyn"></div>
+							<div id="dynEmpty" class="dyn-empty">Novi agenti se pokreću kad se pojavi nova firma ili osoba.</div>
+						</div>
+					</div>
+					<section id="livePanel" class="live" aria-label="Pretraga uživo">
+						<header class="live-head">
+							<h3 class="label">Pretraga uživo</h3>
+							<span id="liveFilter" class="live-filter" hidden></span>
+							<span id="liveCount" class="live-count"></span>
+						</header>
+						<div id="liveList" class="live-list"></div>
+					</section>
+				</section>
 			</div>
 		</main>
 
@@ -160,7 +162,7 @@
 					<select id="evAgent" aria-label="Filter po agentu"></select>
 					<button id="evState" class="link-btn" type="button" hidden></button>
 				</div>
-				<div id="evList" class="ev-list" role="log" aria-live="off"></div>
+				<div id="evList" class="ev-list" role="log" aria-live="off" aria-label="Mozaik događaji" tabindex="0"></div>
 			</div>
 		</footer>
 	</div>

@@ -126,6 +126,7 @@ function updateRow(rec, r, rank, max) {
 	p.stat.replaceChildren(h("i"), text)
 	p.toggle.textContent = open.has(r.slug) ? "Sakrij" : "Detalji"
 	p.toggle.setAttribute("aria-expanded", String(open.has(r.slug)))
+	p.toggle.setAttribute("aria-label", `${open.has(r.slug) ? "Sakrij detalje" : "Detalji"}: ${r.name}`)
 	p.detail.hidden = !open.has(r.slug)
 	if (open.has(r.slug)) p.detail.replaceChildren(...detailNodes(r))
 }

@@ -196,15 +196,23 @@ export const ROLE_LABEL = {
 	pomenut: "pomenut",
 }
 
+/** News sources are titled "Outlet: headline" (or "Outlet – headline"): split into both parts. */
+export function splitSourceTitle(src) {
+	const title = String(src.title || "").trim()
+	const m = title.match(/^(.{2,40}?)(?:\s[–—-]\s|:\s)(.+)$/)
+	if (m) return { outlet: m[1], headline: m[2] }
+	return { outlet: domainOf(src.url) || SOURCE_LABEL[src.kind] || src.kind, headline: title }
+}
+
 export function sourceChipLabel(src) {
-	const base = src.kind === "vesti" ? truncate(String(src.title || "Vesti").split(/\s[–—-]\s/)[0], 22) : SOURCE_LABEL[src.kind] || src.kind
+	const base = src.kind === "vesti" ? truncate(splitSourceTitle(src).outlet, 22) : SOURCE_LABEL[src.kind] || src.kind
 	const d = fmtDate(src.publishedAt || src.retrievedAt)
 	return d ? `${base} · ${d}` : base
 }
 
 /** "ACAS · publicacas.acas.rs · 22.05.2025" */
 export function sourceLine(src) {
-	const base = src.kind === "vesti" ? truncate(String(src.title || "Vesti").split(/\s[–—-]\s/)[0], 28) : SOURCE_LABEL[src.kind] || src.kind
+	const base = src.kind === "vesti" ? truncate(splitSourceTitle(src).outlet, 28) : SOURCE_LABEL[src.kind] || src.kind
 	return [base, domainOf(src.url), fmtDate(src.publishedAt || src.retrievedAt)].filter(Boolean).join(" · ")
 }
 
@@ -212,18 +220,66 @@ export function statusTag(status) {
 	return h("span", { class: `stat ${status}` }, h("i"), STATUS_LABEL[status] || status)
 }
 
-/** Sources as quiet links: label, domain and date. */
-export function sourceLinks(sources) {
-	return h(
-		"div",
-		{ class: "f-sources" },
-		(sources || []).map((src) => {
-			const url = safeUrl(src.url)
-			const label = sourceLine(src)
-			const title = `${src.title}${src.official ? " (zvanični izvor)" : ""}`
-			return url ? h("a", { class: `src${src.official ? " official" : ""}`, href: url, target: "_blank", rel: "noopener noreferrer", title }, label) : h("span", { class: "src", title }, label)
-		}),
-	)
+const SOURCE_LIST_MIN = 4 // this many sources or more: one per line
+const SOURCE_LIST_SHOWN = 5
+const expandedSources = new Set() // keys (finding ids) whose full list is open
+
+function sourceItem(src) {
+	const url = safeUrl(src.url)
+	const title = `${src.title}${src.official ? " (zvanični izvor)" : ""}`
+	const { outlet, headline } = src.kind === "vesti" ? splitSourceTitle(src) : { outlet: SOURCE_LABEL[src.kind] || src.kind, headline: src.title }
+	const date = fmtDate(src.publishedAt || src.retrievedAt)
+	const meta = [truncate(outlet, 26), date].filter(Boolean).join(" · ")
+	const text = h("span", { class: "sl-text" }, h("span", { class: "sl-meta" }, meta), " · ", headline)
+	return h("li", null, url ? h("a", { class: `src${src.official ? " official" : ""}`, href: url, target: "_blank", rel: "noopener noreferrer", title }, text) : h("span", { class: "src", title }, text))
+}
+
+/** Sources as quiet links. 1-3: inline (label, domain, date). 4+: a compact list, first five, "prikaži još N". */
+export function sourceLinks(sources, key) {
+	const list = sources || []
+	if (list.length < SOURCE_LIST_MIN) {
+		return h(
+			"div",
+			{ class: "f-sources" },
+			list.map((src) => {
+				const url = safeUrl(src.url)
+				const label = sourceLine(src)
+				const title = `${src.title}${src.official ? " (zvanični izvor)" : ""}`
+				return url ? h("a", { class: `src${src.official ? " official" : ""}`, href: url, target: "_blank", rel: "noopener noreferrer", title }, label) : h("span", { class: "src", title }, label)
+			}),
+		)
+	}
+	const ul = h("ul", { class: "src-list" })
+	const box = h("div", { class: "f-sources list" }, h("div", { class: "src-count" }, `Izvori (${list.length})`), ul)
+	const render = () => {
+		const open = key && expandedSources.has(key)
+		const shown = open ? list : list.slice(0, SOURCE_LIST_SHOWN)
+		ul.replaceChildren(...shown.map(sourceItem))
+		box.querySelector(".src-more")?.remove()
+		if (list.length > SOURCE_LIST_SHOWN) {
+			const rest = list.length - SOURCE_LIST_SHOWN
+			box.append(
+				h(
+					"button",
+					{
+						class: "link-btn src-more",
+						type: "button",
+						"aria-expanded": String(!!open),
+						onclick: () => {
+							if (!key) return
+							if (expandedSources.has(key)) expandedSources.delete(key)
+							else expandedSources.add(key)
+							render()
+						},
+					},
+					open ? "prikaži manje" : `prikaži još ${rest}`,
+				),
+			)
+		}
+	}
+	if (!key) key = `local-${Math.random()}`
+	render()
+	return box
 }
 
 export function domainOf(url) {

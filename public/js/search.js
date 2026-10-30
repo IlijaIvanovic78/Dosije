@@ -2,13 +2,14 @@
 // Two events share an id (u_toku, then ok / kes / greska); the store upserts them, this view only renders.
 
 import { h, reconcile, avatar, parseIso, fmtClock, fmtDur, fmtDate, safeUrl } from "./format.js"
-import { state, on } from "./store.js"
+import { state, on, setFilter } from "./store.js"
 import { plural } from "./metrics.js"
 
 const VISIBLE_CAP = 150
 const rowsById = new Map() // id -> { el, sig }
 let listEl
 let countEl
+let filterEl
 let emptySig = ""
 
 const ACTION = { pretraga: "pretraga", preuzimanje: "preuzimanje", dokument: "dokument" }
@@ -37,7 +38,8 @@ function buildRow(a) {
 		{ class: `srow ${a.status}`, dataset: { agent: a.agentId }, title: `${a.agentName} · ${a.tool}${a.error ? ` · ${a.error}` : ""}` },
 		h("span", { class: "rt" }, fmtClock(t)),
 		avatar(info),
-		h("span", { class: "rx" }, h("b", null, a.source), h("span", { class: "act" }, ` · ${ACTION[a.action] || a.action}`), " ", label),
+		h("b", { class: "rsrc", title: a.source }, a.source),
+		h("span", { class: "rx" }, h("span", { class: "act" }, `${ACTION[a.action] || a.action} · `), label),
 		statusNode(a),
 	)
 	return el
@@ -50,6 +52,15 @@ function render() {
 	const open = all.filter((a) => a.status === "u_toku").length
 	const total = state.acts.size
 	countEl.textContent = total ? `${total} ${plural(total, "zahtev", "zahteva", "zahteva")}${open ? ` · ${open} u toku` : ""}` : ""
+	const fsig = filter || ""
+	if (filterEl.dataset.sig !== fsig) {
+		filterEl.dataset.sig = fsig
+		filterEl.hidden = !filter
+		if (filter) {
+			const who = state.agents.get(filter)?.name || "?"
+			filterEl.replaceChildren(`samo: ${who} · `, h("button", { class: "link-btn", type: "button", onclick: () => setFilter("agentId", filter) }, "prikaži sve"))
+		}
+	}
 
 	const els = []
 	const keep = new Set()
@@ -85,6 +96,7 @@ function render() {
 export function initSearch() {
 	listEl = document.getElementById("liveList")
 	countEl = document.getElementById("liveCount")
+	filterEl = document.getElementById("liveFilter")
 	let timer = null
 	const schedule = () => {
 		if (timer) return

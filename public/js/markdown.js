@@ -10,8 +10,8 @@ function inline(raw) {
 		codes.push(c)
 		return `\u0000${codes.length - 1}\u0000`
 	})
-	t = t.replace(/\[([^\]]+)\]\((https?:\/\/[^\s)]+)\)/g, (_, text, url) => `<a href="${url}" target="_blank" rel="noopener noreferrer">${text}</a>`)
-	t = t.replace(/(^|[\s(])(https?:\/\/[^\s<)]+)/g, (m, pre, url) => `${pre}<a href="${url}" target="_blank" rel="noopener noreferrer">${url}</a>`)
+	t = t.replace(/\[([^\]]+)\]\((https?:\/\/[^\s)]+)\)/g, (_, text, url) => `<a href="${url}" data-host="${(url.match(/^https?:\/\/(?:www\.)?([^/:?#]+)/i) || [])[1] || ""}" target="_blank" rel="noopener noreferrer">${text}</a>`)
+	t = t.replace(/(^|[\s(])(https?:\/\/[^\s<)]+)/g, (m, pre, url) => `${pre}<a class="bare" href="${url}" target="_blank" rel="noopener noreferrer">${url}</a>`)
 	t = t.replace(/\*\*([^*]+)\*\*/g, "<strong>$1</strong>")
 	t = t.replace(/(^|[^*\w])\*([^*\s][^*]*)\*(?!\w)/g, "$1<em>$2</em>")
 	t = t.replace(/(^|[^_\w])_([^_\s][^_]*)_(?!\w)/g, "$1<em>$2</em>")
@@ -103,7 +103,25 @@ export function renderMarkdown(src) {
 		while (i < lines.length && lines[i].trim() && !/^(#{1,6}\s|```|\s*>|\s*([-*+]|\d+[.)])\s)/.test(lines[i]) && !(lines[i].includes("|") && isTableSep(lines[i + 1] ?? ""))) buf.push(lines[i++])
 		out.push(`<p>${buf.map((l) => inline(l.trim())).join("<br>")}</p>`)
 	}
-	return out.join("\n")
+	return groupSections(out).join("\n")
+}
+
+/** Wrap each "###" block (heading + what follows) so print can keep a finding on one page. */
+function groupSections(out) {
+	const res = []
+	let sec = null
+	for (const part of out) {
+		const starts = /^<(h[123]|hr)[ >]/.test(part)
+		if (starts && sec) {
+			res.push(`<div class="md-sec">${sec.join("\n")}</div>`)
+			sec = null
+		}
+		if (part.startsWith("<h3")) sec = [part]
+		else if (sec) sec.push(part)
+		else res.push(part)
+	}
+	if (sec) res.push(`<div class="md-sec">${sec.join("\n")}</div>`)
+	return res
 }
 
 function renderList(items, ordered) {

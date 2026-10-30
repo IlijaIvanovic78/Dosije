@@ -1,4 +1,4 @@
-/* Dosije: "editorial newsroom tool". Tokens and rules follow docs/DESIGN.md.
+﻿/* Dosije: "editorial newsroom tool". Tokens and rules follow docs/DESIGN.md.
    Motion budget: a 150 ms fade for new rows and a pale highlight that fades out on new findings. Nothing else moves. */
 
 :root {
@@ -61,8 +61,41 @@ a {
 	color: var(--accent);
 }
 :focus-visible {
-	outline: 2px solid rgba(31, 78, 121, 0.5);
+	outline: 2px solid var(--accent);
 	outline-offset: 2px;
+}
+.lane:focus-visible,
+.sig-row:focus-visible,
+.v-item:focus-visible,
+.tab:focus-visible,
+.mtoggle:focus-visible,
+.ev-list:focus-visible,
+.live-list:focus-visible,
+.drawer-toggle:focus-visible,
+.doc:focus-visible {
+	outline-offset: -2px;
+}
+.doc:focus {
+	outline: none;
+}
+input[type="text"]:focus-visible,
+textarea:focus-visible,
+select:focus-visible {
+	outline: none;
+}
+.skip {
+	position: absolute;
+	left: 8px;
+	top: -48px;
+	z-index: 100;
+	padding: 8px 12px;
+	background: var(--ink);
+	color: #fff;
+	border-radius: 0 0 6px 6px;
+	font-size: 13px;
+}
+.skip:focus {
+	top: 0;
 }
 b {
 	font-weight: 600;
@@ -437,6 +470,15 @@ body[data-view="case"] #hero {
 	min-height: 0;
 	min-width: 0;
 }
+/* DOM order is dossier first (tab order: top bar, dossier, team); the grid keeps the team on the left */
+.team {
+	grid-column: 1;
+	grid-row: 1;
+}
+.doc {
+	grid-column: 2;
+	grid-row: 1;
+}
 
 /* ─── hero (empty state) ────────────────────────────────────────────────── */
 
@@ -622,7 +664,7 @@ body[data-view="case"] #hero {
 .gantt-wrap {
 	position: relative;
 	flex: 1 1 0;
-	min-height: 370px;
+	min-height: 350px;
 	display: flex;
 	flex-direction: column;
 	margin-top: 4px;
@@ -659,8 +701,12 @@ body[data-view="case"] #hero {
 	color: var(--ink-3);
 }
 
+.lane .av {
+	width: 20px;
+	height: 20px;
+}
 .lane {
-	padding: 3px 0;
+	padding: 2px 0;
 	border-bottom: 1px solid #f0eee8;
 	cursor: pointer;
 }
@@ -674,7 +720,7 @@ body[data-view="case"] #hero {
 	display: flex;
 	align-items: center;
 	gap: 7px;
-	height: 22px;
+	height: 20px;
 	min-width: 0;
 	font-size: 13px;
 }
@@ -716,7 +762,7 @@ body[data-view="case"] #hero {
 .lane-status {
 	margin-left: auto;
 	padding-left: 8px;
-	font-size: 12px;
+	font-size: 12.5px;
 	color: var(--ink-3);
 	white-space: nowrap;
 	overflow: hidden;
@@ -733,15 +779,15 @@ body[data-view="case"] #hero {
 .lane-status.blocked,
 .lane-status.error { color: var(--signal); }
 .lane-track {
-	height: 10px;
-	margin-top: 2px;
+	height: 12px;
+	margin-top: 1px;
 }
 .lane.is-dyn .lane-top {
-	height: 20px;
+	height: 18px;
 }
 .lane.is-dyn .av {
-	width: 18px;
-	height: 18px;
+	width: 17px;
+	height: 17px;
 	font-size: 8.5px;
 }
 .lane-group {
@@ -763,7 +809,7 @@ body[data-view="case"] #hero {
 	flex: none;
 	display: flex;
 	flex-direction: column;
-	height: clamp(170px, 24vh, 290px);
+	height: clamp(170px, 26vh, 300px);
 	margin-top: 10px;
 	border-top: 1px solid var(--rule);
 }
@@ -771,10 +817,18 @@ body[data-view="case"] #hero {
 	flex: none;
 	display: flex;
 	align-items: baseline;
-	justify-content: space-between;
+	gap: 12px;
 	padding: 9px 0 5px;
 }
+.live-filter {
+	font-size: 12px;
+	color: var(--ink-2);
+}
+.live-filter .link-btn {
+	font-size: 12px;
+}
 .live-count {
+	margin-left: auto;
 	font-size: 12px;
 	color: var(--ink-3);
 	font-variant-numeric: tabular-nums;
@@ -787,12 +841,14 @@ body[data-view="case"] #hero {
 }
 .srow {
 	display: grid;
-	grid-template-columns: 58px 18px minmax(0, 1fr) auto;
-	align-items: center;
+	grid-template-columns: 58px 18px 118px minmax(0, 1fr) 84px;
+	align-items: start;
 	gap: 8px;
-	height: 26px;
+	min-height: 26px;
+	padding: 4px 0;
 	border-bottom: 1px solid #f3f1ec;
 	font-size: 12.5px;
+	line-height: 1.35;
 }
 .srow .av {
 	width: 18px;
@@ -800,17 +856,23 @@ body[data-view="case"] #hero {
 	font-size: 8.5px;
 }
 .srow .rt {
-	font: 11.5px var(--mono);
+	font: 11.5px/1.5 var(--mono);
 	color: var(--ink-3);
 }
-.srow .rx {
+.srow .rsrc {
 	white-space: nowrap;
 	overflow: hidden;
 	text-overflow: ellipsis;
-	color: var(--ink-2);
-}
-.srow .rx b {
 	color: var(--ink);
+}
+.srow .rx {
+	display: -webkit-box;
+	-webkit-box-orient: vertical;
+	-webkit-line-clamp: 2;
+	line-clamp: 2;
+	overflow: hidden;
+	overflow-wrap: anywhere;
+	color: var(--ink-2);
 }
 .srow .act {
 	color: var(--ink-3);
@@ -826,7 +888,9 @@ body[data-view="case"] #hero {
 	text-decoration: underline;
 }
 .srow .rs {
+	justify-self: end;
 	font-size: 11.5px;
+	line-height: 1.5;
 	color: var(--ink-3);
 	white-space: nowrap;
 }
@@ -836,6 +900,14 @@ body[data-view="case"] #hero {
 .srow .rs.err {
 	color: var(--signal);
 	font-weight: 600;
+}
+.srow.u_toku .rsrc,
+.srow.u_toku .rx,
+.srow.u_toku .lbl,
+.srow.u_toku .act {
+	color: var(--ink-3);
+	font-style: italic;
+	font-weight: 400;
 }
 
 /* ─── right column: the dossier as a document ───────────────────────────── */
@@ -929,6 +1001,28 @@ body[data-view="case"] #hero {
 .sig-row .stat {
 	flex: none;
 	align-self: center;
+}
+.sig-chev {
+	flex: none;
+	width: 14px;
+	text-align: center;
+	color: var(--ink-3);
+	font-size: 16px;
+	line-height: 1;
+}
+.sig-sub {
+	list-style: none;
+	margin: 0 0 6px 32px;
+	padding: 0;
+	border-left: 1px solid var(--rule-strong);
+}
+.sig-row.sub {
+	padding: 5px 0 5px 12px;
+	border-bottom: 1px solid #f3f1ec;
+}
+.sig-row.sub .sig-title {
+	font-size: 14.5px;
+	color: var(--ink-2);
 }
 
 .entities-wrap {
@@ -1100,6 +1194,40 @@ a.src {
 }
 a.src:hover {
 	text-decoration: underline;
+}
+.f-sources.list {
+	display: block;
+}
+.src-count {
+	font: 600 11px/1.3 var(--sans);
+	text-transform: uppercase;
+	letter-spacing: 0.06em;
+	color: var(--ink-3);
+	margin-bottom: 3px;
+}
+.src-list {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+.src-list li {
+	padding: 2px 0;
+	line-height: 1.4;
+	overflow-wrap: anywhere;
+}
+.src-list .sl-meta {
+	color: var(--ink-3);
+	white-space: nowrap;
+}
+.src-list a.src {
+	color: var(--accent);
+}
+.src-list a.src .sl-meta {
+	color: var(--ink-3);
+}
+.src-more {
+	margin-top: 3px;
+	font-size: 12.5px;
 }
 .f-foot {
 	margin-top: 6px;
@@ -1831,6 +1959,54 @@ a.src:hover {
 		display: none;
 	}
 }
+/* projector heights (1280x720, 1366x768): the Tim column has about 600px, so everything gets a little tighter */
+@media (max-height: 820px) {
+	.col-head {
+		padding-top: 10px;
+	}
+	.hold {
+		margin: 2px 0 4px;
+		padding: 6px 10px;
+	}
+	.conc {
+		padding-top: 2px;
+	}
+	.spark {
+		height: 34px;
+	}
+	.gantt-wrap {
+		min-height: 300px;
+		margin-top: 0;
+	}
+	.live {
+		height: clamp(120px, 20vh, 180px);
+		margin-top: 6px;
+	}
+	.doc-scroll {
+		padding-top: 18px;
+	}
+	.serif-title {
+		font-size: 25px;
+	}
+	.sec-title {
+		margin-top: 22px;
+	}
+}
+@media (max-width: 1280px) {
+	.topbar {
+		gap: 16px;
+		padding: 0 14px;
+	}
+	.top-right {
+		gap: 14px;
+	}
+	.case-form #inFocus {
+		flex-basis: 140px;
+	}
+	.statusline {
+		padding: 0 14px;
+	}
+}
 @media (max-width: 1360px) {
 	.board {
 		grid-template-columns: minmax(460px, 44%) minmax(0, 1fr);
@@ -1854,6 +2030,10 @@ a.src:hover {
 	.team {
 		border-right: 0;
 		border-bottom: 1px solid var(--rule);
+	}
+	.doc {
+		grid-column: 1;
+		grid-row: 2;
 	}
 	.topbar {
 		flex-wrap: wrap;
@@ -1880,7 +2060,13 @@ a.src:hover {
 
 @media print {
 	@page {
-		margin: 16mm 14mm;
+		size: A4;
+		margin: 20mm 20mm 22mm;
+		@bottom-center {
+			content: counter(page) " / " counter(pages);
+			font: 9pt var(--serif);
+			color: #666;
+		}
 	}
 	html,
 	body {
@@ -1899,6 +2085,7 @@ a.src:hover {
 		background: none !important;
 	}
 	body.modal-open .modal-card {
+		display: block !important;
 		width: auto !important;
 		max-height: none !important;
 		border: 0 !important;
@@ -1909,27 +2096,64 @@ a.src:hover {
 		display: none !important;
 	}
 	body.modal-open .modal-scroll {
+		display: block !important;
 		overflow: visible !important;
 	}
 	body.modal-open .report-body {
 		max-width: none;
+		margin: 0;
 		padding: 0 !important;
+	}
+	.md {
+		font: 11pt/1.5 var(--serif);
+		color: #000;
 	}
 	.md,
 	.md * {
-		color: #111 !important;
+		color: #000 !important;
 	}
-	.md a {
-		color: #0b3f7a !important;
-		text-decoration: underline;
+	.md h1 {
+		font-size: 21pt;
+		margin: 0 0 8pt;
 	}
-	.md h1,
-	.md h2,
-	.md h3 {
+	.md h2 {
+		font-size: 14pt;
+		margin: 20pt 0 6pt;
+		padding-bottom: 3pt;
+		border-bottom: 0.5pt solid #888;
 		break-after: avoid;
 	}
+	.md h3 {
+		font-size: 11.5pt;
+		margin: 12pt 0 2pt;
+		break-after: avoid;
+	}
+	.md p,
+	.md li {
+		orphans: 3;
+		widows: 3;
+	}
+	.md-sec,
 	.md tr,
-	.md blockquote {
+	.md blockquote,
+	.md pre {
 		break-inside: avoid;
 	}
+	.md a {
+		text-decoration: underline;
+		text-underline-offset: 1.5pt;
+	}
+	/* the full address would run over many lines: print the domain after the title, the link stays underlined */
+	.md a[data-host]:not(.bare)::after {
+		content: " (" attr(data-host) ")";
+		font-size: 8pt;
+		color: #555 !important;
+	}
+	.md table {
+		font-size: 9.5pt;
+	}
+	.md blockquote {
+		border-left-color: #888;
+	}
 }
+

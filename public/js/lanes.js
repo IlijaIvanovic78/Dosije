@@ -68,7 +68,16 @@ function buildLane(lane) {
 			class: `lane ${kind}${info.dynamic ? " is-dyn" : ""}`,
 			dataset: { lane: info.id },
 			title: [info.description || info.name, info.dynamic ? spawnText(info) : ""].filter(Boolean).join("\n"),
+			tabindex: "0",
+			role: "button",
+			"aria-pressed": "false",
 			onclick: () => setFilter("agentId", info.id),
+			onkeydown: (e) => {
+				if (e.key === "Enter" || e.key === " ") {
+					e.preventDefault()
+					setFilter("agentId", info.id)
+				}
+			},
 		},
 		h("div", { class: "lane-top" }, h("i", { class: "adot" }), avatar(info), h("span", { class: "lane-name" }, info.name), spawn, status),
 		h("div", { class: "lane-track" }),
@@ -96,6 +105,12 @@ function updateLane(lane, t) {
 		rec.spawn.textContent = note
 	}
 	rec.root.classList.toggle("selected", state.filters.agentId === lane.id)
+	rec.root.setAttribute("aria-pressed", String(state.filters.agentId === lane.id))
+	const label = `${lane.info.name}: ${st.label}`
+	if (rec.label !== label) {
+		rec.label = label
+		rec.root.setAttribute("aria-label", label)
+	}
 	rec.root.classList.toggle("dim", !!state.filters.agentId && state.filters.agentId !== lane.id)
 }
 

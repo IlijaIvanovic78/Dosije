@@ -8,7 +8,7 @@ import { s, parseIso, fmtDur, truncate } from "./format.js"
 const RULER_H = 22
 const PAD_L = 1
 const PAD_R = 8
-const BAR_H = 8
+const BAR_H = 10
 const MIN_FRAME_MS = 250 // 4 fps at most
 const C = {
 	inf: "#CFCBC2",
@@ -216,11 +216,11 @@ function drawRow(lane, r, ax, end) {
 		if (x < PAD_L - 6) continue
 		if (m.k === "finding") {
 			ctx.fillStyle = C.tick
-			ctx.fillRect(Math.round(x) - 1, cy - 8, 2, 16)
-			hits.push({ x: x - 4, y: cy - 9, w: 8, h: 18, title: "Nalaz", sub: m.label })
+			ctx.fillRect(Math.round(x) - 1, cy - 9, 2, 18)
+			hits.push({ x: x - 4, y: cy - 10, w: 8, h: 20, title: "Nalaz", sub: m.label })
 		} else if (m.k === "spawn") {
 			ctx.beginPath()
-			ctx.arc(x, cy, 3.5, 0, Math.PI * 2)
+			ctx.arc(x, cy, 4, 0, Math.PI * 2)
 			ctx.fillStyle = C.paper
 			ctx.fill()
 			ctx.strokeStyle = C.spawn
@@ -251,7 +251,7 @@ function drawRow(lane, r, ax, end) {
 	}
 
 	ctx.fillStyle = ax.col
-	ctx.fillRect(ax.nx, y0 - 4, 1, r.h + 8)
+	ctx.fillRect(ax.nx, y0 - 3, 1, r.h + 6)
 }
 
 // ─── concurrency chart ────────────────────────────────────────────────────

@@ -1,6 +1,6 @@
 // "Dosije": the case file as a document: institution header, main signals, entities, section tabs, finding rows.
 
-import { h, reconcile, createScheduler, parseIso, fmtClock, truncate, statusTag, sourceLinks, SECTIONS, SECTION_LABEL, STATUS_LABEL, SIGNAL_LABEL, RULE_LABEL, ROLE_LABEL, SOURCE_LABEL } from "./format.js"
+import { h, reconcile, createScheduler, parseIso, fmtClock, truncate, statusTag, sourceLinks, splitSourceTitle, SECTIONS, SECTION_LABEL, STATUS_LABEL, SIGNAL_LABEL, RULE_LABEL, ROLE_LABEL, SOURCE_LABEL } from "./format.js"
 import { state, on, openTasks, setFilter, clearFilters } from "./store.js"
 import { openInbox } from "./inbox.js"
 import { openReport } from "./report.js"
@@ -26,7 +26,7 @@ function findingSig(f) {
 function shortSource(f) {
 	const src = f?.sources?.[0]
 	if (!src) return "izvor"
-	return src.kind === "vesti" ? truncate(String(src.title || "Vesti").split(/\s[–—-]\s/)[0], 20) : SOURCE_LABEL[src.kind] || src.kind
+	return src.kind === "vesti" ? truncate(splitSourceTitle(src).outlet, 20) : SOURCE_LABEL[src.kind] || src.kind
 }
 
 function conflictNote(f) {
@@ -60,7 +60,7 @@ function cardChildren(f) {
 		h("p", { class: "f-text" }, f.text),
 		conflictNote(f),
 		f.note ? h("div", { class: "note" }, h("b", null, "Napomena urednika: "), f.note) : null,
-		sourceLinks(f.sources),
+		sourceLinks(f.sources, f.id),
 		h("div", { class: "f-foot" }, `dodao ${f.agentName || "agent"}`, created ? ` · ${fmtClock(created)}` : "", merged ? ` · spojeno iz ${merged + 1} nalaza` : ""),
 	]
 }
@@ -123,6 +123,92 @@ function signalRow(n, id, title, f) {
 	return h("li", null, h("button", { class: "sig-row", type: "button", onclick: () => focusFinding(id) }, h("span", { class: "sig-n" }, String(n)), h("span", { class: "sig-title" }, title), f ? statusTag(f.status) : null))
 }
 
+const expandedGroups = new Set() // signal codes whose grouped row is open
+const LEGAL_FORMS = /\b(d\.?o\.?o\.?|a\.?d\.?|beograd|novi sad|doo|ad)\b\.?/gi
+
+/** "KBV DATACOM d.o.o. Beograd" -> "KBV Datacom": drop legal forms, soften all-caps words (3 letters or fewer stay). */
+function shortName(name) {
+	const words = String(name || "")
+		.replace(LEGAL_FORMS, " ")
+		.split(/\s+/)
+		.filter(Boolean)
+		.map((w) => (w.length > 3 && w === w.toUpperCase() && /\p{L}/u.test(w) ? w[0] + w.slice(1).toLowerCase() : w))
+	return words.join(" ") || String(name || "")
+}
+
+function memberName(f) {
+	for (const id of f.entityIds || []) {
+		const e = state.entities.get(id)
+		if (e && e.kind !== "institucija") return shortName(e.name)
+	}
+	return shortName(String(f.title || "").split(":")[0])
+}
+
+function groupTitle(code, members) {
+	const n = members.length
+	const names = [...new Set(members.map(memberName))]
+	const shown = names.slice(0, 3)
+	const rest = names.length - shown.length
+	const list = `${shown.join(", ")}${rest > 0 ? `, +${rest}` : ""}`
+	if (code === "POLITICKA_VEZA" && members.every((m) => m.sources?.some((s) => s.kind === "integrity_watch"))) return `Integrity Watch Srbija: ${n} dobavljača označeno (${list})`
+	const label = SIGNAL_LABEL[code] || code
+	return `${label[0].toUpperCase()}${label.slice(1)}: ${n} nalaza (${list})`
+}
+
+/** Live signals: findings sharing a signalCode collapse into one row (when 2 or more); max 5 rows. */
+function liveSignalRows() {
+	const list = [...state.findings.values()].filter((f) => f.severity === "signal" && f.status !== "demantovano" && f.approval !== "rejected")
+	const byCode = new Map()
+	for (const f of list) if (f.signalCode) (byCode.get(f.signalCode) || byCode.set(f.signalCode, []).get(f.signalCode)).push(f)
+	const rows = []
+	for (const f of list) {
+		const group = f.signalCode ? byCode.get(f.signalCode) : null
+		if (group && group.length >= 2) {
+			if (group[0] !== f) continue
+			const members = [...group].sort((a, b) => (parseIso(a.createdAt) || 0) - (parseIso(b.createdAt) || 0))
+			const weakest = members.reduce((w, m) => ((STATUS_RANK[m.status] || 0) < (STATUS_RANK[w.status] || 0) ? m : w), members[0])
+			rows.push({ key: f.signalCode, members, status: weakest.status, section: members[0].section, t: Math.max(...members.map((m) => parseIso(m.createdAt) || 0)), title: groupTitle(f.signalCode, members) })
+		} else {
+			rows.push({ key: f.id, members: [f], status: f.status, section: f.section, t: parseIso(f.createdAt) || 0, title: f.title })
+		}
+	}
+	rows.sort((a, b) => (STATUS_RANK[b.status] || 0) - (STATUS_RANK[a.status] || 0) || (SECTION_RANK[b.section] || 0) - (SECTION_RANK[a.section] || 0) || b.t - a.t)
+	return { rows: rows.slice(0, 5), total: list.length }
+}
+
+function groupRow(n, row) {
+	const open = expandedGroups.has(row.key)
+	const btn = h(
+		"button",
+		{
+			class: "sig-row group",
+			type: "button",
+			"aria-expanded": String(open),
+			onclick: () => {
+				if (expandedGroups.has(row.key)) expandedGroups.delete(row.key)
+				else expandedGroups.add(row.key)
+				lastSignals = ""
+				renderSignals()
+			},
+		},
+		h("span", { class: "sig-n" }, String(n)),
+		h("span", { class: "sig-title" }, row.title),
+		statusTag(row.status),
+		h("span", { class: "sig-chev", "aria-hidden": "true" }, open ? "−" : "+"),
+	)
+	const li = h("li", null, btn)
+	if (open) {
+		li.append(
+			h(
+				"ul",
+				{ class: "sig-sub" },
+				row.members.map((f) => h("li", null, h("button", { class: "sig-row sub", type: "button", onclick: () => focusFinding(f.id) }, h("span", { class: "sig-title" }, f.title), statusTag(f.status)))),
+			),
+		)
+	}
+	return li
+}
+
 function renderSignals() {
 	const report = state.report
 	const done = state.status === "done" && report
@@ -135,13 +221,11 @@ function renderSignals() {
 		nodes = [report.lede ? h("p", { class: "lede" }, report.lede) : null, h("ol", { class: "sig-list" }, report.topSignals.map((s, i) => signalRow(i + 1, s.findingId, s.headline, state.findings.get(s.findingId))))]
 	} else {
 		// live ranking: official sources first, then leadership > money > firms > audit > media, then newest
-		const list = [...state.findings.values()]
-			.filter((f) => f.severity === "signal" && f.status !== "demantovano" && f.approval !== "rejected")
-			.sort((a, b) => (STATUS_RANK[b.status] || 0) - (STATUS_RANK[a.status] || 0) || (SECTION_RANK[b.section] || 0) - (SECTION_RANK[a.section] || 0) || (parseIso(b.createdAt) || 0) - (parseIso(a.createdAt) || 0))
-		count = list.length
-		sig = `live|${list.map((f) => f.id + f.status + f.title).join(",")}|${state.status}`
-		nodes = list.length
-			? [h("ol", { class: "sig-list" }, list.slice(0, 5).map((f, i) => signalRow(i + 1, f.id, f.title, f)))]
+		const { rows, total } = liveSignalRows()
+		count = total
+		sig = `live|${rows.map((r) => `${r.key}:${r.status}:${r.title}:${r.members.length}:${expandedGroups.has(r.key)}`).join(",")}|${state.status}`
+		nodes = rows.length
+			? [h("ol", { class: "sig-list" }, rows.map((r, i) => (r.members.length > 1 ? groupRow(i + 1, r) : signalRow(i + 1, r.members[0].id, r.title, r.members[0]))))]
 			: [h("p", { class: "empty-line" }, state.status === "idle" ? "Nema aktivnog dosijea." : "Agenti traže prve signale za proveru…")]
 	}
 	if (sig === lastSignals) return
@@ -360,6 +444,7 @@ export function initDosije() {
 			cards.clear()
 			chipCache.clear()
 			fresh.clear()
+			expandedGroups.clear()
 			lastInst = lastSignals = lastVerify = lastTabs = ""
 		}
 		schedule()

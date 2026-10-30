@@ -5,7 +5,7 @@ import { state, on, openTasks, applySnapshot } from "./store.js"
 import { api } from "./api.js"
 import { toast, dismissToasts } from "./toast.js"
 
-let root, backdrop, listEl, historyEl, historyCount, countEl, emptyEl
+let root, backdrop, listEl, historyEl, historyCount, countEl, emptyEl, inboxBtn
 const cardCache = new Map() // taskId -> { el }
 
 export function openInbox() {
@@ -148,9 +148,9 @@ function render() {
 	historyCount.textContent = String(done.length)
 	historyEl.parentElement.hidden = done.length === 0
 
-	countEl.textContent = String(open.length)
-	countEl.hidden = open.length === 0
+	countEl.textContent = open.length ? String(open.length) : ""
 	countEl.classList.toggle("wait", open.length > 0)
+	inboxBtn.setAttribute("aria-label", open.length ? `Sanduče, ${open.length} ${open.length === 1 ? "otvoren zadatak" : "otvorenih zadataka"}` : "Sanduče")
 	document.title = `${open.length ? `(${open.length}) ` : ""}Dosije · istraživački tim agenata`
 }
 
@@ -163,6 +163,7 @@ export function initInbox() {
 	countEl = document.getElementById("inboxCount")
 	emptyEl = document.getElementById("inboxEmpty")
 	const btn = document.getElementById("btnInbox")
+	inboxBtn = btn
 
 	btn.addEventListener("click", () => (isOpen() ? closeInbox() : openInbox()))
 	backdrop.addEventListener("click", closeInbox)

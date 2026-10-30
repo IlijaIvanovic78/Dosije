@@ -17,6 +17,7 @@ export function plural(n, one, few, many) {
 
 let root, main, budget
 let lastMain = ""
+let partEls = []
 let lastBudget = ""
 
 function compute() {
@@ -53,19 +54,24 @@ function compute() {
 
 function update() {
 	const v = compute()
-	const sig = JSON.stringify([v.lead, v.nodes, v.tail])
-	if (sig !== lastMain) {
-		lastMain = sig
+	// parts: [text, class, quiet]; the clock and the event counter tick all the time, so they stay out of the live region
+	const parts = [...v.lead.map((t, i) => [t, i === 0 ? "state" : "", i === 1]), ...v.nodes.map((n) => [n.t, n.cls, false]), [v.tail, "", true]]
+	const shape = parts.map((p) => `${p[1]}|${p[2]}`).join(",")
+	if (shape !== lastMain) {
+		lastMain = shape
 		const out = []
-		const push = (text, cls) => {
-			if (out.length) out.push(h("span", { class: "sep" }, " · "))
-			out.push(h("span", { class: cls || null }, text))
-		}
-		v.lead.forEach((t, i) => push(t, i === 0 ? "state" : ""))
-		v.nodes.forEach((n) => push(n.t, n.cls))
-		push(v.tail)
+		partEls = parts.map((p, i) => {
+			const el = h("span", { class: p[1] || null, "aria-hidden": p[2] ? "true" : null })
+			if (i) out.push(h("span", { class: "sep", "aria-hidden": "true" }, " · "))
+			out.push(el)
+			return el
+		})
 		main.replaceChildren(...out)
 	}
+	// update in place: only a changed text is announced, not the whole line
+	parts.forEach((p, i) => {
+		if (partEls[i].textContent !== p[0]) partEls[i].textContent = p[0]
+	})
 	if (v.right !== lastBudget) {
 		lastBudget = v.right
 		budget.textContent = v.right
