@@ -1,0 +1,424 @@
+{
+ "source": "integrity_watch",
+ "key": "supplier-113080389",
+ "retrievedAt": "2026-10-30T13:47:55.759Z",
+ "data": [
+  {
+   "supplierName": "T&M GROUP SOLUTIONS doo",
+   "supplierPib": "113080389",
+   "supplierMb": "21798029",
+   "contractingAuthority": "JP Pošta Srbije Beograd",
+   "linkType": "povezanost sa političkim subjektom",
+   "detail": "Integrity Watch označava ponuđača kao kompaniju povezanu sa političkim subjektom; izvor povezivanja: https://nova.rs/vesti/biznis/dve-ponude-za-posao-ocitavanja-brojila-od-20-miliona-evra/; označenih ugovora kod naručioca: 11; od toga u zajedničkoj ponudi: 11 (vrednost cele ponude 2,930,156,110 RSD, nije pripisana firmi); period: 2023-10-26 do 2023-11-17; najveći: 2023-54544/54 (2023-11-01, 1,017,876,384 RSD)",
+   "contracts": 11,
+   "source": {
+    "kind": "integrity_watch",
+    "title": "Integrity Watch Srbija – T&M GROUP SOLUTIONS doo / JP Pošta Srbije Beograd",
+    "url": "https://integritywatchserbia.org.rs/companies.php?l=sr",
+    "retrievedAt": "2026-10-30T13:47:26.488Z",
+    "official": false
+   }
+  },
+  {
+   "supplierName": "T&M GROUP SOLUTIONS doo",
+   "supplierPib": "113080389",
+   "supplierMb": "21798029",
+   "contractingAuthority": "Nacionalna služba za zapošljavanje",
+   "linkType": "povezanost sa političkim subjektom",
+   "detail": "Integrity Watch označava ponuđača kao kompaniju povezanu sa političkim subjektom; izvor povezivanja: https://nova.rs/vesti/biznis/dve-ponude-za-posao-ocitavanja-brojila-od-20-miliona-evra/; označenih ugovora kod naručioca: 2; od toga u zajedničkoj ponudi: 2 (vrednost cele ponude 1,779,831,432 RSD, nije pripisana firmi); period: 2024-07-10 do 2024-07-22; najveći: 0094-40492-222/2024 (2024-07-10, 902,577,024 RSD)",
+   "contracts": 2,
+   "source": {
+    "kind": "integrity_watch",
+    "title": "Integrity Watch Srbija – T&M GROUP SOLUTIONS doo / Nacionalna služba za zapošljavanje",
+    "url": "https://integritywatchserbia.org.rs/companies.php?l=sr",
+    "retrievedAt": "2026-10-30T13:47:26.488Z",
+    "official": false
+   }
+  },
+  {
+   "supplierName": "T&M GROUP SOLUTIONS doo",
+   "supplierPib": "113080389",
+   "supplierMb": "21798029",
+   "contractingAuthority": "Republički fond za penzijsko i invalidsko osiguranje",
+   "linkType": "povezanost sa političkim subjektom",
+   "detail": "Integrity Watch označava ponuđača kao kompaniju povezanu sa političkim subjektom; izvor povezivanja: https://nova.rs/vesti/biznis/dve-ponude-za-posao-ocitavanja-brojila-od-20-miliona-evra/; označenih ugovora kod naručioca: 2; od toga u zajedničkoj ponudi: 2 (vrednost cele ponude 1,235,000,000 RSD, nije pripisana firmi); period: 2024-02-01 do 2025-11-01; najveći: 404.1-19/24 (2024-02-01, 650,000,000 RSD)",
+   "contracts": 2,
+   "source": {
+    "kind": "integrity_watch",
+    "title": "Integrity Watch Srbija – T&M GROUP SOLUTIONS doo / Republički fond za penzijsko i invalidsko osiguranje",
+    "url": "https://integritywatchserbia.org.rs/companies.php?l=sr",
+    "retrievedAt": "2026-10-30T13:47:26.488Z",
+    "official": false
+   }
+  },
+  {
+   "supplierName": "T&M GROUP SOLUTIONS doo",
+   "supplierPib": "113080389",
+   "supplierMb": "21798029",
+   "contractingAuthority": "JAVNO KOMUNALNO PREDUZEĆE \"BEOGRADSKE PIJACE\"",
+   "linkType": "povezanost sa političkim subjektom",
+   "detail": "Integrity Watch označava ponuđača kao kompaniju povezanu sa političkim subjektom; izvor povezivanja: https://nova.rs/vesti/biznis/dve-ponude-za-posao-ocitavanja-brojila-od-20-miliona-evra/; označenih ugovora kod naručioca: 3; od toga u zajedničkoj ponudi: 3 (vrednost cele ponude 1,080,000,000 RSD, nije pripisana firmi); period: 2023-07-25 do 2025-06-02; najveći: 2894-1/25 (2025-06-02, 450,000,000 RSD)",
+   "contracts": 3,
+   "source": {
+    "kind": "integrity_watch",
+    "title": "Integrity Watch Srbija – T&M GROUP SOLUTIONS doo / JAVNO KOMUNALNO PREDUZEĆE \"BEOGRADSKE PIJACE\"",
+    "url": "https://integritywatchserbia.org.rs/companies.php?l=sr",
+    "retrievedAt": "2026-10-30T13:47:26.488Z",
+    "official": false
+   }
+  },
+  {
+   "supplierName": "T&M GROUP SOLUTIONS doo",
+   "supplierPib": "113080389",
+   "supplierMb": "21798029",
+   "contractingAuthority": "Infrastruktura železnice Srbije",
+   "linkType": "povezanost sa političkim subjektom",
+   "detail": "Integrity Watch označava ponuđača kao kompaniju povezanu sa političkim subjektom; izvor povezivanja: https://nova.rs/vesti/biznis/dve-ponude-za-posao-ocitavanja-brojila-od-20-miliona-evra/; označenih ugovora kod naručioca: 4; od toga u zajedničkoj ponudi: 4 (vrednost cele ponude 1,025,000,000 RSD, nije pripisana firmi); period: 2024-12-03 do 2025-12-30; najveći: 1/2025-1/537 (2025-10-17, 470,000,000 RSD)",
+   "contracts": 4,
+   "source": {
+    "kind": "integrity_watch",
+    "title": "Integrity Watch Srbija – T&M GROUP SOLUTIONS doo / Infrastruktura železnice Srbije",
+    "url": "https://integritywatchserbia.org.rs/companies.php?l=sr",
+    "retrievedAt": "2026-10-30T13:47:26.488Z",
+    "official": false
+   }
+  },
+  {
+   "supplierName": "T&M GROUP SOLUTIONS doo",
+   "supplierPib": "113080389",
+   "supplierMb": "21798029",
+   "contractingAuthority": "Republički fond za zdravstveno osiguranje",
+   "linkType": "povezanost sa političkim subjektom",
+   "detail": "Integrity Watch označava ponuđača kao kompaniju povezanu sa političkim subjektom; izvor povezivanja: https://nova.rs/vesti/biznis/dve-ponude-za-posao-ocitavanja-brojila-od-20-miliona-evra/; označenih ugovora kod naručioca: 13; od toga u zajedničkoj ponudi: 13 (vrednost cele ponude 929,470,397 RSD, nije pripisana firmi); period: 2023-07-21 do 2026-02-24; najveći: 405-655/2025-14 (2026-01-13, 219,992,169 RSD)",
+   "contracts": 13,
+   "source": {
+    "kind": "integrity_watch",
+    "title": "Integrity Watch Srbija – T&M GROUP SOLUTIONS doo / Republički fond za zdravstveno osiguranje",
+    "url": "https://integritywatchserbia.org.rs/companies.php?l=sr",
+    "retrievedAt": "2026-10-30T13:47:26.488Z",
+    "official": false
+   }
+  },
+  {
+   "supplierName": "T&M GROUP SOLUTIONS doo",
+   "supplierPib": "113080389",
+   "supplierMb": "21798029",
+   "contractingAuthority": "USTANOVA STUDENTSKI CENTAR \"BEOGRAD\"",
+   "linkType": "povezanost sa političkim subjektom",
+   "detail": "Integrity Watch označava ponuđača kao kompaniju povezanu sa političkim subjektom; izvor povezivanja: https://nova.rs/vesti/biznis/dve-ponude-za-posao-ocitavanja-brojila-od-20-miliona-evra/; označenih ugovora kod naručioca: 5; od toga u zajedničkoj ponudi: 5 (vrednost cele ponude 868,372,909 RSD, nije pripisana firmi); period: 2023-03-30 do 2025-12-10; najveći: 6339/25 (2025-12-10, 316,386,909 RSD)",
+   "contracts": 5,
+   "source": {
+    "kind": "integrity_watch",
+    "title": "Integrity Watch Srbija – T&M GROUP SOLUTIONS doo / USTANOVA STUDENTSKI CENTAR \"BEOGRAD\"",
+    "url": "https://integritywatchserbia.org.rs/companies.php?l=sr",
+    "retrievedAt": "2026-10-30T13:47:26.488Z",
+    "official": false
+   }
+  },
+  {
+   "supplierName": "T&M GROUP SOLUTIONS doo",
+   "supplierPib": "113080389",
+   "supplierMb": "21798029",
+   "contractingAuthority": "JAVNA MEDIJSKA USTANOVA RADIO TELEVIZIJA SRBIJE",
+   "linkType": "povezanost sa političkim subjektom",
+   "detail": "Integrity Watch označava ponuđača kao kompaniju povezanu sa političkim subjektom; izvor povezivanja: https://nova.rs/vesti/biznis/dve-ponude-za-posao-ocitavanja-brojila-od-20-miliona-evra/; označenih ugovora kod naručioca: 2; od toga u zajedničkoj ponudi: 2 (vrednost cele ponude 699,668,200 RSD, nije pripisana firmi); period: 2024-01-25 do 2026-01-26; najveći: 0417 (2026-01-26, 449,670,000 RSD)",
+   "contracts": 2,
+   "source": {
+    "kind": "integrity_watch",
+    "title": "Integrity Watch Srbija – T&M GROUP SOLUTIONS doo / JAVNA MEDIJSKA USTANOVA RADIO TELEVIZIJA SRBIJE",
+    "url": "https://integritywatchserbia.org.rs/companies.php?l=sr",
+    "retrievedAt": "2026-10-30T13:47:26.488Z",
+    "official": false
+   }
+  },
+  {
+   "supplierName": "T&M GROUP SOLUTIONS doo",
+   "supplierPib": "113080389",
+   "supplierMb": "21798029",
+   "contractingAuthority": "SMATSA DOO",
+   "linkType": "povezanost sa političkim subjektom",
+   "detail": "Integrity Watch označava ponuđača kao kompaniju povezanu sa političkim subjektom; izvor povezivanja: https://nova.rs/vesti/biznis/dve-ponude-za-posao-ocitavanja-brojila-od-20-miliona-evra/; označenih ugovora kod naručioca: 2; od toga u zajedničkoj ponudi: 2 (vrednost cele ponude 456,208,800 RSD, nije pripisana firmi); period: 2023-10-19 do 2025-12-03; najveći: NAB.00-59/389 od 12.10.2023. godine (2023-10-19, 396,208,800 RSD)",
+   "contracts": 2,
+   "source": {
+    "kind": "integrity_watch",
+    "title": "Integrity Watch Srbija – T&M GROUP SOLUTIONS doo / SMATSA DOO",
+    "url": "https://integritywatchserbia.org.rs/companies.php?l=sr",
+    "retrievedAt": "2026-10-30T13:47:26.488Z",
+    "official": false
+   }
+  },
+  {
+   "supplierName": "T&M GROUP SOLUTIONS doo",
+   "supplierPib": "113080389",
+   "supplierMb": "21798029",
+   "contractingAuthority": "Akcionarsko društvo Elektroprivreda Srbije, Beograd",
+   "linkType": "povezanost sa političkim subjektom",
+   "detail": "Integrity Watch označava ponuđača kao kompaniju povezanu sa političkim subjektom; izvor povezivanja: https://nova.rs/vesti/biznis/dve-ponude-za-posao-ocitavanja-brojila-od-20-miliona-evra/; označenih ugovora kod naručioca: 1; od toga u zajedničkoj ponudi: 1 (vrednost cele ponude 355,026,560 RSD, nije pripisana firmi); period: 2024-06-12 do 2024-06-12; najveći: 12.01.186041/18-24 (2024-06-12, 355,026,560 RSD)",
+   "contracts": 1,
+   "source": {
+    "kind": "integrity_watch",
+    "title": "Integrity Watch Srbija – T&M GROUP SOLUTIONS doo / Akcionarsko društvo Elektroprivreda Srbije, Beograd",
+    "url": "https://integritywatchserbia.org.rs/companies.php?l=sr",
+    "retrievedAt": "2026-10-30T13:47:26.488Z",
+    "official": false
+   }
+  },
+  {
+   "supplierName": "T&M GROUP SOLUTIONS doo",
+   "supplierPib": "113080389",
+   "supplierMb": "21798029",
+   "contractingAuthority": "JAVNO KOMUNALNO PREDUZEĆE \"POGREBNE USLUGE\"",
+   "linkType": "povezanost sa političkim subjektom",
+   "detail": "Integrity Watch označava ponuđača kao kompaniju povezanu sa političkim subjektom; izvor povezivanja: https://nova.rs/vesti/biznis/dve-ponude-za-posao-ocitavanja-brojila-od-20-miliona-evra/; označenih ugovora kod naručioca: 1; od toga u zajedničkoj ponudi: 1 (vrednost cele ponude 300,000,000 RSD, nije pripisana firmi); period: 2023-07-19 do 2023-07-19; najveći: 4338-29/22 (2023-07-19, 300,000,000 RSD)",
+   "contracts": 1,
+   "source": {
+    "kind": "integrity_watch",
+    "title": "Integrity Watch Srbija – T&M GROUP SOLUTIONS doo / JAVNO KOMUNALNO PREDUZEĆE \"POGREBNE USLUGE\"",
+    "url": "https://integritywatchserbia.org.rs/companies.php?l=sr",
+    "retrievedAt": "2026-10-30T13:47:26.488Z",
+    "official": false
+   }
+  },
+  {
+   "supplierName": "T&M GROUP SOLUTIONS doo",
+   "supplierPib": "113080389",
+   "supplierMb": "21798029",
+   "contractingAuthority": "JAVNO PREDUZEĆE ZA OBAVLJANJE DELATNOSTI OD OPŠTEG INTERESA ZA GRAD BEOGRAD \"BEOGRADSKA TVRĐAVA\" BEOGRAD",
+   "linkType": "povezanost sa političkim subjektom",
+   "detail": "Integrity Watch označava ponuđača kao kompaniju povezanu sa političkim subjektom; izvor povezivanja: https://nova.rs/vesti/biznis/dve-ponude-za-posao-ocitavanja-brojila-od-20-miliona-evra/; označenih ugovora kod naručioca: 3; od toga u zajedničkoj ponudi: 3 (vrednost cele ponude 263,603,040 RSD, nije pripisana firmi); period: 2023-03-28 do 2025-12-30; najveći: 4082-1/25 (2025-12-30, 126,144,000 RSD)",
+   "contracts": 3,
+   "source": {
+    "kind": "integrity_watch",
+    "title": "Integrity Watch Srbija – T&M GROUP SOLUTIONS doo / JAVNO PREDUZEĆE ZA OBAVLJANJE DELATNOSTI OD OPŠTEG INTERESA ZA GRAD BEOGRAD \"BEOGRADSKA TVRĐAVA\" BEOGRAD",
+    "url": "https://integritywatchserbia.org.rs/companies.php?l=sr",
+    "retrievedAt": "2026-10-30T13:47:26.488Z",
+    "official": false
+   }
+  },
+  {
+   "supplierName": "T&M GROUP SOLUTIONS doo",
+   "supplierPib": "113080389",
+   "supplierMb": "21798029",
+   "contractingAuthority": "JAVNO KOMUNALNO PREDUZEĆE \"BEOGRADSKI VODOVOD I KANALIZACIJA\"",
+   "linkType": "povezanost sa političkim subjektom",
+   "detail": "Integrity Watch označava ponuđača kao kompaniju povezanu sa političkim subjektom; izvor povezivanja: https://nova.rs/vesti/biznis/dve-ponude-za-posao-ocitavanja-brojila-od-20-miliona-evra/; označenih ugovora kod naručioca: 3; od toga u zajedničkoj ponudi: 3 (vrednost cele ponude 230,842,560 RSD, nije pripisana firmi); period: 2023-02-23 do 2025-02-14; najveći: 8554 (2023-02-23, 89,842,560 RSD)",
+   "contracts": 3,
+   "source": {
+    "kind": "integrity_watch",
+    "title": "Integrity Watch Srbija – T&M GROUP SOLUTIONS doo / JAVNO KOMUNALNO PREDUZEĆE \"BEOGRADSKI VODOVOD I KANALIZACIJA\"",
+    "url": "https://integritywatchserbia.org.rs/companies.php?l=sr",
+    "retrievedAt": "2026-10-30T13:47:26.488Z",
+    "official": false
+   }
+  },
+  {
+   "supplierName": "T&M GROUP SOLUTIONS doo",
+   "supplierPib": "113080389",
+   "supplierMb": "21798029",
+   "contractingAuthority": "JP SKIJALIŠTA SRBIJE BEOGRAD",
+   "linkType": "povezanost sa političkim subjektom",
+   "detail": "Integrity Watch označava ponuđača kao kompaniju povezanu sa političkim subjektom; izvor povezivanja: https://nova.rs/vesti/biznis/dve-ponude-za-posao-ocitavanja-brojila-od-20-miliona-evra/; označenih ugovora kod naručioca: 2; od toga u zajedničkoj ponudi: 2 (vrednost cele ponude 132,000,000 RSD, nije pripisana firmi); period: 2023-03-28 do 2025-05-08; najveći: 327/25 (2025-05-08, 72,000,000 RSD)",
+   "contracts": 2,
+   "source": {
+    "kind": "integrity_watch",
+    "title": "Integrity Watch Srbija – T&M GROUP SOLUTIONS doo / JP SKIJALIŠTA SRBIJE BEOGRAD",
+    "url": "https://integritywatchserbia.org.rs/companies.php?l=sr",
+    "retrievedAt": "2026-10-30T13:47:26.488Z",
+    "official": false
+   }
+  },
+  {
+   "supplierName": "T&M GROUP SOLUTIONS doo",
+   "supplierPib": "113080389",
+   "supplierMb": "21798029",
+   "contractingAuthority": "UNIVERZITETSKI KLINIČKI CENTAR KRAGUJEVAC",
+   "linkType": "povezanost sa političkim subjektom",
+   "detail": "Integrity Watch označava ponuđača kao kompaniju povezanu sa političkim subjektom; izvor povezivanja: https://nova.rs/vesti/biznis/dve-ponude-za-posao-ocitavanja-brojila-od-20-miliona-evra/; označenih ugovora kod naručioca: 2; od toga u zajedničkoj ponudi: 2 (vrednost cele ponude 48,939,999 RSD, nije pripisana firmi); period: 2023-04-25 do 2023-12-01; najveći: 01-5043 (2023-04-25, 32,499,999 RSD)",
+   "contracts": 2,
+   "source": {
+    "kind": "integrity_watch",
+    "title": "Integrity Watch Srbija – T&M GROUP SOLUTIONS doo / UNIVERZITETSKI KLINIČKI CENTAR KRAGUJEVAC",
+    "url": "https://integritywatchserbia.org.rs/companies.php?l=sr",
+    "retrievedAt": "2026-10-30T13:47:26.488Z",
+    "official": false
+   }
+  },
+  {
+   "supplierName": "T&M GROUP SOLUTIONS doo",
+   "supplierPib": "113080389",
+   "supplierMb": "21798029",
+   "contractingAuthority": "Javno komunalno preduzeće Zelenilo-Beograd Beograd",
+   "linkType": "povezanost sa političkim subjektom",
+   "detail": "Integrity Watch označava ponuđača kao kompaniju povezanu sa političkim subjektom; izvor povezivanja: https://nova.rs/vesti/biznis/dve-ponude-za-posao-ocitavanja-brojila-od-20-miliona-evra/; označenih ugovora kod naručioca: 2; od toga u zajedničkoj ponudi: 2 (vrednost cele ponude 44,194,720 RSD, nije pripisana firmi); period: 2023-07-19 do 2024-04-04; najveći: 14-40/24 (2024-04-04, 40,000,000 RSD)",
+   "contracts": 2,
+   "source": {
+    "kind": "integrity_watch",
+    "title": "Integrity Watch Srbija – T&M GROUP SOLUTIONS doo / Javno komunalno preduzeće Zelenilo-Beograd Beograd",
+    "url": "https://integritywatchserbia.org.rs/companies.php?l=sr",
+    "retrievedAt": "2026-10-30T13:47:26.488Z",
+    "official": false
+   }
+  },
+  {
+   "supplierName": "T&M GROUP SOLUTIONS doo",
+   "supplierPib": "113080389",
+   "supplierMb": "21798029",
+   "contractingAuthority": "JAVNO KOMUNALNO PREDUZEĆE \"GRADSKA ČISTOĆA\"",
+   "linkType": "povezanost sa političkim subjektom",
+   "detail": "Integrity Watch označava ponuđača kao kompaniju povezanu sa političkim subjektom; izvor povezivanja: https://nova.rs/vesti/biznis/dve-ponude-za-posao-ocitavanja-brojila-od-20-miliona-evra/; označenih ugovora kod naručioca: 1; od toga u zajedničkoj ponudi: 1 (vrednost cele ponude 29,628,358 RSD, nije pripisana firmi); period: 2025-01-13 do 2025-01-13; najveći: 25-UG-201/5 (2025-01-13, 29,628,358 RSD)",
+   "contracts": 1,
+   "source": {
+    "kind": "integrity_watch",
+    "title": "Integrity Watch Srbija – T&M GROUP SOLUTIONS doo / JAVNO KOMUNALNO PREDUZEĆE \"GRADSKA ČISTOĆA\"",
+    "url": "https://integritywatchserbia.org.rs/companies.php?l=sr",
+    "retrievedAt": "2026-10-30T13:47:26.488Z",
+    "official": false
+   }
+  },
+  {
+   "supplierName": "T&M GROUP SOLUTIONS doo",
+   "supplierPib": "113080389",
+   "supplierMb": "21798029",
+   "contractingAuthority": "UNIVERZITETSKA DEČJA KLINIKA",
+   "linkType": "povezanost sa političkim subjektom",
+   "detail": "Integrity Watch označava ponuđača kao kompaniju povezanu sa političkim subjektom; izvor povezivanja: https://nova.rs/vesti/biznis/dve-ponude-za-posao-ocitavanja-brojila-od-20-miliona-evra/; označenih ugovora kod naručioca: 1; od toga u zajedničkoj ponudi: 1 (vrednost cele ponude 26,950,000 RSD, nije pripisana firmi); period: 2023-04-13 do 2023-04-13; najveći: 017-257/5/23 (2023-04-13, 26,950,000 RSD)",
+   "contracts": 1,
+   "source": {
+    "kind": "integrity_watch",
+    "title": "Integrity Watch Srbija – T&M GROUP SOLUTIONS doo / UNIVERZITETSKA DEČJA KLINIKA",
+    "url": "https://integritywatchserbia.org.rs/companies.php?l=sr",
+    "retrievedAt": "2026-10-30T13:47:26.488Z",
+    "official": false
+   }
+  },
+  {
+   "supplierName": "T&M GROUP SOLUTIONS doo",
+   "supplierPib": "113080389",
+   "supplierMb": "21798029",
+   "contractingAuthority": "JAVNO KOMUNALNO PREDUZEĆE INFOSTAN TEHNOLOGIJE BEOGRAD",
+   "linkType": "povezanost sa političkim subjektom",
+   "detail": "Integrity Watch označava ponuđača kao kompaniju povezanu sa političkim subjektom; izvor povezivanja: https://nova.rs/vesti/biznis/dve-ponude-za-posao-ocitavanja-brojila-od-20-miliona-evra/; označenih ugovora kod naručioca: 3; od toga u zajedničkoj ponudi: 3 (vrednost cele ponude 25,800,000 RSD, nije pripisana firmi); period: 2023-03-14 do 2025-04-14; najveći: 2364/3 (2025-04-14, 10,000,000 RSD)",
+   "contracts": 3,
+   "source": {
+    "kind": "integrity_watch",
+    "title": "Integrity Watch Srbija – T&M GROUP SOLUTIONS doo / JAVNO KOMUNALNO PREDUZEĆE INFOSTAN TEHNOLOGIJE BEOGRAD",
+    "url": "https://integritywatchserbia.org.rs/companies.php?l=sr",
+    "retrievedAt": "2026-10-30T13:47:26.488Z",
+    "official": false
+   }
+  },
+  {
+   "supplierName": "T&M GROUP SOLUTIONS doo",
+   "supplierPib": "113080389",
+   "supplierMb": "21798029",
+   "contractingAuthority": "Gradska opština Palilula",
+   "linkType": "povezanost sa političkim subjektom",
+   "detail": "Integrity Watch označava ponuđača kao kompaniju povezanu sa političkim subjektom; izvor povezivanja: https://nova.rs/vesti/biznis/dve-ponude-za-posao-ocitavanja-brojila-od-20-miliona-evra/; označenih ugovora kod naručioca: 1; od toga u zajedničkoj ponudi: 1 (vrednost cele ponude 21,992,256 RSD, nije pripisana firmi); period: 2025-03-07 do 2025-03-07; najveći: 001038970 2025 04313 002 000 020 014 (2025-03-07, 21,992,256 RSD)",
+   "contracts": 1,
+   "source": {
+    "kind": "integrity_watch",
+    "title": "Integrity Watch Srbija – T&M GROUP SOLUTIONS doo / Gradska opština Palilula",
+    "url": "https://integritywatchserbia.org.rs/companies.php?l=sr",
+    "retrievedAt": "2026-10-30T13:47:26.488Z",
+    "official": false
+   }
+  },
+  {
+   "supplierName": "T&M GROUP SOLUTIONS doo",
+   "supplierPib": "113080389",
+   "supplierMb": "21798029",
+   "contractingAuthority": "Gradska opština Savski venac",
+   "linkType": "povezanost sa političkim subjektom",
+   "detail": "Integrity Watch označava ponuđača kao kompaniju povezanu sa političkim subjektom; izvor povezivanja: https://nova.rs/vesti/biznis/dve-ponude-za-posao-ocitavanja-brojila-od-20-miliona-evra/; označenih ugovora kod naručioca: 3; od toga u zajedničkoj ponudi: 3 (vrednost cele ponude 21,910,810 RSD, nije pripisana firmi); period: 2024-02-01 do 2026-01-20; najveći: XI 416-247/25 (2026-01-20, 8,850,058 RSD)",
+   "contracts": 3,
+   "source": {
+    "kind": "integrity_watch",
+    "title": "Integrity Watch Srbija – T&M GROUP SOLUTIONS doo / Gradska opština Savski venac",
+    "url": "https://integritywatchserbia.org.rs/companies.php?l=sr",
+    "retrievedAt": "2026-10-30T13:47:26.488Z",
+    "official": false
+   }
+  },
+  {
+   "supplierName": "T&M GROUP SOLUTIONS doo",
+   "supplierPib": "113080389",
+   "supplierMb": "21798029",
+   "contractingAuthority": "UNIVERZITETSKI KLINIČKI CENTAR SRBIJE",
+   "linkType": "povezanost sa političkim subjektom",
+   "detail": "Integrity Watch označava ponuđača kao kompaniju povezanu sa političkim subjektom; izvor povezivanja: https://nova.rs/vesti/biznis/dve-ponude-za-posao-ocitavanja-brojila-od-20-miliona-evra/; označenih ugovora kod naručioca: 1; od toga u zajedničkoj ponudi: 1 (vrednost cele ponude 9,000,000 RSD, nije pripisana firmi); period: 2023-06-09 do 2023-06-09; najveći: 8850 (2023-06-09, 9,000,000 RSD)",
+   "contracts": 1,
+   "source": {
+    "kind": "integrity_watch",
+    "title": "Integrity Watch Srbija – T&M GROUP SOLUTIONS doo / UNIVERZITETSKI KLINIČKI CENTAR SRBIJE",
+    "url": "https://integritywatchserbia.org.rs/companies.php?l=sr",
+    "retrievedAt": "2026-10-30T13:47:26.488Z",
+    "official": false
+   }
+  },
+  {
+   "supplierName": "T&M GROUP SOLUTIONS doo",
+   "supplierPib": "113080389",
+   "supplierMb": "21798029",
+   "contractingAuthority": "DEČIJI KULTURNI CENTAR \"MAJDAN\"",
+   "linkType": "povezanost sa političkim subjektom",
+   "detail": "Integrity Watch označava ponuđača kao kompaniju povezanu sa političkim subjektom; izvor povezivanja: https://nova.rs/vesti/biznis/dve-ponude-za-posao-ocitavanja-brojila-od-20-miliona-evra/; označenih ugovora kod naručioca: 2; od toga u zajedničkoj ponudi: 2 (vrednost cele ponude 7,995,704 RSD, nije pripisana firmi); period: 2024-03-26 do 2025-05-29; najveći: IV-68/2024 (2024-03-26, 3,999,984 RSD)",
+   "contracts": 2,
+   "source": {
+    "kind": "integrity_watch",
+    "title": "Integrity Watch Srbija – T&M GROUP SOLUTIONS doo / DEČIJI KULTURNI CENTAR \"MAJDAN\"",
+    "url": "https://integritywatchserbia.org.rs/companies.php?l=sr",
+    "retrievedAt": "2026-10-30T13:47:26.488Z",
+    "official": false
+   }
+  },
+  {
+   "supplierName": "T&M GROUP SOLUTIONS doo",
+   "supplierPib": "113080389",
+   "supplierMb": "21798029",
+   "contractingAuthority": "JAVNO KOMUNALNO PREDUZEĆE BIOKTOŠ",
+   "linkType": "povezanost sa političkim subjektom",
+   "detail": "Integrity Watch označava ponuđača kao kompaniju povezanu sa političkim subjektom; izvor povezivanja: https://nova.rs/vesti/biznis/dve-ponude-za-posao-ocitavanja-brojila-od-20-miliona-evra/; označenih ugovora kod naručioca: 1; period: 2026-03-13 do 2026-03-13; najveći: 09-47/1-2026 (2026-03-13, 5,096,650 RSD)",
+   "contracts": 1,
+   "valueRsd": 5096649.6,
+   "source": {
+    "kind": "integrity_watch",
+    "title": "Integrity Watch Srbija – T&M GROUP SOLUTIONS doo / JAVNO KOMUNALNO PREDUZEĆE BIOKTOŠ",
+    "url": "https://integritywatchserbia.org.rs/companies.php?l=sr",
+    "retrievedAt": "2026-10-30T13:47:26.488Z",
+    "official": false
+   }
+  },
+  {
+   "supplierName": "T&M GROUP SOLUTIONS doo",
+   "supplierPib": "113080389",
+   "supplierMb": "21798029",
+   "contractingAuthority": "ZAVOD ZA ZAŠTITU PRIRODE SRBIJE",
+   "linkType": "povezanost sa političkim subjektom",
+   "detail": "Integrity Watch označava ponuđača kao kompaniju povezanu sa političkim subjektom; izvor povezivanja: https://nova.rs/vesti/biznis/dve-ponude-za-posao-ocitavanja-brojila-od-20-miliona-evra/; označenih ugovora kod naručioca: 1; od toga u zajedničkoj ponudi: 1 (vrednost cele ponude 3,999,960 RSD, nije pripisana firmi); period: 2024-05-07 do 2024-05-07; najveći: 07 Br. 067-1183/5 (2024-05-07, 3,999,960 RSD)",
+   "contracts": 1,
+   "source": {
+    "kind": "integrity_watch",
+    "title": "Integrity Watch Srbija – T&M GROUP SOLUTIONS doo / ZAVOD ZA ZAŠTITU PRIRODE SRBIJE",
+    "url": "https://integritywatchserbia.org.rs/companies.php?l=sr",
+    "retrievedAt": "2026-10-30T13:47:26.488Z",
+    "official": false
+   }
+  },
+  {
+   "supplierName": "T&M GROUP SOLUTIONS doo",
+   "supplierPib": "113080389",
+   "supplierMb": "21798029",
+   "contractingAuthority": "GRADSKI CENTAR ZA SOCIJALNI RAD BEOGRAD",
+   "linkType": "povezanost sa političkim subjektom",
+   "detail": "Integrity Watch označava ponuđača kao kompaniju povezanu sa političkim subjektom; izvor povezivanja: https://nova.rs/vesti/biznis/dve-ponude-za-posao-ocitavanja-brojila-od-20-miliona-evra/; označenih ugovora kod naručioca: 1; od toga u zajedničkoj ponudi: 1 (vrednost cele ponude 1,675,017 RSD, nije pripisana firmi); period: 2024-12-23 do 2024-12-23; najveći: 180-40 (2024-12-23, 1,675,017 RSD)",
+   "contracts": 1,
+   "source": {
+    "kind": "integrity_watch",
+    "title": "Integrity Watch Srbija – T&M GROUP SOLUTIONS doo / GRADSKI CENTAR ZA SOCIJALNI RAD BEOGRAD",
+    "url": "https://integritywatchserbia.org.rs/companies.php?l=sr",
+    "retrievedAt": "2026-10-30T13:47:26.488Z",
+    "official": false
+   }
+  }
+ ]
+}

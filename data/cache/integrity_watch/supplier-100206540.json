@@ -1,0 +1,1020 @@
+{
+ "source": "integrity_watch",
+ "key": "supplier-100206540",
+ "retrievedAt": "2026-10-30T13:47:55.761Z",
+ "data": [
+  {
+   "supplierName": "JADRAN DOO BEOGRAD",
+   "supplierPib": "100206540",
+   "supplierMb": "07032358",
+   "contractingAuthority": "Akcionarsko društvo Elektroprivreda Srbije, Beograd",
+   "linkType": "povezanost sa političkim subjektom",
+   "detail": "Integrity Watch označava ponuđača kao kompaniju povezanu sa političkim subjektom; izvor povezivanja: https://novaekonomija.rs/vesti-iz-zemlje/firma-bivseg-jemca-sns-a-dobila-posao-za-124-miliona-dinara; označenih ugovora kod naručioca: 38; od toga u zajedničkoj ponudi: 16 (vrednost cele ponude 11,433,354,073 RSD, nije pripisana firmi); period: 2022-03-15 do 2026-03-17; najveći: 12.01.10772/28-24 (2024-04-08, 8,184,323,568 RSD)",
+   "contracts": 38,
+   "valueRsd": 463472474.25,
+   "source": {
+    "kind": "integrity_watch",
+    "title": "Integrity Watch Srbija – JADRAN DOO BEOGRAD / Akcionarsko društvo Elektroprivreda Srbije, Beograd",
+    "url": "https://integritywatchserbia.org.rs/companies.php?l=sr",
+    "retrievedAt": "2026-10-30T13:47:26.488Z",
+    "official": false
+   }
+  },
+  {
+   "supplierName": "JADRAN DOO BEOGRAD",
+   "supplierPib": "100206540",
+   "supplierMb": "07032358",
+   "contractingAuthority": "KANCELARIJA ZA UPRAVLJANJE JAVNIM ULAGANJIMA",
+   "linkType": "povezanost sa političkim subjektom",
+   "detail": "Integrity Watch označava ponuđača kao kompaniju povezanu sa političkim subjektom; izvor povezivanja: https://novaekonomija.rs/vesti-iz-zemlje/firma-bivseg-jemca-sns-a-dobila-posao-za-124-miliona-dinara; označenih ugovora kod naručioca: 2; od toga u zajedničkoj ponudi: 2 (vrednost cele ponude 7,054,252,526 RSD, nije pripisana firmi); period: 2021-12-24 do 2022-11-09; najveći: 404-02-41/5/2022-01 (2022-11-09, 4,432,933,986 RSD)",
+   "contracts": 2,
+   "source": {
+    "kind": "integrity_watch",
+    "title": "Integrity Watch Srbija – JADRAN DOO BEOGRAD / KANCELARIJA ZA UPRAVLJANJE JAVNIM ULAGANJIMA",
+    "url": "https://integritywatchserbia.org.rs/companies.php?l=sr",
+    "retrievedAt": "2026-10-30T13:47:26.488Z",
+    "official": false
+   }
+  },
+  {
+   "supplierName": "JADRAN DOO BEOGRAD",
+   "supplierPib": "100206540",
+   "supplierMb": "07032358",
+   "contractingAuthority": "GRAD BEOGRAD - GU SEKRETARIJAT ZA INVESTICIJE",
+   "linkType": "povezanost sa političkim subjektom",
+   "detail": "Integrity Watch označava ponuđača kao kompaniju povezanu sa političkim subjektom; izvor povezivanja: https://novaekonomija.rs/vesti-iz-zemlje/firma-bivseg-jemca-sns-a-dobila-posao-za-124-miliona-dinara; označenih ugovora kod naručioca: 2; od toga u zajedničkoj ponudi: 2 (vrednost cele ponude 5,624,508,119 RSD, nije pripisana firmi); period: 2022-12-20 do 2023-10-13; najveći: XXVIII-06 broj 401.1-66 (2023-10-13, 4,240,505,835 RSD)",
+   "contracts": 2,
+   "source": {
+    "kind": "integrity_watch",
+    "title": "Integrity Watch Srbija – JADRAN DOO BEOGRAD / GRAD BEOGRAD - GU SEKRETARIJAT ZA INVESTICIJE",
+    "url": "https://integritywatchserbia.org.rs/companies.php?l=sr",
+    "retrievedAt": "2026-10-30T13:47:26.488Z",
+    "official": false
+   }
+  },
+  {
+   "supplierName": "JADRAN DOO BEOGRAD",
+   "supplierPib": "100206540",
+   "supplierMb": "07032358",
+   "contractingAuthority": "DIREKCIJA ZA GRAĐEVINSKO ZEMLjIŠTE I IZGRADNjU BEOGRADA JP BEOGRAD (VRAČAR)",
+   "linkType": "povezanost sa političkim subjektom",
+   "detail": "Integrity Watch označava ponuđača kao kompaniju povezanu sa političkim subjektom; izvor povezivanja: https://novaekonomija.rs/vesti-iz-zemlje/firma-bivseg-jemca-sns-a-dobila-posao-za-124-miliona-dinara; označenih ugovora kod naručioca: 1; od toga u zajedničkoj ponudi: 1 (vrednost cele ponude 5,570,666,864 RSD, nije pripisana firmi); period: 2025-11-13 do 2025-11-13; najveći: 47661/2-04 (2025-11-13, 5,570,666,864 RSD)",
+   "contracts": 1,
+   "source": {
+    "kind": "integrity_watch",
+    "title": "Integrity Watch Srbija – JADRAN DOO BEOGRAD / DIREKCIJA ZA GRAĐEVINSKO ZEMLjIŠTE I IZGRADNjU BEOGRADA JP BEOGRAD (VRAČAR)",
+    "url": "https://integritywatchserbia.org.rs/companies.php?l=sr",
+    "retrievedAt": "2026-10-30T13:47:26.488Z",
+    "official": false
+   }
+  },
+  {
+   "supplierName": "JADRAN DOO BEOGRAD",
+   "supplierPib": "100206540",
+   "supplierMb": "07032358",
+   "contractingAuthority": "EMS AD Beograd",
+   "linkType": "povezanost sa političkim subjektom",
+   "detail": "Integrity Watch označava ponuđača kao kompaniju povezanu sa političkim subjektom; izvor povezivanja: https://novaekonomija.rs/vesti-iz-zemlje/firma-bivseg-jemca-sns-a-dobila-posao-za-124-miliona-dinara; označenih ugovora kod naručioca: 26; od toga u zajedničkoj ponudi: 6 (vrednost cele ponude 453,295,586 RSD, nije pripisana firmi); period: 2021-03-09 do 2025-12-22; najveći: 500-00-UGO-NAB-573/2023-001 (2024-03-07, 368,550,000 RSD)",
+   "contracts": 26,
+   "valueRsd": 3458026884.44,
+   "source": {
+    "kind": "integrity_watch",
+    "title": "Integrity Watch Srbija – JADRAN DOO BEOGRAD / EMS AD Beograd",
+    "url": "https://integritywatchserbia.org.rs/companies.php?l=sr",
+    "retrievedAt": "2026-10-30T13:47:26.488Z",
+    "official": false
+   }
+  },
+  {
+   "supplierName": "JADRAN DOO BEOGRAD",
+   "supplierPib": "100206540",
+   "supplierMb": "07032358",
+   "contractingAuthority": "Ministarstvo zaštite životne sredine",
+   "linkType": "povezanost sa političkim subjektom",
+   "detail": "Integrity Watch označava ponuđača kao kompaniju povezanu sa političkim subjektom; izvor povezivanja: https://novaekonomija.rs/vesti-iz-zemlje/firma-bivseg-jemca-sns-a-dobila-posao-za-124-miliona-dinara; označenih ugovora kod naručioca: 3; od toga u zajedničkoj ponudi: 3 (vrednost cele ponude 2,884,118,479 RSD, nije pripisana firmi); period: 2024-03-20 do 2025-07-31; najveći: 000764202 2024 14850 008 002 405 001 18 007 (2024-06-24, 1,998,564,878 RSD)",
+   "contracts": 3,
+   "source": {
+    "kind": "integrity_watch",
+    "title": "Integrity Watch Srbija – JADRAN DOO BEOGRAD / Ministarstvo zaštite životne sredine",
+    "url": "https://integritywatchserbia.org.rs/companies.php?l=sr",
+    "retrievedAt": "2026-10-30T13:47:26.488Z",
+    "official": false
+   }
+  },
+  {
+   "supplierName": "JADRAN DOO BEOGRAD",
+   "supplierPib": "100206540",
+   "supplierMb": "07032358",
+   "contractingAuthority": "MINISTARSTVO GRAĐEVINARSTVA, SAOBRAĆAJA I INFRASTRUKTURE",
+   "linkType": "povezanost sa političkim subjektom",
+   "detail": "Integrity Watch označava ponuđača kao kompaniju povezanu sa političkim subjektom; izvor povezivanja: https://novaekonomija.rs/vesti-iz-zemlje/firma-bivseg-jemca-sns-a-dobila-posao-za-124-miliona-dinara; označenih ugovora kod naručioca: 1; od toga u zajedničkoj ponudi: 1 (vrednost cele ponude 1,740,255,048 RSD, nije pripisana firmi); period: 2021-12-16 do 2021-12-16; najveći: 404-02-134/6/2021-02 (2021-12-16, 1,740,255,048 RSD)",
+   "contracts": 1,
+   "source": {
+    "kind": "integrity_watch",
+    "title": "Integrity Watch Srbija – JADRAN DOO BEOGRAD / MINISTARSTVO GRAĐEVINARSTVA, SAOBRAĆAJA I INFRASTRUKTURE",
+    "url": "https://integritywatchserbia.org.rs/companies.php?l=sr",
+    "retrievedAt": "2026-10-30T13:47:26.488Z",
+    "official": false
+   }
+  },
+  {
+   "supplierName": "JADRAN DOO BEOGRAD",
+   "supplierPib": "100206540",
+   "supplierMb": "07032358",
+   "contractingAuthority": "Javno preduzeće „Elektroprivreda Srbije”",
+   "linkType": "povezanost sa političkim subjektom",
+   "detail": "Integrity Watch označava ponuđača kao kompaniju povezanu sa političkim subjektom; izvor povezivanja: https://novaekonomija.rs/vesti-iz-zemlje/firma-bivseg-jemca-sns-a-dobila-posao-za-124-miliona-dinara; označenih ugovora kod naručioca: 18; od toga u zajedničkoj ponudi: 6 (vrednost cele ponude 1,510,494,234 RSD, nije pripisana firmi); period: 2021-03-18 do 2022-12-01; najveći: 12.01.-527891/35-22 (2022-11-29, 839,995,145 RSD)",
+   "contracts": 18,
+   "valueRsd": 165303496.74,
+   "source": {
+    "kind": "integrity_watch",
+    "title": "Integrity Watch Srbija – JADRAN DOO BEOGRAD / Javno preduzeće „Elektroprivreda Srbije”",
+    "url": "https://integritywatchserbia.org.rs/companies.php?l=sr",
+    "retrievedAt": "2026-10-30T13:47:26.488Z",
+    "official": false
+   }
+  },
+  {
+   "supplierName": "JADRAN DOO BEOGRAD",
+   "supplierPib": "100206540",
+   "supplierMb": "07032358",
+   "contractingAuthority": "OPŠTINA MAJDANPEK",
+   "linkType": "povezanost sa političkim subjektom",
+   "detail": "Integrity Watch označava ponuđača kao kompaniju povezanu sa političkim subjektom; izvor povezivanja: https://novaekonomija.rs/vesti-iz-zemlje/firma-bivseg-jemca-sns-a-dobila-posao-za-124-miliona-dinara; označenih ugovora kod naručioca: 1; od toga u zajedničkoj ponudi: 1 (vrednost cele ponude 1,471,065,355 RSD, nije pripisana firmi); period: 2025-07-15 do 2025-07-15; najveći: 003059405 2025 (2025-07-15, 1,471,065,355 RSD)",
+   "contracts": 1,
+   "source": {
+    "kind": "integrity_watch",
+    "title": "Integrity Watch Srbija – JADRAN DOO BEOGRAD / OPŠTINA MAJDANPEK",
+    "url": "https://integritywatchserbia.org.rs/companies.php?l=sr",
+    "retrievedAt": "2026-10-30T13:47:26.488Z",
+    "official": false
+   }
+  },
+  {
+   "supplierName": "JADRAN DOO BEOGRAD",
+   "supplierPib": "100206540",
+   "supplierMb": "07032358",
+   "contractingAuthority": "JAVNO VODOPRIVREDNO PREDUZEĆE \"VODE VOJVODINE\", NOVI SAD",
+   "linkType": "povezanost sa političkim subjektom",
+   "detail": "Integrity Watch označava ponuđača kao kompaniju povezanu sa političkim subjektom; izvor povezivanja: https://novaekonomija.rs/vesti-iz-zemlje/firma-bivseg-jemca-sns-a-dobila-posao-za-124-miliona-dinara; označenih ugovora kod naručioca: 23; od toga u zajedničkoj ponudi: 23 (vrednost cele ponude 1,084,368,334 RSD, nije pripisana firmi); period: 2022-09-01 do 2024-10-10; najveći: 6-413/10-23 (2023-05-09, 283,626,423 RSD)",
+   "contracts": 23,
+   "source": {
+    "kind": "integrity_watch",
+    "title": "Integrity Watch Srbija – JADRAN DOO BEOGRAD / JAVNO VODOPRIVREDNO PREDUZEĆE \"VODE VOJVODINE\", NOVI SAD",
+    "url": "https://integritywatchserbia.org.rs/companies.php?l=sr",
+    "retrievedAt": "2026-10-30T13:47:26.488Z",
+    "official": false
+   }
+  },
+  {
+   "supplierName": "JADRAN DOO BEOGRAD",
+   "supplierPib": "100206540",
+   "supplierMb": "07032358",
+   "contractingAuthority": "Opštinska uprava Gornji Milanovac",
+   "linkType": "povezanost sa političkim subjektom",
+   "detail": "Integrity Watch označava ponuđača kao kompaniju povezanu sa političkim subjektom; izvor povezivanja: https://novaekonomija.rs/vesti-iz-zemlje/firma-bivseg-jemca-sns-a-dobila-posao-za-124-miliona-dinara; označenih ugovora kod naručioca: 2; od toga u zajedničkoj ponudi: 2 (vrednost cele ponude 916,684,976 RSD, nije pripisana firmi); period: 2022-11-08 do 2023-12-14; najveći: 4-404-241 (2022-11-08, 499,339,695 RSD)",
+   "contracts": 2,
+   "source": {
+    "kind": "integrity_watch",
+    "title": "Integrity Watch Srbija – JADRAN DOO BEOGRAD / Opštinska uprava Gornji Milanovac",
+    "url": "https://integritywatchserbia.org.rs/companies.php?l=sr",
+    "retrievedAt": "2026-10-30T13:47:26.488Z",
+    "official": false
+   }
+  },
+  {
+   "supplierName": "JADRAN DOO BEOGRAD",
+   "supplierPib": "100206540",
+   "supplierMb": "07032358",
+   "contractingAuthority": "Uprava za izvršenje krivičnih sankcija",
+   "linkType": "povezanost sa političkim subjektom",
+   "detail": "Integrity Watch označava ponuđača kao kompaniju povezanu sa političkim subjektom; izvor povezivanja: https://novaekonomija.rs/vesti-iz-zemlje/firma-bivseg-jemca-sns-a-dobila-posao-za-124-miliona-dinara; označenih ugovora kod naručioca: 1; od toga u zajedničkoj ponudi: 1 (vrednost cele ponude 717,050,646 RSD, nije pripisana firmi); period: 2025-02-12 do 2025-02-12; najveći: 404-02-23/2024-04/14 (2025-02-12, 717,050,646 RSD)",
+   "contracts": 1,
+   "source": {
+    "kind": "integrity_watch",
+    "title": "Integrity Watch Srbija – JADRAN DOO BEOGRAD / Uprava za izvršenje krivičnih sankcija",
+    "url": "https://integritywatchserbia.org.rs/companies.php?l=sr",
+    "retrievedAt": "2026-10-30T13:47:26.488Z",
+    "official": false
+   }
+  },
+  {
+   "supplierName": "JADRAN DOO BEOGRAD",
+   "supplierPib": "100206540",
+   "supplierMb": "07032358",
+   "contractingAuthority": "MINISTARSTVO ZA JAVNA ULAGANjA",
+   "linkType": "povezanost sa političkim subjektom",
+   "detail": "Integrity Watch označava ponuđača kao kompaniju povezanu sa političkim subjektom; izvor povezivanja: https://novaekonomija.rs/vesti-iz-zemlje/firma-bivseg-jemca-sns-a-dobila-posao-za-124-miliona-dinara; označenih ugovora kod naručioca: 3; od toga u zajedničkoj ponudi: 2 (vrednost cele ponude 678,402,723 RSD, nije pripisana firmi); period: 2023-06-27 do 2025-09-30; najveći: 404-02-14/5/205-01 (2025-09-30, 548,773,584 RSD)",
+   "contracts": 3,
+   "valueRsd": 15079922.13,
+   "source": {
+    "kind": "integrity_watch",
+    "title": "Integrity Watch Srbija – JADRAN DOO BEOGRAD / MINISTARSTVO ZA JAVNA ULAGANjA",
+    "url": "https://integritywatchserbia.org.rs/companies.php?l=sr",
+    "retrievedAt": "2026-10-30T13:47:26.488Z",
+    "official": false
+   }
+  },
+  {
+   "supplierName": "JADRAN DOO BEOGRAD",
+   "supplierPib": "100206540",
+   "supplierMb": "07032358",
+   "contractingAuthority": "Ministarstvo unutrašnje i spoljne trgovine",
+   "linkType": "povezanost sa političkim subjektom",
+   "detail": "Integrity Watch označava ponuđača kao kompaniju povezanu sa političkim subjektom; izvor povezivanja: https://novaekonomija.rs/vesti-iz-zemlje/firma-bivseg-jemca-sns-a-dobila-posao-za-124-miliona-dinara; označenih ugovora kod naručioca: 1; od toga u zajedničkoj ponudi: 1 (vrednost cele ponude 529,166,667 RSD, nije pripisana firmi); period: 2021-07-16 do 2021-07-16; najveći: 404-02-155/2021-02/7 (2021-07-16, 529,166,667 RSD)",
+   "contracts": 1,
+   "source": {
+    "kind": "integrity_watch",
+    "title": "Integrity Watch Srbija – JADRAN DOO BEOGRAD / Ministarstvo unutrašnje i spoljne trgovine",
+    "url": "https://integritywatchserbia.org.rs/companies.php?l=sr",
+    "retrievedAt": "2026-10-30T13:47:26.488Z",
+    "official": false
+   }
+  },
+  {
+   "supplierName": "JADRAN DOO BEOGRAD",
+   "supplierPib": "100206540",
+   "supplierMb": "07032358",
+   "contractingAuthority": "Opština Stara Pazova",
+   "linkType": "povezanost sa političkim subjektom",
+   "detail": "Integrity Watch označava ponuđača kao kompaniju povezanu sa političkim subjektom; izvor povezivanja: https://novaekonomija.rs/vesti-iz-zemlje/firma-bivseg-jemca-sns-a-dobila-posao-za-124-miliona-dinara; označenih ugovora kod naručioca: 1; od toga u zajedničkoj ponudi: 1 (vrednost cele ponude 314,233,762 RSD, nije pripisana firmi); period: 2024-05-09 do 2024-05-09; najveći: 404-10/24-III (2024-05-09, 314,233,762 RSD)",
+   "contracts": 1,
+   "source": {
+    "kind": "integrity_watch",
+    "title": "Integrity Watch Srbija – JADRAN DOO BEOGRAD / Opština Stara Pazova",
+    "url": "https://integritywatchserbia.org.rs/companies.php?l=sr",
+    "retrievedAt": "2026-10-30T13:47:26.488Z",
+    "official": false
+   }
+  },
+  {
+   "supplierName": "JADRAN DOO BEOGRAD",
+   "supplierPib": "100206540",
+   "supplierMb": "07032358",
+   "contractingAuthority": "OSNOVNA ŠKOLA \"SAVA ŽEBELJAN\" CREPAJA",
+   "linkType": "povezanost sa političkim subjektom",
+   "detail": "Integrity Watch označava ponuđača kao kompaniju povezanu sa političkim subjektom; izvor povezivanja: https://novaekonomija.rs/vesti-iz-zemlje/firma-bivseg-jemca-sns-a-dobila-posao-za-124-miliona-dinara; označenih ugovora kod naručioca: 1; od toga u zajedničkoj ponudi: 1 (vrednost cele ponude 298,544,201 RSD, nije pripisana firmi); period: 2022-02-22 do 2022-02-22; najveći: 90 (2022-02-22, 298,544,201 RSD)",
+   "contracts": 1,
+   "source": {
+    "kind": "integrity_watch",
+    "title": "Integrity Watch Srbija – JADRAN DOO BEOGRAD / OSNOVNA ŠKOLA \"SAVA ŽEBELJAN\" CREPAJA",
+    "url": "https://integritywatchserbia.org.rs/companies.php?l=sr",
+    "retrievedAt": "2026-10-30T13:47:26.488Z",
+    "official": false
+   }
+  },
+  {
+   "supplierName": "JADRAN DOO BEOGRAD",
+   "supplierPib": "100206540",
+   "supplierMb": "07032358",
+   "contractingAuthority": "VAZDUHOPLOVNA AKADEMIJA",
+   "linkType": "povezanost sa političkim subjektom",
+   "detail": "Integrity Watch označava ponuđača kao kompaniju povezanu sa političkim subjektom; izvor povezivanja: https://novaekonomija.rs/vesti-iz-zemlje/firma-bivseg-jemca-sns-a-dobila-posao-za-124-miliona-dinara; označenih ugovora kod naručioca: 2; od toga u zajedničkoj ponudi: 2 (vrednost cele ponude 247,405,323 RSD, nije pripisana firmi); period: 2021-07-06 do 2022-12-28; najveći: 1106-04/5 (2021-07-06, 156,522,351 RSD)",
+   "contracts": 2,
+   "source": {
+    "kind": "integrity_watch",
+    "title": "Integrity Watch Srbija – JADRAN DOO BEOGRAD / VAZDUHOPLOVNA AKADEMIJA",
+    "url": "https://integritywatchserbia.org.rs/companies.php?l=sr",
+    "retrievedAt": "2026-10-30T13:47:26.488Z",
+    "official": false
+   }
+  },
+  {
+   "supplierName": "JADRAN DOO BEOGRAD",
+   "supplierPib": "100206540",
+   "supplierMb": "07032358",
+   "contractingAuthority": "REPUBLIČKA DIREKCIJA ZA IMOVINU REPUBLIKE SRBIJE",
+   "linkType": "povezanost sa političkim subjektom",
+   "detail": "Integrity Watch označava ponuđača kao kompaniju povezanu sa političkim subjektom; izvor povezivanja: https://novaekonomija.rs/vesti-iz-zemlje/firma-bivseg-jemca-sns-a-dobila-posao-za-124-miliona-dinara; označenih ugovora kod naručioca: 1; od toga u zajedničkoj ponudi: 1 (vrednost cele ponude 229,750,000 RSD, nije pripisana firmi); period: 2022-09-09 do 2022-09-09; najveći: 404-212-1 (2022-09-09, 229,750,000 RSD)",
+   "contracts": 1,
+   "source": {
+    "kind": "integrity_watch",
+    "title": "Integrity Watch Srbija – JADRAN DOO BEOGRAD / REPUBLIČKA DIREKCIJA ZA IMOVINU REPUBLIKE SRBIJE",
+    "url": "https://integritywatchserbia.org.rs/companies.php?l=sr",
+    "retrievedAt": "2026-10-30T13:47:26.488Z",
+    "official": false
+   }
+  },
+  {
+   "supplierName": "JADRAN DOO BEOGRAD",
+   "supplierPib": "100206540",
+   "supplierMb": "07032358",
+   "contractingAuthority": "Opštinska uprava opštine Vrbas",
+   "linkType": "povezanost sa političkim subjektom",
+   "detail": "Integrity Watch označava ponuđača kao kompaniju povezanu sa političkim subjektom; izvor povezivanja: https://novaekonomija.rs/vesti-iz-zemlje/firma-bivseg-jemca-sns-a-dobila-posao-za-124-miliona-dinara; označenih ugovora kod naručioca: 1; od toga u zajedničkoj ponudi: 1 (vrednost cele ponude 187,517,538 RSD, nije pripisana firmi); period: 2025-03-13 do 2025-03-13; najveći: 03-3-71/2025-II-102 (2025-03-13, 187,517,538 RSD)",
+   "contracts": 1,
+   "source": {
+    "kind": "integrity_watch",
+    "title": "Integrity Watch Srbija – JADRAN DOO BEOGRAD / Opštinska uprava opštine Vrbas",
+    "url": "https://integritywatchserbia.org.rs/companies.php?l=sr",
+    "retrievedAt": "2026-10-30T13:47:26.488Z",
+    "official": false
+   }
+  },
+  {
+   "supplierName": "JADRAN DOO BEOGRAD",
+   "supplierPib": "100206540",
+   "supplierMb": "07032358",
+   "contractingAuthority": "JAVNO PREDUZEĆE ZA UPRAVLjANjE JAVNIM PUTEVIMA GRADA BEOGRADA PUTEVI BEOGRADA BEOGRAD-PALILULA",
+   "linkType": "povezanost sa političkim subjektom",
+   "detail": "Integrity Watch označava ponuđača kao kompaniju povezanu sa političkim subjektom; izvor povezivanja: https://novaekonomija.rs/vesti-iz-zemlje/firma-bivseg-jemca-sns-a-dobila-posao-za-124-miliona-dinara; označenih ugovora kod naručioca: 5; od toga u zajedničkoj ponudi: 5 (vrednost cele ponude 160,964,346 RSD, nije pripisana firmi); period: 2022-10-31 do 2026-02-24; najveći: I 41-39/24 (2024-04-23, 59,800,577 RSD)",
+   "contracts": 5,
+   "source": {
+    "kind": "integrity_watch",
+    "title": "Integrity Watch Srbija – JADRAN DOO BEOGRAD / JAVNO PREDUZEĆE ZA UPRAVLjANjE JAVNIM PUTEVIMA GRADA BEOGRADA PUTEVI BEOGRADA BEOGRAD-PALILULA",
+    "url": "https://integritywatchserbia.org.rs/companies.php?l=sr",
+    "retrievedAt": "2026-10-30T13:47:26.488Z",
+    "official": false
+   }
+  },
+  {
+   "supplierName": "JADRAN DOO BEOGRAD",
+   "supplierPib": "100206540",
+   "supplierMb": "07032358",
+   "contractingAuthority": "OPŠTINSKA UPRAVA OPŠTINE IRIG",
+   "linkType": "povezanost sa političkim subjektom",
+   "detail": "Integrity Watch označava ponuđača kao kompaniju povezanu sa političkim subjektom; izvor povezivanja: https://novaekonomija.rs/vesti-iz-zemlje/firma-bivseg-jemca-sns-a-dobila-posao-za-124-miliona-dinara; označenih ugovora kod naručioca: 1; period: 2024-05-21 do 2024-05-21; najveći: 001-404-7/024-2 (2024-05-21, 159,967,284 RSD)",
+   "contracts": 1,
+   "valueRsd": 159967283.68,
+   "source": {
+    "kind": "integrity_watch",
+    "title": "Integrity Watch Srbija – JADRAN DOO BEOGRAD / OPŠTINSKA UPRAVA OPŠTINE IRIG",
+    "url": "https://integritywatchserbia.org.rs/companies.php?l=sr",
+    "retrievedAt": "2026-10-30T13:47:26.488Z",
+    "official": false
+   }
+  },
+  {
+   "supplierName": "JADRAN DOO BEOGRAD",
+   "supplierPib": "100206540",
+   "supplierMb": "07032358",
+   "contractingAuthority": "JAVNO PREDUZEĆE ZA RAZVOJ GRADSKE OPŠTINE GROCKA GROCKA",
+   "linkType": "povezanost sa političkim subjektom",
+   "detail": "Integrity Watch označava ponuđača kao kompaniju povezanu sa političkim subjektom; izvor povezivanja: https://novaekonomija.rs/vesti-iz-zemlje/firma-bivseg-jemca-sns-a-dobila-posao-za-124-miliona-dinara; označenih ugovora kod naručioca: 2; od toga u zajedničkoj ponudi: 1 (vrednost cele ponude 83,293,500 RSD, nije pripisana firmi); period: 2021-09-27 do 2023-10-06; najveći: 314 (2023-10-06, 83,293,500 RSD)",
+   "contracts": 2,
+   "valueRsd": 74321039.9,
+   "source": {
+    "kind": "integrity_watch",
+    "title": "Integrity Watch Srbija – JADRAN DOO BEOGRAD / JAVNO PREDUZEĆE ZA RAZVOJ GRADSKE OPŠTINE GROCKA GROCKA",
+    "url": "https://integritywatchserbia.org.rs/companies.php?l=sr",
+    "retrievedAt": "2026-10-30T13:47:26.488Z",
+    "official": false
+   }
+  },
+  {
+   "supplierName": "JADRAN DOO BEOGRAD",
+   "supplierPib": "100206540",
+   "supplierMb": "07032358",
+   "contractingAuthority": "GRADSKA UPRAVA ZA IMOVINU I IMOVINSKO - PRAVNE POSLOVE",
+   "linkType": "povezanost sa političkim subjektom",
+   "detail": "Integrity Watch označava ponuđača kao kompaniju povezanu sa političkim subjektom; izvor povezivanja: https://novaekonomija.rs/vesti-iz-zemlje/firma-bivseg-jemca-sns-a-dobila-posao-za-124-miliona-dinara; označenih ugovora kod naručioca: 2; od toga u zajedničkoj ponudi: 2 (vrednost cele ponude 151,536,065 RSD, nije pripisana firmi); period: 2023-07-19 do 2025-12-24; najveći: XXV-405-6/25-120 (2025-12-24, 123,095,985 RSD)",
+   "contracts": 2,
+   "source": {
+    "kind": "integrity_watch",
+    "title": "Integrity Watch Srbija – JADRAN DOO BEOGRAD / GRADSKA UPRAVA ZA IMOVINU I IMOVINSKO - PRAVNE POSLOVE",
+    "url": "https://integritywatchserbia.org.rs/companies.php?l=sr",
+    "retrievedAt": "2026-10-30T13:47:26.488Z",
+    "official": false
+   }
+  },
+  {
+   "supplierName": "JADRAN DOO BEOGRAD",
+   "supplierPib": "100206540",
+   "supplierMb": "07032358",
+   "contractingAuthority": "REPUBLIČKI ZAVOD ZA ZAŠTITU SPOMENIKA KULTURE",
+   "linkType": "povezanost sa političkim subjektom",
+   "detail": "Integrity Watch označava ponuđača kao kompaniju povezanu sa političkim subjektom; izvor povezivanja: https://novaekonomija.rs/vesti-iz-zemlje/firma-bivseg-jemca-sns-a-dobila-posao-za-124-miliona-dinara; označenih ugovora kod naručioca: 2; od toga u zajedničkoj ponudi: 2 (vrednost cele ponude 134,597,054 RSD, nije pripisana firmi); period: 2021-06-07 do 2022-11-16; najveći: 30-35/2022-4 (2022-11-16, 117,952,244 RSD)",
+   "contracts": 2,
+   "source": {
+    "kind": "integrity_watch",
+    "title": "Integrity Watch Srbija – JADRAN DOO BEOGRAD / REPUBLIČKI ZAVOD ZA ZAŠTITU SPOMENIKA KULTURE",
+    "url": "https://integritywatchserbia.org.rs/companies.php?l=sr",
+    "retrievedAt": "2026-10-30T13:47:26.488Z",
+    "official": false
+   }
+  },
+  {
+   "supplierName": "JADRAN DOO BEOGRAD",
+   "supplierPib": "100206540",
+   "supplierMb": "07032358",
+   "contractingAuthority": "DIREKCIJA ZA GRAĐEVINSKO ZEMLJIŠTE I IZGRADNJU BEOGRADA JP BEOGRAD (VRAČAR)",
+   "linkType": "povezanost sa političkim subjektom",
+   "detail": "Integrity Watch označava ponuđača kao kompaniju povezanu sa političkim subjektom; izvor povezivanja: https://novaekonomija.rs/vesti-iz-zemlje/firma-bivseg-jemca-sns-a-dobila-posao-za-124-miliona-dinara; označenih ugovora kod naručioca: 1; od toga u zajedničkoj ponudi: 1 (vrednost cele ponude 122,119,221 RSD, nije pripisana firmi); period: 2024-10-01 do 2024-10-01; najveći: 43867/2-04 (2024-10-01, 122,119,221 RSD)",
+   "contracts": 1,
+   "source": {
+    "kind": "integrity_watch",
+    "title": "Integrity Watch Srbija – JADRAN DOO BEOGRAD / DIREKCIJA ZA GRAĐEVINSKO ZEMLJIŠTE I IZGRADNJU BEOGRADA JP BEOGRAD (VRAČAR)",
+    "url": "https://integritywatchserbia.org.rs/companies.php?l=sr",
+    "retrievedAt": "2026-10-30T13:47:26.488Z",
+    "official": false
+   }
+  },
+  {
+   "supplierName": "JADRAN DOO BEOGRAD",
+   "supplierPib": "100206540",
+   "supplierMb": "07032358",
+   "contractingAuthority": "ZAVOD ZA SPORT I MEDICINU SPORTA REPUBLIKE SRBIJE",
+   "linkType": "povezanost sa političkim subjektom",
+   "detail": "Integrity Watch označava ponuđača kao kompaniju povezanu sa političkim subjektom; izvor povezivanja: https://novaekonomija.rs/vesti-iz-zemlje/firma-bivseg-jemca-sns-a-dobila-posao-za-124-miliona-dinara; označenih ugovora kod naručioca: 6; od toga u zajedničkoj ponudi: 1 (vrednost cele ponude 17,044,865 RSD, nije pripisana firmi); period: 2021-05-31 do 2023-09-13; najveći: 2182 (2023-09-13, 54,698,570 RSD)",
+   "contracts": 6,
+   "valueRsd": 99882651.07,
+   "source": {
+    "kind": "integrity_watch",
+    "title": "Integrity Watch Srbija – JADRAN DOO BEOGRAD / ZAVOD ZA SPORT I MEDICINU SPORTA REPUBLIKE SRBIJE",
+    "url": "https://integritywatchserbia.org.rs/companies.php?l=sr",
+    "retrievedAt": "2026-10-30T13:47:26.488Z",
+    "official": false
+   }
+  },
+  {
+   "supplierName": "JADRAN DOO BEOGRAD",
+   "supplierPib": "100206540",
+   "supplierMb": "07032358",
+   "contractingAuthority": "GRADSKA UPRAVA ZA GRAĐEVINSKO ZEMLJIŠTE I INVESTICIJE",
+   "linkType": "povezanost sa političkim subjektom",
+   "detail": "Integrity Watch označava ponuđača kao kompaniju povezanu sa političkim subjektom; izvor povezivanja: https://novaekonomija.rs/vesti-iz-zemlje/firma-bivseg-jemca-sns-a-dobila-posao-za-124-miliona-dinara; označenih ugovora kod naručioca: 1; od toga u zajedničkoj ponudi: 1 (vrednost cele ponude 99,987,304 RSD, nije pripisana firmi); period: 2025-08-05 do 2025-08-05; najveći: XXIV-405-5/25-30 (2025-08-05, 99,987,304 RSD)",
+   "contracts": 1,
+   "source": {
+    "kind": "integrity_watch",
+    "title": "Integrity Watch Srbija – JADRAN DOO BEOGRAD / GRADSKA UPRAVA ZA GRAĐEVINSKO ZEMLJIŠTE I INVESTICIJE",
+    "url": "https://integritywatchserbia.org.rs/companies.php?l=sr",
+    "retrievedAt": "2026-10-30T13:47:26.488Z",
+    "official": false
+   }
+  },
+  {
+   "supplierName": "JADRAN DOO BEOGRAD",
+   "supplierPib": "100206540",
+   "supplierMb": "07032358",
+   "contractingAuthority": "Ministarstvo odbrane Republike Srbije",
+   "linkType": "povezanost sa političkim subjektom",
+   "detail": "Integrity Watch označava ponuđača kao kompaniju povezanu sa političkim subjektom; izvor povezivanja: https://novaekonomija.rs/vesti-iz-zemlje/firma-bivseg-jemca-sns-a-dobila-posao-za-124-miliona-dinara; označenih ugovora kod naručioca: 13; od toga u zajedničkoj ponudi: 12 (vrednost cele ponude 91,636,550 RSD, nije pripisana firmi); period: 2021-05-10 do 2025-12-17; najveći: 952-0058-568-42/2024 (2025-09-23, 22,966,000 RSD)",
+   "contracts": 13,
+   "valueRsd": 597600,
+   "source": {
+    "kind": "integrity_watch",
+    "title": "Integrity Watch Srbija – JADRAN DOO BEOGRAD / Ministarstvo odbrane Republike Srbije",
+    "url": "https://integritywatchserbia.org.rs/companies.php?l=sr",
+    "retrievedAt": "2026-10-30T13:47:26.488Z",
+    "official": false
+   }
+  },
+  {
+   "supplierName": "JADRAN DOO BEOGRAD",
+   "supplierPib": "100206540",
+   "supplierMb": "07032358",
+   "contractingAuthority": "POKRAJINSKI ZAVOD ZA ZAŠTITU SPOMENIKA KULTURE",
+   "linkType": "povezanost sa političkim subjektom",
+   "detail": "Integrity Watch označava ponuđača kao kompaniju povezanu sa političkim subjektom; izvor povezivanja: https://novaekonomija.rs/vesti-iz-zemlje/firma-bivseg-jemca-sns-a-dobila-posao-za-124-miliona-dinara; označenih ugovora kod naručioca: 3; od toga u zajedničkoj ponudi: 3 (vrednost cele ponude 86,615,083 RSD, nije pripisana firmi); period: 2023-11-28 do 2025-08-18; najveći: 01-25-XII/30-2025 (2025-08-18, 42,215,677 RSD)",
+   "contracts": 3,
+   "source": {
+    "kind": "integrity_watch",
+    "title": "Integrity Watch Srbija – JADRAN DOO BEOGRAD / POKRAJINSKI ZAVOD ZA ZAŠTITU SPOMENIKA KULTURE",
+    "url": "https://integritywatchserbia.org.rs/companies.php?l=sr",
+    "retrievedAt": "2026-10-30T13:47:26.488Z",
+    "official": false
+   }
+  },
+  {
+   "supplierName": "JADRAN DOO BEOGRAD",
+   "supplierPib": "100206540",
+   "supplierMb": "07032358",
+   "contractingAuthority": "DOM ZDRAVLJA TITEL",
+   "linkType": "povezanost sa političkim subjektom",
+   "detail": "Integrity Watch označava ponuđača kao kompaniju povezanu sa političkim subjektom; izvor povezivanja: https://novaekonomija.rs/vesti-iz-zemlje/firma-bivseg-jemca-sns-a-dobila-posao-za-124-miliona-dinara; označenih ugovora kod naručioca: 1; od toga u zajedničkoj ponudi: 1 (vrednost cele ponude 83,087,884 RSD, nije pripisana firmi); period: 2023-09-29 do 2023-09-29; najveći: 629 (2023-09-29, 83,087,884 RSD)",
+   "contracts": 1,
+   "source": {
+    "kind": "integrity_watch",
+    "title": "Integrity Watch Srbija – JADRAN DOO BEOGRAD / DOM ZDRAVLJA TITEL",
+    "url": "https://integritywatchserbia.org.rs/companies.php?l=sr",
+    "retrievedAt": "2026-10-30T13:47:26.488Z",
+    "official": false
+   }
+  },
+  {
+   "supplierName": "JADRAN DOO BEOGRAD",
+   "supplierPib": "100206540",
+   "supplierMb": "07032358",
+   "contractingAuthority": "SMATSA DOO",
+   "linkType": "povezanost sa političkim subjektom",
+   "detail": "Integrity Watch označava ponuđača kao kompaniju povezanu sa političkim subjektom; izvor povezivanja: https://novaekonomija.rs/vesti-iz-zemlje/firma-bivseg-jemca-sns-a-dobila-posao-za-124-miliona-dinara; označenih ugovora kod naručioca: 2; od toga u zajedničkoj ponudi: 1 (vrednost cele ponude 70,790,888 RSD, nije pripisana firmi); period: 2022-11-14 do 2025-12-01; najveći: NAB.00-33/189 od 09.11.2022. godine (2022-11-14, 70,790,888 RSD)",
+   "contracts": 2,
+   "valueRsd": 6476100,
+   "source": {
+    "kind": "integrity_watch",
+    "title": "Integrity Watch Srbija – JADRAN DOO BEOGRAD / SMATSA DOO",
+    "url": "https://integritywatchserbia.org.rs/companies.php?l=sr",
+    "retrievedAt": "2026-10-30T13:47:26.488Z",
+    "official": false
+   }
+  },
+  {
+   "supplierName": "JADRAN DOO BEOGRAD",
+   "supplierPib": "100206540",
+   "supplierMb": "07032358",
+   "contractingAuthority": "Gradska uprava Pirot",
+   "linkType": "povezanost sa političkim subjektom",
+   "detail": "Integrity Watch označava ponuđača kao kompaniju povezanu sa političkim subjektom; izvor povezivanja: https://novaekonomija.rs/vesti-iz-zemlje/firma-bivseg-jemca-sns-a-dobila-posao-za-124-miliona-dinara; označenih ugovora kod naručioca: 1; od toga u zajedničkoj ponudi: 1 (vrednost cele ponude 69,988,540 RSD, nije pripisana firmi); period: 2025-04-01 do 2025-04-01; najveći: 003603110 2024 06550 004 017 405 029 18 018  (2025-04-01, 69,988,540 RSD)",
+   "contracts": 1,
+   "source": {
+    "kind": "integrity_watch",
+    "title": "Integrity Watch Srbija – JADRAN DOO BEOGRAD / Gradska uprava Pirot",
+    "url": "https://integritywatchserbia.org.rs/companies.php?l=sr",
+    "retrievedAt": "2026-10-30T13:47:26.488Z",
+    "official": false
+   }
+  },
+  {
+   "supplierName": "JADRAN DOO BEOGRAD",
+   "supplierPib": "100206540",
+   "supplierMb": "07032358",
+   "contractingAuthority": "Grad Beograd, Gradska opština Barajevo",
+   "linkType": "povezanost sa političkim subjektom",
+   "detail": "Integrity Watch označava ponuđača kao kompaniju povezanu sa političkim subjektom; izvor povezivanja: https://novaekonomija.rs/vesti-iz-zemlje/firma-bivseg-jemca-sns-a-dobila-posao-za-124-miliona-dinara; označenih ugovora kod naručioca: 2; od toga u zajedničkoj ponudi: 1 (vrednost cele ponude 33,321,056 RSD, nije pripisana firmi); period: 2021-06-25 do 2022-03-23; najveći: VIII-02-404-42-6/2022 (115/22) (2022-03-23, 33,321,056 RSD)",
+   "contracts": 2,
+   "valueRsd": 27751006,
+   "source": {
+    "kind": "integrity_watch",
+    "title": "Integrity Watch Srbija – JADRAN DOO BEOGRAD / Grad Beograd, Gradska opština Barajevo",
+    "url": "https://integritywatchserbia.org.rs/companies.php?l=sr",
+    "retrievedAt": "2026-10-30T13:47:26.488Z",
+    "official": false
+   }
+  },
+  {
+   "supplierName": "JADRAN DOO BEOGRAD",
+   "supplierPib": "100206540",
+   "supplierMb": "07032358",
+   "contractingAuthority": "Infrastruktura železnice Srbije",
+   "linkType": "povezanost sa političkim subjektom",
+   "detail": "Integrity Watch označava ponuđača kao kompaniju povezanu sa političkim subjektom; izvor povezivanja: https://novaekonomija.rs/vesti-iz-zemlje/firma-bivseg-jemca-sns-a-dobila-posao-za-124-miliona-dinara; označenih ugovora kod naručioca: 2; od toga u zajedničkoj ponudi: 1 (vrednost cele ponude 52,156,185 RSD, nije pripisana firmi); period: 2024-03-29 do 2025-03-03; najveći: 1/2024-1/211 (2024-03-29, 52,156,185 RSD)",
+   "contracts": 2,
+   "valueRsd": 5554800,
+   "source": {
+    "kind": "integrity_watch",
+    "title": "Integrity Watch Srbija – JADRAN DOO BEOGRAD / Infrastruktura železnice Srbije",
+    "url": "https://integritywatchserbia.org.rs/companies.php?l=sr",
+    "retrievedAt": "2026-10-30T13:47:26.488Z",
+    "official": false
+   }
+  },
+  {
+   "supplierName": "JADRAN DOO BEOGRAD",
+   "supplierPib": "100206540",
+   "supplierMb": "07032358",
+   "contractingAuthority": "Gradska opština Zemun",
+   "linkType": "povezanost sa političkim subjektom",
+   "detail": "Integrity Watch označava ponuđača kao kompaniju povezanu sa političkim subjektom; izvor povezivanja: https://novaekonomija.rs/vesti-iz-zemlje/firma-bivseg-jemca-sns-a-dobila-posao-za-124-miliona-dinara; označenih ugovora kod naručioca: 1; period: 2022-07-29 do 2022-07-29; najveći: 400-270/2022-VII (2022-07-29, 49,692,382 RSD)",
+   "contracts": 1,
+   "valueRsd": 49692381.63,
+   "source": {
+    "kind": "integrity_watch",
+    "title": "Integrity Watch Srbija – JADRAN DOO BEOGRAD / Gradska opština Zemun",
+    "url": "https://integritywatchserbia.org.rs/companies.php?l=sr",
+    "retrievedAt": "2026-10-30T13:47:26.488Z",
+    "official": false
+   }
+  },
+  {
+   "supplierName": "JADRAN DOO BEOGRAD",
+   "supplierPib": "100206540",
+   "supplierMb": "07032358",
+   "contractingAuthority": "OKRUŽNI ZATVOR U BEOGRADU",
+   "linkType": "povezanost sa političkim subjektom",
+   "detail": "Integrity Watch označava ponuđača kao kompaniju povezanu sa političkim subjektom; izvor povezivanja: https://novaekonomija.rs/vesti-iz-zemlje/firma-bivseg-jemca-sns-a-dobila-posao-za-124-miliona-dinara; označenih ugovora kod naručioca: 1; od toga u zajedničkoj ponudi: 1 (vrednost cele ponude 45,279,637 RSD, nije pripisana firmi); period: 2023-06-28 do 2023-06-28; najveći: 404-14/23-04 (2023-06-28, 45,279,637 RSD)",
+   "contracts": 1,
+   "source": {
+    "kind": "integrity_watch",
+    "title": "Integrity Watch Srbija – JADRAN DOO BEOGRAD / OKRUŽNI ZATVOR U BEOGRADU",
+    "url": "https://integritywatchserbia.org.rs/companies.php?l=sr",
+    "retrievedAt": "2026-10-30T13:47:26.488Z",
+    "official": false
+   }
+  },
+  {
+   "supplierName": "JADRAN DOO BEOGRAD",
+   "supplierPib": "100206540",
+   "supplierMb": "07032358",
+   "contractingAuthority": "JAVNO PREDUZEĆE ZA OBAVLJANJE DELATNOSTI OD OPŠTEG INTERESA ZA GRAD BEOGRAD \"BEOGRADSKA TVRĐAVA\" BEOGRAD",
+   "linkType": "povezanost sa političkim subjektom",
+   "detail": "Integrity Watch označava ponuđača kao kompaniju povezanu sa političkim subjektom; izvor povezivanja: https://novaekonomija.rs/vesti-iz-zemlje/firma-bivseg-jemca-sns-a-dobila-posao-za-124-miliona-dinara; označenih ugovora kod naručioca: 1; od toga u zajedničkoj ponudi: 1 (vrednost cele ponude 43,498,000 RSD, nije pripisana firmi); period: 2021-12-02 do 2021-12-02; najveći: 4558-1/21 (2021-12-02, 43,498,000 RSD)",
+   "contracts": 1,
+   "source": {
+    "kind": "integrity_watch",
+    "title": "Integrity Watch Srbija – JADRAN DOO BEOGRAD / JAVNO PREDUZEĆE ZA OBAVLJANJE DELATNOSTI OD OPŠTEG INTERESA ZA GRAD BEOGRAD \"BEOGRADSKA TVRĐAVA\" BEOGRAD",
+    "url": "https://integritywatchserbia.org.rs/companies.php?l=sr",
+    "retrievedAt": "2026-10-30T13:47:26.488Z",
+    "official": false
+   }
+  },
+  {
+   "supplierName": "JADRAN DOO BEOGRAD",
+   "supplierPib": "100206540",
+   "supplierMb": "07032358",
+   "contractingAuthority": "JKP JAVNO OSVETLJENJE BEOGRAD",
+   "linkType": "povezanost sa političkim subjektom",
+   "detail": "Integrity Watch označava ponuđača kao kompaniju povezanu sa političkim subjektom; izvor povezivanja: https://novaekonomija.rs/vesti-iz-zemlje/firma-bivseg-jemca-sns-a-dobila-posao-za-124-miliona-dinara; označenih ugovora kod naručioca: 1; od toga u zajedničkoj ponudi: 1 (vrednost cele ponude 40,000,000 RSD, nije pripisana firmi); period: 2022-12-08 do 2022-12-08; najveći: 7214 (2022-12-08, 40,000,000 RSD)",
+   "contracts": 1,
+   "source": {
+    "kind": "integrity_watch",
+    "title": "Integrity Watch Srbija – JADRAN DOO BEOGRAD / JKP JAVNO OSVETLJENJE BEOGRAD",
+    "url": "https://integritywatchserbia.org.rs/companies.php?l=sr",
+    "retrievedAt": "2026-10-30T13:47:26.488Z",
+    "official": false
+   }
+  },
+  {
+   "supplierName": "JADRAN DOO BEOGRAD",
+   "supplierPib": "100206540",
+   "supplierMb": "07032358",
+   "contractingAuthority": "UNIVERZITET U NOVOM SADU - FAKULTET TEHNIČKIH NAUKA",
+   "linkType": "povezanost sa političkim subjektom",
+   "detail": "Integrity Watch označava ponuđača kao kompaniju povezanu sa političkim subjektom; izvor povezivanja: https://novaekonomija.rs/vesti-iz-zemlje/firma-bivseg-jemca-sns-a-dobila-posao-za-124-miliona-dinara; označenih ugovora kod naručioca: 1; od toga u zajedničkoj ponudi: 1 (vrednost cele ponude 39,748,410 RSD, nije pripisana firmi); period: 2025-06-10 do 2025-06-10; najveći: 01-171/2025-11-11 (2025-06-10, 39,748,410 RSD)",
+   "contracts": 1,
+   "source": {
+    "kind": "integrity_watch",
+    "title": "Integrity Watch Srbija – JADRAN DOO BEOGRAD / UNIVERZITET U NOVOM SADU - FAKULTET TEHNIČKIH NAUKA",
+    "url": "https://integritywatchserbia.org.rs/companies.php?l=sr",
+    "retrievedAt": "2026-10-30T13:47:26.488Z",
+    "official": false
+   }
+  },
+  {
+   "supplierName": "JADRAN DOO BEOGRAD",
+   "supplierPib": "100206540",
+   "supplierMb": "07032358",
+   "contractingAuthority": "GRAD BEOGRAD-GU SEKRETARIJAT ZA ZAŠTITU ŽIVOTNE SREDINE",
+   "linkType": "povezanost sa političkim subjektom",
+   "detail": "Integrity Watch označava ponuđača kao kompaniju povezanu sa političkim subjektom; izvor povezivanja: https://novaekonomija.rs/vesti-iz-zemlje/firma-bivseg-jemca-sns-a-dobila-posao-za-124-miliona-dinara; označenih ugovora kod naručioca: 1; od toga u zajedničkoj ponudi: 1 (vrednost cele ponude 39,594,855 RSD, nije pripisana firmi); period: 2022-09-27 do 2022-09-27; najveći: V - 01-401.1-133 (2022-09-27, 39,594,855 RSD)",
+   "contracts": 1,
+   "source": {
+    "kind": "integrity_watch",
+    "title": "Integrity Watch Srbija – JADRAN DOO BEOGRAD / GRAD BEOGRAD-GU SEKRETARIJAT ZA ZAŠTITU ŽIVOTNE SREDINE",
+    "url": "https://integritywatchserbia.org.rs/companies.php?l=sr",
+    "retrievedAt": "2026-10-30T13:47:26.488Z",
+    "official": false
+   }
+  },
+  {
+   "supplierName": "JADRAN DOO BEOGRAD",
+   "supplierPib": "100206540",
+   "supplierMb": "07032358",
+   "contractingAuthority": "TRANSPORTGAS SRBIJA doo NOVI SAD",
+   "linkType": "povezanost sa političkim subjektom",
+   "detail": "Integrity Watch označava ponuđača kao kompaniju povezanu sa političkim subjektom; izvor povezivanja: https://novaekonomija.rs/vesti-iz-zemlje/firma-bivseg-jemca-sns-a-dobila-posao-za-124-miliona-dinara; označenih ugovora kod naručioca: 3; period: 2021-07-27 do 2023-12-18; najveći: 01-01-1/384 (2023-12-18, 19,036,500 RSD)",
+   "contracts": 3,
+   "valueRsd": 39227160,
+   "source": {
+    "kind": "integrity_watch",
+    "title": "Integrity Watch Srbija – JADRAN DOO BEOGRAD / TRANSPORTGAS SRBIJA doo NOVI SAD",
+    "url": "https://integritywatchserbia.org.rs/companies.php?l=sr",
+    "retrievedAt": "2026-10-30T13:47:26.488Z",
+    "official": false
+   }
+  },
+  {
+   "supplierName": "JADRAN DOO BEOGRAD",
+   "supplierPib": "100206540",
+   "supplierMb": "07032358",
+   "contractingAuthority": "KRIMINALISTIČKO-POLICIJSKI UNIVERZITET",
+   "linkType": "povezanost sa političkim subjektom",
+   "detail": "Integrity Watch označava ponuđača kao kompaniju povezanu sa političkim subjektom; izvor povezivanja: https://novaekonomija.rs/vesti-iz-zemlje/firma-bivseg-jemca-sns-a-dobila-posao-za-124-miliona-dinara; označenih ugovora kod naručioca: 2; period: 2025-03-06 do 2025-03-06; najveći: 57/12-33-2024-2025 (2025-03-06, 22,380,752 RSD)",
+   "contracts": 2,
+   "valueRsd": 35407527.56,
+   "source": {
+    "kind": "integrity_watch",
+    "title": "Integrity Watch Srbija – JADRAN DOO BEOGRAD / KRIMINALISTIČKO-POLICIJSKI UNIVERZITET",
+    "url": "https://integritywatchserbia.org.rs/companies.php?l=sr",
+    "retrievedAt": "2026-10-30T13:47:26.488Z",
+    "official": false
+   }
+  },
+  {
+   "supplierName": "JADRAN DOO BEOGRAD",
+   "supplierPib": "100206540",
+   "supplierMb": "07032358",
+   "contractingAuthority": "JAVNO KOMUNALNO PREDUZEĆE \"BEOGRADSKI VODOVOD I KANALIZACIJA\"",
+   "linkType": "povezanost sa političkim subjektom",
+   "detail": "Integrity Watch označava ponuđača kao kompaniju povezanu sa političkim subjektom; izvor povezivanja: https://novaekonomija.rs/vesti-iz-zemlje/firma-bivseg-jemca-sns-a-dobila-posao-za-124-miliona-dinara; označenih ugovora kod naručioca: 2; od toga u zajedničkoj ponudi: 1 (vrednost cele ponude 30,965,218 RSD, nije pripisana firmi); period: 2021-02-17 do 2023-05-30; najveći: 29704 (2023-05-30, 30,965,218 RSD)",
+   "contracts": 2,
+   "valueRsd": 20878.77,
+   "source": {
+    "kind": "integrity_watch",
+    "title": "Integrity Watch Srbija – JADRAN DOO BEOGRAD / JAVNO KOMUNALNO PREDUZEĆE \"BEOGRADSKI VODOVOD I KANALIZACIJA\"",
+    "url": "https://integritywatchserbia.org.rs/companies.php?l=sr",
+    "retrievedAt": "2026-10-30T13:47:26.488Z",
+    "official": false
+   }
+  },
+  {
+   "supplierName": "JADRAN DOO BEOGRAD",
+   "supplierPib": "100206540",
+   "supplierMb": "07032358",
+   "contractingAuthority": "JP VODOVOD I KANALIZACIJA LOZNICA",
+   "linkType": "povezanost sa političkim subjektom",
+   "detail": "Integrity Watch označava ponuđača kao kompaniju povezanu sa političkim subjektom; izvor povezivanja: https://novaekonomija.rs/vesti-iz-zemlje/firma-bivseg-jemca-sns-a-dobila-posao-za-124-miliona-dinara; označenih ugovora kod naručioca: 1; od toga u zajedničkoj ponudi: 1 (vrednost cele ponude 29,800,079 RSD, nije pripisana firmi); period: 2026-01-16 do 2026-01-16; najveći: 42 (2026-01-16, 29,800,079 RSD)",
+   "contracts": 1,
+   "source": {
+    "kind": "integrity_watch",
+    "title": "Integrity Watch Srbija – JADRAN DOO BEOGRAD / JP VODOVOD I KANALIZACIJA LOZNICA",
+    "url": "https://integritywatchserbia.org.rs/companies.php?l=sr",
+    "retrievedAt": "2026-10-30T13:47:26.488Z",
+    "official": false
+   }
+  },
+  {
+   "supplierName": "JADRAN DOO BEOGRAD",
+   "supplierPib": "100206540",
+   "supplierMb": "07032358",
+   "contractingAuthority": "TRANSNAFTA AD Pančevo",
+   "linkType": "povezanost sa političkim subjektom",
+   "detail": "Integrity Watch označava ponuđača kao kompaniju povezanu sa političkim subjektom; izvor povezivanja: https://novaekonomija.rs/vesti-iz-zemlje/firma-bivseg-jemca-sns-a-dobila-posao-za-124-miliona-dinara; označenih ugovora kod naručioca: 3; od toga u zajedničkoj ponudi: 1 (vrednost cele ponude 11,176,000 RSD, nije pripisana firmi); period: 2022-09-14 do 2024-07-04; najveći: 7484/1-2024 (2024-07-04, 11,176,000 RSD)",
+   "contracts": 3,
+   "valueRsd": 13010700,
+   "source": {
+    "kind": "integrity_watch",
+    "title": "Integrity Watch Srbija – JADRAN DOO BEOGRAD / TRANSNAFTA AD Pančevo",
+    "url": "https://integritywatchserbia.org.rs/companies.php?l=sr",
+    "retrievedAt": "2026-10-30T13:47:26.488Z",
+    "official": false
+   }
+  },
+  {
+   "supplierName": "JADRAN DOO BEOGRAD",
+   "supplierPib": "100206540",
+   "supplierMb": "07032358",
+   "contractingAuthority": "KOMESARIJAT ZA IZBEGLICE I MIGRACIJE",
+   "linkType": "povezanost sa političkim subjektom",
+   "detail": "Integrity Watch označava ponuđača kao kompaniju povezanu sa političkim subjektom; izvor povezivanja: https://novaekonomija.rs/vesti-iz-zemlje/firma-bivseg-jemca-sns-a-dobila-posao-za-124-miliona-dinara; označenih ugovora kod naručioca: 1; od toga u zajedničkoj ponudi: 1 (vrednost cele ponude 19,800,000 RSD, nije pripisana firmi); period: 2021-12-02 do 2021-12-02; najveći: 404-87/10 (2021-12-02, 19,800,000 RSD)",
+   "contracts": 1,
+   "source": {
+    "kind": "integrity_watch",
+    "title": "Integrity Watch Srbija – JADRAN DOO BEOGRAD / KOMESARIJAT ZA IZBEGLICE I MIGRACIJE",
+    "url": "https://integritywatchserbia.org.rs/companies.php?l=sr",
+    "retrievedAt": "2026-10-30T13:47:26.488Z",
+    "official": false
+   }
+  },
+  {
+   "supplierName": "JADRAN DOO BEOGRAD",
+   "supplierPib": "100206540",
+   "supplierMb": "07032358",
+   "contractingAuthority": "MINISTARSTVO ZAŠTITE ŽIVOTNE SREDINE - AGENCIJA ZA ZAŠTITU ŽIVOTNE SREDINE",
+   "linkType": "povezanost sa političkim subjektom",
+   "detail": "Integrity Watch označava ponuđača kao kompaniju povezanu sa političkim subjektom; izvor povezivanja: https://novaekonomija.rs/vesti-iz-zemlje/firma-bivseg-jemca-sns-a-dobila-posao-za-124-miliona-dinara; označenih ugovora kod naručioca: 2; od toga u zajedničkoj ponudi: 2 (vrednost cele ponude 17,775,714 RSD, nije pripisana firmi); period: 2022-11-30 do 2022-11-30; najveći: 404-02-104/2022-01 (2022-11-30, 9,720,774 RSD)",
+   "contracts": 2,
+   "source": {
+    "kind": "integrity_watch",
+    "title": "Integrity Watch Srbija – JADRAN DOO BEOGRAD / MINISTARSTVO ZAŠTITE ŽIVOTNE SREDINE - AGENCIJA ZA ZAŠTITU ŽIVOTNE SREDINE",
+    "url": "https://integritywatchserbia.org.rs/companies.php?l=sr",
+    "retrievedAt": "2026-10-30T13:47:26.488Z",
+    "official": false
+   }
+  },
+  {
+   "supplierName": "JADRAN DOO BEOGRAD",
+   "supplierPib": "100206540",
+   "supplierMb": "07032358",
+   "contractingAuthority": "OSNOVNA ŠKOLA \"23. OKTOBAR\" SREMSKI KARLOVCI",
+   "linkType": "povezanost sa političkim subjektom",
+   "detail": "Integrity Watch označava ponuđača kao kompaniju povezanu sa političkim subjektom; izvor povezivanja: https://novaekonomija.rs/vesti-iz-zemlje/firma-bivseg-jemca-sns-a-dobila-posao-za-124-miliona-dinara; označenih ugovora kod naručioca: 2; od toga u zajedničkoj ponudi: 2 (vrednost cele ponude 15,560,303 RSD, nije pripisana firmi); period: 2025-08-11 do 2025-08-15; najveći: 287/2025 (2025-08-15, 10,815,053 RSD)",
+   "contracts": 2,
+   "source": {
+    "kind": "integrity_watch",
+    "title": "Integrity Watch Srbija – JADRAN DOO BEOGRAD / OSNOVNA ŠKOLA \"23. OKTOBAR\" SREMSKI KARLOVCI",
+    "url": "https://integritywatchserbia.org.rs/companies.php?l=sr",
+    "retrievedAt": "2026-10-30T13:47:26.488Z",
+    "official": false
+   }
+  },
+  {
+   "supplierName": "JADRAN DOO BEOGRAD",
+   "supplierPib": "100206540",
+   "supplierMb": "07032358",
+   "contractingAuthority": "Gradska opština Zvezdara",
+   "linkType": "povezanost sa političkim subjektom",
+   "detail": "Integrity Watch označava ponuđača kao kompaniju povezanu sa političkim subjektom; izvor povezivanja: https://novaekonomija.rs/vesti-iz-zemlje/firma-bivseg-jemca-sns-a-dobila-posao-za-124-miliona-dinara; označenih ugovora kod naručioca: 2; od toga u zajedničkoj ponudi: 2 (vrednost cele ponude 15,136,295 RSD, nije pripisana firmi); period: 2025-09-24 do 2025-10-31; najveći: II 405-91 (2025-09-24, 9,161,130 RSD)",
+   "contracts": 2,
+   "source": {
+    "kind": "integrity_watch",
+    "title": "Integrity Watch Srbija – JADRAN DOO BEOGRAD / Gradska opština Zvezdara",
+    "url": "https://integritywatchserbia.org.rs/companies.php?l=sr",
+    "retrievedAt": "2026-10-30T13:47:26.488Z",
+    "official": false
+   }
+  },
+  {
+   "supplierName": "JADRAN DOO BEOGRAD",
+   "supplierPib": "100206540",
+   "supplierMb": "07032358",
+   "contractingAuthority": "Gradska uprava za razvoj i investicije",
+   "linkType": "povezanost sa političkim subjektom",
+   "detail": "Integrity Watch označava ponuđača kao kompaniju povezanu sa političkim subjektom; izvor povezivanja: https://novaekonomija.rs/vesti-iz-zemlje/firma-bivseg-jemca-sns-a-dobila-posao-za-124-miliona-dinara; označenih ugovora kod naručioca: 1; od toga u zajedničkoj ponudi: 1 (vrednost cele ponude 14,462,014 RSD, nije pripisana firmi); period: 2025-09-11 do 2025-09-11; najveći: 404-847/25-XXIV (2025-09-11, 14,462,014 RSD)",
+   "contracts": 1,
+   "source": {
+    "kind": "integrity_watch",
+    "title": "Integrity Watch Srbija – JADRAN DOO BEOGRAD / Gradska uprava za razvoj i investicije",
+    "url": "https://integritywatchserbia.org.rs/companies.php?l=sr",
+    "retrievedAt": "2026-10-30T13:47:26.488Z",
+    "official": false
+   }
+  },
+  {
+   "supplierName": "JADRAN DOO BEOGRAD",
+   "supplierPib": "100206540",
+   "supplierMb": "07032358",
+   "contractingAuthority": "ZAVOD ZA ZAŠTITU SPOMENIKA KULTURE GRADA BEOGRADA",
+   "linkType": "povezanost sa političkim subjektom",
+   "detail": "Integrity Watch označava ponuđača kao kompaniju povezanu sa političkim subjektom; izvor povezivanja: https://novaekonomija.rs/vesti-iz-zemlje/firma-bivseg-jemca-sns-a-dobila-posao-za-124-miliona-dinara; označenih ugovora kod naručioca: 1; od toga u zajedničkoj ponudi: 1 (vrednost cele ponude 12,080,666 RSD, nije pripisana firmi); period: 2021-06-28 do 2021-06-28; najveći: R1715/21 (2021-06-28, 12,080,666 RSD)",
+   "contracts": 1,
+   "source": {
+    "kind": "integrity_watch",
+    "title": "Integrity Watch Srbija – JADRAN DOO BEOGRAD / ZAVOD ZA ZAŠTITU SPOMENIKA KULTURE GRADA BEOGRADA",
+    "url": "https://integritywatchserbia.org.rs/companies.php?l=sr",
+    "retrievedAt": "2026-10-30T13:47:26.488Z",
+    "official": false
+   }
+  },
+  {
+   "supplierName": "JADRAN DOO BEOGRAD",
+   "supplierPib": "100206540",
+   "supplierMb": "07032358",
+   "contractingAuthority": "Gradska opština Savski venac",
+   "linkType": "povezanost sa političkim subjektom",
+   "detail": "Integrity Watch označava ponuđača kao kompaniju povezanu sa političkim subjektom; izvor povezivanja: https://novaekonomija.rs/vesti-iz-zemlje/firma-bivseg-jemca-sns-a-dobila-posao-za-124-miliona-dinara; označenih ugovora kod naručioca: 1; od toga u zajedničkoj ponudi: 1 (vrednost cele ponude 9,985,693 RSD, nije pripisana firmi); period: 2023-08-10 do 2023-08-10; najveći: XI 416-92/23 (2023-08-10, 9,985,693 RSD)",
+   "contracts": 1,
+   "source": {
+    "kind": "integrity_watch",
+    "title": "Integrity Watch Srbija – JADRAN DOO BEOGRAD / Gradska opština Savski venac",
+    "url": "https://integritywatchserbia.org.rs/companies.php?l=sr",
+    "retrievedAt": "2026-10-30T13:47:26.488Z",
+    "official": false
+   }
+  },
+  {
+   "supplierName": "JADRAN DOO BEOGRAD",
+   "supplierPib": "100206540",
+   "supplierMb": "07032358",
+   "contractingAuthority": "Opština Bela Palanka",
+   "linkType": "povezanost sa političkim subjektom",
+   "detail": "Integrity Watch označava ponuđača kao kompaniju povezanu sa političkim subjektom; izvor povezivanja: https://novaekonomija.rs/vesti-iz-zemlje/firma-bivseg-jemca-sns-a-dobila-posao-za-124-miliona-dinara; označenih ugovora kod naručioca: 1; od toga u zajedničkoj ponudi: 1 (vrednost cele ponude 8,078,536 RSD, nije pripisana firmi); period: 2022-09-06 do 2022-09-06; najveći: 404-60/10-2022-IV/02 (2022-09-06, 8,078,536 RSD)",
+   "contracts": 1,
+   "source": {
+    "kind": "integrity_watch",
+    "title": "Integrity Watch Srbija – JADRAN DOO BEOGRAD / Opština Bela Palanka",
+    "url": "https://integritywatchserbia.org.rs/companies.php?l=sr",
+    "retrievedAt": "2026-10-30T13:47:26.488Z",
+    "official": false
+   }
+  },
+  {
+   "supplierName": "JADRAN DOO BEOGRAD",
+   "supplierPib": "100206540",
+   "supplierMb": "07032358",
+   "contractingAuthority": "OPŠTA BOLNICA POŽAREVAC",
+   "linkType": "povezanost sa političkim subjektom",
+   "detail": "Integrity Watch označava ponuđača kao kompaniju povezanu sa političkim subjektom; izvor povezivanja: https://novaekonomija.rs/vesti-iz-zemlje/firma-bivseg-jemca-sns-a-dobila-posao-za-124-miliona-dinara; označenih ugovora kod naručioca: 1; period: 2024-11-05 do 2024-11-05; najveći: 6-1458 (2024-11-05, 6,823,000 RSD)",
+   "contracts": 1,
+   "valueRsd": 6823000,
+   "source": {
+    "kind": "integrity_watch",
+    "title": "Integrity Watch Srbija – JADRAN DOO BEOGRAD / OPŠTA BOLNICA POŽAREVAC",
+    "url": "https://integritywatchserbia.org.rs/companies.php?l=sr",
+    "retrievedAt": "2026-10-30T13:47:26.488Z",
+    "official": false
+   }
+  },
+  {
+   "supplierName": "JADRAN DOO BEOGRAD",
+   "supplierPib": "100206540",
+   "supplierMb": "07032358",
+   "contractingAuthority": "JP ETV BEOGRAD",
+   "linkType": "povezanost sa političkim subjektom",
+   "detail": "Integrity Watch označava ponuđača kao kompaniju povezanu sa političkim subjektom; izvor povezivanja: https://novaekonomija.rs/vesti-iz-zemlje/firma-bivseg-jemca-sns-a-dobila-posao-za-124-miliona-dinara; označenih ugovora kod naručioca: 2; od toga u zajedničkoj ponudi: 2 (vrednost cele ponude 6,773,792 RSD, nije pripisana firmi); period: 2021-09-27 do 2021-09-27; najveći: 5239/21 (2021-09-27, 4,485,792 RSD)",
+   "contracts": 2,
+   "source": {
+    "kind": "integrity_watch",
+    "title": "Integrity Watch Srbija – JADRAN DOO BEOGRAD / JP ETV BEOGRAD",
+    "url": "https://integritywatchserbia.org.rs/companies.php?l=sr",
+    "retrievedAt": "2026-10-30T13:47:26.488Z",
+    "official": false
+   }
+  },
+  {
+   "supplierName": "JADRAN DOO BEOGRAD",
+   "supplierPib": "100206540",
+   "supplierMb": "07032358",
+   "contractingAuthority": "Udruženje likovnih umetnika Srbije",
+   "linkType": "povezanost sa političkim subjektom",
+   "detail": "Integrity Watch označava ponuđača kao kompaniju povezanu sa političkim subjektom; izvor povezivanja: https://novaekonomija.rs/vesti-iz-zemlje/firma-bivseg-jemca-sns-a-dobila-posao-za-124-miliona-dinara; označenih ugovora kod naručioca: 1; od toga u zajedničkoj ponudi: 1 (vrednost cele ponude 6,771,884 RSD, nije pripisana firmi); period: 2024-12-04 do 2024-12-04; najveći: 07-440 (2024-12-04, 6,771,884 RSD)",
+   "contracts": 1,
+   "source": {
+    "kind": "integrity_watch",
+    "title": "Integrity Watch Srbija – JADRAN DOO BEOGRAD / Udruženje likovnih umetnika Srbije",
+    "url": "https://integritywatchserbia.org.rs/companies.php?l=sr",
+    "retrievedAt": "2026-10-30T13:47:26.488Z",
+    "official": false
+   }
+  },
+  {
+   "supplierName": "JADRAN DOO BEOGRAD",
+   "supplierPib": "100206540",
+   "supplierMb": "07032358",
+   "contractingAuthority": "JP ZA PREČIŠĆAVANJE I DIS. VODE, PREČ. I ODVOĐENJE OTP. VODA I ODV.ATM.VODA VODOVOD VRANJE, P.O.",
+   "linkType": "povezanost sa političkim subjektom",
+   "detail": "Integrity Watch označava ponuđača kao kompaniju povezanu sa političkim subjektom; izvor povezivanja: https://novaekonomija.rs/vesti-iz-zemlje/firma-bivseg-jemca-sns-a-dobila-posao-za-124-miliona-dinara; označenih ugovora kod naručioca: 1; period: 2024-07-29 do 2024-07-29; najveći: 2339 (2024-07-29, 6,175,000 RSD)",
+   "contracts": 1,
+   "valueRsd": 6175000,
+   "source": {
+    "kind": "integrity_watch",
+    "title": "Integrity Watch Srbija – JADRAN DOO BEOGRAD / JP ZA PREČIŠĆAVANJE I DIS. VODE, PREČ. I ODVOĐENJE OTP. VODA I ODV.ATM.VODA VODOVOD VRANJE, P.O.",
+    "url": "https://integritywatchserbia.org.rs/companies.php?l=sr",
+    "retrievedAt": "2026-10-30T13:47:26.488Z",
+    "official": false
+   }
+  },
+  {
+   "supplierName": "JADRAN DOO BEOGRAD",
+   "supplierPib": "100206540",
+   "supplierMb": "07032358",
+   "contractingAuthority": "PREDŠKOLSKA  USTANOVA \"11. APRIL\"",
+   "linkType": "povezanost sa političkim subjektom",
+   "detail": "Integrity Watch označava ponuđača kao kompaniju povezanu sa političkim subjektom; izvor povezivanja: https://novaekonomija.rs/vesti-iz-zemlje/firma-bivseg-jemca-sns-a-dobila-posao-za-124-miliona-dinara; označenih ugovora kod naručioca: 1; period: 2022-08-30 do 2022-08-30; najveći: 3050 (2022-08-30, 4,919,100 RSD)",
+   "contracts": 1,
+   "valueRsd": 4919100,
+   "source": {
+    "kind": "integrity_watch",
+    "title": "Integrity Watch Srbija – JADRAN DOO BEOGRAD / PREDŠKOLSKA  USTANOVA \"11. APRIL\"",
+    "url": "https://integritywatchserbia.org.rs/companies.php?l=sr",
+    "retrievedAt": "2026-10-30T13:47:26.488Z",
+    "official": false
+   }
+  },
+  {
+   "supplierName": "JADRAN DOO BEOGRAD",
+   "supplierPib": "100206540",
+   "supplierMb": "07032358",
+   "contractingAuthority": "INSTITUT ZA ZDRAVSTVENU ZAŠTITU MAJKE I DETETA SRBIJE \"DR VUKAN ČUPIĆ\"",
+   "linkType": "povezanost sa političkim subjektom",
+   "detail": "Integrity Watch označava ponuđača kao kompaniju povezanu sa političkim subjektom; izvor povezivanja: https://novaekonomija.rs/vesti-iz-zemlje/firma-bivseg-jemca-sns-a-dobila-posao-za-124-miliona-dinara; označenih ugovora kod naručioca: 1; period: 2022-10-06 do 2022-10-06; najveći: U22-13614 (2022-10-06, 3,385,791 RSD)",
+   "contracts": 1,
+   "valueRsd": 3385791,
+   "source": {
+    "kind": "integrity_watch",
+    "title": "Integrity Watch Srbija – JADRAN DOO BEOGRAD / INSTITUT ZA ZDRAVSTVENU ZAŠTITU MAJKE I DETETA SRBIJE \"DR VUKAN ČUPIĆ\"",
+    "url": "https://integritywatchserbia.org.rs/companies.php?l=sr",
+    "retrievedAt": "2026-10-30T13:47:26.488Z",
+    "official": false
+   }
+  },
+  {
+   "supplierName": "JADRAN DOO BEOGRAD",
+   "supplierPib": "100206540",
+   "supplierMb": "07032358",
+   "contractingAuthority": "Opštinska uprava Raška",
+   "linkType": "povezanost sa političkim subjektom",
+   "detail": "Integrity Watch označava ponuđača kao kompaniju povezanu sa političkim subjektom; izvor povezivanja: https://novaekonomija.rs/vesti-iz-zemlje/firma-bivseg-jemca-sns-a-dobila-posao-za-124-miliona-dinara; označenih ugovora kod naručioca: 1; od toga u zajedničkoj ponudi: 1 (vrednost cele ponude 2,909,320 RSD, nije pripisana firmi); period: 2023-07-11 do 2023-07-11; najveći: 404-1156/2023-5 (2023-07-11, 2,909,320 RSD)",
+   "contracts": 1,
+   "source": {
+    "kind": "integrity_watch",
+    "title": "Integrity Watch Srbija – JADRAN DOO BEOGRAD / Opštinska uprava Raška",
+    "url": "https://integritywatchserbia.org.rs/companies.php?l=sr",
+    "retrievedAt": "2026-10-30T13:47:26.488Z",
+    "official": false
+   }
+  },
+  {
+   "supplierName": "JADRAN DOO BEOGRAD",
+   "supplierPib": "100206540",
+   "supplierMb": "07032358",
+   "contractingAuthority": "JAVNO KOMUNALNO PREDUZEĆE \"BEOGRADSKE ELEKTRANE\"",
+   "linkType": "povezanost sa političkim subjektom",
+   "detail": "Integrity Watch označava ponuđača kao kompaniju povezanu sa političkim subjektom; izvor povezivanja: https://novaekonomija.rs/vesti-iz-zemlje/firma-bivseg-jemca-sns-a-dobila-posao-za-124-miliona-dinara; označenih ugovora kod naručioca: 1; od toga u zajedničkoj ponudi: 1 (vrednost cele ponude 2,499,000 RSD, nije pripisana firmi); period: 2023-08-31 do 2023-08-31; najveći: EFP 59691/23 (2023-08-31, 2,499,000 RSD)",
+   "contracts": 1,
+   "source": {
+    "kind": "integrity_watch",
+    "title": "Integrity Watch Srbija – JADRAN DOO BEOGRAD / JAVNO KOMUNALNO PREDUZEĆE \"BEOGRADSKE ELEKTRANE\"",
+    "url": "https://integritywatchserbia.org.rs/companies.php?l=sr",
+    "retrievedAt": "2026-10-30T13:47:26.488Z",
+    "official": false
+   }
+  },
+  {
+   "supplierName": "JADRAN DOO BEOGRAD",
+   "supplierPib": "100206540",
+   "supplierMb": "07032358",
+   "contractingAuthority": "JAVNO KOMUNALNO PREDUZEĆE \"GRADSKA TOPLANA\" PIROT",
+   "linkType": "povezanost sa političkim subjektom",
+   "detail": "Integrity Watch označava ponuđača kao kompaniju povezanu sa političkim subjektom; izvor povezivanja: https://novaekonomija.rs/vesti-iz-zemlje/firma-bivseg-jemca-sns-a-dobila-posao-za-124-miliona-dinara; označenih ugovora kod naručioca: 1; period: 2023-08-07 do 2023-08-07; najveći: 3031/23 (2023-08-07, 812,460 RSD)",
+   "contracts": 1,
+   "valueRsd": 812460,
+   "source": {
+    "kind": "integrity_watch",
+    "title": "Integrity Watch Srbija – JADRAN DOO BEOGRAD / JAVNO KOMUNALNO PREDUZEĆE \"GRADSKA TOPLANA\" PIROT",
+    "url": "https://integritywatchserbia.org.rs/companies.php?l=sr",
+    "retrievedAt": "2026-10-30T13:47:26.488Z",
+    "official": false
+   }
+  }
+ ]
+}
