@@ -1,31 +1,36 @@
-// Live Gantt (canvas, ~10 fps) on a shared time axis + concurrency sparkline (SVG).
+// Timeline (canvas, redrawn at most 4 times a second) on a shared time axis + concurrency chart (SVG).
 // Overlapping bars across lanes are the visual proof that agents run concurrently.
 
-import { state, on, laneEnd, activeCount, peakCount, isRunning, isDone } from "./store.js"
+import { state, on, laneEnd, activeCount, peakCount, isRunning } from "./store.js"
 import { laneRows } from "./lanes.js"
 import { s, parseIso, fmtDur, truncate } from "./format.js"
 
-const RULER_H = 26
-const PAD_L = 8
-const PAD_R = 14
-const COLORS = {
-	inf: "#a78bfa",
-	tool: "#38bdf8",
-	wait: "#ffb547",
-	finding: "#ffffff",
-	spawn: "#3ddc97",
-	block: "#ff5d6c",
-	edit: "#c4b5fd",
-	answer: "#7aa2ff",
-	now: "#7aa2ff",
+const RULER_H = 22
+const PAD_L = 1
+const PAD_R = 8
+const BAR_H = 8
+const MIN_FRAME_MS = 250 // 4 fps at most
+const C = {
+	inf: "#CFCBC2",
+	tool: "#1F4E79",
+	wait: "#B45309",
+	tick: "#1C1B19",
+	spawn: "#55534E",
+	signal: "#B42318",
+	axis: "#8A8780",
+	grid: "#EFEDE7",
+	rule: "#E6E3DC",
+	paper: "#FBFAF7",
 }
 const STEPS = [1, 2, 5, 10, 15, 30, 60, 120, 300, 600, 1200, 3600]
+const MONO = 'ui-monospace, "SF Mono", "Cascadia Mono", Consolas, monospace'
 
-let wrap, canvas, ctx, dynEl, tip
+let wrap, canvas, ctx, dynEl, tip, teamEl
 let dirty = true
 let hits = []
 let stripe = null
-let sparkWrap, sparkSvg, sparkArea, sparkLine, sparkGrid, sparkDot, sparkNowEl, sparkPeakEl, sparkLastNow = -1, sparkLastPeak = -1
+let sparkWrap, sparkSvg, sparkArea, sparkLine, sparkGrid, sparkMax, concLabel
+let lastConc = ""
 
 const markDirty = () => {
 	dirty = true
@@ -33,36 +38,30 @@ const markDirty = () => {
 
 function makeStripePattern(c) {
 	const off = document.createElement("canvas")
-	off.width = off.height = 10
+	off.width = off.height = 8
 	const x = off.getContext("2d")
-	x.fillStyle = "rgba(255,181,71,.22)"
-	x.fillRect(0, 0, 10, 10)
-	x.strokeStyle = "rgba(255,181,71,.95)"
-	x.lineWidth = 3
+	x.fillStyle = "rgba(180,83,9,.16)"
+	x.fillRect(0, 0, 8, 8)
+	x.strokeStyle = C.wait
+	x.lineWidth = 1.5
 	x.beginPath()
-	for (const d of [-10, 0, 10]) {
-		x.moveTo(d, 10)
-		x.lineTo(d + 10, 0)
+	for (const d of [-8, 0, 8]) {
+		x.moveTo(d, 8)
+		x.lineTo(d + 8, 0)
 	}
 	x.stroke()
 	return c.createPattern(off, "repeat")
 }
 
-/** Shared time -> x mapping (the sparkline uses the same one so the axes line up). */
+/** Shared time -> x mapping (the chart uses the same one so the axes line up). */
 function axis(W) {
 	const t0 = state.t0
 	if (!t0) return null
 	const end = laneEnd()
 	const running = isRunning()
-	const span = Math.max((end - t0) * (running ? 1.03 : 1.01), 15000)
+	const span = Math.max((end - t0) * (running ? 1.04 : 1.01), 15000)
 	const innerW = Math.max(10, W - PAD_L - PAD_R)
 	return { t0, end, span, innerW, X: (t) => PAD_L + ((t - t0) / span) * innerW }
-}
-
-function rrect(x, y, w, h, r) {
-	ctx.beginPath()
-	if (ctx.roundRect) ctx.roundRect(x, y, w, h, Math.min(r, w / 2, h / 2))
-	else ctx.rect(x, y, w, h)
 }
 
 function fmtTick(sec) {
@@ -81,7 +80,7 @@ function resizeCanvas() {
 		canvas.height = h
 		stripe = null
 	}
-	return { W: r.width, H: r.height, top: r.top, left: r.left, dpr }
+	return { W: r.width, H: r.height, top: r.top, dpr }
 }
 
 function draw() {
@@ -90,120 +89,89 @@ function draw() {
 	ctx.clearRect(0, 0, W, H)
 	hits = []
 	const ax = axis(W)
-	if (!ax) {
-		ctx.fillStyle = "rgba(139,151,179,.55)"
-		ctx.font = "11px ui-monospace, Consolas, monospace"
-		ctx.fillText("vremenska osa počinje kad krene dosije ili mapa", PAD_L, RULER_H + 24)
-		return
-	}
+	if (!ax) return
 	const { X, end, span, innerW, t0 } = ax
 	const running = isRunning()
 	if (!stripe) stripe = makeStripePattern(ctx)
-	const phase = (performance.now() / 60) % 10
-	if (stripe && stripe.setTransform) stripe.setTransform(new DOMMatrix().translate(-phase, 0))
 
 	// ruler + grid
 	const spanSec = span / 1000
 	let step = STEPS[STEPS.length - 1]
 	for (const st of STEPS) {
-		if ((st / spanSec) * innerW >= 62) {
+		if ((st / spanSec) * innerW >= 56) {
 			step = st
 			break
 		}
 	}
-	ctx.font = "10px ui-monospace, Consolas, monospace"
+	ctx.font = `10px ${MONO}`
 	ctx.textBaseline = "middle"
+	ctx.textAlign = "left"
+	const nowX = X(end)
+	ax.ticks = []
 	for (let sec = 0; sec <= spanSec; sec += step) {
 		const x = Math.round(X(t0 + sec * 1000)) + 0.5
-		ctx.fillStyle = "rgba(120,140,190,.07)"
-		ctx.fillRect(x, RULER_H, 1, H - RULER_H)
-		ctx.fillStyle = "rgba(139,151,179,.8)"
-		ctx.fillText(fmtTick(sec), x + 4, RULER_H / 2)
-		ctx.fillStyle = "rgba(139,151,179,.35)"
-		ctx.fillRect(x, RULER_H - 6, 1, 6)
+		ax.ticks.push(x)
+		ctx.fillStyle = C.axis
+		if (!(x > nowX - 64 && x < nowX + 6)) ctx.fillText(fmtTick(sec), x + 3, RULER_H / 2 - 2)
+		ctx.fillRect(x, RULER_H - 5, 1, 5)
 	}
-	ctx.fillStyle = "rgba(120,140,190,.18)"
+	ax.nx = Math.round(nowX) + 0.5
+	ax.col = running ? C.signal : C.axis
+	ctx.fillStyle = C.rule
 	ctx.fillRect(0, RULER_H - 1, W, 1)
 
 	// rows
 	const dynRect = dynEl.getBoundingClientRect()
 	const dynTop = dynRect.top - top
 	const dynBottom = dynRect.bottom - top
+	const teamRect = teamEl.getBoundingClientRect()
 	const info = new Map()
 	for (const el of laneRows()) {
 		const tr = el.querySelector(".lane-track").getBoundingClientRect()
 		const y0 = tr.top - top
-		const inDyn = dynEl.contains(el)
-		info.set(el.dataset.lane, { y0, h: tr.height, cy: y0 + tr.height / 2, inDyn, dim: el.classList.contains("dim") })
+		info.set(el.dataset.lane, { y0, h: tr.height, cy: y0 + tr.height / 2, inDyn: dynEl.contains(el), dim: el.classList.contains("dim") })
 	}
-
-	// spawn connectors (spawner row -> new row)
-	ctx.save()
-	ctx.beginPath()
-	ctx.rect(0, RULER_H, W, H - RULER_H)
-	ctx.clip()
-	ctx.setLineDash([3, 3])
-	ctx.lineWidth = 1
-	ctx.strokeStyle = "rgba(61,220,151,.45)"
-	for (const lane of state.lanes.values()) {
-		for (const m of lane.marks) {
-			if (m.k !== "spawnOut") continue
-			const a = info.get(lane.id)
-			const b = info.get(m.to)
-			if (!a || !b) continue
-			let y2 = b.cy
-			if (b.inDyn) y2 = Math.min(Math.max(y2, dynTop), dynBottom)
-			const x = Math.round(X(m.t)) + 0.5
-			ctx.beginPath()
-			ctx.moveTo(x, a.cy + 6)
-			ctx.lineTo(x, y2)
-			ctx.stroke()
-		}
-	}
-	ctx.restore()
+	const clipBottomAll = Math.min(H, teamRect.bottom - top)
 
 	for (const [id, r] of info) {
 		const lane = state.lanes.get(id)
 		if (!lane) continue
 		const clipTop = r.inDyn ? Math.max(RULER_H, dynTop) : RULER_H
-		const clipBottom = r.inDyn ? dynBottom : H
+		const clipBottom = r.inDyn ? Math.min(dynBottom, clipBottomAll) : clipBottomAll
 		if (r.y0 + r.h < clipTop || r.y0 > clipBottom) continue
 		ctx.save()
 		ctx.beginPath()
 		ctx.rect(0, clipTop, W, clipBottom - clipTop)
 		ctx.clip()
-		if (r.dim) ctx.globalAlpha = 0.28
-		drawRow(lane, r, ax, end, running)
+		if (r.dim) ctx.globalAlpha = 0.3
+		drawRow(lane, r, ax, end)
 		ctx.restore()
 	}
 
-	// now line
-	const nx = Math.round(X(end)) + 0.5
-	const grad = ctx.createLinearGradient(0, RULER_H, 0, H)
-	grad.addColorStop(0, running ? "rgba(122,162,255,.95)" : "rgba(139,151,179,.6)")
-	grad.addColorStop(1, running ? "rgba(122,162,255,.25)" : "rgba(139,151,179,.15)")
-	ctx.fillStyle = grad
-	ctx.fillRect(nx, RULER_H - 2, 1.5, H - RULER_H + 2)
+	// now line: 1px red while running (gray end line afterwards); the rows draw their own segment so it never crosses text
+	const nx = ax.nx
+	const col = ax.col
+	ctx.fillStyle = col
+	ctx.fillRect(nx, RULER_H - 8, 1, 8)
 	const label = running ? "sada" : "kraj"
-	ctx.font = "600 9.5px system-ui, sans-serif"
-	const lw = ctx.measureText(label).width + 10
-	const lx = Math.min(nx - lw / 2, W - lw - 2)
-	ctx.fillStyle = running ? "#7aa2ff" : "#46506b"
-	rrect(lx, 3, lw, 15, 7)
-	ctx.fill()
-	ctx.fillStyle = running ? "#0a1020" : "#dbe3f5"
-	ctx.textBaseline = "middle"
-	ctx.fillText(label, lx + 5, 11)
+	ctx.font = `10px system-ui, sans-serif`
+	const lw = ctx.measureText(label).width + 6
+	const lx = Math.min(nx - lw - 2, W - lw - 2)
+	ctx.fillStyle = C.paper
+	ctx.fillRect(lx, 2, lw, 12)
+	ctx.fillStyle = col
+	ctx.textAlign = "left"
+	ctx.fillText(label, lx + 3, 8)
 }
 
-function drawRow(lane, r, ax, end, running) {
+function drawRow(lane, r, ax, end) {
 	const { X } = ax
-	const { y0, h, cy } = r
-	const barH = Math.max(8, Math.min(14, h - 18))
-	ctx.fillStyle = "rgba(255,255,255,.035)"
+	const { y0, cy } = r
+	ctx.fillStyle = C.grid
+	for (const x of ax.ticks) ctx.fillRect(x, y0 - 2, 1, r.h + 4)
 	ctx.fillRect(PAD_L, Math.round(cy), ax.innerW, 1)
 
-	// the journalist's open questions: thin amber spans while waiting for her
+	// the journalist's open questions: amber hatched spans while waiting for her
 	if (lane.info.group === "novinar") {
 		for (const t of state.tasks.values()) {
 			const a = parseIso(t.createdAt)
@@ -211,13 +179,9 @@ function drawRow(lane, r, ax, end, running) {
 			const b = t.status === "open" ? end : parseIso(t.answeredAt) || end
 			const x1 = X(a)
 			const w = Math.max(3, X(b) - x1)
-			ctx.fillStyle = "rgba(255,181,71,.22)"
-			rrect(x1, cy - 4, w, 8, 3)
-			ctx.fill()
-			ctx.strokeStyle = "rgba(255,181,71,.7)"
-			ctx.lineWidth = 1
-			ctx.stroke()
-			hits.push({ x: x1, y: cy - 6, w, h: 12, title: `${t.kind === "odobrenje" ? "Odobrenje" : "Pitanje"}: ${truncate(t.title, 60)}`, sub: `${t.status === "open" ? "čeka odgovor" : "odgovoreno"} · ${fmtDur(b - a)}` })
+			ctx.fillStyle = stripe || C.wait
+			ctx.fillRect(x1, cy - BAR_H / 2, w, BAR_H)
+			hits.push({ x: x1, y: cy - 7, w, h: 14, title: `${t.kind === "odobrenje" ? "Odobrenje" : "Pitanje"}: ${truncate(t.title, 60)}`, sub: `${t.status === "open" ? "čeka odgovor" : "odgovoreno"} · ${fmtDur(b - a)}` })
 		}
 	}
 
@@ -225,170 +189,123 @@ function drawRow(lane, r, ax, end, running) {
 		const x1 = X(seg.t0)
 		const x2 = X(seg.t1 ?? end)
 		if (x2 < PAD_L - 4) continue
-		const w = Math.max(2.5, x2 - x1)
-		const y = cy - barH / 2
+		const w = Math.max(2, x2 - x1)
+		const y = cy - BAR_H / 2
 		if (seg.k === "wait") {
-			ctx.fillStyle = stripe || "#ffb547"
-			rrect(x1, y - 1, w, barH + 2, 3)
-			ctx.fill()
-			ctx.strokeStyle = COLORS.wait
-			ctx.lineWidth = 1.2
-			ctx.stroke()
+			ctx.fillStyle = stripe || C.wait
+			ctx.fillRect(x1, y, w, BAR_H)
+			ctx.strokeStyle = C.wait
+			ctx.lineWidth = 1
+			ctx.strokeRect(x1 + 0.5, y + 0.5, Math.max(1, w - 1), BAR_H - 1)
 		} else {
-			const c = seg.k === "inf" ? COLORS.inf : COLORS.tool
-			ctx.fillStyle = c
-			ctx.globalAlpha *= seg.k === "inf" ? 0.88 : 0.95
-			rrect(x1, y, w, barH, 3)
-			ctx.fill()
-			ctx.globalAlpha /= seg.k === "inf" ? 0.88 : 0.95
-			if (seg.t1 == null && running) {
-				ctx.fillStyle = "rgba(255,255,255,.75)"
-				ctx.fillRect(x2 - 2, y, 2, barH)
-			}
+			ctx.fillStyle = seg.k === "inf" ? C.inf : C.tool
+			ctx.fillRect(x1, y, w, BAR_H)
 		}
 		hits.push({
 			x: x1,
-			y: cy - barH / 2 - 2,
+			y: cy - BAR_H / 2 - 3,
 			w,
-			h: barH + 4,
-			title: seg.k === "inf" ? "Inferencija" : seg.k === "tool" ? `Alat: ${seg.label}` : "Čeka novinara (interception)",
+			h: BAR_H + 6,
+			title: seg.k === "inf" ? "Razmišlja" : seg.k === "tool" ? `Alat: ${seg.label}` : "Čeka odluku novinara",
 			sub: `${fmtDur((seg.t1 ?? end) - seg.t0)}${seg.t1 == null ? " · u toku" : ""}${seg.detail ? `\n${seg.detail}` : ""}`,
 		})
 	}
 
-	const markY = y0 + 8
 	for (const m of lane.marks) {
 		const x = X(m.t)
 		if (x < PAD_L - 6) continue
 		if (m.k === "finding") {
-			ctx.fillStyle = "#fff"
-			ctx.beginPath()
-			ctx.arc(x, markY, 3.4, 0, Math.PI * 2)
-			ctx.fill()
-			if (m.sev === "signal") {
-				ctx.strokeStyle = "#ff5d6c"
-				ctx.lineWidth = 1.6
-				ctx.stroke()
-			}
-			hits.push({ x: x - 6, y: markY - 6, w: 12, h: 12, title: "Nalaz", sub: m.label })
+			ctx.fillStyle = C.tick
+			ctx.fillRect(Math.round(x) - 1, cy - 8, 2, 16)
+			hits.push({ x: x - 4, y: cy - 9, w: 8, h: 18, title: "Nalaz", sub: m.label })
 		} else if (m.k === "spawn") {
-			diamond(x, cy, 5.5, COLORS.spawn, true)
-			hits.push({ x: x - 7, y: cy - 7, w: 14, h: 14, title: "Pokrenut agent", sub: lane.info.name })
-		} else if (m.k === "spawnOut") {
-			diamond(x, y0 + r.h - 9, 3.8, COLORS.spawn, false)
-		} else if (m.k === "block") {
-			ctx.strokeStyle = COLORS.block
-			ctx.lineWidth = 2
 			ctx.beginPath()
-			ctx.moveTo(x - 3.5, markY - 3.5)
-			ctx.lineTo(x + 3.5, markY + 3.5)
-			ctx.moveTo(x + 3.5, markY - 3.5)
-			ctx.lineTo(x - 3.5, markY + 3.5)
-			ctx.stroke()
-			hits.push({ x: x - 6, y: markY - 6, w: 12, h: 12, title: "Blokiran nalaz", sub: m.label })
-		} else if (m.k === "edit") {
-			ctx.strokeStyle = COLORS.edit
-			ctx.lineWidth = 1.8
-			ctx.beginPath()
-			ctx.arc(x, markY, 3.6, 0, Math.PI * 2)
-			ctx.stroke()
-			hits.push({ x: x - 6, y: markY - 6, w: 12, h: 12, title: "Urednik", sub: m.label })
-		} else if (m.k === "answer") {
-			ctx.fillStyle = COLORS.answer
-			ctx.beginPath()
-			ctx.arc(x, cy, 4.2, 0, Math.PI * 2)
+			ctx.arc(x, cy, 3.5, 0, Math.PI * 2)
+			ctx.fillStyle = C.paper
 			ctx.fill()
-			ctx.strokeStyle = "#0d1322"
-			ctx.lineWidth = 1.5
+			ctx.strokeStyle = C.spawn
+			ctx.lineWidth = 1.25
 			ctx.stroke()
-			hits.push({ x: x - 7, y: cy - 7, w: 14, h: 14, title: "Novinar", sub: m.label })
+			hits.push({ x: x - 6, y: cy - 6, w: 12, h: 12, title: "Pokrenut agent", sub: lane.info.name })
+		} else if (m.k === "block") {
+			ctx.strokeStyle = C.signal
+			ctx.lineWidth = 1.5
+			ctx.beginPath()
+			ctx.moveTo(x - 3, cy - 3)
+			ctx.lineTo(x + 3, cy + 3)
+			ctx.moveTo(x + 3, cy - 3)
+			ctx.lineTo(x - 3, cy + 3)
+			ctx.stroke()
+			hits.push({ x: x - 6, y: cy - 6, w: 12, h: 12, title: "Blokiran nalaz", sub: m.label })
+		} else if (m.k === "edit") {
+			ctx.fillStyle = C.axis
+			ctx.fillRect(Math.round(x) - 1, y0 - 1, 2, 3)
+			hits.push({ x: x - 4, y: y0 - 2, w: 8, h: 6, title: "Urednik", sub: m.label })
+		} else if (m.k === "answer") {
+			ctx.fillStyle = C.tool
+			ctx.beginPath()
+			ctx.arc(x, cy, 3, 0, Math.PI * 2)
+			ctx.fill()
+			hits.push({ x: x - 6, y: cy - 6, w: 12, h: 12, title: "Novinar", sub: m.label })
 		}
 	}
+
+	ctx.fillStyle = ax.col
+	ctx.fillRect(ax.nx, y0 - 4, 1, r.h + 8)
 }
 
-function diamond(x, y, r, color, fill) {
-	ctx.beginPath()
-	ctx.moveTo(x, y - r)
-	ctx.lineTo(x + r, y)
-	ctx.lineTo(x, y + r)
-	ctx.lineTo(x - r, y)
-	ctx.closePath()
-	if (fill) {
-		ctx.fillStyle = color
-		ctx.fill()
-		ctx.strokeStyle = "#0d1322"
-		ctx.lineWidth = 1.2
-		ctx.stroke()
-	} else {
-		ctx.strokeStyle = color
-		ctx.lineWidth = 1.4
-		ctx.stroke()
-	}
-}
-
-// ─── sparkline ────────────────────────────────────────────────────────────
+// ─── concurrency chart ────────────────────────────────────────────────────
 
 function buildSpark() {
 	sparkSvg = s("svg", { class: "spark-svg", preserveAspectRatio: "none" })
-	const defs = s("defs")
-	const g = s("linearGradient", { id: "sparkGrad", x1: "0", y1: "0", x2: "0", y2: "1" })
-	g.append(s("stop", { offset: "0", "stop-color": "#7aa2ff", "stop-opacity": ".55" }), s("stop", { offset: "1", "stop-color": "#7aa2ff", "stop-opacity": ".02" }))
-	defs.append(g)
 	sparkGrid = s("path", { class: "spark-grid" })
-	sparkArea = s("path", { class: "spark-area", fill: "url(#sparkGrad)" })
+	sparkArea = s("path", { class: "spark-area" })
 	sparkLine = s("path", { class: "spark-line" })
-	sparkDot = s("circle", { class: "spark-dot", r: "3.5" })
-	sparkSvg.append(defs, sparkGrid, sparkArea, sparkLine, sparkDot)
+	sparkMax = s("text", { class: "spark-max", x: String(PAD_L + 2), y: "9" })
+	sparkSvg.append(sparkGrid, sparkArea, sparkLine, sparkMax)
 	sparkWrap.appendChild(sparkSvg)
 }
 
 function drawSpark() {
+	const now = activeCount()
+	const peak = peakCount()
+	const label = `istovremeno aktivnih: ${now} (vrhunac ${peak})`
+	if (label !== lastConc) {
+		lastConc = label
+		concLabel.textContent = label
+	}
 	const W = sparkWrap.clientWidth
 	const H = sparkWrap.clientHeight
 	if (!W || !H) return
 	sparkSvg.setAttribute("viewBox", `0 0 ${W} ${H}`)
 	sparkSvg.setAttribute("width", W)
 	sparkSvg.setAttribute("height", H)
-	const now = activeCount()
-	const peak = peakCount()
-	if (sparkNowEl && sparkLastNow !== now) {
-		sparkNowEl.textContent = String(now)
-		sparkLastNow = now
-	}
-	if (sparkPeakEl && sparkLastPeak !== peak) {
-		sparkPeakEl.textContent = String(peak)
-		sparkLastPeak = peak
-	}
 	const ax = axis(W)
 	const series = state.series
 	if (!ax || !series.length) {
 		sparkLine.setAttribute("d", "")
 		sparkArea.setAttribute("d", "")
 		sparkGrid.setAttribute("d", "")
-		sparkDot.setAttribute("r", "0")
+		sparkMax.textContent = ""
 		return
 	}
 	const ymax = Math.max(4, peak)
-	const base = H - 5
-	const Y = (n) => base - (n / ymax) * (H - 14)
+	const base = H - 1
+	const Y = (n) => base - (n / ymax) * (H - 12)
 	let grid = ""
-	for (let n = 1; n <= ymax; n += ymax > 10 ? Math.ceil(ymax / 5) : 1) grid += `M${PAD_L},${Y(n).toFixed(1)}H${W - PAD_R + 4}`
+	for (const n of [Math.round(ymax / 2), ymax]) grid += `M${PAD_L},${Y(n).toFixed(1)}H${W - PAD_R}`
 	sparkGrid.setAttribute("d", grid)
+	sparkMax.textContent = String(ymax)
+	sparkMax.setAttribute("y", String(Math.max(9, Y(ymax) - 2)))
 
 	const x0 = ax.X(Math.max(series[0].t, ax.t0))
 	let d = `M${x0.toFixed(1)},${Y(series[0].n).toFixed(1)}`
 	for (let i = 1; i < series.length; i++) {
-		const x = ax.X(Math.max(series[i].t, ax.t0)).toFixed(1)
-		d += `H${x}V${Y(series[i].n).toFixed(1)}`
+		d += `H${ax.X(Math.max(series[i].t, ax.t0)).toFixed(1)}V${Y(series[i].n).toFixed(1)}`
 	}
-	const xe = ax.X(ax.end)
-	d += `H${xe.toFixed(1)}`
+	d += `H${ax.X(ax.end).toFixed(1)}`
 	sparkLine.setAttribute("d", d)
 	sparkArea.setAttribute("d", `${d}V${base}H${x0.toFixed(1)}Z`)
-	const last = series[series.length - 1].n
-	sparkDot.setAttribute("cx", xe.toFixed(1))
-	sparkDot.setAttribute("cy", Y(last).toFixed(1))
-	sparkDot.setAttribute("r", isDone() ? "0" : "3.5")
 }
 
 // ─── tooltip ──────────────────────────────────────────────────────────────
@@ -435,26 +352,27 @@ export function initGantt() {
 	canvas = document.getElementById("gantt")
 	ctx = canvas.getContext("2d")
 	dynEl = document.getElementById("lanesDyn")
+	teamEl = document.getElementById("teamPanel")
 	tip = document.getElementById("tip")
 	sparkWrap = document.getElementById("sparkPlot")
-	sparkNowEl = document.getElementById("sparkNow")
-	sparkPeakEl = document.getElementById("sparkPeak")
+	concLabel = document.getElementById("concLabel")
 	buildSpark()
 
 	wrap.addEventListener("mousemove", onMove)
 	wrap.addEventListener("mouseleave", () => tip.classList.remove("show"))
 	dynEl.addEventListener("scroll", markDirty, { passive: true })
+	teamEl.addEventListener("scroll", markDirty, { passive: true })
 	window.addEventListener("resize", markDirty)
 	new ResizeObserver(markDirty).observe(wrap)
+	new ResizeObserver(markDirty).observe(teamEl)
 	for (const t of ["lane", "agents", "snapshot", "filters", "tasks", "meta", "done", "mapa"]) on(t, markDirty)
 
-	let last = 0
+	let last = -MIN_FRAME_MS
 	const frame = (ts) => {
 		requestAnimationFrame(frame)
 		if (document.hidden) return
-		const running = isRunning()
-		if (ts - last < 95) return
-		if (!dirty && !running) return
+		if (ts - last < MIN_FRAME_MS) return
+		if (!dirty && !isRunning()) return
 		last = ts
 		dirty = false
 		draw()

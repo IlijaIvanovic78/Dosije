@@ -12,34 +12,36 @@ import { initEventLog } from "./js/eventlog.js"
 import { initReport } from "./js/report.js"
 import { initMapa } from "./js/mapa.js"
 import { initMetrics } from "./js/metrics.js"
+import { initSearch } from "./js/search.js"
 import { toast } from "./js/toast.js"
 
 const $ = (id) => document.getElementById(id)
 
-function renderBadges() {
+function renderMode() {
 	const c = state.config
-	const box = $("badges")
-	const conn = state.conn === "up" ? ["up", "uživo"] : state.conn === "down" ? ["down", "veza prekinuta, povezujem…"] : ["wait", "povezujem…"]
-	const nodes = []
-	if (c) {
-		const llm = c.mode === "llm"
-		nodes.push(h("span", { class: `badge-pill ${llm ? "llm" : "scripted"}`, title: llm ? `Radnici: ${c.model} · urednik: ${c.editorModel}` : "Nije podešen API ključ: agenti rade po skripti, ali sa istim alatima, gate-om i događajima" }, h("i"), llm ? `OpenAI · ${c.model}` : "Bez ključa · skriptovani agenti"))
-		const dm = { cache: "keš", live: "uživo", auto: "auto" }[c.dataMode] || c.dataMode
-		nodes.push(h("span", { class: "badge-pill data", title: c.searchProviders?.length ? `Pretraga vesti: ${c.searchProviders.join(", ")}` : "" }, `Podaci: ${dm}`))
+	const el = $("modeText")
+	if (state.conn !== "up") {
+		el.className = `mode-text ${state.conn === "down" ? "down" : ""}`
+		el.textContent = state.conn === "down" ? "veza prekinuta, povezujem…" : "povezujem…"
+		el.title = "Veza sa serverom (SSE)"
+		return
 	}
-	nodes.push(h("span", { class: `badge-pill conn ${conn[0]}`, title: "Veza sa serverom (SSE)" }, h("i"), conn[1]))
-	box.replaceChildren(...nodes)
+	el.className = "mode-text"
+	if (!c) {
+		el.textContent = ""
+		return
+	}
+	const dm = { cache: "keš", live: "uživo", auto: "auto" }[c.dataMode] || c.dataMode
+	el.textContent = c.mode === "llm" ? `OpenAI · ${c.model}` : `bez ključa · ${dm}`
+	el.title =
+		c.mode === "llm"
+			? `Radnici: ${c.model} · urednik: ${c.editorModel} · podaci: ${dm}${c.searchProviders?.length ? ` · pretraga vesti: ${c.searchProviders.join(", ")}` : ""}`
+			: `Nije podešen API ključ: agenti rade po skripti, ali sa istim alatima, kapijom i događajima · podaci: ${dm}`
 }
 
 function renderDemoChips() {
 	const demos = state.config?.demoInstitutions || []
-	for (const target of [$("demoChips"), $("heroChips")]) {
-		target.replaceChildren(
-			...demos.map((d) =>
-				h("button", { class: "chip-demo", type: "button", onclick: () => startCase(d.name) }, h("span", null, "▶"), d.name),
-			),
-		)
-	}
+	$("heroChips").replaceChildren(...demos.map((d) => h("button", { class: "demo-btn", type: "button", onclick: () => startCase(d.name) }, d.name)))
 }
 
 let starting = false
@@ -50,17 +52,15 @@ async function startCase(inputValue) {
 	const value = inst.value.trim()
 	if (!value) {
 		inst.focus()
-		inst.classList.remove("shake")
-		void inst.offsetWidth
-		inst.classList.add("shake")
+		inst.classList.add("invalid")
 		return
 	}
+	inst.classList.remove("invalid")
 	if (starting) return
 	starting = true
 	const btn = $("btnStart")
 	btn.disabled = true
-	btn.classList.add("busy")
-	btn.textContent = "Pokrećem tim…"
+	btn.textContent = "Pokrećem…"
 	try {
 		await api.start(value, focus.value.trim())
 	} catch (e) {
@@ -69,7 +69,6 @@ async function startCase(inputValue) {
 		setTimeout(() => {
 			starting = false
 			btn.disabled = false
-			btn.classList.remove("busy")
 			btn.textContent = "Napravi dosije"
 		}, 900)
 	}
@@ -78,7 +77,6 @@ async function startCase(inputValue) {
 function renderView() {
 	const hasCase = !!state.caseId || state.ui.view === "mapa"
 	document.body.dataset.view = hasCase ? "case" : "hero"
-	$("metrics").classList.toggle("open", hasCase)
 }
 
 async function boot() {
@@ -86,30 +84,32 @@ async function boot() {
 		e.preventDefault()
 		startCase()
 	})
+	$("inInst").addEventListener("input", (e) => e.target.classList.remove("invalid"))
 
 	initMetrics()
 	initLanes()
 	initGantt()
+	initSearch()
 	initDosije()
 	initInbox()
 	initEventLog()
 	initReport()
 	initMapa()
 
-	on("conn", renderBadges)
+	on("conn", renderMode)
 	on("snapshot", () => {
-		renderBadges()
+		renderMode()
 		renderDemoChips()
 		renderView()
 	})
 	on("meta", renderView)
 	on("view", renderView)
-	renderBadges()
+	renderMode()
 	renderView()
 
 	try {
 		state.config = await api.config()
-		renderBadges()
+		renderMode()
 		renderDemoChips()
 	} catch (e) {
 		console.warn("config unavailable", e)

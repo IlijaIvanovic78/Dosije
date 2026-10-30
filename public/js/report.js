@@ -14,21 +14,17 @@ export function openReport() {
 		return
 	}
 	body.innerHTML = renderMarkdown(state.report.markdown)
-	titleEl.textContent = state.institution?.name ? `Dosije: ${state.institution.name}` : "Dosije"
+	titleEl.textContent = state.institution?.name ? `Izveštaj · ${state.institution.name}` : "Izveštaj"
 	modal.hidden = false
 	dismissToasts(".toast.done")
-	requestAnimationFrame(() => modal.classList.add("open"))
 	document.body.classList.add("modal-open")
-	body.scrollTop = 0
+	modal.querySelector(".modal-scroll").scrollTop = 0
 	modal.querySelector(".modal-card").focus({ preventScroll: true })
 }
 
 export function closeReport() {
-	modal.classList.remove("open")
 	document.body.classList.remove("modal-open")
-	setTimeout(() => {
-		if (!modal.classList.contains("open")) modal.hidden = true
-	}, 220)
+	modal.hidden = true
 }
 
 async function download() {
@@ -60,7 +56,7 @@ async function copy() {
 		document.execCommand("copy")
 		ta.remove()
 	}
-	copyBtn.textContent = "Kopirano ✓"
+	copyBtn.textContent = "Kopirano"
 	setTimeout(() => (copyBtn.textContent = "Kopiraj"), 1800)
 }
 

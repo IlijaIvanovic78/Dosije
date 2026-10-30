@@ -1,7 +1,7 @@
 // "Mapa prioriteta": a list of institutions triaged by parallel "Trijaža" agents, shown as a live ranking table
-// ("gde prvo gledati"). Rows re-sort with a FLIP animation as scores arrive; the left "Tim uživo" column shows the agents.
+// ("gde prvo gledati"). Rows are re-sorted in place as scores arrive; the left "Tim" column shows the agents.
 
-import { h, createScheduler, safeUrl, sourceChipLabel, fmtNum, fmtElapsed } from "./format.js"
+import { h, createScheduler, sourceLinks, fmtNum, fmtElapsed } from "./format.js"
 import { state, on, setView, activeCount, peakCount, elapsedMs } from "./store.js"
 import { api } from "./api.js"
 import { toast } from "./toast.js"
@@ -12,6 +12,7 @@ const open = new Set()
 const order = new Map() // slug -> first-seen index (stable tie-break)
 let el = {}
 let dirty = false
+let editing = false
 
 const pct = (share) => `${(Math.round(share * 1000) / 10).toLocaleString("sr-RS")}%`
 
@@ -19,7 +20,7 @@ function mapaRunning() {
 	return state.runKind === "mapa" && state.mapa.status === "running"
 }
 
-/** Signal chips of a row: [text, tone] (tone: signal = red, paznja = amber, info = blue). */
+/** Signal chips of a row: [text, tone] (tone: signal = red, paznja = amber, info = gray). */
 export function chipsOf(s = {}) {
 	const out = []
 	if (s.vdMonths !== undefined && s.vdLimitMonths !== undefined) out.push([`v.d. ${s.vdMonths}/${s.vdLimitMonths} mes.`, s.vdOver ? "signal" : "info"])
@@ -32,7 +33,7 @@ export function chipsOf(s = {}) {
 
 const STATUS = {
 	queued: ["idle", "čeka"],
-	running: ["think", "radi…"],
+	running: ["running", "radi"],
 	done: ["done", "gotovo"],
 	error: ["error", "greška"],
 }
@@ -52,8 +53,8 @@ function buildRow(slug) {
 		num: h("span", { class: "num" }, "0"),
 		bar: h("i"),
 		chips: h("div", { class: "mchips" }),
-		pill: h("span", { class: "pill idle" }, "čeka"),
-		toggle: h("button", { class: "link-btn mtoggle", type: "button", "aria-expanded": "false" }, "Detalji ▾"),
+		stat: h("span", { class: "stat idle" }, h("i"), "čeka"),
+		toggle: h("button", { class: "link-btn mtoggle", type: "button", "aria-expanded": "false" }, "Detalji"),
 		detail: h("div", { class: "mdetail" }),
 	}
 	const main = h(
@@ -63,7 +64,7 @@ function buildRow(slug) {
 		h("div", { class: "mname" }, parts.name, parts.sub),
 		h("div", { class: "mscore" }, parts.num, h("div", { class: "bar" }, parts.bar)),
 		parts.chips,
-		parts.pill,
+		parts.stat,
 		parts.toggle,
 	)
 	const root = h("div", { class: "mrow", dataset: { slug }, role: "row" }, main, parts.detail)
@@ -84,26 +85,13 @@ function detailNodes(r) {
 	if (r.summary) nodes.push(h("p", { class: "m-sum" }, r.summary))
 	if (r.reasons?.length) nodes.push(h("ul", { class: "m-reasons" }, r.reasons.map((x) => h("li", null, x))))
 	else if (r.status !== "error") nodes.push(h("p", { class: "m-none" }, r.status === "done" ? "Nijedan signal nije prešao prag; ocena 0." : "Agent još proverava izvore…"))
-	if (r.sources?.length) {
-		nodes.push(
-			h(
-				"div",
-				{ class: "f-sources" },
-				r.sources.map((src) => {
-					const url = safeUrl(src.url)
-					const cls = `src${src.official ? " official" : ""}`
-					const label = sourceChipLabel(src)
-					return url ? h("a", { class: cls, href: url, target: "_blank", rel: "noopener noreferrer", title: src.title }, label, h("i", { class: "ext" }, "↗")) : h("span", { class: cls, title: src.title }, label)
-				}),
-			),
-		)
-	}
+	if (r.sources?.length) nodes.push(sourceLinks(r.sources))
 	const busy = mapaRunning()
 	nodes.push(
 		h(
 			"div",
 			{ class: "m-actions" },
-			h("button", { class: "btn small primary", type: "button", disabled: busy, title: busy ? "Sačekaj da se mapa završi" : "Pokreće pun dosije za ovu instituciju", onclick: () => openDosije(r) }, "Otvori dosije →"),
+			h("button", { class: "btn small primary", type: "button", disabled: busy, title: busy ? "Sačekaj da se mapa završi" : "Pokreće pun dosije za ovu instituciju", onclick: () => openDosije(r) }, "Otvori dosije"),
 			r.resolvedName && r.resolvedName !== r.name ? h("span", { class: "m-resolved" }, `razrešeno kao: ${r.resolvedName}`) : null,
 		),
 	)
@@ -125,7 +113,7 @@ function updateRow(rec, r, rank, max) {
 	if (rec.sig === sig) return
 	rec.sig = sig
 	const p = rec.parts
-	const [pillClass, pillText] = STATUS[r.status] || STATUS.queued
+	const [cls, text] = STATUS[r.status] || STATUS.queued
 	rec.root.dataset.status = r.status
 	rec.root.classList.toggle("open", open.has(r.slug))
 	p.rk.textContent = r.status === "done" ? String(rank) : "·"
@@ -133,11 +121,10 @@ function updateRow(rec, r, rank, max) {
 	p.sub.textContent = r.status === "error" ? "" : r.summary ? "" : r.status === "running" ? "agent proverava izvore" : r.status === "queued" ? "u redu" : ""
 	p.num.textContent = fmtNum(r.score)
 	p.bar.style.width = `${Math.min(100, (r.score / max) * 100)}%`
-	p.bar.dataset.tone = r.score >= 80 ? "hi" : r.score >= 50 ? "mid" : "lo"
-	p.chips.replaceChildren(...chipsOf(r.signals).map(([text, tone]) => h("span", { class: `tag code ${tone}` }, text)))
-	p.pill.className = `pill ${pillClass}`
-	p.pill.textContent = pillText
-	p.toggle.textContent = open.has(r.slug) ? "Sakrij ▴" : "Detalji ▾"
+	p.chips.replaceChildren(...chipsOf(r.signals).map(([t, tone]) => h("span", { class: `chip ${tone}` }, t)))
+	p.stat.className = `stat ${cls}`
+	p.stat.replaceChildren(h("i"), text)
+	p.toggle.textContent = open.has(r.slug) ? "Sakrij" : "Detalji"
 	p.toggle.setAttribute("aria-expanded", String(open.has(r.slug)))
 	p.detail.hidden = !open.has(r.slug)
 	if (open.has(r.slug)) p.detail.replaceChildren(...detailNodes(r))
@@ -146,9 +133,6 @@ function updateRow(rec, r, rank, max) {
 function renderTable() {
 	const list = sortedRows()
 	const max = Math.max(MAX_SCORE, ...list.map((r) => r.score))
-	const before = new Map()
-	for (const [slug, rec] of rows) if (rec.root.isConnected) before.set(slug, rec.root.getBoundingClientRect().top)
-
 	const els = []
 	let rank = 0
 	for (const r of list) {
@@ -168,31 +152,12 @@ function renderTable() {
 		}
 	}
 	if (!els.length) {
-		el.rows.replaceChildren(h("div", { class: "empty-list" }, "Još nema mape. Pokreni je dugmetom iznad: institucije se pojavljuju ovde, a Trijaža agenti rade u koloni „Tim uživo“."))
+		el.rows.replaceChildren(h("div", { class: "empty-line" }, "Još nema mape. Pokreni je dugmetom iznad: institucije se pojavljuju ovde, a Trijaža agenti rade u koloni „Tim“."))
 		return
 	}
-	// reorder the DOM, then FLIP: every row slides from its old position to the new one
 	const cur = [...el.rows.children]
 	const same = cur.length === els.length && cur.every((n, i) => n === els[i])
-	if (!same) {
-		el.rows.replaceChildren(...els)
-		for (const [slug, rec] of rows) {
-			const was = before.get(slug)
-			if (was === undefined) continue
-			const dy = was - rec.root.getBoundingClientRect().top
-			if (Math.abs(dy) < 2) continue
-			rec.root.style.transition = "none"
-			rec.root.style.transform = `translateY(${dy}px)`
-			rec.root.classList.add("moving")
-			requestAnimationFrame(() => {
-				requestAnimationFrame(() => {
-					rec.root.style.transition = ""
-					rec.root.style.transform = ""
-				})
-			})
-			setTimeout(() => rec.root.classList.remove("moving"), 700)
-		}
-	}
+	if (!same) el.rows.replaceChildren(...els)
 }
 
 function renderChrome() {
@@ -207,13 +172,15 @@ function renderChrome() {
 	const done = list.filter((r) => r.status === "done" || r.status === "error").length
 	const live = mapaRunning()
 	const status = mapa.status === "idle" || !mapa.id ? "idle" : live ? "running" : "done"
-	el.status.className = `status-pill ${status}`
+	el.status.className = `stat ${status}`
 	el.status.replaceChildren(h("i"), { idle: "čeka", running: "u toku", done: "završeno" }[status])
 
 	el.input.disabled = live
 	el.run.disabled = live
-	el.run.textContent = live ? "Mapa radi…" : "Pokreni mapu"
-	el.run.classList.toggle("busy", live)
+	el.run.textContent = live ? "Mapa radi…" : list.length ? "Pokreni ponovo" : "Pokreni mapu"
+	const compact = list.length > 0 && !editing
+	el.form.classList.toggle("compact", compact)
+	el.edit.hidden = !compact || live
 	if (!dirty && !live && document.activeElement !== el.input) {
 		const preset = (state.config?.mapaPreset || []).map((p) => p.name).join("\n")
 		if (preset && el.input.value !== preset) el.input.value = preset
@@ -238,15 +205,14 @@ async function run(e) {
 		.map((s) => s.trim())
 		.filter(Boolean)
 	if (!names.length) {
-		el.input.classList.remove("shake")
-		void el.input.offsetWidth
-		el.input.classList.add("shake")
+		el.input.focus()
 		return
 	}
 	el.run.disabled = true
 	try {
 		await api.mapa(names)
 		dirty = false
+		editing = false
 	} catch (err) {
 		toast({ kind: "error", title: "Mapa nije pokrenuta", text: err.message })
 		el.run.disabled = false
@@ -263,6 +229,7 @@ export function initMapa() {
 		input: document.getElementById("mapaInput"),
 		run: document.getElementById("btnMapaRun"),
 		preset: document.getElementById("btnMapaPreset"),
+		edit: document.getElementById("btnMapaEdit"),
 		rows: document.getElementById("mapaRows"),
 		status: document.getElementById("mapaStatus"),
 		progress: document.getElementById("mapaProgress"),
@@ -273,7 +240,13 @@ export function initMapa() {
 	el.input.addEventListener("input", () => {
 		dirty = true
 	})
+	el.edit.addEventListener("click", () => {
+		editing = true
+		schedule()
+		el.input.focus()
+	})
 	el.preset.addEventListener("click", () => {
+		editing = true
 		dirty = false
 		el.input.value = (state.config?.mapaPreset || []).map((p) => p.name).join("\n")
 	})

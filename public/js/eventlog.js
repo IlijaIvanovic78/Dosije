@@ -7,11 +7,12 @@ const CAP = 2000
 const CATS = [
 	{ id: "loop", label: "petlja" },
 	{ id: "tool", label: "alati" },
+	{ id: "source", label: "izvori" },
 	{ id: "domain", label: "domen" },
 	{ id: "intercept", label: "interception" },
 ]
 
-let drawer, list, countEl, rateEl, tickerEl, stateEl, agentSel
+let drawer, list, countEl, rateEl, tickerEl, stateEl, agentSel, hintEl
 const enabled = new Set(CATS.map((c) => c.id))
 let queue = []
 let hover = false
@@ -20,6 +21,7 @@ let stamps = []
 let agentSig = ""
 
 export function categoryOf(type) {
+	if (type === "izvor.upit") return "source"
 	if (type.startsWith("function_call")) return "tool"
 	if (type.startsWith("interception")) return "intercept"
 	if (type.startsWith("inference") || type.startsWith("message") || type === "model.answer") return "loop"
@@ -28,6 +30,7 @@ export function categoryOf(type) {
 
 function colorClass(type) {
 	if (type === "claim.blocked") return "t-err"
+	if (type === "izvor.upit") return "t-tool"
 	if (type.startsWith("function_call")) return "t-tool"
 	if (type.startsWith("interception")) return "t-int"
 	if (type.startsWith("inference") || type.startsWith("message") || type === "model.answer") return "t-loop"
@@ -79,6 +82,8 @@ export function describe(ev) {
 			return p.decision ? `odluka: ${p.decision}` : `odgovor: ${truncate(p.answer, 100)}`
 		case "task.updated":
 			return `${p.task?.title} → ${p.task?.status}`
+		case "izvor.upit":
+			return `${p.source} · ${p.action} · ${p.label} → ${p.status}${p.ms != null ? ` (${p.ms} ms)` : ""}`
 		case "budget.updated":
 			return `alati ${p.budget?.toolCalls}/${p.budget?.maxToolCalls} · petlje ${p.budget?.loops}/${p.budget?.maxLoops}`
 		case "dosije.zatvori":
@@ -139,7 +144,7 @@ function flush() {
 	const ev = state.lastEvent
 	if (ev) tickerEl.textContent = `${ev.type} · ${ev.producerName || ""} · ${truncate(describe(ev), 80)}`
 	stateEl.hidden = !(hover || !stick)
-	stateEl.textContent = hover ? "⏸ pauzirano dok je miš iznad" : "↓ na kraj"
+	stateEl.textContent = hover ? "pauzirano dok je miš iznad" : "na kraj ↓"
 	stateEl.classList.toggle("link", !hover && !stick)
 	syncAgents()
 }
@@ -161,6 +166,7 @@ function applyFilters() {
 function setOpen(open) {
 	drawer.classList.toggle("collapsed", !open)
 	drawer.querySelector(".drawer-toggle").setAttribute("aria-expanded", String(open))
+	hintEl.textContent = open ? "sakrij" : "prikaži"
 	try {
 		localStorage.setItem("dosije.drawer", open ? "1" : "0")
 	} catch {}
@@ -175,10 +181,11 @@ export function initEventLog() {
 	tickerEl = document.getElementById("evTicker")
 	stateEl = document.getElementById("evState")
 	agentSel = document.getElementById("evAgent")
+	hintEl = document.getElementById("evHint")
 
 	const chips = document.getElementById("evChips")
 	for (const c of CATS) {
-		const b = h("button", { class: `fchip toggle on c-${c.id}`, "aria-pressed": "true", onclick: () => {
+		const b = h("button", { class: `fchip toggle on c-${c.id}`, type: "button", "aria-pressed": "true", onclick: () => {
 			if (enabled.has(c.id)) enabled.delete(c.id)
 			else enabled.add(c.id)
 			b.classList.toggle("on", enabled.has(c.id))

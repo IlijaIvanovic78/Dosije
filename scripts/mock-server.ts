@@ -27,6 +27,7 @@ import type {
 	Section,
 	Severity,
 	SignalCode,
+	SourceActivity,
 	SourceKind,
 	SourceRef,
 	WireEvent,
@@ -216,6 +217,72 @@ function budgetEvent(c: Case) {
 	emit(c, "budget.updated", UREDNIK, { budget: c.budget })
 }
 
+// ─── live search: izvor.upit pairs (u_toku -> ok | kes | greska) ─────────────
+
+interface ReqSpec {
+	source: string
+	kind: SourceKind | "web"
+	action: SourceActivity["action"]
+	label: string
+	url?: string
+	items?: number
+	cache?: boolean
+	fail?: string
+}
+
+/** Public-source requests a tool would make (fictional URLs); tools without any are pure computation. */
+function deriveReqs(tool: string, args: Record<string, unknown>): ReqSpec[] | undefined {
+	const name = String(args.name ?? args.personName ?? "")
+	const query = String(args.query ?? "")
+	switch (tool) {
+		case "acas_funkcioneri":
+			return [{ source: "ACAS", kind: "acas", action: "pretraga", label: `funkcioneri: ${INSTITUTION.name}`, url: "https://example.org/acas/registar/9001", items: 3 }]
+		case "acas_imovina":
+			return [{ source: "ACAS", kind: "acas", action: "pretraga", label: `izveštaji o imovini: ${name}`, url: "https://example.org/acas/imovina", items: 2 }]
+		case "acas_pretraga_osobe":
+			return [{ source: "ACAS", kind: "acas", action: "pretraga", label: `osoba: ${name}`, items: 0 }]
+		case "paragraf_akti":
+			return [{ source: "Službeni glasnik", kind: "paragraf", action: "pretraga", label: `akti o imenovanju: ${name}`, url: "https://example.org/paragraf/akti", items: 1 }]
+		case "jn_pregled":
+			return [1, 2, 3].map((p) => ({ source: "Portal javnih nabavki", kind: "jnportal" as const, action: "preuzimanje" as const, label: `ugovori, strana ${p}/16`, url: "https://example.org/jn/ugovori", items: 100, cache: p === 1 }))
+		case "iw_veze":
+		case "iw_veze_dobavljaca":
+			return [{ source: "Integrity Watch", kind: "integrity_watch", action: "preuzimanje", label: "veze dobavljača, CSV 2021-2026", items: 2, cache: true }]
+		case "dri_izvestaji":
+			return [{ source: "DRI", kind: "dri", action: "pretraga", label: "spisak izveštaja o reviziji", url: "https://example.org/dri/izvestaji", items: 19 }]
+		case "dri_nalazi":
+			return [{ source: "DRI", kind: "dri", action: "dokument", label: "PDF: Izveštaj o reviziji, 2025", url: "https://example.org/dri/izvestaj-2025-17", items: 6 }]
+		case "vesti_pretraga":
+			return [
+				{ source: "Google News", kind: "vesti", action: "pretraga", label: `vesti: ${query || name}`, url: `https://example.org/vesti?q=${encodeURIComponent(query || name)}`, items: 9 },
+				{ source: "N1 (RSS)", kind: "vesti", action: "pretraga", label: `vesti: ${query || name}`, items: 3 },
+				...(query.startsWith("sindikat") ? [{ source: "GDELT", kind: "vesti" as const, action: "pretraga" as const, label: `vesti: ${query}`, fail: "istek vremena" }] : []),
+			]
+		case "vest_tekst":
+			return [{ source: "Primer Vesti", kind: "vesti", action: "dokument", label: "članak: Novi direktor preuzeo dužnost", url: String(args.url ?? ""), items: 1 }]
+		case "apr_firma":
+			return [{ source: "APR", kind: "apr", action: "pretraga", label: `firma: ${name}`, url: "https://example.org/apr/pretraga", items: 1, cache: true }]
+		case "firma_signali":
+			return [{ source: "Portal javnih nabavki", kind: "jnportal", action: "preuzimanje", label: `ugovori: ${name}`, url: "https://example.org/jn/ugovori", items: 12, cache: true }]
+		case "pep_provera":
+			return [{ source: "OpenSanctions", kind: "opensanctions", action: "pretraga", label: `PEP: ${name}`, items: 0, cache: true }]
+		default:
+			return undefined
+	}
+}
+
+function beginSource(c: Case, who: AgentInfo, tool: string, r: ReqSpec, loopId: string): SourceActivity {
+	const a: SourceActivity = { id: nid(c, "q"), agentId: who.id, agentName: who.name, tool, source: r.source, kind: r.kind, action: r.action, label: r.label, url: r.url, status: "u_toku", at: iso() }
+	emit(c, "izvor.upit", who, a, loopId)
+	return a
+}
+
+function endSource(c: Case, who: AgentInfo, a: SourceActivity, r: ReqSpec, ms: number, loopId: string) {
+	const status: SourceActivity["status"] = r.fail ? "greska" : r.cache ? "kes" : "ok"
+	const done: SourceActivity = { ...a, status, ms: r.cache ? Math.round(rnd(3, 40)) : ms, items: r.fail ? undefined : r.items, cachedAt: r.cache ? "2026-10-29T18:20:00.000Z" : undefined, error: r.fail, at: iso() }
+	emit(c, "izvor.upit", who, done, loopId)
+}
+
 type GateResult = "pass" | "redirect"
 
 interface Step {
@@ -247,7 +314,17 @@ async function runLoop(c: Case, who: AgentInfo, content: string, steps: Step[], 
 			if (result === "redirect") continue
 			const callId = nid(c, "call")
 			emit(c, "function_call.started", who, { loopId, callId, name: step.tool, args: step.args ?? {} }, loopId)
-			await sleep(c, step.run ?? 1000)
+			const reqs = deriveReqs(step.tool, step.args ?? {}) ?? []
+			if (reqs.length) {
+				for (const r of reqs) {
+					const t0 = Date.now()
+					const act = beginSource(c, who, step.tool, r, loopId)
+					await sleep(c, (step.run ?? 1000) / reqs.length)
+					endSource(c, who, act, r, Date.now() - t0, loopId)
+				}
+			} else {
+				await sleep(c, step.run ?? 1000)
+			}
 			await step.effect?.()
 			emit(c, "function_call.completed", who, { loopId, callId, output: step.output ?? `{"ok":true}` }, loopId)
 			if (c.stats.toolCalls % 8 === 0) budgetEvent(c)

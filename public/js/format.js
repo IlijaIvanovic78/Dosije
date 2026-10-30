@@ -142,10 +142,10 @@ export const SECTIONS = [
 export const SECTION_LABEL = Object.fromEntries(SECTIONS.map((x) => [x.id, x.label]))
 
 export const STATUS_LABEL = {
-	zvanicno: "ZVANIČNO",
-	potvrdjeno: "POTVRĐENO",
-	nepotvrdjeno: "NEPOTVRĐENO",
-	demantovano: "DEMANTOVANO",
+	zvanicno: "Zvanično",
+	potvrdjeno: "Potvrđeno",
+	nepotvrdjeno: "Nepotvrđeno",
+	demantovano: "Demantovano",
 }
 
 export const SEVERITY_LABEL = { info: "info", paznja: "pažnja", signal: "signal" }
@@ -200,4 +200,56 @@ export function sourceChipLabel(src) {
 	const base = src.kind === "vesti" ? truncate(String(src.title || "Vesti").split(/\s[–—-]\s/)[0], 22) : SOURCE_LABEL[src.kind] || src.kind
 	const d = fmtDate(src.publishedAt || src.retrievedAt)
 	return d ? `${base} · ${d}` : base
+}
+
+/** "ACAS · publicacas.acas.rs · 22.05.2025" */
+export function sourceLine(src) {
+	const base = src.kind === "vesti" ? truncate(String(src.title || "Vesti").split(/\s[–—-]\s/)[0], 28) : SOURCE_LABEL[src.kind] || src.kind
+	return [base, domainOf(src.url), fmtDate(src.publishedAt || src.retrievedAt)].filter(Boolean).join(" · ")
+}
+
+export function statusTag(status) {
+	return h("span", { class: `stat ${status}` }, h("i"), STATUS_LABEL[status] || status)
+}
+
+/** Sources as quiet links: label, domain and date. */
+export function sourceLinks(sources) {
+	return h(
+		"div",
+		{ class: "f-sources" },
+		(sources || []).map((src) => {
+			const url = safeUrl(src.url)
+			const label = sourceLine(src)
+			const title = `${src.title}${src.official ? " (zvanični izvor)" : ""}`
+			return url ? h("a", { class: `src${src.official ? " official" : ""}`, href: url, target: "_blank", rel: "noopener noreferrer", title }, label) : h("span", { class: "src", title }, label)
+		}),
+	)
+}
+
+export function domainOf(url) {
+	try {
+		return new URL(url).hostname.replace(/^www\./, "")
+	} catch {
+		return ""
+	}
+}
+
+/** Two letters for the avatar: "Kadrovik" -> "KA"; "Firme · ZGOP" -> "FZ" (group + entity). */
+export function initials(name) {
+	const str = String(name || "")
+	const [head, ...rest] = str.split("·").map((x) => x.trim())
+	const letters = (x) => [...(x.match(/\p{L}/gu) || [])]
+	if (rest.length) {
+		const a = letters(head)[0]
+		const b = letters(rest.join(" "))[0]
+		if (a && b) return (a + b).toUpperCase()
+	}
+	const l = letters(head)
+	return ((l[0] || "?") + (l[1] || "")).toUpperCase()
+}
+
+/** Round initials avatar; the tint comes from the agent group (see styles.css). */
+export function avatar(info, cls = "") {
+	const name = info?.name || ""
+	return h("span", { class: `av ${cls}`.trim(), dataset: { g: info?.group || "sistem" }, "aria-hidden": "true" }, initials(name))
 }

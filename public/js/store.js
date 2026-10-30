@@ -30,6 +30,7 @@ export const state = {
 	ui: { view: "dosije" }, // right column: "dosije" | "mapa"
 
 	lanes: new Map(),
+	acts: new Map(), // live search: request id -> SourceActivity (+ t0), in order of first appearance
 	loops: new Map(), // loopId -> { agentId, t }
 	active: 0,
 	peak: 0,
@@ -120,6 +121,7 @@ function newLane(info) {
 		openInf: null,
 		openWait: null,
 		tools: new Map(),
+		reqs: new Map(), // open source requests (izvor.upit u_toku) by id
 		intercepts: new Set(),
 		loopsOpen: 0,
 		answered: false,
@@ -127,7 +129,6 @@ function newLane(info) {
 		left: false,
 		blockedUntil: 0,
 		findings: 0,
-		pulseAt: 0,
 		joinedAt: parseIso(info.joinedAt) || Date.now(),
 	}
 }
@@ -162,7 +163,7 @@ function stubInfo(ev) {
 		group,
 		dynamic: dyn,
 		sources: [],
-		emoji: "🤖",
+		emoji: "",
 		description: "",
 		joinedAt: new Date(ev.t).toISOString(),
 	}
@@ -184,6 +185,7 @@ function closeAll(lane, t) {
 	for (const seg of lane.tools.values()) closeSeg(seg, t)
 	lane.openInf = lane.openWait = null
 	lane.tools.clear()
+	lane.reqs.clear()
 	lane.intercepts.clear()
 }
 
@@ -228,6 +230,7 @@ function resetDerived(keepAgents = false) {
 		state.lanes.clear()
 		state.agents.clear()
 	}
+	state.acts.clear()
 	state.series = []
 	state.active = 0
 	state.peak = 0
@@ -349,10 +352,6 @@ export function applyEvent(ev) {
 				lane.joinedAt = t
 				lane.spawnT = t
 				lane.marks.push({ k: "spawn", t, from: info.spawnedBy })
-				const spawner = state.lanes.get(info.spawnedBy)
-				if (spawner) spawner.marks.push({ k: "spawnOut", t, to: info.id })
-				const fabrika = [...state.lanes.values()].find((l) => l.info.name === "Fabrika")
-				if (fabrika) fabrika.pulseAt = t
 			}
 			emit("agents", { spawned: info.dynamic && !existed ? info.id : null })
 			break
@@ -442,6 +441,19 @@ export function applyEvent(ev) {
 			}
 			if (/^Agent nije uspeo/i.test(p.text || "")) lane.error = true
 			refreshActive(t)
+			emit("lane", lane.id)
+			break
+		}
+		case "izvor.upit": {
+			if (!p.id) break
+			const prev = state.acts.get(p.id)
+			const act = { ...p, t0: prev ? prev.t0 : parseIso(p.at) || t }
+			state.acts.set(p.id, act)
+			if (!prev && state.acts.size > 400) state.acts.delete(state.acts.keys().next().value)
+			const lane = state.lanes.get(p.agentId) || laneFor(ev, true)
+			if (p.status === "u_toku") lane.reqs.set(p.id, act)
+			else lane.reqs.delete(p.id)
+			emit("source", act)
 			emit("lane", lane.id)
 			break
 		}
@@ -636,11 +648,5 @@ export function applyEvent(ev) {
 			break
 	}
 
-	// observers light up on every event
-	if (ev.producerId) {
-		const pl = state.lanes.get(ev.producerId)
-		if (pl) pl.pulseAt = t
-	}
-	for (const l of state.lanes.values()) if (l.info.group === "sistem" && l.info.name !== "Fabrika") l.pulseAt = t
 	emit("event", ev)
 }

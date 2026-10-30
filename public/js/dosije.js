@@ -1,6 +1,6 @@
-// "Dosije" panel: institution card, main signals, entity chips, section tabs, finding cards.
+// "Dosije": the case file as a document: institution header, main signals, entities, section tabs, finding rows.
 
-import { h, reconcile, createScheduler, parseIso, fmtClock, truncate, safeUrl, sourceChipLabel, SECTIONS, SECTION_LABEL, STATUS_LABEL, SIGNAL_LABEL, RULE_LABEL, ROLE_LABEL, SOURCE_LABEL } from "./format.js"
+import { h, reconcile, createScheduler, parseIso, fmtClock, truncate, statusTag, sourceLinks, SECTIONS, SECTION_LABEL, STATUS_LABEL, SIGNAL_LABEL, RULE_LABEL, ROLE_LABEL, SOURCE_LABEL } from "./format.js"
 import { state, on, openTasks, setFilter, clearFilters } from "./store.js"
 import { openInbox } from "./inbox.js"
 import { openReport } from "./report.js"
@@ -11,7 +11,7 @@ const SEV_RANK = { signal: 3, paznja: 2, info: 1 }
 const STATUS_RANK = { zvanicno: 4, potvrdjeno: 3, nepotvrdjeno: 2, demantovano: 1 }
 const SECTION_RANK = { rukovodstvo: 5, novac: 4, firme: 3, revizija: 2, mediji: 1 }
 const cards = new Map() // findingId -> { el, sig }
-const fresh = new Map() // id -> timestamp (animate entry)
+const fresh = new Map() // id -> timestamp (fade in / highlight)
 const chipCache = new Map()
 let el = {}
 let lastInst = ""
@@ -29,68 +29,39 @@ function shortSource(f) {
 	return src.kind === "vesti" ? truncate(String(src.title || "Vesti").split(/\s[–—-]\s/)[0], 20) : SOURCE_LABEL[src.kind] || src.kind
 }
 
-function conflictBox(f) {
+function conflictNote(f) {
 	const c = f.conflictId ? state.conflicts.get(f.conflictId) : null
 	if (!c) return null
 	const [a, b] = c.findingIds
 	return h(
 		"div",
-		{ class: "conflict" },
-		h(
-			"div",
-			{ class: "c-head" },
-			h("span", { class: "c-ico" }, "⚖"),
-			h("b", null, "Konflikt rešen: "),
-			h("span", { class: "c-side" }, `${shortSource(state.findings.get(a))} «${c.values[0]}»`),
-			" vs ",
-			h("span", { class: "c-side" }, `${shortSource(state.findings.get(b))} «${c.values[1]}»`),
-			h("span", { class: "c-rule" }, ` → ${RULE_LABEL[c.rule] || c.rule}`),
-		),
-		c.explanation ? h("div", { class: "c-exp" }, c.explanation) : null,
+		{ class: "note conflict" },
+		h("b", null, "Konflikt rešen: "),
+		`${shortSource(state.findings.get(a))} „${c.values[0]}“ naspram ${shortSource(state.findings.get(b))} „${c.values[1]}“`,
+		h("span", null, ` → ${RULE_LABEL[c.rule] || c.rule}.`),
+		c.explanation ? h("div", { class: "note-sub" }, c.explanation) : null,
 	)
 }
 
-function sourceChips(f) {
-	return h(
-		"div",
-		{ class: "f-sources" },
-		(f.sources || []).map((src) => {
-			const url = safeUrl(src.url)
-			const cls = `src${src.official ? " official" : ""}`
-			const label = sourceChipLabel(src)
-			return url ? h("a", { class: cls, href: url, target: "_blank", rel: "noopener noreferrer", title: src.title }, label, h("i", { class: "ext" }, "↗")) : h("span", { class: cls, title: src.title }, label)
-		}),
-	)
-}
-
-function approvalChip(f) {
-	if (f.approval === "pending") return h("span", { class: "tag appr pending" }, "⏸ čeka odobrenje novinara")
-	if (f.approval === "approved") return h("span", { class: "tag appr approved" }, "✓ odobrio novinar")
-	if (f.approval === "rejected") return h("span", { class: "tag appr rejected" }, "✕ odbio novinar")
+function approvalNote(f) {
+	if (f.approval === "pending") return h("span", { class: "appr pending" }, "čeka odobrenje novinara")
+	if (f.approval === "approved") return h("span", { class: "appr" }, "odobrio novinar")
+	if (f.approval === "rejected") return h("span", { class: "appr rejected" }, "odbio novinar")
 	return null
 }
 
 function cardChildren(f) {
 	const created = parseIso(f.createdAt)
 	const merged = f.mergedFrom?.length
-	const codeTag = f.signalCode
-		? h("span", { class: `tag code ${f.severity}` }, `⚑ ${SIGNAL_LABEL[f.signalCode] || f.signalCode}`)
-		: f.severity !== "info"
-			? h("span", { class: `tag code ${f.severity}` }, f.severity === "signal" ? "signal" : "pažnja")
-			: null
+	const code = f.signalCode ? SIGNAL_LABEL[f.signalCode] || f.signalCode : f.severity === "signal" ? "signal" : f.severity === "paznja" ? "pažnja" : ""
 	return [
-		h("div", { class: "f-bar" }),
-		h(
-			"div",
-			{ class: "f-body" },
-			h("div", { class: "f-top" }, h("span", { class: "tag sect" }, SECTION_LABEL[f.section] || f.section), codeTag, approvalChip(f), h("span", { class: `badge ${f.status}` }, STATUS_LABEL[f.status] || f.status)),
-			h("h3", { class: "f-title" }, f.title),
-			h("p", { class: "f-text" }, f.text),
-			conflictBox(f),
-			f.note ? h("div", { class: "f-note" }, "✎ ", f.note) : null,
-			sourceChips(f),
-			h("div", { class: "f-foot" }, h("span", null, `dodao ${f.agentName || "agent"}`, created ? ` · ${fmtClock(created)}` : ""), merged ? h("span", { class: "merged" }, `⛙ spojeno iz ${merged + 1} nalaza`) : null),
-		),
+		h("div", { class: "f-meta" }, h("span", { class: "sect" }, SECTION_LABEL[f.section] || f.section), code ? h("span", { class: `code ${f.severity}` }, code) : null, statusTag(f.status), approvalNote(f)),
+		h("h3", { class: "f-title" }, f.title),
+		h("p", { class: "f-text" }, f.text),
+		conflictNote(f),
+		f.note ? h("div", { class: "note" }, h("b", null, "Napomena urednika: "), f.note) : null,
+		sourceLinks(f.sources),
+		h("div", { class: "f-foot" }, `dodao ${f.agentName || "agent"}`, created ? ` · ${fmtClock(created)}` : "", merged ? ` · spojeno iz ${merged + 1} nalaza` : ""),
 	]
 }
 
@@ -100,24 +71,18 @@ function ensureCard(f) {
 	if (!c) {
 		const root = h("article", { class: "finding", dataset: { id: f.id } })
 		root.addEventListener("animationend", (e) => {
-			if (e.target === root) root.classList.remove("enter", "pulse")
+			if (e.target === root && e.animationName === "hlfade") root.classList.remove("is-new", "flash")
 		})
 		c = { el: root, sig: "" }
 		cards.set(f.id, c)
-		if (state.live && fresh.has(f.id)) root.classList.add("enter")
+		if (state.live && fresh.has(f.id)) root.classList.add("is-new")
 	}
 	if (c.sig !== sig) {
-		const wasBuilt = c.sig !== ""
 		c.sig = sig
-		const keep = ["enter", "hl", "dimmed", "flash"].filter((k) => c.el.classList.contains(k)).join(" ")
+		const keep = ["is-new", "dimmed", "flash"].filter((k) => c.el.classList.contains(k)).join(" ")
 		c.el.className = `finding sev-${f.severity} st-${f.status} ${keep}`
 		c.el.dataset.agent = f.agentId || ""
-		c.el.replaceChildren(...cardChildren(f))
-		if (wasBuilt) {
-			c.el.classList.remove("pulse")
-			void c.el.offsetWidth
-			c.el.classList.add("pulse")
-		}
+		c.el.replaceChildren(...cardChildren(f).filter(Boolean))
 	}
 	return c
 }
@@ -140,30 +105,22 @@ function renderInst() {
 	const statusLabel = { idle: "čeka", running: "u toku", finalizing: "završava se", done: "završeno" }[status] || status
 	const ids = []
 	if (i) {
-		for (const [lab, v] of [["PIB", i.pib], ["MB", i.mb], ["ACAS ID", i.acasId], ["JN ID", i.jnId]]) if (v) ids.push(h("span", { class: "id-chip" }, h("i", null, lab), h("b", null, v)))
+		for (const [lab, v] of [["PIB", i.pib], ["MB", i.mb], ["ACAS", i.acasId], ["JN", i.jnId]]) if (v) ids.push(`${lab} ${v}`)
 	}
 	const nodes = [
-		h(
-			"div",
-			{ class: "inst-main" },
-			h("div", { class: "inst-icon" }, "🏛"),
-			h(
-				"div",
-				{ class: "inst-text" },
-				h("h2", { class: "inst-name" }, i?.name || state.input || "Učitavam instituciju…"),
-				i?.nameCyr ? h("div", { class: "inst-cyr" }, i.nameCyr) : null,
-				h("div", { class: "inst-meta" }, i?.legalType ? h("span", { class: "legal" }, i.legalType) : null, ids),
-			),
-			h("span", { class: `status-pill ${status}` }, h("i"), statusLabel),
-		),
-		state.focus ? h("div", { class: "inst-focus" }, h("b", null, "Fokus: "), state.focus) : null,
-		state.input && i && state.input !== i.name ? h("div", { class: "inst-focus muted" }, h("b", null, "Upit: "), truncate(state.input, 140)) : null,
+		h("div", { class: "label" }, "Dosije ", h("span", { class: `stat ${status}` }, h("i"), statusLabel)),
+		h("h2", { class: "serif-title" }, i?.name || state.input || "Učitavam instituciju…"),
+		i?.nameCyr ? h("div", { class: "inst-cyr" }, i.nameCyr) : null,
+		i?.legalType ? h("div", { class: "inst-legal" }, i.legalType) : null,
+		ids.length ? h("div", { class: "meta-line" }, ids.join(" · ")) : null,
+		state.focus ? h("div", { class: "meta-sub" }, h("b", null, "Fokus: "), state.focus) : null,
+		state.input && i && state.input !== i.name ? h("div", { class: "meta-sub" }, h("b", null, "Upit: "), truncate(state.input, 140)) : null,
 	]
 	el.inst.replaceChildren(...nodes.filter(Boolean))
 }
 
-function signalRow(id, title, f) {
-	return h("button", { class: "sig-row", onclick: () => focusFinding(id) }, h("i", { class: "sig-dot" }), h("span", { class: "sig-title" }, title), f ? h("span", { class: `badge mini ${f.status}` }, STATUS_LABEL[f.status]) : null, h("span", { class: "sig-go" }, "›"))
+function signalRow(n, id, title, f) {
+	return h("li", null, h("button", { class: "sig-row", type: "button", onclick: () => focusFinding(id) }, h("span", { class: "sig-n" }, String(n)), h("span", { class: "sig-title" }, title), f ? statusTag(f.status) : null))
 }
 
 function renderSignals() {
@@ -175,7 +132,7 @@ function renderSignals() {
 	if (done) {
 		sig = `done|${report.generatedAt}|${report.topSignals.length}|${report.topSignals.map((s) => state.findings.get(s.findingId)?.status).join("")}`
 		count = report.topSignals.length
-		nodes = [report.lede ? h("p", { class: "lede" }, report.lede) : null, h("div", { class: "sig-list" }, report.topSignals.map((s) => signalRow(s.findingId, s.headline, state.findings.get(s.findingId))))]
+		nodes = [report.lede ? h("p", { class: "lede" }, report.lede) : null, h("ol", { class: "sig-list" }, report.topSignals.map((s, i) => signalRow(i + 1, s.findingId, s.headline, state.findings.get(s.findingId))))]
 	} else {
 		// live ranking: official sources first, then leadership > money > firms > audit > media, then newest
 		const list = [...state.findings.values()]
@@ -184,8 +141,8 @@ function renderSignals() {
 		count = list.length
 		sig = `live|${list.map((f) => f.id + f.status + f.title).join(",")}|${state.status}`
 		nodes = list.length
-			? [h("div", { class: "sig-list" }, list.slice(0, 5).map((f) => signalRow(f.id, f.title, f)))]
-			: [state.status === "idle" ? h("div", { class: "empty-note" }, "Nema aktivnog dosijea.") : h("div", { class: "empty-note shimmer" }, "Agenti traže prve signale za proveru…")]
+			? [h("ol", { class: "sig-list" }, list.slice(0, 5).map((f, i) => signalRow(i + 1, f.id, f.title, f)))]
+			: [h("p", { class: "empty-line" }, state.status === "idle" ? "Nema aktivnog dosijea." : "Agenti traže prve signale za proveru…")]
 	}
 	if (sig === lastSignals) return
 	lastSignals = sig
@@ -203,10 +160,10 @@ function renderEntities() {
 				"button",
 				{
 					class: `ent ${e.kind}${state.live && fresh.has(e.id) ? " enter" : ""}`,
+					type: "button",
 					title: `${e.kind === "firma" ? "firma" : "osoba"}${e.role ? ` · ${ROLE_LABEL[e.role] || e.role}` : ""} · klik filtrira nalaze`,
 					onclick: () => setFilter("entityId", e.id),
 				},
-				h("span", { class: "e-ico" }, e.kind === "firma" ? "🏢" : "👤"),
 				h("span", { class: "e-name" }, truncate(e.name, 34)),
 				e.role && e.role !== "pomenut" ? h("span", { class: "e-role" }, ROLE_LABEL[e.role] || e.role) : null,
 			)
@@ -245,7 +202,7 @@ function renderTabs() {
 		...defs.map((d) =>
 			h(
 				"button",
-				{ class: `tab${active === d.id ? " active" : ""}${d.id === "verify" ? " verify" : ""}`, role: "tab", "aria-selected": String(active === d.id), onclick: () => setFilter("section", d.id === active ? "all" : d.id) },
+				{ class: `tab${active === d.id ? " active" : ""}`, type: "button", role: "tab", "aria-selected": String(active === d.id), onclick: () => setFilter("section", d.id === active ? "all" : d.id) },
 				d.label,
 				h("span", { class: "count" }, String(c[d.id] ?? 0)),
 			),
@@ -257,14 +214,14 @@ function renderFilterBar() {
 	const parts = []
 	if (state.filters.agentId) {
 		const a = state.agents.get(state.filters.agentId)
-		parts.push(h("button", { class: "fchip", onclick: () => setFilter("agentId", state.filters.agentId) }, `${a?.emoji || "🤖"} Agent: ${a?.name || "?"} `, h("b", null, "×")))
+		parts.push(h("button", { class: "fchip", type: "button", onclick: () => setFilter("agentId", state.filters.agentId) }, `Agent: ${a?.name || "?"} ×`))
 	}
 	if (state.filters.entityId) {
 		const e = state.entities.get(state.filters.entityId)
-		parts.push(h("button", { class: "fchip", onclick: () => setFilter("entityId", state.filters.entityId) }, `${e?.kind === "firma" ? "🏢" : "👤"} ${truncate(e?.name || "?", 30)} `, h("b", null, "×")))
+		parts.push(h("button", { class: "fchip", type: "button", onclick: () => setFilter("entityId", state.filters.entityId) }, `${truncate(e?.name || "?", 30)} ×`))
 	}
 	el.filterBar.hidden = !parts.length
-	if (parts.length) el.filterBar.replaceChildren(h("span", { class: "f-lab" }, "Filter:"), ...parts, h("button", { class: "link-btn", onclick: clearFilters }, "ukloni sve"))
+	if (parts.length) el.filterBar.replaceChildren(h("span", { class: "f-lab" }, "Filter:"), ...parts, h("button", { class: "link-btn", type: "button", onclick: clearFilters }, "ukloni sve"))
 }
 
 function renderFindings() {
@@ -281,17 +238,20 @@ function renderFindings() {
 	const hl = state.filters.agentId
 	for (const f of list) {
 		const c = cards.get(f.id)
-		c.el.classList.toggle("hl", !!hl && f.agentId === hl)
 		c.el.classList.toggle("dimmed", !!hl && f.agentId !== hl)
 	}
 	const t = Date.now()
 	for (const [id, ts] of fresh) if (t - ts > 4000) fresh.delete(id)
 	if (!els.length) {
 		const msg = state.status === "idle" ? "Nema aktivnog dosijea." : state.findings.size ? "Nema nalaza za izabrani filter." : "Nalazi će se pojaviti ovde čim ih agenti dodaju, svaki sa izvorom i statusom."
-		reconcile(el.findList, [h("div", { class: "empty-list" }, msg)])
+		reconcile(el.findList, [h("div", { class: "empty-line" }, msg)])
 		return
 	}
 	reconcile(el.findList, els)
+}
+
+function verifyRow(label, text, go, onclick) {
+	return h("button", { class: "v-item", type: "button", onclick }, h("span", { class: "v-tag" }, label), h("span", { class: "v-text" }, text), h("span", { class: "v-go" }, go))
 }
 
 function renderVerify() {
@@ -305,18 +265,14 @@ function renderVerify() {
 		h(
 			"section",
 			{ class: "v-block" },
-			h("h4", null, "Otvorena pitanja za tebe", h("span", { class: "count" }, String(tasks.length))),
-			tasks.length
-				? tasks.map((t) => h("button", { class: "v-item task", onclick: () => openInbox() }, h("span", { class: "v-ico" }, t.kind === "odobrenje" ? "⏸" : "❓"), h("span", { class: "v-text" }, h("b", null, t.fromAgentName), `: ${truncate(t.title || t.question, 120)}`), h("span", { class: "v-go" }, "Otvori ›")))
-				: h("div", { class: "empty-note" }, "Nema otvorenih pitanja."),
+			h("h4", { class: "sec-title sm" }, "Otvorena pitanja za tebe", h("span", { class: "count" }, String(tasks.length))),
+			tasks.length ? tasks.map((t) => verifyRow(t.kind === "odobrenje" ? "odobrenje" : "pitanje", `${t.fromAgentName}: ${truncate(t.title || t.question, 120)}`, "otvori", () => openInbox())) : h("p", { class: "empty-line" }, "Nema otvorenih pitanja."),
 		),
 		h(
 			"section",
 			{ class: "v-block" },
-			h("h4", null, "Nepotvrđeni nalazi", h("span", { class: "count" }, String(unconfirmed.length))),
-			unconfirmed.length
-				? unconfirmed.map((f) => h("button", { class: "v-item", onclick: () => focusFinding(f.id) }, h("span", { class: "badge mini nepotvrdjeno" }, "NEPOTVRĐENO"), h("span", { class: "v-text" }, f.title), h("span", { class: "v-go" }, "Prikaži ›")))
-				: h("div", { class: "empty-note" }, "Svi nalazi imaju potvrdu ili zvaničan izvor."),
+			h("h4", { class: "sec-title sm" }, "Nepotvrđeni nalazi", h("span", { class: "count" }, String(unconfirmed.length))),
+			unconfirmed.length ? unconfirmed.map((f) => verifyRow("nepotvrđeno", f.title, "prikaži", () => focusFinding(f.id))) : h("p", { class: "empty-line" }, "Svi nalazi imaju potvrdu ili zvaničan izvor."),
 		),
 	]
 	if (toVerify.length || state.status === "done") {
@@ -324,8 +280,8 @@ function renderVerify() {
 			h(
 				"section",
 				{ class: "v-block" },
-				h("h4", null, "Preporuka urednika: šta još proveriti", h("span", { class: "count" }, String(toVerify.length))),
-				toVerify.length ? h("ul", { class: "v-list" }, toVerify.map((t) => h("li", null, t))) : h("div", { class: "empty-note" }, "Nema dodatnih preporuka."),
+				h("h4", { class: "sec-title sm" }, "Preporuka urednika: šta još proveriti", h("span", { class: "count" }, String(toVerify.length))),
+				toVerify.length ? h("ul", { class: "v-list" }, toVerify.map((t) => h("li", null, t))) : h("p", { class: "empty-line" }, "Nema dodatnih preporuka."),
 			),
 		)
 	}
@@ -357,11 +313,10 @@ export function focusFinding(id) {
 	render()
 	const c = cards.get(id)
 	if (!c) return
-	c.el.scrollIntoView({ behavior: "smooth", block: "center" })
+	c.el.scrollIntoView({ block: "center" })
 	c.el.classList.remove("flash")
 	void c.el.offsetWidth
 	c.el.classList.add("flash")
-	setTimeout(() => c.el.classList.remove("flash"), 2200)
 }
 
 export function initDosije() {
