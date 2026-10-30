@@ -137,6 +137,57 @@ describe("full scripted case (IŽS, cached data)", () => {
 		assert.ok(snap.tasks.some((t) => t.kind === "pitanje" && t.status === "answered"))
 	})
 
+	test("agents react to each other: Mediji to a Kadrovik finding, Revizor to a Nabavke finding", () => {
+		const snap = getSnapshot()
+		const reactions = events.filter((e) => e.type === "agent.reakcija").map((e) => e.payload as { agentName: string; reaction: { fromAgent: string; signalCode: string; findingId: string } })
+		const mediji = reactions.find((r) => r.agentName === "Mediji")
+		const revizor = reactions.find((r) => r.agentName === "Revizor")
+		assert.ok(mediji && mediji.reaction.fromAgent === "Kadrovik" && ["VD_PREKO_ROKA", "VD_LANAC"].includes(mediji.reaction.signalCode), "Mediji reacted to a Kadrovik acting-head finding")
+		assert.ok(revizor && revizor.reaction.fromAgent === "Nabavke" && ["BEZ_OBJAVE", "KONCENTRACIJA"].includes(revizor.reaction.signalCode), "Revizor reacted to a Nabavke finding")
+		const perKey = new Map<string, number>()
+		for (const r of reactions) perKey.set(`${r.agentName}:${r.reaction.signalCode}`, (perKey.get(`${r.agentName}:${r.reaction.signalCode}`) ?? 0) + 1)
+		assert.ok([...perKey.values()].every((c) => c === 1), `each reaction fires once per trigger code: ${[...perKey].join(", ")}`)
+
+		// a new loop of the existing core agent, started by the finding: the first message names it, the lane is visible in the timeline
+		const starts = events.filter((e) => e.type === "message_received.started")
+		const povod = (agent: string, from: string) => starts.find((e) => e.producerName === agent && String((e.payload as { content: string }).content).startsWith(`Povod: nalaz ${from}: `))
+		assert.ok(povod("Mediji", "Kadrovik"), "Mediji loop started with 'Povod: nalaz Kadrovik: ...'")
+		assert.ok(povod("Revizor", "Nabavke"), "Revizor loop started with 'Povod: nalaz Nabavke: ...'")
+		assert.ok(snap.agents.find((a) => a.name === "Mediji")?.reactions?.length, "AgentInfo of Mediji lists the reaction")
+		assert.ok(snap.agents.find((a) => a.name === "Revizor")?.reactions?.length, "AgentInfo of Revizor lists the reaction")
+
+		// Revizor's corroboration: DRI report AND the procurement source, so it stands on two official sources
+		const corroboration = snap.findings.find((f) => f.agentName === "Revizor" && f.title.startsWith("DRI je u izveštaju "))
+		assert.ok(corroboration, "Revizor added a corroboration finding")
+		assert.ok(corroboration.sources.some((s) => s.kind === "dri") && corroboration.sources.some((s) => s.kind === "jnportal"), "sources: DRI report + procurement portal")
+		const backed = snap.findings.find((f) => f.id === corroboration.corroborates)
+		assert.ok(backed && backed.agentName === "Nabavke" && backed.note?.includes("Potkrepljeno"), "the Nabavke finding says it was corroborated")
+		assert.equal(corroboration.status, "zvanicno")
+		assert.ok(!/izveštaj\w* za 2025\. godinu|DRI 2025/.test(`${corroboration.title} ${corroboration.text}`), "publication year is not an audited period")
+
+		// Mediji's targeted check: a finding about the appointment with real articles (or merged into the claim of an older finding)
+		// (the Urednik may merge it into an older finding with the same claim, so look at what Mediji added)
+		const added = events.filter((e) => e.type === "finding.added").map((e) => (e.payload as { finding: import("../src/shared/types").Finding }).finding)
+		const media = added.find((f) => f.agentName === "Mediji" && f.title.startsWith("Imenovanje u medijima: "))
+		assert.ok(media && media.sources.length >= 1 && media.sources.every((s) => s.kind === "vesti"), "Mediji added a finding about the coverage of the appointment")
+	})
+
+	test("wording: a different headline is 'odstupa od registra', not a denial; DRI period; press outlets; punctuation", async () => {
+		const snap = getSnapshot()
+		const conflict = snap.conflicts.find((c) => c.rule === "zvanicni_izvor_ima_prednost")
+		assert.ok(conflict)
+		assert.match(conflict.explanation, /^Zvanični registar \(ACAS\) navodi «v\.d\. generalnog direktora»; .+ navodi «.+»\. Prednost ima zvanični registar\.$/)
+		const loser = snap.findings.find((f) => f.conflictId === conflict.id && f.id !== conflict.winnerFindingId)
+		assert.match(loser?.note ?? "", /^Zvanični registar \(ACAS\) navodi «v\.d\. generalnog direktora»; ovaj izvor navodi «.+»\. Prednost ima zvanični registar\.$/)
+		const md = getSnapshot().report?.markdown ?? ""
+		assert.ok(md.includes("odstupa od registra") && !/demantovan/i.test(md) && !md.includes("~~"), "report wording")
+		assert.ok(!/raspadsistema\.com \(/.test(md) && !/serbiantimes/.test(md), "press review: original outlet only, no tabloid micro-sites")
+		assert.ok(!/[\p{L}\p{N}]\.\.(?!\.)/u.test(md), "no double full stops")
+		for (const item of getSnapshot().report?.toVerify ?? []) assert.ok(/[.!?]$/.test(item) && !item.includes("…"), `checklist item is a whole sentence: ${item}`)
+		assert.ok(snap.findings.filter((f) => f.section === "revizija").every((f) => !/DRI 2025 ·/.test(f.title)), "no 'DRI 2025' for a report that was merely published in 2025")
+		assert.ok(snap.findings.some((f) => /^DRI izveštaj od 25\.07\.2025\. · /.test(f.title)), "published-only reports say 'izveštaj od <datum>'")
+	})
+
 	test("a second case resets the shared state (initializeRuntime runs once)", { timeout: 120_000 }, async () => {
 		const first = getSnapshot().caseId
 		const { caseId } = await startCase("IŽS", "popis stanja")

@@ -48,7 +48,7 @@ Ne rade ili nisu potrebni: `n1info.rs/rss/`, `nova.rs/rss`, `vreme.com/rss.php` 
 - Google News linkovi (`news.google.com/rss/articles/CBMi...`) se razrešavaju u originalni URL posle filtriranja: čita se `data-n-a-sg` / `data-n-a-ts` sa stranice linka pa `POST /_/DotsSplashUi/data/batchexecute` (`Fbv4je` / `garturlreq`). To je interni Google endpoint bez garancije stabilnosti.
 - **Pregled medija** (`newsOverview`): do 12 najrelevantnijih različitih članaka (najviše 2 po izdanju), broj različitih priča, najčešće teme iz naslova (rečnik tema u `newsMatch.ts`: nesreće i bezbednost, javne nabavke i ugovori, rukovodstvo, radovi, sindikat, saobraćaj, revizija, finansije).
 - `NewsItem`: `matched` = pronađeni nazivi, `verified` = gde je poklapanje nađeno (naslov / opis / tekst), `score`, `source` (`kind: "vesti"`, `official: false`, javni URL članka).
-- raspadsistema.com stavke imaju `outlet: "raspadsistema.com (Danas)"` i `url` originalnog članka; `snippet` je njihov kratak opis i funkcija osobe, `provider: "rss:raspadsistema"`.
+- raspadsistema.com stavke imaju `outlet: "Danas"` (izdanje iz polja `src`; agregator nije izdavač, a stariji keš se ispravlja pri čitanju) i `url` originalnog članka; `snippet` je njihov kratak opis i funkcija osobe, `provider: "rss:raspadsistema"`.
 - Ključ keša: `search-<upit>-<tip>-d<dani>-l<limit>[-a-<nazivi>][-c-<kontekst>][-x-<izuzeci>]`. Promena pravila ili naziva menja ključ: stari fajlovi se brišu (vidi `docs/QA.md`).
 ## fetchArticle
 
@@ -100,3 +100,12 @@ Za demo je dovoljan besplatni sloj (RSS + Google News RSS) jer radi iz keša. Za
 - Jedan `searchNews` traje 15-20 s uživo (Google 2 zahteva + razrešavanje linkova + GDELT budžet), 1 ms iz keša.
 - `NEWS_DEBUG=1` ispisuje broj stavki po provajderu na stderr.
 - U `DATA_MODE=cache` pretraga sa drugim `days`/`limit` ili upitom koji nije zagrejan baca `CacheMissError`.
+
+## Kvalitet izdanja (pregled medija)
+
+src/data/sources/news.ts (ESTABLISHED_HOSTS, preferEstablished): pregled medija daje prednost poznatim izdanjima. Lista je kratka i javna
+(nacionalni i regionalni mediji sa redakcijom, agencije, istraživačke redakcije, poslovna štampa; poredi se domen članka). Kad bar
+MIN_ESTABLISHED = 5 članaka potiče sa liste, članci sa drugih domena se izostavljaju (tabloidni mikro-sajtovi i agregatori klik-mamaca, npr.
+serbiantimes.info); sa manje od 5 ostaju, da i mala institucija dobije pregled. Članak se nikad ne menja, samo se zadržava ili izostavlja.
+„Nije na listi“ ne znači „netačno“, nego „nije proveravano“. Primenjuje se pri čitanju, pa važi i za stari keš. Izdanje je uvek original
+(„Danas“), nikad agregator („raspadsistema.com (Danas)“).

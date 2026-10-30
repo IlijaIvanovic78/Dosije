@@ -69,7 +69,14 @@ export function gantt(evs: WireEvent[], start: number, end: number, dynOrder: st
 	const rows = [...lanes.values()].sort((a, b) => a.order - b.order || a.first - b.first)
 	const out: string[] = []
 	const tick = (frac: number) => `${((span * frac) / 1000).toFixed(0)}s`
-	out.push(`${"".padEnd(24)}0s${" ".repeat(width / 2 - 4)}${tick(0.5)}${" ".repeat(width / 2 - tick(1).length - tick(0.5).length)}${tick(1)}`)
-	for (const r of rows) out.push(`${r.name.padEnd(23).slice(0, 23)} ${r.cells.join("")}`)
+	out.push(`${"".padEnd(LABEL_WIDTH + 1)}0s${" ".repeat(width / 2 - 4)}${tick(0.5)}${" ".repeat(width / 2 - tick(1).length - tick(0.5).length)}${tick(1)}`)
+	for (const r of rows) out.push(`${label(r.name)} ${r.cells.join("")}`)
 	return out
+}
+
+const LABEL_WIDTH = 30
+
+/** A lane label of a fixed width: a longer name ends with "…" (a name is never cut silently: "Stegnjaja" is not "Stegnjaj"). */
+export function label(name: string, width = LABEL_WIDTH): string {
+	return name.length <= width ? name.padEnd(width) : `${name.slice(0, width - 1)}…`
 }

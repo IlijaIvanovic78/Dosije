@@ -72,7 +72,7 @@ adapter konvertuje u ISO datum u zoni `Europe/Belgrade`.
   `fullName`/`position` latinica (`cyrToLat`; ime pisano VELIKIM slovima se pretvara u normalan oblik), `fullNameCyr`/`positionCyr`
   ćirilica, `isActing` iz „в.д." / „вршилац дужности", `from`/`to` ISO datum (beogradska zona), `appointedBy` =
   `organizacijaImenovanjaNaziv`, `source` = zvanični javni link `https://publicacas.acas.rs/#/acas/funkcioner`
-  (SPA nema dubinske linkove ka ustanovi/osobi; pretraga se radi u formi).
+  (SPA nema javnu rutu ka ustanovi ili osobi: u Angular routeru postoje samo `funkcioner` i `funkcionerIzvestajDetails/:id`, a `funkcioner` ne čita parametre iz URL-a; zato naslov izvora nosi uput za pretragu: „ACAS registar – pretraga: <naziv>“).
 - `AssetReport`: jedan po izveštaju (najviše 3 najnovija po osobi), `reportDate` ISO, `reason` (stupanje na javnu funkciju,
   prestanak, promene u toku vršenja funkcije...), `summary` kratke linije (prihodi od javnih funkcija; broj i vrste
   nepokretnosti sa površinom; vozila sa markom i godinom; akcije/udeli sa nazivom firme i procentom; samostalna delatnost),

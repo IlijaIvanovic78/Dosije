@@ -82,7 +82,14 @@ export interface FindingArgs {
 	sources?: unknown
 	entityIds?: unknown
 	claim?: unknown
+	/** id of another agent's finding that this one corroborates with an independent source (cross-agent reaction) */
+	potkrepljuje?: unknown
 	_approval?: unknown
+}
+
+/** "12.10.2026.." -> "12.10.2026." (a date that ends in a full stop followed by the sentence's own full stop); "..." stays. */
+export function fixPunct(s: string): string {
+	return s.replace(/(?<=[\p{L}\p{N}])\.\.(?!\.)/gu, ".")
 }
 
 export function parseSources(state: DosijeState, raw: unknown): SourceRef[] {
@@ -113,8 +120,8 @@ export function addFinding(ctx: ToolCtx, args: FindingArgs): { ok: boolean; find
 	const severity = (args.severity as Severity) ?? "info"
 	if (!SECTIONS.includes(section)) return { ok: false, error: `section mora biti jedan od: ${SECTIONS.join(", ")}` }
 	if (!SEVERITIES.includes(severity)) return { ok: false, error: `severity mora biti jedan od: ${SEVERITIES.join(", ")}` }
-	const title = typeof args.title === "string" ? clip(args.title, 180) : ""
-	const text = typeof args.text === "string" ? clip(args.text, 900) : ""
+	const title = typeof args.title === "string" ? fixPunct(clip(args.title, 180)) : ""
+	const text = typeof args.text === "string" ? fixPunct(clip(args.text, 900)) : ""
 	if (!title || !text) return { ok: false, error: "title i text su obavezni" }
 	const sources = parseSources(state, args.sources)
 	if (sources.length === 0) return { ok: false, error: "ODBIJENO: nalaz mora imati bar jedan http(s) izvor" }
@@ -122,6 +129,7 @@ export function addFinding(ctx: ToolCtx, args: FindingArgs): { ok: boolean; find
 	let entityIds = Array.isArray(args.entityIds) ? args.entityIds.filter((e): e is string => typeof e === "string" && state.entities.has(e)) : []
 	if (entityIds.length === 0 && ctx.entityId && state.entities.has(ctx.entityId)) entityIds = [ctx.entityId]
 	const approval = args._approval === "approved" ? "approved" : args._approval === "pending" ? "pending" : "not_required"
+	const target = typeof args.potkrepljuje === "string" ? state.findings.get(state.mergedAway.get(args.potkrepljuje) ?? args.potkrepljuje) : undefined
 	const now = nowIso()
 	const finding: Finding = {
 		id: state.nextFindingId(),
@@ -135,6 +143,7 @@ export function addFinding(ctx: ToolCtx, args: FindingArgs): { ok: boolean; find
 		sources,
 		entityIds,
 		claim: parseClaim(args.claim),
+		corroborates: target && target.agentId !== ctx.agentId ? target.id : undefined,
 		agentId: ctx.agentId,
 		agentName: ctx.agentName,
 		createdAt: now,

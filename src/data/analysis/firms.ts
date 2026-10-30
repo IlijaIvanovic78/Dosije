@@ -8,6 +8,7 @@ import { SRC, trackActivity } from "../activity"
 import * as apr from "../sources/apr"
 import * as iw from "../sources/integrityWatch"
 import * as jn from "../sources/jnportal"
+import * as news from "../sources/news"
 import { monthsBetween } from "../rules/vdRules"
 import type { CompanyProfile, Contract, IntegrityWatchLink } from "../types"
 import { nameSimilarity, normalizeName } from "../translit"
@@ -188,12 +189,20 @@ export async function analyzeFirm(inst: InstLike, query: { pib?: string; mb?: st
 		const kinds = [...new Set(here.map((l) => l.linkType))].join(" i ")
 		const contractsHere = Math.max(...here.map((l) => l.contracts ?? 0))
 		const soleValue = Math.max(0, ...here.map((l) => l.valueRsd ?? 0))
-		const articles = [...new Set(here.map((l) => /izvor povezivanja: (https?:\/\/[^\s;]+)/.exec(l.detail ?? "")?.[1]).filter((u): u is string => !!u))]
+		// the dataset cites a media article as the basis of a party link; it is shown only if the article really names the firm
+		const names = [...new Set([...here.map((l) => l.supplierName), profile?.name, q.name].filter((x): x is string => !!x && !/^(PIB|MB) \d+$/.test(x)))]
+		let basis: string | undefined
+		for (const url of [...new Set(here.map((l) => l.basisUrl).filter((u): u is string => !!u))]) {
+			if (await news.articleNamesSubject(url, names)) {
+				basis = url
+				break
+			}
+		}
 		signals.push({
 			code: "POLITICKA_VEZA",
 			label: "Označen u bazi Integrity Watch Srbija",
 			severity: "signal",
-			detail: `Baza Integrity Watch Srbija (Transparentnost Srbija) označava firmu kao: ${kinds}. Označenih ugovora kod ove institucije: ${contractsHere}${soleValue > 0 ? `, vrednost samostalnih ugovora ${formatRsd(soleValue)}` : ""}. ${articles.length ? `Osnov povezivanja koji navodi baza: ${articles[0]}. ` : ""}Otvoreni podaci ne imenuju funkcionera ni stranku; podatak zahteva proveru.`,
+			detail: `Baza Integrity Watch Srbija (Transparentnost Srbija) označava firmu kao: ${kinds}. Označenih ugovora kod ove institucije: ${contractsHere}${soleValue > 0 ? `, vrednost samostalnih ugovora ${formatRsd(soleValue)}` : ""}. ${basis ? `Osnov povezivanja koji navodi baza (članak pominje firmu): ${basis}. ` : ""}Otvoreni podaci ne imenuju funkcionera ni stranku; podatak zahteva proveru.`,
 		})
 	} else if (elsewhere.length > 0) {
 		const kinds = [...new Set(elsewhere.map((l) => l.linkType))].join(" i ")

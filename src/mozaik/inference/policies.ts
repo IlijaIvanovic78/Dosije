@@ -6,9 +6,9 @@ import { formatRsd } from "../../data/analysis/procurement"
 import { formatDate } from "../../data/analysis/vd"
 import { asciiFold } from "../../data/translit"
 import { n } from "../../shared/plural"
-import { headline } from "../../shared/text"
+import { clauseHeadline } from "../../shared/text"
 import { entityIdFor } from "../domain"
-import { buildLede } from "../summary"
+import { buildLede, leadHeads } from "../summary"
 import { clip } from "../util"
 
 export interface Step {
@@ -99,7 +99,7 @@ async function* kadrovik(): AsyncGenerator<Step, string, ToolResult> {
 		yield call("add_finding", {
 			section: "rukovodstvo",
 			title: `Službeni glasnik: objavljen akt o imenovanju/razrešenju (${first.gazette})`,
-			text: `U Službenom glasniku (${first.gazette}, ${formatDate(first.date)}) objavljen je akt: „${first.title}“. Sadržaj broja navodi samo naslov akta, ne i ime imenovanog; pun tekst akta nije slobodno dostupan.`,
+			text: `U Službenom glasniku (${first.gazette}, ${formatDate(first.date)}) objavljen je akt: „${first.title.replace(/[.\s]+$/u, "")}“. Sadržaj broja navodi samo naslov akta, ne i ime imenovanog; pun tekst akta nije slobodno dostupan.`,
 			severity: "info",
 			sources: srcs(acts.sources).slice(0, 2),
 			entityIds: [entityId],
@@ -230,7 +230,7 @@ const DRI_TOPICS: [RegExp, string][] = [
 ]
 
 /** Headline of a DRI excerpt: first clause of the verbatim sentence, cut at a word boundary (full excerpt stays in the text). */
-export function driTitle(year: number | string | undefined, kind: string | undefined, excerpt: string): string {
+export function driTitle(period: number | string | undefined, kind: string | undefined, excerpt: string): string {
 	const body = excerpt
 		.replace(/…$/u, "")
 		.replace(/^(?:zaklju[čc]ak|nalaz|otkrivena nepravilnost|prioritet)\b[^:]{0,12}:\s*/i, "")
@@ -240,10 +240,46 @@ export function driTitle(year: number | string | undefined, kind: string | undef
 	const cut = body.search(/,?\s+(?:što|jer|odnosno)\s|;|\s\(Napomena/i)
 	const clause = cut >= 40 ? body.slice(0, cut) : body
 	const topic = DRI_TOPICS.find(([re]) => re.test(excerpt))?.[1] ?? kind ?? "izveštaj"
-	return `DRI ${year ?? ""} · ${topic}: ${headline(clause, 90)}`.replace(/\s+/g, " ")
+	return `DRI ${period ?? ""} · ${topic}: ${clauseHeadline(clause, 100)}`.replace(/\s+/g, " ")
 }
 
-async function* revizor(): AsyncGenerator<Step, string, ToolResult> {
+/**
+ * What a DRI report is "of", in titles and texts. The AUDITED period only when the title of the report states it
+ * ("za 2018. godinu" -> "finansijski izveštaji za 2018."); the publication year is not a period (a report published in 2025 can
+ * quote 2023-2024), so then the label is the publication date.
+ */
+export function driLabels(r: { kind?: string; period?: string; publishedAt?: string }): { title: string; text: string } {
+	const published = r.publishedAt ? `izveštaj objavljen ${formatDate(r.publishedAt)}` : "izveštaj bez datuma objave"
+	const what = /^finansijska/.test(asciiFold(r.kind ?? "")) ? "finansijski izveštaji" : (r.kind ?? "revizija")
+	if (r.period) return { title: `za ${r.period}.`, text: `${what} za ${r.period}., ${published}` }
+	return { title: r.publishedAt ? `izveštaj od ${formatDate(r.publishedAt)}` : "izveštaj", text: `${what}, ${published}` }
+}
+
+/** Reaction: Nabavke wrote BEZ_OBJAVE / KONCENTRACIJA; Revizor looks for an earlier DRI finding on the same topic and backs the finding up. */
+async function* revizorReakcija(c: PolicyCtx): AsyncGenerator<Step, string, ToolResult> {
+	const nalazId = /\[(f\d+) · [A-Z_]+\]/.exec(c.message)?.[1]
+	if (!nalazId) return "Revizor: poruka povoda nema oznaku nalaza, pa nema reakcije."
+	const res = (yield call("dri_srodni_nalazi", { nalazId })).json
+	if (!res || res.ok === false) return `Revizor: provera srodnih nalaza DRI nije moguća (${clip(String(res?.error ?? "nema odgovora"), 80)}).`
+	type Hit = { kind?: string; period?: string; publishedAt?: string; excerpt: string; izvori: Record<string, unknown>[] }
+	const hit = ((res.nalazi ?? []) as Hit[])[0]
+	if (!hit) return "Revizor: u već obrađenim izveštajima DRI nema srodnog nalaza, pa ništa nije dodato."
+	const label = driLabels(hit)
+	const when = hit.period ? `za ${hit.period}.` : `objavljenom ${formatDate(hit.publishedAt)}`
+	yield call("add_finding", {
+		section: "revizija",
+		title: `DRI je u izveštaju ${when} već utvrdio nalaz o ${res.tema}`,
+		text: `Potkrepljuje nalaz ${res.povod?.agent ?? "Nabavke"} „${String(res.povod?.title ?? "").replace(/[.\s]+$/u, "")}“. U izveštaju DRI (${label.text}) stoji: „${clip(hit.excerpt, 360)}“ Doslovan izvod. Povezanost je tematska: izvod ne govori nužno o istim postupcima kao nalaz Nabavke, pa oba izvora treba čitati zajedno.`,
+		severity: "paznja",
+		signalCode: "DRI_NALAZ",
+		sources: [...hit.izvori, ...srcs(res.izvoriPovoda)],
+		potkrepljuje: nalazId,
+	})
+	return `Revizor: reagovao na nalaz ${res.povod?.agent ?? "Nabavke"} i dodao srodni nalaz DRI (${label.title}).`
+}
+
+async function* revizor(c: PolicyCtx): AsyncGenerator<Step, string, ToolResult> {
+	if (/^Povod: nalaz /.test(c.message)) return yield* revizorReakcija(c)
 	const list = (yield call("dri_izvestaji")).json
 	type R = { id: string; title: string; year?: number; publishedAt?: string; kind?: string }
 	const reports = ((list?.reports ?? []) as R[]).slice().sort((a, b) => (b.publishedAt ?? "").localeCompare(a.publishedAt ?? ""))
@@ -258,7 +294,8 @@ async function* revizor(): AsyncGenerator<Step, string, ToolResult> {
 	for (const r of picks) {
 		const nz = (yield call("dri_nalazi", { reportId: r.id })).json
 		if (!nz || nz.ok === false) continue
-		const label = `${nz.kind ?? "izveštaj"} za ${nz.year ?? "?"}. godinu`
+		// "za 2018." only when the report's title states the audited period; otherwise the publication date (see driLabels)
+		const labels = driLabels({ kind: nz.kind, period: nz.period, publishedAt: nz.publishedAt })
 		const sources = srcs(nz.sources)
 		if (nz.opinion) {
 			const op = String(nz.opinion)
@@ -266,8 +303,8 @@ async function* revizor(): AsyncGenerator<Step, string, ToolResult> {
 			findings++
 			yield call("add_finding", {
 				section: "revizija",
-				title: `DRI ${nz.year} · ${nz.kind ?? "revizija"}: ${op}`,
-				text: `Državna revizorska institucija je u izveštaju (${label}, objavljen ${formatDate(nz.publishedAt)}) izrazila ${op}.${nz.excerpts?.[0] ? ` Izvod iz izveštaja: „${clip(String(nz.excerpts[0]), 300)}“` : ""}`,
+				title: `DRI ${labels.title} · ${nz.kind ?? "revizija"}: ${op}`,
+				text: `Državna revizorska institucija je u izveštaju (${labels.text}) izrazila ${op}.${nz.excerpts?.[0] ? ` Izvod iz izveštaja: „${clip(String(nz.excerpts[0]), 300)}“` : ""}`,
 				severity,
 				signalCode: "DRI_MISLJENJE",
 				sources,
@@ -282,8 +319,8 @@ async function* revizor(): AsyncGenerator<Step, string, ToolResult> {
 			findings++
 			yield call("add_finding", {
 				section: "revizija",
-				title: driTitle(nz.year, nz.kind, e),
-				text: `Prema izveštaju DRI (${label}, ${formatDate(nz.publishedAt)}): „${clip(e, 400)}“ Doslovan izvod; pun kontekst je u izveštaju.`,
+				title: driTitle(labels.title, nz.kind, e),
+				text: `Prema izveštaju DRI (${labels.text}): „${clip(e, 400)}“ Doslovan izvod; pun kontekst je u izveštaju.`,
 				severity: s > 0 ? "paznja" : "info",
 				signalCode: "DRI_NALAZ",
 				sources,
@@ -423,7 +460,35 @@ async function* medijiOsoba(c: PolicyCtx): AsyncGenerator<Step, string, ToolResu
 	return `Mediji · ${name}: ${n(res.pregled?.ukupno ?? about.length, "clanak")}, upisano ${n(written, "nalaz")}.`
 }
 
+/** Reaction: Kadrovik wrote VD_PREKO_ROKA / VD_LANAC about the head; Mediji checks how the press covered the appointment and names the function. */
+async function* medijiReakcija(c: PolicyCtx): AsyncGenerator<Step, string, ToolResult> {
+	const name = /Osoba: (.+?) \(funkcija prema ACAS/.exec(c.message)?.[1]?.trim()
+	const acasFunction = /funkcija prema ACAS: „(.+?)“\)/.exec(c.message)?.[1]
+	const from = /^Povod: nalaz (.+?): /.exec(c.message)?.[1] ?? "Kadrovik"
+	if (!name) return "Mediji: poruka povoda nema ime osobe, pa nema reakcije."
+	const res = (yield call("vesti_imenovanje", { ime: name })).json
+	if (!res || res.ok === false) return `Mediji: ciljana provera za ${name} nije dostupna (${clip(String(res?.error ?? "nema odgovora"), 80)}).`
+	const articles = ((res.clanci ?? []) as { outlet: string; publishedAt?: string; title: string; url: string; naziv: string }[]).filter((a) => a.url)
+	if (!articles.length) return `Mediji: u medijima nema članaka o imenovanju ili funkciji osobe ${name} (reakcija na nalaz ${from}), pa nema nalaza.`
+	const vd = Number(res.nazivi?.vd) || 0
+	const dir = Number(res.nazivi?.direktor) || 0
+	const all = vd + dir + (Number(res.nazivi?.drugo) || 0)
+	const firstDir = articles.find((a) => a.naziv === "direktor")
+	yield call("add_finding", {
+		section: "mediji",
+		title: `Imenovanje u medijima: ${name}, ${n(all, "clanak")} (${vd} sa oznakom v.d., ${dir} samo „direktor“)`,
+		text: `Ciljana provera medija povodom nalaza ${from}: ${n(all, "clanak")} govori o imenovanju ili funkciji osobe ${name}. Prema naslovima, ${vd} navodi oznaku v.d., a ${dir} navodi „${res.navodFunkcije ?? "direktor"}“ bez te oznake${firstDir ? ` (npr. ${firstDir.outlet}, ${formatDate(firstDir.publishedAt)})` : ""}.${acasFunction ? ` Registar ACAS vodi osobu kao „${acasFunction}“: drugačiji naziv u naslovu nije pobijanje registra, ali funkciju treba navoditi prema registru.` : ""}`,
+		severity: dir > 0 ? "paznja" : "info",
+		signalCode: dir > 0 ? "MEDIJSKI_NAVOD" : undefined,
+		sources: articles.map((a) => itemSource({ title: a.title, outlet: a.outlet, publishedAt: a.publishedAt, url: a.url })),
+		entityIds: [entityIdFor("osoba", name)],
+		claim: dir > 0 && res.navodFunkcije && !res.navodVecUDosijeu ? { subject: name, predicate: "funkcija", value: res.navodFunkcije } : undefined,
+	})
+	return `Mediji: reagovao na nalaz ${from}, ${n(all, "clanak")} o imenovanju osobe ${name} (${vd} v.d., ${dir} direktor).`
+}
+
 async function* mediji(c: PolicyCtx): AsyncGenerator<Step, string, ToolResult> {
+	if (/^Povod: nalaz /.test(c.message)) return yield* medijiReakcija(c)
 	return yield* /^Osoba:/.test(c.message) ? medijiOsoba(c) : medijiInstitucija(c)
 }
 
@@ -516,7 +581,7 @@ async function* imovina(c: PolicyCtx): AsyncGenerator<Step, string, ToolResult> 
 	yield call("dosije_pregled")
 	const r = (yield call("acas_imovina", { personId, name })).json
 	const reports = (r?.reports ?? []) as { reportDate?: string; reason?: string; summary: string[]; url: string }[]
-	const acasRegister = { kind: "acas", title: "ACAS – Registar funkcionera i izveštaji o imovini", url: "https://publicacas.acas.rs/#/acas/funkcioner" }
+	const acasRegister = { kind: "acas", title: `ACAS registar – pretraga: ${name}`, url: "https://publicacas.acas.rs/#/acas/funkcioner" }
 	if (!reports.length) {
 		yield call("add_finding", {
 			section: "rukovodstvo",
@@ -540,7 +605,7 @@ async function* imovina(c: PolicyCtx): AsyncGenerator<Step, string, ToolResult> 
 		yield call("add_finding", {
 			section: "rukovodstvo",
 			title: `${name}: nema izveštaja o imovini posle stupanja na funkciju`,
-			text: `Nije pronađen izveštaj o imovini nakon stupanja na funkciju (${formatDate(from)}); najnoviji u registru je od ${formatDate(latest.reportDate)}. Proveriti.`,
+			text: `Nije pronađen izveštaj o imovini nakon stupanja na funkciju (${formatDate(from)}); najnoviji u registru je od ${formatDate(latest.reportDate)} Proveriti.`,
 			severity: "paznja",
 			signalCode: "IMOVINA",
 			sources: srcs(r.sources).slice(0, 1),
@@ -562,7 +627,7 @@ async function* provera(c: PolicyCtx): AsyncGenerator<Step, string, ToolResult> 
 	const acasMatches = acasOk ? ((a.matches ?? []) as { position: string; institution: string }[]) : []
 	const pepMatches = p && p.ok !== false ? ((p.matches ?? []) as { dataset: string; name: string }[]) : []
 	const sources = [...srcs(a?.sources), ...srcs(p?.sources)]
-	const registerSource = { kind: "acas", title: "ACAS – Registar funkcionera", url: "https://publicacas.acas.rs/#/acas/funkcioner" }
+	const registerSource = { kind: "acas", title: `ACAS registar – pretraga: ${name}`, url: "https://publicacas.acas.rs/#/acas/funkcioner" }
 
 	if (acasMatches.length || pepMatches.length) {
 		const parts: string[] = []
@@ -602,7 +667,7 @@ async function* urednik(): AsyncGenerator<Step, string, ToolResult> {
 		signals: Number(c.signala) || 0,
 		attention: Number(c.pazni) || 0,
 		conflicts: conflicts.length,
-		heads: top.slice(0, 3).map((t) => clip(t.title, 80)),
+		heads: leadHeads(top.map((t) => t.title)),
 	})
 	yield call("napisi_sazetak", {
 		lede,
@@ -640,6 +705,7 @@ async function* trijaza(): AsyncGenerator<Step, string, ToolResult> {
 }
 
 const POLICIES: Record<string, Policy> = { kadrovik, nabavke, revizor, mediji, firme, imovina, provera, urednik, trijaza }
+// (`revizor` and `mediji` take the first message: a "Povod: nalaz ..." message is a reaction to another agent's finding)
 
 export function policyFor(group: string): Policy | undefined {
 	return POLICIES[group]

@@ -85,6 +85,7 @@ export interface Finding {
 	updatedAt: string;
 	approval: "not_required" | "pending" | "approved" | "rejected";
 	mergedFrom?: string[]; // ids of duplicate findings merged into this one
+	corroborates?: string; // id of the finding of ANOTHER agent that this one backs up with an independent source (e.g. DRI vs Nabavke)
 	conflictId?: string;
 	note?: string; // editor's note, e.g. "Zvanični izvor ima prednost"
 }
@@ -163,8 +164,20 @@ export interface AgentInfo {
 	emoji: string;
 	description: string; // one line, Serbian
 	spawnedBy?: string; // participant id whose event caused the spawn
+	/** loops this agent started because ANOTHER agent's finding appeared (cross-agent reactions); reset with every case */
+	reactions?: AgentReaction[];
 	joinedAt: string;
 	leftAt?: string;
+}
+
+/** A reaction of one agent to a finding of another: "Mediji reacted to Kadrovik's VD_PREKO_ROKA". Also published as "agent.reakcija". */
+export interface AgentReaction {
+	findingId: string;
+	fromAgentId: string;
+	fromAgent: string; // e.g. "Kadrovik"
+	signalCode: SignalCode;
+	title: string; // title of the triggering finding
+	at: string;
 }
 
 /**
@@ -355,6 +368,7 @@ export interface WirePayloads {
 	// custom domain events
 	"dosije.started": { caseId: string; input: string; focus?: string; institution: InstitutionView };
 	"entity.added": { entity: Entity };
+	"agent.reakcija": { agentId: string; agentName: string; reaction: AgentReaction }; // producer = the reacting agent
 	"finding.added": { finding: Finding };
 	"finding.updated": { finding: Finding; reason: "merge" | "conflict" | "approval" | "status" };
 	"conflict.resolved": { conflict: Conflict };

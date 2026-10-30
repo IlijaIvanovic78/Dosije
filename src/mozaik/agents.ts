@@ -38,12 +38,21 @@ const TASKS: Record<string, string> = {
 	revizor: `Zadatak: šta je Državna revizorska institucija našla.
 1) dri_izvestaji.
 2) dri_nalazi za 3-4 najnovija ili najrelevantnija izveštaja (finansijski, pravilnost, nabavke).
-3) add_finding (section "revizija"): mišljenje revizora (signalCode "DRI_MISLJENJE"; severity "signal" za negativno ili uzdržano, "paznja" za "sa rezervom", "info" za pozitivno) i 1-2 ključna nalaza po izveštaju (signalCode "DRI_NALAZ"), sa kratkim citatom i izvorom (stranica i PDF izveštaja).`,
+3) add_finding (section "revizija"): mišljenje revizora (signalCode "DRI_MISLJENJE"; severity "signal" za negativno ili uzdržano, "paznja" za "sa rezervom", "info" za pozitivno) i 1-2 ključna nalaza po izveštaju (signalCode "DRI_NALAZ"), sa kratkim citatom i izvorom (stranica i PDF izveštaja).
+Godina u naslovu i tekstu je revidirani period SAMO ako je alat vratio polje period (iz naslova izveštaja, npr. "2018"); inače piši "izveštaj objavljen <datum iz publishedAt>", nikad godinu objave kao period revizije.
+REAKCIJA NA TUĐI NALAZ: ako prva poruka počinje sa "Povod: nalaz Nabavke: ..." (nalaz sa oznakom BEZ_OBJAVE ili KONCENTRACIJA), NE radi gornje korake, samo ovo:
+1) dri_srodni_nalazi({nalazId}); nalazId je u uglastoj zagradi poruke (npr. f7).
+2) Ako alat vrati bar jedan nalaz: JEDAN add_finding (section "revizija", severity "paznja", signalCode "DRI_NALAZ", potkrepljuje = nalazId) sa naslovom "DRI je u izveštaju <za PERIOD. ako postoji period, inače objavljenom DD.MM.GGGG.> već utvrdio nalaz o <tema>", tekstom sa doslovnim izvodom (excerpt) i napomenom da je povezanost tematska, i izvorima: izvori izveštaja iz nalaza PLUS izvori iz polja izvoriPovoda (izvor Portala javnih nabavki), da Urednik može da potvrdi nalaz iz dva zvanična izvora.
+3) Ako nema srodnih nalaza, odgovori jednom rečenicom i ništa ne dodaj.`,
 	medijiInstitucija: `Zadatak: šta mediji pišu o instituciji (pregled: poslednjih 12 meseci, pojedinačni nalazi: poslednjih 90 dana).
 1) vesti_pretraga (tip "institucija", days 365). Alat već vraća samo članke koji pominju instituciju (ili njen kratki naziv); polje "pregled" ima gotov naslov, tekst i do 12 izvora, polje "clanci" članke za pojedinačne nalaze.
 2) Za 1-3 najrelevantnija članka iz poslednjih 90 dana (po potrebi vest_tekst): add_finding (section "mediji"): severity "paznja" i signalCode "MEDIJSKI_NAVOD" za navode, zahteve i optužbe drugih (npr. sindikata), inače "info". Uvek sa izvorom članka i datumom.
 3) Ako članak navodi funkciju neke osobe (npr. "generalni direktor X"), dodaj claim {subject: X, predicate: "funkcija", value: funkcija tačno kako je navedena u članku}. Urednik će je uporediti sa zvaničnim registrom.
-4) Na kraju JEDAN nalaz "Pregled medija": add_finding (section "mediji", severity "info", bez signalCode) sa title i text prepisanim iz pregled.naslov i pregled.tekst (ne dodaj ništa od sebe) i sa svim objektima iz pregled.izvori kao sources (izdanje, datum i URL svakog članka).`,
+4) Na kraju JEDAN nalaz "Pregled medija": add_finding (section "mediji", severity "info", bez signalCode) sa title i text prepisanim iz pregled.naslov i pregled.tekst (ne dodaj ništa od sebe) i sa svim objektima iz pregled.izvori kao sources (izdanje, datum i URL svakog članka).
+REAKCIJA NA TUĐI NALAZ: ako prva poruka počinje sa "Povod: nalaz Kadrovik: ..." (nalaz VD_PREKO_ROKA ili VD_LANAC o osobi), NE radi gornje korake, samo ovo:
+1) vesti_imenovanje({ime}) sa imenom osobe iz poruke (ciljana provera medija o imenovanju i nazivu funkcije).
+2) Ako alat vrati bar jedan članak: JEDAN add_finding (section "mediji", severity "paznja" i signalCode "MEDIJSKI_NAVOD" ako neko izdanje navodi "direktor" bez oznake v.d., inače "info") koji kaže koliko izdanja navodi v.d. a koliko direktor, sa člancima iz polja clanci kao sources. Ako je navodFunkcije popunjen a navodVecUDosijeu nije true, dodaj claim {subject: ime, predicate: "funkcija", value: navodFunkcije}, da Urednik uporedi navod sa registrom. Ne tvrdi ko je u pravu.
+3) Ako nema članaka, odgovori jednom rečenicom i ništa ne dodaj.`,
 	medijiOsoba: `Zadatak: šta mediji pišu o osobi (poslednje 2 godine).
 1) vesti_pretraga (tip "osoba", days 730) sa punim imenom osobe; ako je osoba vlasnik firme, u kontekst stavi naziv firme. Alat vraća samo članke koji pominju osobu ZAJEDNO sa institucijom ili firmom (imenjaci su česti).
 2) Ako članak navodi funkciju osobe (npr. "generalni direktor X"), add_finding (section "mediji") sa izvorom i datumom i claim {subject: ime, predicate: "funkcija", value: funkcija tačno kako je navedena u članku}; Urednik će je uporediti sa zvaničnim registrom. Za zahteve ili navode drugih u kojima se osoba pominje: severity "paznja", signalCode "MEDIJSKI_NAVOD".
@@ -212,6 +221,25 @@ export function coreMessage(group: AgentGroup, ref: ResolvedInstitution, focus: 
 		default:
 			return `Institucija: ${ref.name}. Pretraži medije (poslednjih 12 meseci), upit: ${searchName(ref.name)}. ${f}`
 	}
+}
+
+/** The finding of another agent that makes a core agent start a new loop (cross-agent reaction). */
+export interface ReactionTrigger {
+	findingId: string
+	agent: string
+	signalCode: string
+	title: string
+	person?: string
+	position?: string
+}
+
+/** First message of a reaction loop: "Povod: nalaz <agent>: <title>" (the id and code in brackets let a tool find the finding). */
+export function reactionMessage(group: "mediji" | "revizor", t: ReactionTrigger, ref: ResolvedInstitution): string {
+	const povod = `Povod: nalaz ${t.agent}: ${t.title.replace(/[.\s]+$/u, "")} [${t.findingId} · ${t.signalCode}].`
+	if (group === "mediji") {
+		return `${povod} Osoba: ${t.person} (funkcija prema ACAS: „${t.position ?? "nepoznata"}“). Institucija: ${ref.name}. Zadatak: ciljana provera medija o imenovanju i nazivu funkcije (v.d. ili direktor).`
+	}
+	return `${povod} Institucija: ${ref.name}. Zadatak: u već obrađenim izveštajima DRI potraži ranije nalaze iste teme.`
 }
 
 export function dynamicMessage(kind: DynamicKind, entity: Entity, ref: ResolvedInstitution): string {

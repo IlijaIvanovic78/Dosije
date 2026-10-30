@@ -163,6 +163,7 @@ export async function findAppointmentActs(institutionName: string, personName?: 
 		}
 		return acts.sort((a, b) => (b.date ?? "").localeCompare(a.date ?? ""))
 	}, {
+		skipWrite: (d) => d.length === 0,
 		activity: {
 			...SRC.sg,
 			action: "pretraga",

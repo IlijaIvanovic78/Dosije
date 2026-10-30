@@ -5,7 +5,7 @@
 import type { SituationHandler } from "@mozaik-ai/core"
 import { config } from "../config"
 import { cyrToLat } from "../data/translit"
-import type { Conflict, Finding, Severity } from "../shared/types"
+import type { Conflict, Finding, Severity, SourceKind } from "../shared/types"
 import {
 	emit,
 	ids,
@@ -80,6 +80,14 @@ function describe(f: Finding): string {
 	return cyrToLat(s.official ? s.title.split("–")[0].trim() || s.title : s.title.split(":")[0].trim() || s.title)
 }
 
+const REGISTER_LABEL: Partial<Record<SourceKind, string>> = { acas: "ACAS", dri: "DRI", jnportal: "Portal javnih nabavki", paragraf: "Službeni glasnik", zakon: "propis" }
+
+/** "Zvanični registar (ACAS)": who the official side of a conflict is. */
+function officialLabel(f: Finding): string {
+	const s = f.sources.find((x) => x.official)
+	return `Zvanični registar (${(s && REGISTER_LABEL[s.kind]) || describe(f)})`
+}
+
 function resolveConflict(a: Finding, b: Finding): void {
 	const state = S()
 	const key = [a.id, b.id].sort().join("|")
@@ -102,12 +110,13 @@ function resolveConflict(a: Finding, b: Finding): void {
 	const loser = winner === a ? b : a
 	const wv = winner.claim?.value ?? ""
 	const lv = loser.claim?.value ?? ""
+	// a different title in a headline is not a denial: neutral wording, the official register simply has precedence
 	const explanation =
 		rule === "zvanicni_izvor_ima_prednost"
-			? `${describe(winner)} (zvanični izvor) navodi „${wv}“, a ${describe(loser)} navodi „${lv}“. Zvanični izvor ima prednost; drugi navod je označen kao demantovan i treba ga proveriti.`
+			? `${officialLabel(winner)} navodi «${wv}»; ${describe(loser)} navodi «${lv}». Prednost ima zvanični registar.`
 			: rule === "vise_izvora"
-				? `Nijedan ili oba nalaza imaju zvanični izvor. Navod „${wv}“ ima više izvora (${winner.sources.length} prema ${loser.sources.length}) od navoda „${lv}“.`
-				: `Izvori su izjednačeni po zvaničnosti i broju. Noviji navod „${wv}“ ima prednost nad starijim „${lv}“; proveriti ručno.`
+				? `Nijedan ili oba nalaza imaju zvanični izvor. Navod «${wv}» ima više izvora (${winner.sources.length} prema ${loser.sources.length}) od navoda «${lv}»; prednost ima navod sa više izvora.`
+				: `Izvori su izjednačeni po zvaničnosti i broju. Noviji navod «${wv}» ima prednost nad starijim «${lv}»; proveriti ručno.`
 	const conflict: Conflict = {
 		id: state.nextConflictId(),
 		caseId: winner.caseId,
@@ -125,8 +134,8 @@ function resolveConflict(a: Finding, b: Finding): void {
 	loser.conflictId = conflict.id
 	loser.note =
 		rule === "zvanicni_izvor_ima_prednost"
-			? `Zvanični izvor ima prednost: ${describe(winner)} navodi „${wv}“, ovaj nalaz navodi „${lv}“.`
-			: `Konflikt izvora: prednost ima navod „${wv}“.`
+			? `${officialLabel(winner)} navodi «${wv}»; ovaj izvor navodi «${lv}». Prednost ima zvanični registar.`
+			: `Konflikt izvora: prednost ima navod «${wv}».`
 	winner.conflictId = conflict.id
 	publishConflict(conflict)
 	updateFinding(loser, "conflict")
@@ -157,6 +166,12 @@ export function processFinding(findingId: string): void {
 	if (f.status !== computed && f.status !== "demantovano") {
 		f.status = computed
 		updateFinding(f, "status")
+	}
+	// a finding that backs up another agent's finding with an independent official source (DRI vs Nabavke): say so on the older one
+	const backed = f.corroborates ? state.findings.get(f.corroborates) : undefined
+	if (backed && !backed.note?.includes(f.title)) {
+		backed.note = [backed.note, `Potkrepljeno nalazom ${f.agentName}: ${f.title}`].filter(Boolean).join(" ")
+		updateFinding(backed, "status")
 	}
 	for (const older of state.findingList()) {
 		if (older.id === f.id) break

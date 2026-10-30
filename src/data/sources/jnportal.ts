@@ -342,7 +342,7 @@ export async function findAuthority(nameOrPib: string): Promise<AuthorityRef[]> 
 		return rows
 			.filter((r) => r.IsContractingAuthority || r.IsContractingEntity)
 			.map((r): RawContractor => ({ Id: r.Id, Name: r.Name, IdentificationNumber: r.IdentificationNumber, City: r.City }))
-	}, { activity: { ...SRC.jn, action: "pretraga", label: `naručilac: ${q}`, url: `${BASE}/ugovori`, after: (d, h) => h.items(d.length) } })
+	}, { skipWrite: (d) => d.length === 0, activity: { ...SRC.jn, action: "pretraga", label: `naručilac: ${q}`, url: `${BASE}/ugovori`, after: (d, h) => h.items(d.length) } })
 	const out = env.data.map((r) => toAuthority(r, env.retrievedAt))
 	if (!/^\d{8,9}$/.test(q)) out.sort((a, b) => nameSimilarity(b.name, q) - nameSimilarity(a.name, q))
 	for (const a of out.slice(0, 5)) await remember(a)

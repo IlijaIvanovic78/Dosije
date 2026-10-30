@@ -96,6 +96,18 @@ function isActingTitle(position: string): boolean {
 	return /(^|[\s,(])[вv]\.?\s?[дd]\.?(?=[\s,)]|$)|вршилац\s+дужности|vršilac\s+dužnosti/i.test(position)
 }
 
+/**
+ * The register is an Angular SPA whose only public route to the data is the search form (`#/acas/funkcioner`; the bundle has no route
+ * with an institution or person id, only `funkcionerIzvestajDetails/<id>` for asset reports, checked in a browser). So the root link
+ * carries the search hint in its TITLE: what a journalist types into "Претрага јавних функционера". Applied when reading, so older
+ * cache files get the same titles.
+ */
+export const registerTitle = (what: string) => `ACAS registar – pretraga: ${what}`
+
+const retitle = (o: Official, what = o.institutionName): Official => ({ ...o, source: { ...o.source, title: registerTitle(what) } })
+
+const dmy = (iso?: string) => (iso && /^(\d{4})-(\d\d)-(\d\d)$/.test(iso) ? iso.replace(/^(\d{4})-(\d\d)-(\d\d)$/, "$3.$2.$1.") : iso)
+
 function toOfficial(f: RawFunction): Official {
 	const cyrName = tidyName(`${str(f.funkcionerIme)} ${str(f.funkcionerPrezime)}`)
 	const position = str(f.funkcijaNaziv)
@@ -104,7 +116,7 @@ function toOfficial(f: RawFunction): Official {
 	const institution = str(f.organizacijaNaziv)
 	const source: SourceRef = {
 		kind: "acas",
-		title: `ACAS – Registar funkcionera: ${latin(institution)}`,
+		title: registerTitle(latin(institution)),
 		url: REGISTER_URL,
 		retrievedAt: new Date().toISOString(),
 		publishedAt: from,
@@ -162,14 +174,14 @@ export async function findInstitution(name: string): Promise<{ id: string; name:
 				...o,
 				source: {
 					kind: "acas" as const,
-					title: `ACAS – Registar funkcionera: ${o.name}`,
+					title: registerTitle(o.name),
 					url: REGISTER_URL,
 					retrievedAt,
 					official: true,
 				},
 			}))
-	}, { activity: { ...SRC.acas, action: "pretraga", label: `pretraga ustanove: ${name}`, url: REGISTER_URL, after: (d, h) => h.items(d.length) } })
-	return env.data
+	}, { skipWrite: (d) => d.length === 0, activity: { ...SRC.acas, action: "pretraga", label: `pretraga ustanove: ${name}`, url: REGISTER_URL, after: (d, h) => h.items(d.length) } })
+	return env.data.map((h) => ({ ...h, source: { ...h.source, title: registerTitle(h.name) } }))
 }
 
 // ─── Officials ──────────────────────────────────────────────────────────────
@@ -200,9 +212,10 @@ export async function getOfficials(inst: { acasId?: string; name: string; nameCy
 	if (!orgId) return []
 	const id = orgId
 	const env = await cached(SOURCE, cacheKey("officials", id), async () => (await functionsBy({ organizacijaId: id })).map(toOfficial), {
+		skipWrite: (d) => d.length === 0,
 		activity: { ...SRC.acas, action: "pretraga", label: `funkcioneri: ${shortInstitution(inst.name)}`, url: REGISTER_URL, after: (d, h) => h.items(d.length) },
 	})
-	return env.data
+	return env.data.map((o) => retitle(o))
 }
 
 // ─── Person search ──────────────────────────────────────────────────────────
@@ -234,8 +247,8 @@ export async function searchPerson(fullName: string): Promise<Official[]> {
 			if (wanted.every((t) => have.includes(t))) out.push(toOfficial(f))
 		}
 		return out
-	}, { activity: { ...SRC.acas, action: "pretraga", label: `pretraga osobe: ${fullName.trim()}`, url: REGISTER_URL, after: (d, h) => h.items(d.length) } })
-	return env.data
+	}, { skipWrite: (d) => d.length === 0, activity: { ...SRC.acas, action: "pretraga", label: `pretraga osobe: ${fullName.trim()}`, url: REGISTER_URL, after: (d, h) => h.items(d.length) } })
+	return env.data.map((o) => retitle(o, fullName.trim()))
 }
 
 // ─── Asset reports (imovina) ────────────────────────────────────────────────
@@ -378,7 +391,7 @@ export async function getAssetReports(personId: string, fullName?: string): Prom
 				reason,
 				source: {
 					kind: "acas" as const,
-					title: `ACAS – Izveštaj o imovini i prihodima funkcionera${reportDate(r) ? ` (${reportDate(r)})` : ""}`,
+					title: `ACAS – Izveštaj o imovini i prihodima funkcionera${reportDate(r) ? ` (${dmy(reportDate(r))})` : ""}`,
 					url: reportUrl(r.id),
 					retrievedAt: new Date().toISOString(),
 					publishedAt: reportDate(r),
@@ -394,6 +407,6 @@ export async function getAssetReports(personId: string, fullName?: string): Prom
 			await new Promise((res) => setTimeout(res, 150))
 		}
 		return out
-	}, { activity: { ...SRC.acas, action: "pretraga", label: `izveštaji o imovini: ${fullName?.trim() || `funkcioner ${pid}`}`, url: REGISTER_URL, after: (d, h) => h.items(d.length) } })
-	return env.data
+	}, { skipWrite: (d) => d.length === 0, activity: { ...SRC.acas, action: "pretraga", label: `izveštaji o imovini: ${fullName?.trim() || `funkcioner ${pid}`}`, url: REGISTER_URL, after: (d, h) => h.items(d.length) } })
+	return env.data.map((r) => ({ ...r, source: { ...r.source, title: r.source.title.replace(/\((\d{4})-(\d\d)-(\d\d)\)/, "($3.$2.$1.)") } }))
 }

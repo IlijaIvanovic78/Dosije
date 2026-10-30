@@ -65,6 +65,8 @@ export async function readCache<T>(source: string, key: string): Promise<CacheEn
 
 export async function writeCache<T>(source: string, key: string, data: T, meta?: Record<string, unknown>): Promise<CacheEnvelope<T>> {
 	const envelope: CacheEnvelope<T> = { source, key, retrievedAt: new Date().toISOString(), meta, data }
+	// DATA_MODE=cache is read-only: tests, `npm run qa` and demos must never change the committed cache
+	if (getDataMode(source) === "cache") return envelope
 	const file = filePath(source, key)
 	await fs.mkdir(path.dirname(file), { recursive: true })
 	await fs.writeFile(file, JSON.stringify(envelope, null, 1), "utf8")
@@ -95,10 +97,13 @@ export async function cached<T>(
 	source: string,
 	key: string,
 	fetcher: () => Promise<T>,
-	opts: { mode?: DataMode; meta?: Record<string, unknown>; activity?: CacheActivity<T> } = {},
+	opts: { mode?: DataMode; meta?: Record<string, unknown>; activity?: CacheActivity<T>; skipWrite?: (data: T) => boolean } = {},
 ): Promise<CacheEnvelope<T> & { fromCache: boolean }> {
 	const mode = opts.mode ?? getDataMode(source)
 	const act = opts.activity
+	// a negative result (no match, no articles) is returned but not stored: a curious visitor typing junk must not fill data/cache
+	const store = async (data: T): Promise<CacheEnvelope<T>> =>
+		opts.skipWrite?.(data) ? { source, key, retrievedAt: new Date().toISOString(), meta: opts.meta, data } : writeCache(source, key, data, opts.meta)
 	if (!act || !hasActivityContext()) {
 		if (mode !== "live") {
 			const hit = await readCache<T>(source, key)
@@ -106,7 +111,7 @@ export async function cached<T>(
 			if (mode === "cache") throw new CacheMissError(source, key)
 		}
 		const data = await fetcher()
-		const envelope = await writeCache(source, key, data, opts.meta)
+		const envelope = await store(data)
 		return { ...envelope, fromCache: false }
 	}
 	if (mode !== "live") {
@@ -128,7 +133,7 @@ export async function cached<T>(
 	}
 	return trackActivity(act, async (h) => {
 		const data = await fetcher()
-		const envelope = await writeCache(source, key, data, opts.meta)
+		const envelope = await store(data)
 		settle(act, data, h)
 		return { ...envelope, fromCache: false }
 	})

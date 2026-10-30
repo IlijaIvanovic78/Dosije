@@ -140,6 +140,8 @@ export class DosijeState extends RuntimeState {
 	pendingApprovals = new Map<string, ApprovalResolver>()
 	pendingSpawns = 0
 	spawned = new Set<string>()
+	/** cross-agent reactions already started in this case ("mediji:VD_LANAC", ...): each fires at most once */
+	reacted = new Set<string>()
 	knownSources = new Map<string, SourceRef>()
 	lastActivityAt = Date.now()
 	startedAtMs = 0
@@ -177,6 +179,8 @@ export class DosijeState extends RuntimeState {
 		this.pendingApprovals.clear()
 		this.pendingSpawns = 0
 		this.spawned.clear()
+		this.reacted.clear()
+		for (const info of this.agentInfo.values()) delete info.reactions
 		this.knownSources.clear()
 		this.counters = { finding: 0, task: 0, conflict: 0 }
 		this.startedAtMs = Date.now()

@@ -108,7 +108,7 @@ export { searchName }
 const ACAS_URL = "https://publicacas.acas.rs/#/acas/funkcioner"
 
 function acasSource(name: string): SourceRef {
-	return { kind: "acas", title: `ACAS – Registar funkcionera: ${name}`, url: ACAS_URL, retrievedAt: new Date().toISOString(), official: true }
+	return { kind: "acas", title: acas.registerTitle(name), url: ACAS_URL, retrievedAt: new Date().toISOString(), official: true }
 }
 
 function jnSource(name: string): SourceRef {
@@ -188,7 +188,7 @@ async function resolveDynamic(query: string): Promise<ResolvedInstitution> {
 			municipality: aprHit?.municipality,
 			sources,
 		}
-	}).catch(() => null)
+	}, { skipWrite: (d) => d === null }).catch(() => null)
 	if (!env?.data) {
 		throw new Error(`Institucija „${query}“ nije pronađena u ACAS, na Portalu javnih nabavki ni u APR. Proveri naziv ili probaj link vesti.`)
 	}

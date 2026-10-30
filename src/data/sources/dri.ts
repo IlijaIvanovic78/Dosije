@@ -161,6 +161,23 @@ function reportYear(title: string, kind: string, publishedAt?: string): number |
 	return publishedAt ? Number(publishedAt.slice(0, 4)) : undefined
 }
 
+/**
+ * The audited period, ONLY when the title states it ("... za 2018. godinu" -> "2018") and only for primary audits. The publication
+ * year is NOT a period: a report published in 2025 can quote 2023-2024 and its title says nothing, so then there is no period.
+ */
+export function auditedPeriod(title: string, kind: string | undefined): string | undefined {
+	if (!/^(finansijska|revizija pravilnosti|revizija svrsishodnosti)/.test(kind ?? "")) return undefined
+	const m = /\bza\s+(20\d\d)\.?(?:\s*(?:i|-|–)\s*(20\d\d)\.?)?\s+godin/i.exec(latinize(title))
+	return m ? (m[2] ? `${m[1]}–${m[2]}` : m[1]) : undefined
+}
+
+const dmy = (iso?: string) => (iso && /^\d{4}-\d\d-\d\d/.test(iso) ? `${iso.slice(8, 10)}.${iso.slice(5, 7)}.${iso.slice(0, 4)}.` : "")
+
+/** Short, whole title of a report as a source: DRI titles run to 300 characters (they spell out the auditee), so they are not used. */
+export function reportSourceTitle(r: Pick<AuditReport, "kind" | "period" | "publishedAt">): string {
+	return `DRI – ${r.kind ?? "izveštaj o reviziji"}${r.period ? ` za ${r.period}.` : ""}${r.publishedAt ? `, izveštaj objavljen ${dmy(r.publishedAt)}` : ""}`
+}
+
 interface ListedReport {
 	id: string
 	title: string
@@ -250,10 +267,15 @@ export async function getReports(inst: { name: string; nameCyr?: string }): Prom
 			}
 		}
 		return [...byId.values()].sort((a, b) => (b.publishedAt ?? "").localeCompare(a.publishedAt ?? ""))
-	}, { activity: { ...SRC.dri, action: "pretraga", label: `DRI izveštaji: ${shortInstitution(inst.name || inst.nameCyr || "")}`, url: `${BASE}/izvestaji`, after: (d, h) => h.items(d.length) } })
+	}, { skipWrite: (d) => d.length === 0, activity: { ...SRC.dri, action: "pretraga", label: `DRI izveštaji: ${shortInstitution(inst.name || inst.nameCyr || "")}`, url: `${BASE}/izvestaji`, after: (d, h) => h.items(d.length) } })
 	// precision at read time as well (older cache files): only reports whose title names the institution
 	const own = inst.name || cyrToLat(inst.nameCyr ?? "")
-	return env.data.filter((r) => titleNamesInstitution(r.title, own))
+	return env.data
+		.filter((r) => titleNamesInstitution(r.title, own))
+		.map((r) => {
+			const period = auditedPeriod(r.title, r.kind)
+			return { ...r, period, source: { ...r.source, title: reportSourceTitle({ kind: r.kind, period, publishedAt: r.publishedAt }) } }
+		})
 }
 
 /** "Izveštaj o reviziji pravilnosti poslovanja" without the auditee's name (which makes DRI titles 300 characters long). */
@@ -425,6 +447,23 @@ export function getCachedOpinions(reports: AuditReport[]): Promise<Map<string, s
 	})
 }
 
+/** Verbatim excerpts of reports whose PDF is already processed (cache only: no PDF is downloaded). */
+export function getCachedExcerpts(reports: AuditReport[]): Promise<AuditReport[]> {
+	return trackActivity({ ...SRC.dri, action: "dokument", label: `izvodi iz već obrađenih izveštaja (${n(reports.length, "izvestaj")})`, url: `${BASE}/izvestaji` }, async (h) => {
+		const out: AuditReport[] = []
+		let latest: string | undefined
+		for (const r of reports) {
+			const hit = await readCache<Pick<AuditReport, "opinion" | "excerpts">>(SOURCE, cacheKey("findings", r.id))
+			if (!hit?.data?.excerpts?.length) continue
+			out.push({ ...r, opinion: hit.data.opinion ?? r.opinion, excerpts: hit.data.excerpts })
+			if (!latest || hit.retrievedAt > latest) latest = hit.retrievedAt
+		}
+		h.cached(latest)
+		h.items(out.length)
+		return out
+	})
+}
+
 /** Downloads the PDF, extracts the opinion and 3-6 short verbatim excerpts (Latin script). Cached per report id. */
 export async function getReportFindings(report: AuditReport): Promise<AuditReport> {
 	const env = await cached<Pick<AuditReport, "opinion" | "excerpts">>(SOURCE, cacheKey("findings", report.id), async () => {
@@ -432,7 +471,7 @@ export async function getReportFindings(report: AuditReport): Promise<AuditRepor
 		const { opinion, sentence } = findOpinion(raw)
 		const excerpts = pickExcerpts(flatten(raw), sentence ? flatten(sentence) : undefined).map(latinize)
 		return { opinion, excerpts }
-	}, { activity: { ...SRC.dri, action: "dokument", label: `PDF: ${shortReportTitle(report.title)}${report.year ? ` (${report.year})` : ""}`, url: report.url, after: (d, h) => h.items(d.excerpts?.length) } })
+	}, { activity: { ...SRC.dri, action: "dokument", label: `PDF: ${shortReportTitle(report.title)}${report.period ? ` (za ${report.period}.)` : report.publishedAt ? ` (objavljen ${dmy(report.publishedAt)})` : ""}`, url: report.url, after: (d, h) => h.items(d.excerpts?.length) } })
 	return { ...report, opinion: env.data.opinion ?? report.opinion, excerpts: env.data.excerpts }
 }
 

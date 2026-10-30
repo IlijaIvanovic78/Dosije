@@ -9,7 +9,7 @@
 import crypto from "node:crypto"
 import { XMLParser } from "fast-xml-parser"
 import { trackActivity, type ActivityDescriptor } from "../activity"
-import { cached, cacheKey } from "../cache"
+import { cached, cacheKey, getDataMode, readCache } from "../cache"
 import { getText, httpRequest } from "../http"
 import { buildMatcher, dropRepeats, isNoiseTitle, isOriginalOutlet, normalizeUrl, wordsOf, type Matcher, type SubjectKind } from "../newsMatch"
 import { clipWords } from "../../shared/text"
@@ -140,7 +140,8 @@ async function fetchRaspadSistema(): Promise<RawItem[]> {
 		.map((x) => ({
 			title: String(x.title),
 			url: String(x.url),
-			outlet: x.src ? `raspadsistema.com (${x.src})` : "raspadsistema.com",
+			// the aggregator is not the publisher: credit the original outlet ("Danas"), as the finding's source title does
+			outlet: x.src ? String(x.src) : "raspadsistema.com",
 			publishedAt: toIso(x.t),
 			snippet: [x.body, x.role && `Funkcija: ${x.role}`].filter(Boolean).join(" "),
 			provider: "rss:raspadsistema",
@@ -506,6 +507,54 @@ async function liveSearch(query: string, kind: SubjectKind, days: number, limit:
 	return ranked.slice(0, limit)
 }
 
+// ── outlet quality ──────────────────────────────────────────────────────────
+
+/**
+ * Press reviews prefer established outlets. The list is deliberately small and public: national and regional news media with an
+ * editorial office, news agencies, investigative newsrooms and the business press (matched on the article's host). When at least
+ * MIN_ESTABLISHED articles come from these, articles from any OTHER domain are dropped (tabloid micro-sites and click-bait
+ * aggregators such as serbiantimes.info); with fewer, unknown domains stay so that a small institution still gets a review.
+ * An article is never altered, only kept or dropped. Not on the list does not mean "false": it means "not vetted by us".
+ */
+const ESTABLISHED_HOSTS = [
+	"n1info.rs", "danas.rs", "nova.rs", "vreme.com", "insajder.net", "021.rs", "rts.rs", "juznevesti.com", "krik.rs", "cins.rs", "istinomer.rs",
+	"tanjug.rs", "beta.rs", "fonet.rs", "b92.net", "rtv.rs", "blic.rs", "politika.rs", "novosti.rs", "kurir.rs", "mondo.rs", "telegraf.rs", "nin.rs",
+	"nedeljnik.rs", "euronews.rs", "ekapija.com", "biznis.rs", "bloombergadria.com", "novaekonomija.rs", "slobodnaevropa.org", "balkans.aljazeera.net",
+	"balkaninsight.com", "dnevnik.rs", "glas-javnosti.rs", "cenzolovka.rs",
+]
+export const MIN_ESTABLISHED = 5
+
+const hostOfUrl = (url: string): string => {
+	try {
+		return new URL(url).hostname.replace(/^www\./, "").toLowerCase()
+	} catch {
+		return ""
+	}
+}
+
+export function isEstablishedOutlet(item: { outlet: string; url: string }): boolean {
+	const host = hostOfUrl(item.url)
+	if (host && ESTABLISHED_HOSTS.some((h) => host === h || host.endsWith(`.${h}`))) return true
+	// a Google News link that could not be resolved has no host to judge: the outlet name decides
+	return isOriginalOutlet(item.outlet)
+}
+
+export function preferEstablished<T extends { outlet: string; url: string }>(items: T[]): T[] {
+	const known = items.filter(isEstablishedOutlet)
+	return known.length >= MIN_ESTABLISHED ? known : items
+}
+
+/** "raspadsistema.com (Danas)" (older cache files) is just "Danas". */
+export function cleanOutlet(outlet: string): string {
+	return outlet.replace(/^raspadsistema\.com \((.+)\)$/i, "$1")
+}
+
+function tidyItem(i: NewsItem): NewsItem {
+	const outlet = cleanOutlet(i.outlet)
+	if (outlet === i.outlet && !/^raspadsistema\.com \(/i.test(i.source.title)) return i
+	return { ...i, outlet, source: { ...i.source, title: i.source.title.replace(/^raspadsistema\.com \((.+?)\):/i, "$1:") } }
+}
+
 export async function searchNews(query: string, opts: NewsSearchOptions = {}): Promise<NewsItem[]> {
 	const days = opts.days ?? 30
 	const limit = opts.limit ?? 60
@@ -516,6 +565,7 @@ export async function searchNews(query: string, opts: NewsSearchOptions = {}): P
 	const key = cacheKey("search", query, kind, `d${days}`, `l${limit}`, aliases.length ? `a-${aliases.join(" ")}` : "", context.length ? `c-${context.join(" ")}` : "", exclude.length ? `x-${exclude.join(" ")}` : "")
 	const env = await cached<NewsItem[]>(SOURCE, key, () => liveSearch(query, kind, days, limit, aliases, context, exclude), {
 		meta: { query, kind, days, limit, aliases, context, exclude },
+		skipWrite: (d) => d.length === 0,
 		activity: {
 			source: searchSourceLabel(),
 			kind: "vesti",
@@ -525,7 +575,7 @@ export async function searchNews(query: string, opts: NewsSearchOptions = {}): P
 			after: (d, h) => h.items(d.length),
 		},
 	})
-	return env.data
+	return preferEstablished(env.data.map(tidyItem))
 }
 
 // ── article text ────────────────────────────────────────────────────────────
@@ -647,6 +697,22 @@ async function extractArticle(url: string, fetchOpts: { timeoutMs?: number; retr
 		publishedAt,
 		text,
 		source: { kind: "vesti", title: clipWords(`${outlet}: ${title}`, 200), url: finalUrl, retrievedAt: new Date().toISOString(), publishedAt, official: false },
+	}
+}
+
+/**
+ * Does the article at `url` name the subject (any of `names`: all distinctive tokens, in order, case endings allowed)?
+ * In DATA_MODE=cache only an article that is already cached can be read (nothing is fetched and no request is shown); an article
+ * that cannot be read is "no", never a guess.
+ */
+export async function articleNamesSubject(url: string, names: string[]): Promise<boolean> {
+	try {
+		const article = getDataMode(SOURCE) === "cache" ? (await readCache<ArticleText>(SOURCE, cacheKey("article", url)))?.data : await fetchArticle(url)
+		if (!article) return false
+		const matcher = buildMatcher({ kind: "institution", names })
+		return matcher.subject(wordsOf(`${article.title} . ${article.text}`))
+	} catch {
+		return false
 	}
 }
 

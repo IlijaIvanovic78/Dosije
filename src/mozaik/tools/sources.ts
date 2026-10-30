@@ -13,7 +13,7 @@ import type { NewsSearchOptions } from "../../data/sources/news"
 import { asciiFold, cyrToLat } from "../../data/translit"
 import { n } from "../../shared/plural"
 import { S, type ToolCtx } from "../domain"
-import { clip } from "../util"
+import { clip, normClaim } from "../util"
 import { buildTool, srcOut, str, uniqueSources } from "./helpers"
 
 function instRef() {
@@ -39,6 +39,23 @@ function newsPlanFor(query: string, args: Record<string, unknown>): { query: str
 		return data.personNewsPlan(query, inst, firms, days ?? 730)
 	}
 	return { query, opts: { days: days ?? 90, limit: 40, kind: "topic" } }
+}
+
+/**
+ * How a headline names a person's function: acting ("v.d.", "vršilac dužnosti") or "direktor" without that mark. `relevant` = the
+ * text is about an appointment or a function at all. The phrase is canonical ("generalni direktor"), as a claim value.
+ */
+export function functionLabel(text: string, title: string): { relevant: boolean; naziv: "v.d." | "direktor" | "drugo"; fraza?: string } {
+	const t = asciiFold(text)
+	const relevant = /imenovan|postavljen|direktor|vrsilac|vrsioc|(^|[^a-z])v\.?\s?d\.?(?=[^a-z]|$)|na celo|preuzeo|razresen|smenjen|izabran/.test(t)
+	// the headline decides first: a snippet may mention the other title in passing
+	const own = asciiFold(title)
+	const acting = (s: string) => /(^|[^a-z])v\.?\s?d\.?(?=[^a-z]|$)|vrsilac\s+duznosti|vrsioc\w*\s+duznosti/.test(s)
+	const director = (s: string) => /direktor/.test(s)
+	const scope = acting(own) || director(own) ? own : t
+	if (acting(scope)) return { relevant, naziv: "v.d." }
+	if (director(scope)) return { relevant, naziv: "direktor", fraza: /generaln/.test(scope) ? "generalni direktor" : "direktor" }
+	return { relevant, naziv: "drugo" }
 }
 
 const jnInst = () => {
@@ -274,6 +291,26 @@ export function nabavkeTools(ctx: ToolCtx): Tool[] {
 
 // ─── Revizor ─────────────────────────────────────────────────────────────────
 
+/**
+ * What an earlier DRI excerpt must say to count as "related" to a Nabavke finding. Patterns run on ASCII-folded text. `core` must
+ * match; `extra` patterns only rank (procena vrednosti, obaveštenje o dodeli ugovora, ...). `label` is in the locative ("o ...").
+ */
+const PREGOVARACKI = /pregovarack\w*|bez\s+(?:prethodnog\s+)?objavljivanja/
+
+const DRI_TOPICS_FOR: Record<string, { label: string; core: RegExp; extra: RegExp[]; avoid?: RegExp }> = {
+	BEZ_OBJAVE: {
+		label: "pregovaračkim postupcima bez objavljivanja javnog poziva",
+		core: PREGOVARACKI,
+		extra: [/procenjen\w*\s+vrednost|utvrdjivanj\w*\s+procenjen/, /obavestenj\w*\s+o\s+dodeli|dodel\w*\s+ugovor/, /javn\w+\s+nabavk/],
+	},
+	KONCENTRACIJA: {
+		label: "dodeli ugovora i broju ponuđača",
+		core: /jednom\s+ponudjacu|samo\s+jedn\w+\s+ponudjac|jedn\w+\s+ponud\w+|konkurencij\w*|dodel\w*\s+ugovor|obavestenj\w*\s+o\s+dodeli/,
+		extra: [/procenjen\w*\s+vrednost/, /javn\w+\s+nabavk/],
+		avoid: PREGOVARACKI,
+	},
+}
+
 export function revizorTools(ctx: ToolCtx): Tool[] {
 	return [
 		buildTool(ctx, {
@@ -286,7 +323,53 @@ export function revizorTools(ctx: ToolCtx): Tool[] {
 				S().registerSources(reports.map((x) => x.source))
 				return {
 					total: reports.length,
-					reports: reports.slice(0, 24).map((x) => ({ id: x.id, title: clip(x.title, 90), year: x.year, publishedAt: x.publishedAt, kind: x.kind, opinion: x.opinion })),
+					reports: reports.slice(0, 24).map((x) => ({ id: x.id, title: clip(x.title, 90), period: x.period, publishedAt: x.publishedAt, kind: x.kind, opinion: x.opinion })),
+				}
+			},
+		}),
+		buildTool(ctx, {
+			name: "dri_srodni_nalazi",
+			max: 6000,
+			description:
+				"Reakcija na nalaz Nabavke (BEZ_OBJAVE ili KONCENTRACIJA): u već obrađenim izveštajima DRI (keš izvoda, PDF se ne preuzima) traži ranije nalaze iste teme (pregovarački postupak bez objavljivanja, procena vrednosti, dodela ugovora). Vraća doslovne izvode sa izvorima izveštaja i izvor Portala iz nalaza povoda.",
+			properties: { nalazId: { type: "string", description: "id nalaza Nabavke iz poruke 'Povod'" } },
+			required: ["nalazId"],
+			handler: async (args) => {
+				const state = S()
+				const r = instRef()
+				const id = str(args.nalazId) ?? ""
+				const trigger = state.findings.get(state.mergedAway.get(id) ?? id)
+				const topic = trigger?.signalCode ? DRI_TOPICS_FOR[trigger.signalCode] : undefined
+				if (!trigger || !topic) return { ok: false, error: "Nalaz povoda nije pronađen ili nije BEZ_OBJAVE/KONCENTRACIJA." }
+				const reports = await data.dri.getReports({ name: r.name, nameCyr: r.nameCyr })
+				const processed = await data.dri.getCachedExcerpts(reports)
+				// one excerpt backs up one finding: an excerpt another reaction of this case already took is not offered again
+				const claimKey = (rep: { id: string }, excerpt: string) => `dri:${rep.id}:${excerpt.slice(0, 80)}`
+				const best = processed
+					.flatMap((rep) =>
+						rep.excerpts.map((excerpt) => {
+							const t = asciiFold(excerpt)
+							const core = topic.core.test(t)
+							// the topic of the other trigger is a worse match for this one when something else exists
+							const other = topic.avoid?.test(t) ? 1 : 0
+							return { rep, excerpt, score: (core ? 2 : 0) + topic.extra.filter((re) => re.test(t)).length - other * 3, core }
+						}),
+					)
+					.filter((h) => h.core && !state.reacted.has(claimKey(h.rep, h.excerpt)))
+					.sort((a, b) => b.score - a.score || (a.rep.publishedAt ?? "").localeCompare(b.rep.publishedAt ?? ""))[0]
+				if (best) state.reacted.add(claimKey(best.rep, best.excerpt))
+				const hits = best ? [best] : []
+				const sourcesOf = (rep: (typeof hits)[number]["rep"]) => [
+					srcOut({ ...rep.source, publishedAt: rep.source.publishedAt ?? rep.publishedAt }),
+					srcOut({ ...rep.source, title: `${rep.source.title} (PDF)`, url: rep.url, publishedAt: rep.publishedAt }),
+				]
+				return {
+					povod: { id: trigger.id, signalCode: trigger.signalCode, title: trigger.title, agent: trigger.agentName },
+					tema: topic.label,
+					pregledanoIzvestaja: processed.length,
+					nalazi: hits.map((h) => ({ reportId: h.rep.id, kind: h.rep.kind, period: h.rep.period, publishedAt: h.rep.publishedAt, excerpt: clip(h.excerpt, 360), izvori: sourcesOf(h.rep) })),
+					izvoriPovoda: uniqueSources(trigger.sources.filter((s) => s.kind === "jnportal").slice(0, 1)).map(srcOut),
+					napomena: "Povezanost je tematska: izvod iz izveštaja ne govori nužno o istim postupcima kao nalaz Nabavke.",
 				}
 			},
 		}),
@@ -301,11 +384,11 @@ export function revizorTools(ctx: ToolCtx): Tool[] {
 				const report = reports.find((x) => x.id === str(args.reportId))
 				if (!report) return { ok: false, error: "Izveštaj sa tim id nije pronađen." }
 				const full = await data.dri.getReportFindings(report)
-				const pdf: SourceRef = { ...full.source, title: `DRI – izveštaj (PDF): ${clip(full.title, 100)}`, url: full.url }
+				const pdf: SourceRef = { ...full.source, title: `${full.source.title} (PDF)`, url: full.url }
 				return {
 					id: full.id,
 					title: clip(full.title, 160),
-					year: full.year,
+					period: full.period,
 					publishedAt: full.publishedAt,
 					kind: full.kind,
 					opinion: full.opinion,
@@ -358,7 +441,7 @@ export function medijiTools(ctx: ToolCtx): Tool[] {
 						ukupno: ov.total,
 						izvori: ov.items.map((i) => ({
 							kind: "vesti",
-							title: clip(cyrToLat(`${i.outlet}: ${i.title}`), 110),
+							title: clip(cyrToLat(`${i.outlet}: ${i.title}`), 190),
 							url: i.url,
 							publishedAt: i.publishedAt?.slice(0, 10),
 							official: false,
@@ -368,10 +451,52 @@ export function medijiTools(ctx: ToolCtx): Tool[] {
 						outlet: cyrToLat(i.outlet),
 						publishedAt: i.publishedAt?.slice(0, 10),
 						nalazi: i.verified,
-						title: clip(cyrToLat(i.title), 100),
+						title: clip(cyrToLat(i.title), 160),
 						url: i.url,
 						snippet: i.snippet ? clip(cyrToLat(i.snippet), 80) : undefined,
 					})),
+				}
+			},
+		}),
+		buildTool(ctx, {
+			name: "vesti_imenovanje",
+			max: 6000,
+			description:
+				"Reakcija na nalaz Kadrovika (VD_PREKO_ROKA ili VD_LANAC): ciljana provera medija o imenovanju osobe. Vraća članke koji pominju osobu zajedno sa institucijom i govore o imenovanju ili funkciji, i kako ih izdanja nazivaju: 'v.d.' (vršilac dužnosti) ili 'direktor' bez oznake v.d.",
+			properties: { ime: { type: "string", description: "puno ime osobe iz poruke 'Povod'" } },
+			required: ["ime"],
+			handler: async (args) => {
+				const ime = str(args.ime) ?? ""
+				if (!ime) return { ok: false, error: "ime je obavezno" }
+				// the same search as "Mediji · osoba" (person AND institution in the article), so a cached search is reused
+				const plan = newsPlanFor(ime, { tip: "osoba", days: 730 })
+				const items = await data.news.searchNews(plan.query, plan.opts)
+				S().registerSources(items.map((i) => i.source))
+				const about = items
+					.filter((i) => !i.unresolved)
+					.map((i) => ({ i, f: functionLabel(`${i.title} ${i.snippet ?? ""}`, i.title) }))
+					.filter((x) => x.f.relevant)
+				const count = (naziv: string) => about.filter((x) => x.f.naziv === naziv).length
+				const claim = about.find((x) => x.f.naziv === "direktor")?.f.fraza
+				const existing = claim
+					? S()
+							.findingList()
+							.some((f) => f.claim?.predicate === "funkcija" && normClaim(f.claim.subject) === normClaim(ime) && normClaim(f.claim.value) === normClaim(claim))
+					: false
+				return {
+					ime,
+					ukupno: items.length,
+					clanci: about.slice(0, 6).map(({ i, f }) => ({
+						outlet: cyrToLat(i.outlet),
+						publishedAt: i.publishedAt?.slice(0, 10),
+						title: clip(cyrToLat(i.title), 120),
+						url: i.url,
+						naziv: f.naziv,
+					})),
+					nazivi: { vd: count("v.d."), direktor: count("direktor"), drugo: count("drugo") },
+					navodFunkcije: claim,
+					navodVecUDosijeu: existing,
+					napomena: "naziv je prema naslovu ili opisu članka: 'v.d.' ili 'direktor' (bez oznake v.d.). Prazan rezultat znači samo da pretraga nije našla članke.",
 				}
 			},
 		}),

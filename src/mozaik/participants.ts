@@ -6,23 +6,23 @@ import path from "node:path"
 import { createAgent, createHuman, type Agent, type SituationHandler } from "@mozaik-ai/core"
 import * as data from "../data"
 import type { ResolvedInstitution } from "../data/resolver"
-import type { AgentGroup, Entity, WireEvent } from "../shared/types"
-import { coreMessage, createDynamicAgent, createTrijazaAgent, dynamicMessage, trijazaMessage, type DynamicKind } from "./agents"
+import type { AgentGroup, AgentReaction, Entity, Finding, SignalCode, WireEvent } from "../shared/types"
+import { coreMessage, createDynamicAgent, createTrijazaAgent, dynamicMessage, reactionMessage, trijazaMessage, type DynamicKind, type ReactionTrigger } from "./agents"
 import { bus } from "./bus"
-import { ids, S, scheduleBudgetEvent } from "./domain"
+import { emit, ids, S, scheduleBudgetEvent } from "./domain"
 import { handler } from "./handlers"
 import { startAgentLoop } from "./loop"
 import { checkMapaDone, failRow, startRow } from "./mapa"
 import { join } from "./runtime"
 import { todayIso } from "../data/analysis/vd"
-import { logError } from "./util"
+import { log, logError, nowIso, slug } from "./util"
 
 export const OUT_DIR = path.resolve(process.cwd(), "out")
 
 // ─── core agents react to dosije.started: each starts its OWN loop at the same moment ───────────────
 
 export function coreAgentHandlers(group: AgentGroup, agentRef: () => Agent): SituationHandler[] {
-	return [
+	const handlers = [
 		handler(["dosije.started"], `${group}.dosije.started`, ({ event }) => {
 			const state = S()
 			const p = event.payload as { caseId: string }
@@ -30,6 +30,50 @@ export function coreAgentHandlers(group: AgentGroup, agentRef: () => Agent): Sit
 			startAgentLoop(agentRef(), coreMessage(group, state.institutionRef, state.focus, state.mentioned, todayIso()))
 		}),
 	]
+	// cross-agent reaction: a finding of ANOTHER agent is the situation that starts a new loop of this one
+	if (REACTIONS[group]) handlers.push(handler(["finding.added"], `${group}.finding.added`, ({ event }) => onFindingReaction(group, agentRef(), (event.payload as { finding: Finding }).finding)))
+	return handlers
+}
+
+// ─── cross-agent reactions (finding.added of another agent -> a new loop with a fresh context) ───────────────────
+
+/**
+ * Mediji reacts to a Kadrovik finding about an acting head (VD_PREKO_ROKA, VD_LANAC): a targeted media check of the appointment and
+ * of whether outlets say "v.d." or "direktor". Revizor reacts to a Nabavke finding (BEZ_OBJAVE, KONCENTRACIJA): it looks for an earlier
+ * DRI finding on the same topic and backs the finding up with a second official source. Each fires at most once per case and
+ * trigger code (Mediji also once per person: the two codes concern the same head).
+ */
+const REACTIONS: Partial<Record<AgentGroup, { from: AgentGroup; codes: SignalCode[] }>> = {
+	mediji: { from: "kadrovik", codes: ["VD_PREKO_ROKA", "VD_LANAC"] },
+	revizor: { from: "nabavke", codes: ["BEZ_OBJAVE", "KONCENTRACIJA"] },
+}
+
+function onFindingReaction(group: AgentGroup, agent: Agent, finding: Finding): void {
+	const rule = REACTIONS[group]
+	const state = S()
+	if (!rule || !finding.signalCode || !rule.codes.includes(finding.signalCode)) return
+	if (!state.isRunning(finding.caseId) || !state.institutionRef) return
+	const from = state.agentInfo.get(finding.agentId)
+	if (finding.agentId === agent.getId() || from?.group !== rule.from) return
+
+	const keys = [`${group}:${finding.signalCode}`]
+	let trigger: ReactionTrigger = { findingId: finding.id, agent: from.name, signalCode: finding.signalCode, title: finding.title }
+	if (group === "mediji") {
+		const entity = finding.entityIds.map((id) => state.entities.get(id)).find((e) => e?.kind === "osoba")
+		const person = entity?.name ?? finding.claim?.subject
+		if (!person) return
+		trigger = { ...trigger, person, position: typeof entity?.attrs.position === "string" ? entity.attrs.position : undefined }
+		keys.push(`${group}:osoba:${slug(person)}`)
+	}
+	if (keys.some((k) => state.reacted.has(k))) return
+	if (!startAgentLoop(agent, reactionMessage(group as "mediji" | "revizor", trigger, state.institutionRef))) return
+	for (const k of keys) state.reacted.add(k)
+
+	const info = state.agentInfo.get(agent.getId())
+	const reaction: AgentReaction = { findingId: finding.id, fromAgentId: finding.agentId, fromAgent: from.name, signalCode: finding.signalCode, title: finding.title, at: nowIso() }
+	if (info) info.reactions = [...(info.reactions ?? []), reaction]
+	emit("agent.reakcija", agent.getId(), { agentId: agent.getId(), agentName: state.nameOf(agent.getId()), reaction })
+	log("reakcija", `${state.nameOf(agent.getId())} ← ${from.name}: ${finding.signalCode} (${finding.title})`)
 }
 
 // ─── Fabrika: spawns dynamic agents on entity.added, within the budget ──────────────────────────────

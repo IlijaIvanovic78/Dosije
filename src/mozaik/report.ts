@@ -4,12 +4,31 @@
 import { config } from "../config"
 import { LEGAL_LABELS } from "../data/resolver"
 import { n } from "../shared/plural"
-import type { ClaimStatus, DosijeReport, Finding, Section, Severity, SourceRef } from "../shared/types"
+import type { ClaimStatus, DosijeReport, Finding, Section, Severity, SourceKind, SourceRef } from "../shared/types"
 import type { DosijeState, Summary } from "./state"
 import { findingScore } from "./summary"
 import { hostOf, nowIso, normUrl } from "./util"
 
-const STATUS_LABEL: Record<ClaimStatus, string> = { zvanicno: "zvanično", potvrdjeno: "potvrđeno", nepotvrdjeno: "nepotvrđeno", demantovano: "demantovano" }
+// the code `demantovano` is part of the contract; in every text it reads "odstupa od registra" (a different headline title is not a denial)
+const STATUS_LABEL: Record<ClaimStatus, string> = { zvanicno: "zvanično", potvrdjeno: "potvrđeno", nepotvrdjeno: "nepotvrđeno", demantovano: "odstupa od registra" }
+
+const SOURCE_LABEL: Partial<Record<SourceKind, string>> = {
+	acas: "ACAS registar",
+	jnportal: "Portal javnih nabavki",
+	integrity_watch: "Integrity Watch Srbija",
+	apr: "APR",
+	dri: "DRI",
+	paragraf: "Službeni glasnik",
+	zakon: "propis",
+	opensanctions: "OpenSanctions",
+	krik: "KRIK",
+	novinar: "unos novinarke",
+}
+
+/** Short, whole name of a source for the list of top signals: "ACAS registar", "Danas", never a clipped title. */
+function sourceName(s: SourceRef): string {
+	return SOURCE_LABEL[s.kind] ?? (s.title.includes(":") ? s.title.split(":")[0].trim() : hostOf(s.url))
+}
 const SEVERITY_LABEL: Record<Severity, string> = { signal: "signal za proveru", paznja: "pažnja", info: "informacija" }
 const SECTIONS: [Section, string][] = [
 	["rukovodstvo", "Rukovodstvo"],
@@ -35,7 +54,7 @@ function sourceLine(s: SourceRef): string {
 }
 
 function findingBlock(f: Finding): string[] {
-	const title = f.status === "demantovano" ? `~~${f.title}~~` : f.title
+	const title = f.title
 	const meta = [
 		`status: ${STATUS_LABEL[f.status]}`,
 		SEVERITY_LABEL[f.severity],
@@ -75,7 +94,7 @@ export function buildReport(state: DosijeState, summary: Summary): DosijeReport 
 	if (summary.topSignals.length === 0) lines.push("_Nema nalaza koji su označeni kao signal._", "")
 	summary.topSignals.forEach((t, i) => {
 		const f = state.findings.get(t.findingId)
-		lines.push(`${i + 1}. **${t.headline}**${f ? ` (${STATUS_LABEL[f.status]}${f.sources[0] ? `; izvor: ${f.sources[0].title.split("–").pop()?.trim() ?? ""}` : ""})` : ""}`)
+		lines.push(`${i + 1}. **${t.headline}**${f ? ` (${STATUS_LABEL[f.status]}${f.sources[0] ? `; izvor: ${sourceName(f.sources.find((s) => s.official) ?? f.sources[0])}` : ""})` : ""}`)
 	})
 	lines.push("")
 
@@ -105,12 +124,14 @@ export function buildReport(state: DosijeState, summary: Summary): DosijeReport 
 	const dynamic = agents.filter((a) => a.dynamic)
 	const byGroup = new Map<string, number>()
 	for (const a of dynamic) byGroup.set(a.group, (byGroup.get(a.group) ?? 0) + 1)
+	const reactions = agents.flatMap((a) => (a.reactions ?? []).map((r) => `${a.name} ← ${r.fromAgent} (${r.signalCode})`))
 	lines.push("## Kako je nastao", "")
 	lines.push(
 		`U izradi dosijea radilo je **${n(agents.length, "agent")}** na zajedničkoj Mozaik sabirnici događaja (${agents.length - dynamic.length} stalnih + ${n(dynamic.length, "pokrenutAgent")}${dynamic.length ? `: ${[...byGroup].map(([g, c]) => `${g} ×${c}`).join(", ")}` : ""}), uz novinara kao člana tima.`,
 		"",
 		`- vrhunac istovremenih petlji: **${stats.peakConcurrentLoops}** (${n(stats.peakConcurrentLoops, "petlja")} u isto vreme); ukupno petlji: ${stats.totalLoops}; zaključivanja: ${stats.inferences}; pozivi alata: ${stats.toolCalls}`,
 		`- interceptor Urednika: ${n(stats.interceptions, "presretanje")}, ${n(stats.blockedClaims, "blokiranaTvrdnja")} bez izvora; rešeno konflikata izvora: ${stats.conflicts}`,
+		...(reactions.length ? [`- agenti koji reaguju na nalaze drugih agenata: ${reactions.join("; ")}`] : []),
 		`- Mozaik događaja: ${stats.events}; trajanje: ${formatDuration(stats.elapsedMs)}`,
 		`- režim: ${config.mode === "llm" ? `LLM (${config.model}, urednik ${config.editorModel}), ${state.budget.tokens} tokena` : "skriptovani agenti (bez ključa): isti Mozaik runtime, alati, interceptor i stanje; zaključivanje je deterministično"}; podaci: ${config.dataMode === "cache" ? "keš" : config.dataMode === "live" ? "uživo" : "keš pa uživo"}`,
 		`- pravni oblik za proveru roka v.d.: ${inst ? (LEGAL_LABELS[state.institutionRef?.legalType ?? "ostalo"] ?? inst.legalType) : ""}`,

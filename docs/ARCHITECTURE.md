@@ -13,7 +13,8 @@ institution (or pastes the news link) and within minutes gets a **dosije**:
 - what the state auditor (DRI) found;
 - what the media report, and where reports conflict with official registers.
 
-Every claim carries a **source link, a date and a status** (zvanično / potvrđeno / nepotvrđeno / demantovano),
+Every claim carries a **source link, a date and a status** (zvanično / potvrđeno / nepotvrđeno / odstupa od registra; the last one is
+the contract code `demantovano`: a headline that names a function differently than the register is not a denial),
 plus a list of **what still needs manual verification**. A team of **concurrent Mozaik agents** builds it live on
 screen. The journalist is a **participant on the same event bus** (`createHuman`): she answers questions the
 system cannot answer from open data (e.g. company owners behind reCAPTCHA) and approves sensitive signals.
@@ -79,7 +80,10 @@ docs/data-sources/<source>.md  endpoint notes written by each data agent
 
 ### 4.1 Modes
 `DATA_MODE=auto|cache|live` (see `cache.ts`). The demo institution (IŽS) must be served 100% from the committed
-cache. Other institutions work live in `auto` mode when the sites are up.
+cache. Other institutions work live in `auto` mode when the sites are up. `DATA_MODE=cache` is **read-only**: `writeCache` writes nothing,
+so `npm test`, `npm run qa` and demos leave `data/cache` untouched. Negative results (a resolver miss, an empty search for an unknown name,
+no officials / reports / acts) are returned but not cached (`cached(..., {skipWrite})`), so a curious visitor does not fill the cache.
+`npm run qa` writes its report to `out/qa.md`; `docs/QA.md` only with `--write-docs`.
 
 ### 4.2 Adapters: required exports (exact names)
 
@@ -138,6 +142,12 @@ Dynamic agents (spawned by the **Fabrika** participant on `entity.added`, budget
 | Mediji · *osoba* | `entity.added` kind=osoba | `vesti_pretraga`, `vest_tekst` + common |
 | Provera · *osoba* | `entity.added` kind=osoba, role=vlasnik (usually from the journalist's answer) | `acas_pretraga_osobe`, `pep_provera` + common |
 
+Reactions of core agents (situation handlers on `finding.added` produced by ANOTHER agent, see 5.3): the handler publishes `agent.reakcija`
+(`{agentId, agentName, reaction: {findingId, fromAgent, signalCode, title, at}}`, producer = the reacting agent), appends the reaction to
+`AgentInfo.reactions` (reset with every case) and starts the loop. The reaction is visible in the timeline (the loop's first message
+`Povod: nalaz <agent>: <title>`), in `AgentInfo`, in the CLI log (`↳ reakcija na nalaz Kadrovik · VD_LANAC: ...`) and in the report
+("Kako je nastao"). Each fires at most once per case and trigger code (`DosijeState.reacted`).
+
 Humans and observers:
 - **Novinar** (`createHuman`): the journalist. REST endpoints publish on her behalf: `dosije.started`,
   `odgovor.coveka`, `entity.added` (leads), `dosije.zatvori`.
@@ -155,6 +165,8 @@ Humans and observers:
 | `entity.added` osoba funkcioner (Kadrovik) | Fabrika | spawns *Imovina · X* and *Mediji · X* |
 | `entity.added` osoba vlasnik (Novinar / agent after an answer) | Fabrika | spawns *Provera · X* and *Mediji · X* |
 | `finding.added` (any agent) | Urednik | dedupe/merge, status, conflict check (official source wins) -> `finding.updated`, `conflict.resolved` |
+| `finding.added` VD_PREKO_ROKA / VD_LANAC (**Kadrovik**) | Mediji | **cross-agent reaction**: a new Mediji loop (fresh context, via `startAgentLoop`) with a targeted media check of the appointment: do outlets say "v.d." or "direktor"? (`vesti_imenovanje`; a finding with real articles and, if new, a `funkcija` claim for the Urednik's conflict check). First message `Povod: nalaz Kadrovik: <title> [f3 · VD_LANAC]`. Once per case and code (and per person). |
+| `finding.added` BEZ_OBJAVE / KONCENTRACIJA (**Nabavke**) | Revizor | **cross-agent reaction**: a new Revizor loop that searches the cached DRI excerpts for an earlier finding on the same topic (`dri_srodni_nalazi`) and adds a corroboration finding "DRI je u izveštaju <za 2019. / objavljenom ...> već utvrdio nalaz o ..." whose sources are the DRI report AND the Nabavke finding's procurement source (`potkrepljuje` = the Nabavke finding; the Urednik adds a note to it). First message `Povod: nalaz Nabavke: <title> [f7 · BEZ_OBJAVE]`. Nothing is added when no related excerpt exists. |
 | `pitanje.za_coveka` (agent or gate) | SSE most -> UI inbox | journalist sees the question |
 | `odgovor.coveka` (Novinar) | Urednik (approvals), the asking agent (questions) | resolve the awaited approval / start a new loop with the answer (e.g. owner name -> `add_entity` -> cascade) |
 | `message_received.started` / `model.answer` (any) | Urednik | track active loops; idle for 2.5 s -> final summary loop -> `dosije.zavrsen` |
@@ -175,7 +187,8 @@ Humans and observers:
 Common (every worker agent):
 - `add_finding({section, title, text, severity, signalCode?, sources:[{kind,title,url,publishedAt?,official?}], entityIds?, claim?:{subject,predicate,value}})`
   -> `{ok, findingId}`. Status is computed by the Urednik from sources (official -> zvanično, >= 2 independent
-  -> potvrđeno, else nepotvrđeno). Passes through the gate first.
+  -> potvrđeno, else nepotvrđeno). Passes through the gate first. Optional `potkrepljuje: <findingId>` (reactions only): this finding
+  backs up another agent's finding with an independent source (stored as `Finding.corroborates`).
 - `add_entity({kind, name, role?, attrs?, sources?})` -> `{ok, entityId, duplicate}`. Emits `entity.added`.
 - `ask_human({question, title?, hint?, links?, entityName?})` -> `{ok, taskId}`. Non-blocking: the loop continues;
   the answer arrives later as `odgovor.coveka` and starts a new loop.
@@ -196,7 +209,9 @@ Source and analysis tools (thin wrappers over the data facade; analysis is deter
 | `acas_imovina({personId?, name})` | `AssetReport[]` |
 | `acas_pretraga_osobe({name})` | `Official[]` (is this person an official?) |
 | `pep_provera({name})` | `PepMatch[]` |
-| `dri_izvestaji()` / `dri_nalazi({reportId})` | audit reports / excerpts |
+| `dri_izvestaji()` / `dri_nalazi({reportId})` | audit reports / excerpts (`period` = audited period, only when the report's title states it) |
+| `dri_srodni_nalazi({nalazId})` | Revizor's reaction: the best not yet used cached DRI excerpt on the topic of a Nabavke finding (BEZ_OBJAVE / KONCENTRACIJA), with the report's sources and the finding's procurement source |
+| `vesti_imenovanje({ime})` | Mediji's reaction: articles naming the person AND the institution that speak of an appointment or function, each classified "v.d." / "direktor" / "drugo", plus the claim value and whether the dossier already holds it |
 | `vesti_pretraga({query, days?, tip?, kontekst?})` / `vest_tekst({url})` | `{pregled: {naslov, tekst, ukupno, izvori[<=12]}, clanci}` (institution: 12 months, aliases; person: 2 years, article must name person AND institution/firm) / article text |
 | `dosije_pregled()` / `napisi_sazetak({lede, topSignals, toVerify})` | Urednik only |
 

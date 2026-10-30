@@ -117,6 +117,8 @@ export interface IntegrityWatchLink {
 	detail?: string
 	contracts?: number
 	valueRsd?: number
+	/** the media article the dataset cites as the basis of a party link; unverified until the article is read (see analysis/firms.ts) */
+	basisUrl?: string
 	source: SourceRef
 }
 
@@ -142,6 +144,8 @@ export interface AuditReport {
 	year?: number
 	publishedAt?: string
 	kind?: string // e.g. "finansijska revizija", "revizija pravilnosti", "revizija svrsishodnosti"
+	/** audited period, ONLY when the title states it ("za 2018. godinu" -> "2018"); `year` may be the publication year */
+	period?: string
 	url: string // PDF or report page
 	opinion?: string // e.g. "mišljenje sa rezervom"
 	excerpts: string[] // short verbatim excerpts of key findings (empty in list views)

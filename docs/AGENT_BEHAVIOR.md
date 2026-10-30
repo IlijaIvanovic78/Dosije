@@ -77,6 +77,24 @@ Zadatak: šta je Državna revizorska institucija našla.
 Scripted policy: same; pick reports with excerpts, most recent first. Only reports whose title names the institution
 (including old names such as "Srbija voz") are listed; joint audits of several auditees are not.
 
+**Period wording.** A year in a title or text is the *audited period* only when the report's title states it ("... za 2018. godinu" ->
+`period: "2018"` -> "DRI za 2018. · ..." / "finansijski izveštaji za 2018., izveštaj objavljen 04.12.2019."). Otherwise the label is the
+publication date ("DRI izveštaj od 25.07.2025. · ...", "izveštaj objavljen 25.07.2025."): the publication year is never presented as the
+period (a report published in 2025 can quote 2023-2024).
+
+**Reaction (cross-agent): Nabavke finding -> Revizor.** Situation handler on `finding.added`: a finding of **Nabavke** with signalCode
+`BEZ_OBJAVE` or `KONCENTRACIJA` starts a new Revizor loop (fresh context, `startAgentLoop`, once per case and code). First message:
+`Povod: nalaz Nabavke: <title> [f7 · BEZ_OBJAVE]. Institucija: ...`.
+```
+REAKCIJA NA TUĐI NALAZ (poruka počinje sa "Povod: nalaz Nabavke: ..."):
+1) dri_srodni_nalazi({nalazId}): u već obrađenim izveštajima DRI (keš izvoda, PDF se ne preuzima) traži ranije nalaze iste teme
+   (pregovarački postupak bez objavljivanja, procena vrednosti, dodela ugovora). Jedan izvod potkrepljuje jedan nalaz.
+2) Ako ima srodnog nalaza: JEDAN add_finding (revizija, paznja, DRI_NALAZ, potkrepljuje = nalazId) "DRI je u izveštaju <za 2019. | objavljenom
+   02.12.2020.> već utvrdio nalaz o <tema>", sa doslovnim izvodom i izvorima: izveštaj DRI (stranica i PDF) PLUS izvor Portala javnih nabavki
+   iz nalaza povoda. Dva zvanična izvora: Urednik nalaz označava kao zvanično, a nalaz Nabavke dobija belešku "Potkrepljeno nalazom Revizor: ...".
+3) Ako nema srodnog izvoda: jedna rečenica, ništa se ne dodaje.
+```
+
 ### Mediji (news): what is being reported
 Trigger: `dosije.started` (institution) and, as **Mediji · osoba**, `entity.added` kind=osoba.
 ```
@@ -96,6 +114,18 @@ pojedinačni nalazi o instituciji: poslednjih 90 dana).
    pregled.naslov / pregled.tekst ("N članaka u poslednjih 12 meseci; najčešće teme: ..."), a sources su svi objekti iz
    pregled.izvori (10-12 različitih članaka: izdanje, datum, URL). Isto radi Mediji · osoba (2 godine), ako ima članaka.
 ```
+**Reaction (cross-agent): Kadrovik finding -> Mediji.** Situation handler on `finding.added`: a finding of **Kadrovik** with signalCode
+`VD_PREKO_ROKA` or `VD_LANAC` starts a new Mediji loop (fresh context; once per case and code, and once per person because both codes
+concern the same head). First message: `Povod: nalaz Kadrovik: <title> [f3 · VD_LANAC]. Osoba: <ime> (funkcija prema ACAS: „...“). ...`.
+```
+REAKCIJA NA TUĐI NALAZ (poruka počinje sa "Povod: nalaz Kadrovik: ..."):
+1) vesti_imenovanje({ime}): ciljana provera medija o imenovanju (isti pretraživač kao "Mediji · osoba": članak mora da pominje osobu I
+   instituciju); za svaki članak naslov/opis određuje kako je osoba nazvana: "v.d." ili "direktor" bez oznake v.d.
+2) Ako ima članaka: JEDAN add_finding (mediji; paznja + MEDIJSKI_NAVOD ako neko izdanje navodi "direktor" bez v.d., inače info) koji kaže
+   koliko izdanja navodi v.d. a koliko direktor, sa člancima kao izvorima; claim {osoba, funkcija, "generalni direktor"} samo ako taj navod
+   još nije u dosijeu, pa ga Urednik poredi sa registrom. Ne tvrdi ko je u pravu.
+3) Ako nema članaka: jedna rečenica, ništa se ne dodaje.
+```
 Scripted policy: core Mediji first calls `add_finding` for the union article **without sources** (deliberate,
 documented demo of the source gate), receives `ODBIJENO`, then retries with the article as the source; then up to two
 more recent articles with a reason to flag them, and finally the "Pregled medija" finding. Mediji · osoba adds the
@@ -108,7 +138,10 @@ conflict) and the person's press review.
   (subject+predicate+value, normalized), or same section with title token-similarity >= 0.7 -> merge sources into
   the older finding, recompute status, mark the newer one merged (`finding.updated` reason `merge`).
 - Conflict: two findings with the same normalized `claim.subject` + `predicate` but different values -> the one
-  with an official source wins; the other gets status `demantovano` and a note; publish `conflict.resolved`
+  with an official source wins; the other gets status `demantovano` (a contract code; in every text and in the report it reads
+  **"odstupa od registra"**, because a different title in a headline is not a denial) and the neutral note
+  "Zvanični registar (ACAS) navodi «v.d. generalnog direktora»; ovaj izvor navodi «generalni direktor». Prednost ima zvanični registar.";
+  publish `conflict.resolved`
   (rule `zvanicni_izvor_ima_prednost`; if neither or both are official: more sources wins, then newer date).
   Values that are equal after normalization are not conflicts ("v.d. generalnog direktora" vs "vd generalnog
   direktora").
@@ -122,8 +155,12 @@ Ti si Urednik. Zadatak: napiši sažetak dosijea za novinarku.
 findingId + kratak naslov), toVerify (konkretni koraci koje novinarka treba ručno da proveri: vlasnici firmi,
 koji propis važi, akti o imenovanju, otvorena pitanja). Ne dodaj nove činjenice.
 ```
-Scripted policy: topSignals = approved/unrejected `signal` findings first, then `paznja`, by section priority
-(rukovodstvo, novac, firme, revizija, mediji); toVerify = open tasks + `nepotvrdjeno` signals + fixed checklist.
+Scripted policy: topSignals (`pickTop`, `src/mozaik/summary.ts`): **reliability tier first** (official/approved, then confirmed by two
+hosts, then unconfirmed, then "not found" findings such as `IMENOVANJE_NEPOZNATO`), within a tier by severity and signal weight; **at most one
+finding per signalCode** (several Integrity Watch flags are one signal) and at most 2 per section for rukovodstvo/novac, 1 for the others;
+the caps are relaxed only to reach 3 entries. An unconfirmed finding is never above an official one; a list proposed by the model in
+`napisi_sazetak` is re-ordered by the same rules. toVerify = open tasks + `nepotvrdjeno` signals + a fixed checklist; **every item is one
+complete sentence** (long wording is rewritten shorter, never clipped).
 
 ## Dynamic agents (spawned by Fabrika on `entity.added`)
 

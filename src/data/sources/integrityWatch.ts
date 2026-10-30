@@ -201,10 +201,26 @@ function money(n: number): string {
 	return `${Math.round(n).toLocaleString("en-US")} RSD`
 }
 
+/**
+ * The platform has no page per supplier (checked: companies.php and the main page filter a table in the browser, neither reads a
+ * company from the URL), so the link is the platform and the TITLE says what to search for.
+ */
+const sourceTitle = (supplier: string) => `Integrity Watch Srbija – pretraga: ${supplier}`
+const BASIS_URL = /;?\s*izvor povezivanja: (https?:\/\/[^\s;]+)/
+
+/**
+ * The media article IW cites as the basis of a party link is NOT repeated in `detail` (it is not known to mention the firm):
+ * it is kept apart as `basisUrl` and analysis/firms.ts shows it only after reading the article. Also normalizes older cache files.
+ */
+const retitle = (l: IntegrityWatchLink): IntegrityWatchLink => {
+	const basisUrl = l.basisUrl ?? BASIS_URL.exec(l.detail ?? "")?.[1]
+	return { ...l, basisUrl, detail: l.detail?.replace(BASIS_URL, ""), source: { ...l.source, title: sourceTitle(l.supplierName) } }
+}
+
 function sourceFor(kind: Kind, retrievedAt: string, what: string): SourceRef {
 	return {
 		kind: "integrity_watch",
-		title: `Integrity Watch Srbija – ${what}`,
+		title: sourceTitle(what),
 		url: kind === "political" ? `${IW}/companies.php?l=sr` : `${IW}/?l=sr`,
 		retrievedAt,
 		official: false,
@@ -236,7 +252,7 @@ function linksFromPair(p: IwPair, idx: IwIndex, retrievedAt: string): IntegrityW
 			detail: parts.join("; "),
 			contracts: p.contracts,
 			valueRsd: p.joint === p.contracts ? undefined : p.valueRsd,
-			source: sourceFor(kind, retrievedAt, `${p.name} / ${p.authority}`),
+			source: sourceFor(kind, retrievedAt, p.name),
 		}
 	})
 }
@@ -271,7 +287,7 @@ async function derived<T>(key: string, compute: () => Promise<T>, desc: Activity
 			return data
 		})
 	}
-	return (await cached(SOURCE, key, compute, { activity: { ...desc, after } })).data
+	return (await cached(SOURCE, key, compute, { skipWrite: (d) => Array.isArray(d) && d.length === 0, activity: { ...desc, after } })).data
 }
 
 const byWeight = (a: IwPair, b: IwPair) => b.valueRsd + b.jointValueRsd - (a.valueRsd + a.jointValueRsd)
@@ -281,7 +297,7 @@ function sameAuthority(a: string, b: string): boolean {
 }
 
 export async function getLinksForAuthority(inst: { name: string; pib?: string }): Promise<IntegrityWatchLink[]> {
-	return derived(
+	return (await derived(
 		cacheKey("authority", inst.name),
 		async () => {
 			const { index, retrievedAt } = await loadIndex()
@@ -291,14 +307,14 @@ export async function getLinksForAuthority(inst: { name: string; pib?: string })
 				.flatMap((p) => linksFromPair(p, index, retrievedAt))
 		},
 		{ ...SRC.iw, action: "pretraga", label: `povezani dobavljači: ${shortInstitution(inst.name)}`, url: `${IW}/?l=sr`, items: (r) => r.length },
-	)
+	)).map(retitle)
 }
 
 export async function getLinksForSupplier(s: { pib?: string; mb?: string; name?: string }): Promise<IntegrityWatchLink[]> {
 	const keyPart = s.pib ?? s.mb ?? s.name
 	if (!keyPart) return []
 	const who = s.name?.trim() || (s.pib ? `PIB ${s.pib}` : `MB ${s.mb}`)
-	return derived(cacheKey("supplier", keyPart), async () => {
+	return (await derived(cacheKey("supplier", keyPart), async () => {
 		const { index, retrievedAt } = await loadIndex()
 		let pib = s.pib?.replace(/\D/g, "")
 		if (!pib && s.mb) pib = Object.entries(index.mbByPib).find(([, mb]) => mb === s.mb)?.[0]
@@ -308,5 +324,5 @@ export async function getLinksForSupplier(s: { pib?: string; mb?: string; name?:
 		const links = [...pairs].sort(byWeight).flatMap((p) => linksFromPair(p, index, retrievedAt))
 		if (links.length === 0 && pib && index.parties[pib]) links.push(partyOnlyLink(pib, index, retrievedAt))
 		return links
-	}, { ...SRC.iw, action: "pretraga", label: `veze dobavljača: ${who}`, url: `${IW}/companies.php?l=sr`, items: (r) => r.length })
+	}, { ...SRC.iw, action: "pretraga", label: `veze dobavljača: ${who}`, url: `${IW}/companies.php?l=sr`, items: (r) => r.length })).map(retitle)
 }

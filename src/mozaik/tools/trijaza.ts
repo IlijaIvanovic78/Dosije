@@ -152,7 +152,7 @@ export function trijazaTools(ctx: ToolCtx): Tool[] {
 					return {
 						out: {
 							total: reports.length,
-							newest: reports.slice(0, 5).map((r) => ({ id: r.id, title: clip(r.title, 80), year: r.year, kind: r.kind, opinion: opinions.get(r.id) })),
+							newest: reports.slice(0, 5).map((r) => ({ id: r.id, title: clip(r.title, 80), period: r.period, publishedAt: r.publishedAt, kind: r.kind, opinion: opinions.get(r.id) })),
 							misljenjaPoznata: opinions.size,
 							saRezervomIliNegativna: qualified.length,
 							napomena: "Mišljenje je poznato samo za izveštaje čiji je PDF već obrađen; ostali nisu preuzimani.",

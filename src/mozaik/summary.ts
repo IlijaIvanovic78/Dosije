@@ -30,52 +30,94 @@ export function findingScore(f: Finding): number {
 	return sev + (f.signalCode ? (CODE_WEIGHT[f.signalCode] ?? 2) : 0) + (f.status === "zvanicno" ? 3 : f.status === "potvrdjeno" ? 1 : 0)
 }
 
-/** Findings that may appear in the executive summary: not rejected, not waiting for approval, not refuted. */
+/**
+ * How much a finding can be relied on, the first key of every ranking: 0 official (zvanično; approved when it needed approval),
+ * 1 confirmed by two independent sources, 2 unconfirmed, 3 "not found" findings (a missing appointment act is a gap, not a signal).
+ */
+export function rankTier(f: Finding): number {
+	if (f.signalCode === "IMENOVANJE_NEPOZNATO") return 3
+	return f.status === "zvanicno" ? 0 : f.status === "potvrdjeno" ? 1 : 2
+}
+
+const byRank = (a: Finding, b: Finding) =>
+	rankTier(a) - rankTier(b) || findingScore(b) - findingScore(a) || SECTION_ORDER.indexOf(a.section) - SECTION_ORDER.indexOf(b.section) || a.createdAt.localeCompare(b.createdAt)
+
+/** Findings that may appear in the executive summary: not rejected, not waiting for approval, not refuted. Most reliable first. */
 export function rankable(state: DosijeState): Finding[] {
 	return state
 		.findingList()
 		.filter((f) => f.status !== "demantovano" && f.approval !== "pending" && f.approval !== "rejected")
-		.sort((a, b) => findingScore(b) - findingScore(a) || SECTION_ORDER.indexOf(a.section) - SECTION_ORDER.indexOf(b.section) || a.createdAt.localeCompare(b.createdAt))
+		.sort(byRank)
 }
 
-/** Top signals: highest score first, at most 2 per section for leadership/money and 1 for the rest, then filled up. */
+/**
+ * Top signals: official first, then confirmed, then unconfirmed, then "not found"; within a tier by severity and signal weight.
+ * At most one finding per signalCode (several Integrity Watch flags are one kind of signal) and at most 2 per section for
+ * leadership/money and 1 for the rest; the caps are relaxed only to reach 3 entries.
+ */
 export function pickTop(state: DosijeState, n = 5): Finding[] {
-	const ranked = rankable(state).filter((f) => f.severity !== "info")
+	return selectTop(rankable(state).filter((f) => f.severity !== "info"), n)
+}
+
+export function selectTop(ranked: Finding[], n = 5): Finding[] {
 	const out: Finding[] = []
 	const perSection = new Map<Section, number>()
+	const codes = new Set<string>()
 	const cap = (s: Section) => (s === "rukovodstvo" || s === "novac" ? 2 : 1)
-	for (const f of ranked) {
-		if (out.length >= n) break
-		if ((perSection.get(f.section) ?? 0) >= cap(f.section)) continue
+	const take = (f: Finding) => {
 		out.push(f)
 		perSection.set(f.section, (perSection.get(f.section) ?? 0) + 1)
+		if (f.signalCode) codes.add(f.signalCode)
 	}
-	for (const f of ranked) {
-		if (out.length >= n) break
-		if (!out.includes(f)) out.push(f)
-	}
-	return out
+	const fresh = (f: Finding) => !out.includes(f) && !(f.signalCode && codes.has(f.signalCode))
+	for (const f of ranked) if (out.length < n && fresh(f) && (perSection.get(f.section) ?? 0) < cap(f.section)) take(f)
+	for (const f of ranked) if (out.length < n && fresh(f)) take(f)
+	for (const f of ranked) if (out.length < Math.min(n, 3) && !out.includes(f)) take(f)
+	// the caps decide WHO is in, the reliability tier decides the ORDER: an unconfirmed finding never stands above an official one
+	return out.sort(byRank)
 }
 
+/** The same ordering for a list somebody else (an LLM) chose: official before unconfirmed, one finding per signalCode, at most n. */
+export function orderTop(chosen: Finding[], n = 5): Finding[] {
+	return selectTop([...chosen].sort(byRank), n)
+}
+
+/** A finding's title as a quotation inside a checklist sentence; a title that was shortened ("…") is not quoted at all. */
+function quoted(f: Finding): string {
+	return f.title.endsWith("…") ? `nalaz iz odeljka „${SECTION_LABEL[f.section]}“` : `„${f.title.replace(/[.\s]+$/u, "")}“`
+}
+
+const SECTION_LABEL: Record<Section, string> = { rukovodstvo: "Rukovodstvo", novac: "Novac i nabavke", firme: "Firme", revizija: "Revizija", mediji: "Mediji" }
+
+/**
+ * The checklist "Šta još treba proveriti". Every item is one complete sentence: long wording is rewritten shorter here, never
+ * clipped (the quoted titles are whole by construction, see `quoted`).
+ */
 export function defaultToVerify(state: DosijeState): string[] {
 	const out: string[] = []
-	for (const t of state.openTasks()) out.push(`Otvoreno pitanje (${t.fromAgentName}): ${clip(t.question, 160)}`)
+	for (const t of state.openTasks()) out.push(`Odgovoriti na otvoreno pitanje agenta ${t.fromAgentName}: ${t.question.replace(/[.\s]+$/u, "")}.`)
 	for (const f of state.findingList()) {
-		if (f.approval === "pending") out.push(`Signal čeka tvoju odluku: ${clip(f.title, 140)}`)
+		if (f.approval === "pending") out.push(`Odlučiti o signalu koji čeka odobrenje: ${quoted(f)}.`)
 	}
 	for (const f of state.findingList()) {
-		if (f.severity === "signal" && f.status === "nepotvrdjeno" && f.approval !== "pending" && f.signalCode !== "POLITICKA_VEZA") out.push(`Potvrditi iz drugog izvora: ${clip(f.title, 140)}`)
+		if (f.severity === "signal" && f.status === "nepotvrdjeno" && f.approval !== "pending" && f.signalCode !== "POLITICKA_VEZA") out.push(`Potvrditi iz drugog izvora: ${quoted(f)}.`)
 	}
 	const codes = new Set(state.findingList().map((f) => f.signalCode))
 	if (codes.has("VD_PREKO_ROKA") || codes.has("VD_LANAC")) {
-		out.push("Koji propis važi za ovu instituciju (javno preduzeće ili društvo kapitala) i postoji li akt o produženju ili novom imenovanju v.d. (traži se kod osnivača/Vlade).")
-		out.push("Rešenje o imenovanju u Službenom glasniku: lista brojeva sadrži samo naslove akata, ne i imena; pun tekst je u pretplati ili kod institucije.")
+		out.push("Proveriti koji propis važi za ovu instituciju i postoji li akt o produženju ili novom imenovanju v.d.")
+		out.push("Rešenje o imenovanju tražiti kod institucije: sadržaj Službenog glasnika navodi samo naslove akata, bez imena.")
 	}
-	if (codes.has("BEZ_OBJAVE")) out.push("Za svaki pregovarački postupak bez objavljivanja: obrazloženje i pravni osnov u odluci o pokretanju postupka (Portal javnih nabavki).")
-	if (codes.has("POLITICKA_VEZA")) out.push("Integrity Watch označava firme, ali otvoreni podaci ne imenuju funkcionera ni stranku: tražiti osnov oznake od Transparentnosti Srbija.")
-	out.push("Vlasnici i direktori proverenih firmi: APR pretraga (pretraga2.apr.gov.rs) zahteva ručnu proveru (reCAPTCHA).")
-	out.push("Vrednosti ugovora proveriti na stranici ugovora na Portalu javnih nabavki pre citiranja (iznosi posle aneksa mogu se razlikovati od iznosa pri potpisivanju).")
+	if (codes.has("BEZ_OBJAVE")) out.push("Za svaki pregovarački postupak bez objavljivanja proveriti obrazloženje u odluci o pokretanju postupka.")
+	if (codes.has("POLITICKA_VEZA")) out.push("Osnov oznake Integrity Watch tražiti od Transparentnosti Srbija: podaci ne imenuju funkcionera ni stranku.")
+	out.push("Vlasnike i direktore firmi proveriti u APR pretrazi, koja zahteva ručni unos zbog reCAPTCHA.")
+	out.push("Iznose ugovora proveriti na Portalu javnih nabavki pre citiranja, jer iznos posle aneksa može biti drugačiji.")
 	return [...new Set(out)].slice(0, 14)
+}
+
+/** Up to three titles for the lede, whole: titles longer than 110 characters are skipped while enough short ones exist. */
+export function leadHeads(titles: string[]): string[] {
+	const short = titles.filter((t) => t.length <= 110 && !t.endsWith("…"))
+	return (short.length >= 2 ? short : titles.filter((t) => !t.endsWith("…")).slice(0, 3)).slice(0, 3)
 }
 
 /** Plain Serbian lede. The institution's name is quoted after "o instituciji" so it never needs declension. */
@@ -96,12 +138,12 @@ export function defaultSummary(state: DosijeState): Summary {
 	const official = all.filter((f) => f.status === "zvanicno").length
 	const top = pickTop(state, 5)
 	const name = state.institution?.name ?? "instituciji"
-	const heads = top.slice(0, 3).map((f) => clip(f.title, 90))
+	const heads = leadHeads(top.map((f) => f.title))
 	void official
 	const lede = buildLede({ institution: name, findings: all.length, signals, attention, conflicts: state.conflicts.size, heads })
 	return {
 		lede,
-		topSignals: top.map((f) => ({ findingId: f.id, headline: clip(f.title, 110) })),
+		topSignals: top.map((f) => ({ findingId: f.id, headline: f.title })),
 		toVerify: defaultToVerify(state),
 	}
 }

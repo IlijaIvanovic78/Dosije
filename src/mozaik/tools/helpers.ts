@@ -71,7 +71,7 @@ export function friendlyError(err: unknown): string {
 
 export function srcOut(s: SourceRef): Record<string, unknown> {
 	S().registerSources([s])
-	return { kind: s.kind, title: clip(s.title, 140), url: s.url, publishedAt: s.publishedAt, official: s.official }
+	return { kind: s.kind, title: clip(s.title, 190), url: s.url, publishedAt: s.publishedAt, official: s.official }
 }
 
 export function uniqueSources(list: (SourceRef | undefined)[]): SourceRef[] {

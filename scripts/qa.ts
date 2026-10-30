@@ -1,7 +1,8 @@
-// npm run qa [-- --no-links] [--only <slug>]
+// npm run qa [-- --no-links] [--only <slug>] [--write-docs]
 // Full scripted case for each institution of the Mapa preset (DATA_MODE=cache, no key, no network for data) and then the checks
 // the dossier has to pass: every finding has an http(s) source, every source URL works, every datum belongs to the institution,
-// no duplicates, no empty section without a reason, correct Serbian number agreement. Console table + docs/QA.md. Exit code 1 on errors.
+// no duplicates, no empty section without a reason, correct Serbian number agreement. Console table + out/qa.md (docs/QA.md only with
+// --write-docs, so a plain run leaves tracked files alone). Exit code 1 on errors.
 
 process.env.DATA_MODE = "cache"
 process.env.DOSIJE_MODE = "scripted"
@@ -19,6 +20,7 @@ applyEntryDefaults("test")
 
 const args = process.argv.slice(2)
 const skipLinks = args.includes("--no-links")
+const writeDocs = args.includes("--write-docs")
 const only = args.includes("--only") ? args[args.indexOf("--only") + 1] : undefined
 
 const boot = await import("../src/mozaik/boot")
@@ -31,6 +33,13 @@ const { nameSimilarity, sameWord, hasCyrillic } = await import("../src/data/tran
 // ─── what was fixed in this iteration (kept with the script: QA.md is generated) ─────────────────────────────
 
 const FIXED: string[] = [
+	"Agenti reaguju jedni na druge: Mediji na nalaz Kadrovika o v.d. (VD_PREKO_ROKA, VD_LANAC) ciljanom proverom medija o imenovanju i nazivu funkcije („v.d.“ ili „direktor“), Revizor na nalaz Nabavke (BEZ_OBJAVE, KONCENTRACIJA) potragom za ranijim nalazom DRI iste teme, sa izvorom izveštaja i izvorom Portala u istom nalazu. Svaka reakcija se pokreće najviše jednom po slučaju i oznaci, kao nova petlja istog agenta (poruka „Povod: nalaz …“, događaj `agent.reakcija`).",
+	"Rang glavnih signala: zvanični (odobreni) prvi, zatim potvrđeni, pa nepotvrđeni; „akt o imenovanju nije pronađen“ je uvek ispod; najviše jedan nalaz po signalCode (više Integrity Watch oznaka je jedan signal). Pre: nepotvrđena IW oznaka je bila #1.",
+	"Status `demantovano` se u svim tekstovima i izveštaju piše „odstupa od registra“; naslov u medijima koji drugačije naziva funkciju nije demant. Beleška: „Zvanični registar (ACAS) navodi «v.d. generalnog direktora»; ovaj izvor navodi «generalni direktor». Prednost ima zvanični registar.“ Bez precrtavanja u izveštaju.",
+	"DRI: revidirani period se piše samo kad ga navodi naslov izveštaja („finansijski izveštaji za 2018.“); inače „izveštaj objavljen 25.07.2025.“ (godina objave više nije „revizija za 2025. godinu“). Naslovi izvora DRI su kratki i celi.",
+	"Linkovi: ACAS nema javnu rutu za ustanovu ili osobu (samo pretraga i `funkcionerIzvestajDetails/<id>`, proveren u pregledaču), pa izvor nosi uput u naslovu („ACAS registar – pretraga: <naziv>“); Integrity Watch nema stranicu dobavljača („Integrity Watch Srbija – pretraga: <firma>“). Medijski članak koji IW navodi kao osnov povezivanja prikazuje se samo ako članak zaista pominje firmu.",
+	"Tekst: dvostruke tačke posle datuma, stavke liste „Šta još treba proveriti“ su cele rečenice (skraćena formulacija umesto seckanja), naslovi DRI nalaza se završavaju na granici izraza, izvor „raspadsistema.com (Danas)“ je samo „Danas“, imena u CLI Ganttu se ne seku („Stegnjaja“, ne „Stegnjaj“). Pregled medija ne uključuje tabloidne mikro-sajtove kad ima bar 5 članaka iz poznatih izdanja (`src/data/sources/news.ts`).",
+	"`npm run qa` i `npm test` ne menjaju keš ni praćene fajlove: izveštaj ide u out/qa.md (docs/QA.md samo uz `--write-docs`), a u `DATA_MODE=cache` ništa se ne upisuje u data/cache; negativni rezultati (promašaj razrešavača, prazne pretrage nepoznatih imena) se ne keširaju.",
 	"Vesti: pretraga sada koristi tačne fraze na latinici i ćirilici, oba izdanja Google News (sr-Latn i sr) i kratke nazive (IŽS, Srbija voz); članak mora da pominje instituciju (sve značajne reči, sa padežima) u naslovu ili opisu, a članak o osobi i osobu i instituciju/firmu (naslov, opis ili preuzeti tekst). Imenjaci, sportske vesti i čitulje se odbacuju, a ponovljene vesti i agregatori se spajaju (ostaje originalno izdanje). Pre: 0-4 članka po dosijeu, sada 12 meseci istorije i do 12 izvora u nalazu „Pregled medija“.",
 	"Vesti: „Železnice Srbije“ više ne hvata članke o „Infrastrukturi železnice Srbije“ (pominjanje unutar duže institucije se ne računa).",
 	"DRI: izveštaj ulazi u dosije samo ako naslov imenuje instituciju (i stari naziv „Srbija voz“); zajedničke revizije bez imena institucije u naslovu su izbačene. Vrsta revizije se određuje po prvom pominjanju u naslovu (izveštaji o merama ispravljanja više nisu „finansijska revizija“).",
@@ -69,6 +78,7 @@ interface CaseResult {
 	markdown: string
 	lede: string
 	toVerify: string[]
+	top: Finding[]
 	bySection: Record<Section, number>
 	articles: number
 	urls: Set<string>
@@ -106,6 +116,7 @@ for (const p of preset) {
 		markdown: rep.markdown,
 		lede: rep.lede,
 		toVerify: rep.toVerify,
+		top: rep.topSignals.map((t) => snap.findings.find((f) => f.id === t.findingId)).filter((f): f is Finding => !!f),
 		bySection,
 		articles: articleUrls.size,
 		urls,
@@ -145,6 +156,12 @@ for (const r of results) {
 	const titles = new Map<string, number>()
 	for (const f of r.findings) titles.set(f.title.trim().toLowerCase(), (titles.get(f.title.trim().toLowerCase()) ?? 0) + 1)
 	for (const [t, c] of titles) if (c > 1) report("upozorenje", r.name, "duplikat", `${c}× isti naslov nalaza: ${t}`)
+	// the ranking of "Glavni signali": official first, an unconfirmed or "not found" finding never first while a better one exists, one per signalCode
+	const rank = (f: Finding) => (f.signalCode === "IMENOVANJE_NEPOZNATO" ? 3 : f.status === "zvanicno" ? 0 : f.status === "potvrdjeno" ? 1 : 2)
+	for (let i = 1; i < r.top.length; i++) if (rank(r.top[i]) < rank(r.top[i - 1])) report("greška", r.name, "rang", `„${r.top[i].title}“ (${r.top[i].status}) je ispod slabijeg nalaza`)
+	const codes = r.top.map((f) => f.signalCode).filter(Boolean)
+	if (new Set(codes).size < codes.length && r.top.length > 3) report("greška", r.name, "rang", `isti signalCode više puta u glavnim signalima: ${codes.join(", ")}`)
+	if (r.top[0] && rank(r.top[0]) >= 2 && r.findings.some((f) => f.severity !== "info" && rank(f) < 2 && f.approval !== "rejected" && f.status !== "demantovano")) report("greška", r.name, "rang", `prvi signal je nepotvrđen: ${r.top[0].title}`)
 	// the press review
 	const review = r.findings.find((f) => f.section === "mediji" && /^Pregled medija:/.test(f.title))
 	if (!review) report("upozorenje", r.name, "mediji", "nema nalaza „Pregled medija“ (nema dovoljno članaka koji imenuju instituciju)")
@@ -291,6 +308,7 @@ function grammarIssues(text: string): string[] {
 	}
 	for (const m of text.matchAll(/\b\w+\((?:a|i|e|ova)\)(?!\w)/g)) out.push(`„${m[0]}“ (zagrada umesto oblika)`)
 	for (const m of text.matchAll(/undefined|\bNaN\b|\[object Object\]|\bnull\b/g)) out.push(`„${m[0]}“ u tekstu`)
+	for (const m of text.matchAll(/[\p{L}\p{N}]\.\.(?!\.)/gu)) out.push(`„${m[0]}“ (dvostruka tačka)`)
 	return out
 }
 
@@ -304,8 +322,16 @@ for (const r of results) {
 		if (hasCyrillic(f.title) || hasCyrillic(f.text)) report("upozorenje", r.name, "pismo", `ćirilica u nalazu: ${f.title.slice(0, 70)}`)
 	}
 	check("sažetak", r.lede)
-	for (const t of r.toVerify) check("za proveru", t)
+	for (const t of r.toVerify) {
+		check("za proveru", t)
+		// every checklist item is a complete sentence (shortened wording, never a clipped one)
+		if (!/[.!?]$/.test(t) || t.includes("…")) report("greška", r.name, "lista za proveru", `stavka nije cela rečenica: ${t}`)
+	}
 	check("izveštaj", r.markdown)
+	// wording rules of the report: a headline that differs from the register is "odstupa od registra", never struck through or "demantovano"
+	if (r.markdown.includes("~~")) report("greška", r.name, "izveštaj", "precrtan naslov (~~) u izveštaju")
+	if (/demantovan/i.test(r.markdown)) report("greška", r.name, "izveštaj", "reč „demantovano“ u izveštaju (treba: odstupa od registra)")
+	if (/raspadsistema\.com \(/i.test(r.markdown)) report("greška", r.name, "izveštaj", "izvor „raspadsistema.com (…)“ umesto izdanja")
 }
 for (const t of mapaTexts) for (const p of grammarIssues(t)) grammar.push({ inst: "Mapa", where: "razlog/rezime", problem: p })
 for (const g of grammar) report("greška", g.inst, "gramatika", `${g.where}: ${g.problem}`)
@@ -462,8 +488,11 @@ md.push("", "## Gramatika", "", grammar.length ? `${grammar.length} problema (vi
 md.push("", "## Pronađeno i ispravljeno u ovoj iteraciji", "")
 for (const f of FIXED) md.push(`- ${f}`)
 md.push("")
-fs.writeFileSync(path.resolve(process.cwd(), "docs", "QA.md"), md.join("\n"), "utf8")
-console.log("Zapisano: docs/QA.md")
+// the run must not modify tracked files: the report goes to out/qa.md, docs/QA.md is only rewritten on request
+const target = writeDocs ? path.resolve(process.cwd(), "docs", "QA.md") : path.resolve(process.cwd(), "out", "qa.md")
+fs.mkdirSync(path.dirname(target), { recursive: true })
+fs.writeFileSync(target, md.join("\n"), "utf8")
+console.log(`Zapisano: ${path.relative(process.cwd(), target).replace(/\\/g, "/")}`)
 
 await boot.shutdown()
 process.exit(errors.length ? 1 : 0)

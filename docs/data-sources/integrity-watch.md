@@ -65,7 +65,7 @@ authority and supplier, not only IŽS. Derived results are cached too (`authorit
   `companies_close_to_parties.csv` that have no flagged contract row are returned with the party link only.
 - `linkType`: `povezanost sa javnim funkcionerom` or `povezanost sa političkim subjektom`. `linkedPerson` is always empty (the open data names neither the official nor the party).
   `detail` says what the flag means, the media source for party links, number of flagged contracts, joint bids, period and the largest contract.
-- `source.url` is the public platform (`/?l=sr` or `/companies.php?l=sr`); there is no per-company deep link.
+- `source.url` is the public platform (`/?l=sr` or `/companies.php?l=sr`); there is no per-company page (companies.php and the main page filter a table in the browser and read no company from the URL), so the source TITLE carries the search hint: "Integrity Watch Srbija – pretraga: <firma>". The media article cited as the basis of a party link is kept apart as `basisUrl` and is shown in a finding only if the article (fetched via `news.fetchArticle`, or already cached in `DATA_MODE=cache`) really names the firm.
 - An empty result means "no flag in the IW dataset as of the download", not "no link exists".
 
 ## Caveats

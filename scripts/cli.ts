@@ -8,7 +8,7 @@ import path from "node:path"
 import { applyEntryDefaults, config } from "../src/config"
 import { n } from "../src/shared/plural"
 import type { WireEvent } from "../src/shared/types"
-import { gantt } from "./lib/gantt"
+import { gantt, label } from "./lib/gantt"
 
 applyEntryDefaults("cli")
 
@@ -44,7 +44,7 @@ function short(v: unknown, n = 60): string {
 
 function line(ev: WireEvent): string | undefined {
 	const p = ev.payload as Record<string, any>
-	const who = ev.producerName.padEnd(26).slice(0, 26)
+	const who = label(ev.producerName, 30)
 	const head = `${color.dim}${rel(ev.t)}${color.reset} ${who}`
 	switch (ev.type) {
 		case "participant.joined":
@@ -53,6 +53,8 @@ function line(ev: WireEvent): string | undefined {
 			return p.info?.dynamic ? `${head} ${color.dim}← završio${color.reset}` : undefined
 		case "function_call.started":
 			return `${head} ${color.cyan}alat${color.reset} ${p.name} ${color.dim}${short(p.args, 70)}${color.reset}`
+		case "agent.reakcija":
+			return `${head} ${color.violet}↳ reakcija na nalaz${color.reset} ${p.reaction.fromAgent} · ${p.reaction.signalCode}: ${short(p.reaction.title, 64)}`
 		case "entity.added":
 			return `${head} ${color.green}entitet${color.reset} ${p.entity.kind}/${p.entity.role}: ${short(p.entity.name, 50)}`
 		case "finding.added":
@@ -81,7 +83,7 @@ function line(ev: WireEvent): string | undefined {
 			const items = typeof p.items === "number" ? ` · ${p.items}` : ""
 			const state =
 				p.status === "greska" ? `${color.red}greška: ${short(p.error ?? "", 50)}${color.reset}` : p.status === "kes" ? `${color.amber}keš${secs}${color.reset}${items}` : `${color.green}ok${secs}${color.reset}${items}`
-			return `${color.dim}${rel(ev.t)}${color.reset} ${color.cyan}izvor${color.reset}  ${String(p.agentName).padEnd(22).slice(0, 22)} ${p.source} · ${short(p.label, 70)} · ${state}`
+			return `${color.dim}${rel(ev.t)}${color.reset} ${color.cyan}izvor${color.reset}  ${label(String(p.agentName), 30)} ${p.source} · ${short(p.label, 70)} · ${state}`
 		}
 		default:
 			return undefined

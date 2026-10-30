@@ -3,9 +3,9 @@
 import type { Tool } from "@mozaik-ai/core"
 import type { Finding } from "../../shared/types"
 import * as domain from "../domain"
-import { S, type ToolCtx } from "../domain"
+import { fixPunct, S, type ToolCtx } from "../domain"
 import type { Summary } from "../state"
-import { defaultSummary, defaultToVerify, pickTop, rankable } from "../summary"
+import { defaultSummary, defaultToVerify, orderTop, pickTop, rankable } from "../summary"
 import { clip } from "../util"
 import { buildTool, str } from "./helpers"
 
@@ -26,7 +26,7 @@ const SOURCE_SCHEMA = {
 }
 
 function brief(f: Finding) {
-	return { id: f.id, section: f.section, severity: f.severity, signalCode: f.signalCode, status: f.status, title: clip(f.title, 80), agent: f.agentName }
+	return { id: f.id, section: f.section, severity: f.severity, signalCode: f.signalCode, status: f.status, title: f.title, agent: f.agentName }
 }
 
 export function commonTools(ctx: ToolCtx): Tool[] {
@@ -63,6 +63,7 @@ export function commonTools(ctx: ToolCtx): Tool[] {
 					],
 				},
 				sources: SOURCE_SCHEMA,
+				potkrepljuje: { type: "string", description: "samo kod reakcije na tuđi nalaz: id nalaza drugog agenta (iz poruke 'Povod') koji ovaj nalaz potkrepljuje nezavisnim izvorom" },
 				entityIds: { type: "array", items: { type: "string" }, description: "id-jevi entiteta na koje se nalaz odnosi (npr. osoba:ime-prezime)" },
 				claim: {
 					type: "object",
@@ -133,8 +134,8 @@ export function commonTools(ctx: ToolCtx): Tool[] {
 						nalazi: rankable(state)
 							.slice(0, 12)
 							.map((f) => ({ ...brief(f), approval: f.approval })),
-						preporucenTopSignala: pickTop(state, 5).map((f) => ({ id: f.id, title: clip(f.title, 90) })),
-						predlogZaProveru: defaultToVerify(state).map((t) => clip(t, 150)),
+						preporucenTopSignala: pickTop(state, 5).map((f) => ({ id: f.id, title: f.title })),
+						predlogZaProveru: defaultToVerify(state),
 						konflikti: [...state.conflicts.values()].map((c) => ({ id: c.id, subject: c.subject, values: c.values, winner: c.winnerFindingId })),
 						otvoreniZadaci: state.openTasks().map((t) => ({ id: t.id, kind: t.kind, from: t.fromAgentName, question: clip(t.question, 120) })),
 					}
@@ -167,22 +168,28 @@ export function urednikTools(ctx: ToolCtx): Tool[] {
 			handler: (args) => {
 				const state = S()
 				const fallback = defaultSummary(state)
-				const lede = str(args.lede) ? clip(String(args.lede), 900) : fallback.lede
-				const top: Summary["topSignals"] = []
+				const lede = str(args.lede) ? fixPunct(clip(String(args.lede), 900)) : fallback.lede
+				// the model proposes, the ranking rules decide: official before unconfirmed, one finding per signalCode, refuted/rejected never
+				const proposed: { f: Finding; headline: string }[] = []
+				const allowed = new Set(rankable(state).map((f) => f.id))
 				const raw = Array.isArray(args.topSignals) ? args.topSignals : []
 				for (const item of raw) {
 					const id = typeof item === "string" ? item : str((item as { findingId?: unknown })?.findingId)
 					const f = id ? state.findings.get(id) : undefined
-					if (!f || top.some((t) => t.findingId === f.id)) continue
-					const headline = typeof item === "object" && str((item as { headline?: unknown }).headline) ? clip(String((item as { headline: string }).headline), 120) : clip(f.title, 110)
-					top.push({ findingId: f.id, headline })
-					if (top.length >= 5) break
+					if (!f || !allowed.has(f.id) || proposed.some((p) => p.f.id === f.id)) continue
+					const headline = typeof item === "object" && str((item as { headline?: unknown }).headline) ? clip(String((item as { headline: string }).headline), 180) : f.title
+					proposed.push({ f, headline })
 				}
+				const headlineOf = new Map(proposed.map((p) => [p.f.id, p.headline]))
+				const top: Summary["topSignals"] = orderTop(
+					proposed.map((p) => p.f),
+					5,
+				).map((f) => ({ findingId: f.id, headline: headlineOf.get(f.id) ?? f.title }))
 				for (const f of pickTop(state, 5)) {
 					if (top.length >= 3) break
-					if (!top.some((t) => t.findingId === f.id)) top.push({ findingId: f.id, headline: clip(f.title, 110) })
+					if (!top.some((t) => t.findingId === f.id)) top.push({ findingId: f.id, headline: f.title })
 				}
-				const verify = (Array.isArray(args.toVerify) ? args.toVerify : []).filter((v): v is string => typeof v === "string" && v.trim().length > 3).map((v) => clip(v, 220))
+				const verify = (Array.isArray(args.toVerify) ? args.toVerify : []).filter((v): v is string => typeof v === "string" && v.trim().length > 3 && v.length <= 260).map(fixPunct)
 				state.summary = { lede, topSignals: top, toVerify: verify.length ? verify.slice(0, 14) : fallback.toVerify }
 				return { ok: true, topSignals: top.length, toVerify: state.summary.toVerify.length }
 			},

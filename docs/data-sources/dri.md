@@ -22,7 +22,7 @@ Filteri `subjects`, `year`, `types`, `topics`, `sectors`, `tags`, `search` rade 
 4. Ako lista nema PDF link, otvori `/izvestaj/<id>` i uzme ga odatle.
 5. Rezultat je sortiran po datumu opadajuće i keširan kao `data/cache/dri/reports-<normalizovano-ime>.json`.
 
-Polja `AuditReport`: `id` (DRI id izveštaja), `title` (latinica), `publishedAt` (datum sa liste), `year` (revidirana godina za finansijsku reviziju, reviziju pravilnosti i svrsishodnosti, inače godina objave), `kind` (iz naslova i oznake tipa), `url` (PDF), `source.url` (stranica izveštaja `https://www.dri.rs/izvestaj/<id>`, `official: true`).
+Polja `AuditReport`: `id` (DRI id izveštaja), `title` (latinica), `publishedAt` (datum sa liste), `period` (revidirani period, SAMO kad ga navodi naslov izveštaja: „za 2018. godinu“ -> `2018`, samo za primarne revizije; inače nema perioda: izveštaj objavljen 2025. nije „revizija za 2025. godinu“; tekstovi tada kažu „izveštaj objavljen 25.07.2025.“), `year` (revidirana godina za finansijsku reviziju, reviziju pravilnosti i svrsishodnosti, inače godina objave), `kind` (iz naslova i oznake tipa), `url` (PDF), `source.url` (stranica izveštaja `https://www.dri.rs/izvestaj/<id>`, `official: true`).
 
 ## Kako radi `getReportFindings`
 
