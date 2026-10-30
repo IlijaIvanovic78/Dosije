@@ -13,6 +13,7 @@
 //
 // Maximum 145. Every contribution produces a short Serbian reason with its points, so a score can always be explained.
 
+import { n } from "../../shared/plural"
 import type { MapaSignals } from "../../shared/types"
 
 export const PRIORITY_MAX = 145
@@ -34,17 +35,17 @@ export function scoreSignals(s: MapaSignals): PriorityResult {
 
 	if (s.vdOver && s.vdMonths !== undefined && s.vdLimitMonths !== undefined) {
 		const over = Math.max(0, s.vdMonths - s.vdLimitMonths)
-		add(40 + Math.min(20, over), `v.d. ${s.vdMonths} mes., zakonski rok ${s.vdLimitMonths}`)
+		add(40 + Math.min(20, over), `v.d. ${n(s.vdMonths, "mesec")}, zakonski rok ${s.vdLimitMonths}`)
 	}
 	if (s.vdChainMonths !== undefined && s.vdChainMonths >= 24) {
-		add(15, `lanac v.d. ${s.vdChainMonths} mes.${s.vdChainCount ? ` (${s.vdChainCount} uzastopna)` : ""}`)
+		add(15, `lanac v.d. ${n(s.vdChainMonths, "mesec")}${s.vdChainCount ? ` (${n(s.vdChainCount, "uzastopniVd")})` : ""}`)
 	}
 	if (s.nwpShare !== undefined && s.nwpShare > 0.05) add(15, `bez objave javnog poziva ${pct(s.nwpShare)} vrednosti`)
-	if (s.nwpCount !== undefined && s.nwpCount >= 5) add(5, `${s.nwpCount} postupaka bez objave javnog poziva`)
+	if (s.nwpCount !== undefined && s.nwpCount >= 5) add(5, `${n(s.nwpCount, "postupak")} bez objave javnog poziva`)
 	if (s.topSupplierShare !== undefined && s.topSupplierShare > 0.4) add(10, `najveći dobavljač ${pct(s.topSupplierShare)} vrednosti`)
-	if (s.iwFlags) add(Math.min(15, 3 * s.iwFlags), `${s.iwFlags} dobavljača označeno u Integrity Watch`)
-	if (s.driQualified) add(Math.min(20, 10 * s.driQualified), `${s.driQualified} DRI mišljenja sa rezervom ili negativna`)
-	if (s.driReports !== undefined && s.driReports >= 5) add(5, `${s.driReports} DRI izveštaja`)
+	if (s.iwFlags) add(Math.min(15, 3 * s.iwFlags), `${n(s.iwFlags, "dobavljac")} ${s.iwFlags % 10 === 1 && s.iwFlags % 100 !== 11 ? "označen" : "označeno"} u Integrity Watch`)
+	if (s.driQualified) add(Math.min(20, 10 * s.driQualified), `${n(s.driQualified, "driMisljenje")}`)
+	if (s.driReports !== undefined && s.driReports >= 5) add(5, `DRI: ${n(s.driReports, "izvestaj")}`)
 	return { score, reasons }
 }
 

@@ -1,0 +1,370 @@
+{
+ "source": "vesti",
+ "key": "search-aleksandar-antic-person-d730-l40-c-koridori-srbije",
+ "retrievedAt": "2026-10-30T16:20:15.767Z",
+ "meta": {
+  "query": "Aleksandar Antić",
+  "kind": "person",
+  "days": 730,
+  "limit": 40,
+  "aliases": [],
+  "context": [
+   "Koridori Srbije"
+  ],
+  "exclude": []
+ },
+ "data": [
+  {
+   "id": "35a4b9f1e78e",
+   "title": "Antić (Koridori Srbije): Za 10 dana Kraljevo među gradovima koji su povezani mrežom autoputeva",
+   "url": "https://www.danas.rs/vesti/ekonomija/antic-koridori-srbije-za-10-dana-kraljevo-medju-gradovima-koji-su-povezani-mrezom-autoputeva/",
+   "outlet": "Danas",
+   "publishedAt": "2026-06-16T07:00:00.000Z",
+   "snippet": "Direktor „Koridori Srbije“ Aleksandar Antić najavio je danas će se za oko 10 dana, spajanjem autoputa „Miloš Veliki“ i „Moravskog koridora“, Kraljevo biti među gradovima koji su povezani mrežom autoputeva.",
+   "matched": [
+    "Aleksandar Antić"
+   ],
+   "provider": "google-news-rss",
+   "verified": "tekst",
+   "score": 13,
+   "source": {
+    "kind": "vesti",
+    "title": "Danas: Antić (Koridori Srbije): Za 10 dana Kraljevo među gradovima koji su povezani mrežom autoputeva",
+    "url": "https://www.danas.rs/vesti/ekonomija/antic-koridori-srbije-za-10-dana-kraljevo-medju-gradovima-koji-su-povezani-mrezom-autoputeva/",
+    "retrievedAt": "2026-10-30T16:19:40.931Z",
+    "publishedAt": "2026-06-16T07:00:00.000Z",
+    "official": false
+   }
+  },
+  {
+   "id": "ebc244f006ad",
+   "title": "Vučić na otvaranju deonice Moravskog koridora: Srbija se gradi, od juna iz Kraljeva do Beograda za sat i po vremena",
+   "url": "https://www.euronews.rs/srbija/politika/202767/otvaranje-deonice-moravskog-koridora/vest",
+   "outlet": "Euronews.rs",
+   "publishedAt": "2025-12-24T08:00:00.000Z",
+   "snippet": "Zajedno sa Vučićem svečanom otvaranju novog auto-puta prisustvovali su i ministarka građevinarstva, saobraćaja i infrastrukture Aleksandra Sofronijević, ministar odbrane Bratislav Gašić, direktor Puteva Srbije Zoran Drobnjak, direktor…",
+   "matched": [
+    "Aleksandar Antić"
+   ],
+   "provider": "google-news-rss",
+   "verified": "tekst",
+   "score": 12,
+   "source": {
+    "kind": "vesti",
+    "title": "Euronews.rs: Vučić na otvaranju deonice Moravskog koridora: Srbija se gradi, od juna iz Kraljeva do Beograda za sat i po vremena",
+    "url": "https://www.euronews.rs/srbija/politika/202767/otvaranje-deonice-moravskog-koridora/vest",
+    "retrievedAt": "2026-10-30T16:19:40.931Z",
+    "publishedAt": "2025-12-24T08:00:00.000Z",
+    "official": false
+   }
+  },
+  {
+   "id": "35265a720150",
+   "title": "I Antić na spisku javno poniženih: Vučić ga kritikovao zbog roka koji je sam postavio",
+   "url": "https://n1info.rs/vesti/i-antic-na-spisku-javno-ponizenih-vucic-ga-kritikovao-zbog-roka-koji-je-sam-postavio/",
+   "outlet": "N1",
+   "publishedAt": "2026-06-20T07:00:00.000Z",
+   "snippet": "Tako je pre dva dana sav bes zbog kašnjenja izgradnje Fruškogorskog koridora iskalio na Aleksandru Antiću.",
+   "matched": [
+    "Aleksandar Antić"
+   ],
+   "provider": "google-news-rss",
+   "verified": "tekst",
+   "score": 11,
+   "source": {
+    "kind": "vesti",
+    "title": "N1: I Antić na spisku javno poniženih: Vučić ga kritikovao zbog roka koji je sam postavio",
+    "url": "https://n1info.rs/vesti/i-antic-na-spisku-javno-ponizenih-vucic-ga-kritikovao-zbog-roka-koji-je-sam-postavio/",
+    "retrievedAt": "2026-10-30T16:19:40.931Z",
+    "publishedAt": "2026-06-20T07:00:00.000Z",
+    "official": false
+   }
+  },
+  {
+   "id": "ec12a998b6c2",
+   "title": "Zatvorena naplatna rampa u Preljini zbog spajanja auto-puteva; Antić: Od Kraljeva do Beograda za sat i po",
+   "url": "https://www.rts.rs/lat/vesti/ekonomija/5974373/morava-koridor-kraljevo-cacak-autoput-milos-veliki-antic-preljina.html",
+   "outlet": "РТС",
+   "publishedAt": "2026-06-16T07:00:00.000Z",
+   "snippet": "Direktor JP \"Koridori Srbije\" Aleksandar Antić ističe da će se za desetak dana Kraljevo naći na mapi gradova koji su povezani mrežama auto-puteva.",
+   "matched": [
+    "Aleksandar Antić"
+   ],
+   "provider": "google-news-rss",
+   "verified": "tekst",
+   "score": 11,
+   "source": {
+    "kind": "vesti",
+    "title": "РТС: Zatvorena naplatna rampa u Preljini zbog spajanja auto-puteva; Antić: Od Kraljeva do Beograda za sat i po",
+    "url": "https://www.rts.rs/lat/vesti/ekonomija/5974373/morava-koridor-kraljevo-cacak-autoput-milos-veliki-antic-preljina.html",
+    "retrievedAt": "2026-10-30T16:19:40.931Z",
+    "publishedAt": "2026-06-16T07:00:00.000Z",
+    "official": false
+   }
+  },
+  {
+   "id": "ed24d0f32ffb",
+   "title": "Uskoro se otvara deonica Moravskog koridora od Čačka do Kraljeva",
+   "url": "https://biznis.rs/vesti/srbija/uskoro-se-otvara-deonica-moravskog-koridora-od-cacka-do-kraljeva/",
+   "outlet": "Biznis.rs",
+   "publishedAt": "2026-06-15T07:00:00.000Z",
+   "snippet": "Za desetak dana biće otvorena deonica Moravskog koridora od Čačka do Kraljeva u dužini od 29 kilometara, rekao je direktor Koridora Srbije Aleksandar Antić gostujući na TV Prva.",
+   "matched": [
+    "Aleksandar Antić"
+   ],
+   "provider": "google-news-rss",
+   "verified": "tekst",
+   "score": 11,
+   "source": {
+    "kind": "vesti",
+    "title": "Biznis.rs: Uskoro se otvara deonica Moravskog koridora od Čačka do Kraljeva",
+    "url": "https://biznis.rs/vesti/srbija/uskoro-se-otvara-deonica-moravskog-koridora-od-cacka-do-kraljeva/",
+    "retrievedAt": "2026-10-30T16:19:40.931Z",
+    "publishedAt": "2026-06-15T07:00:00.000Z",
+    "official": false
+   }
+  },
+  {
+   "id": "63342b4bf0f0",
+   "title": "Uskoro otvaranje Moravskog koridora do Kraljeva; Evo kada će biti završen u potpunosti",
+   "url": "https://www.b92.net/biz/srbija/vesti/241613/uskoro-otvaranje-moravskog-koridora-do-kraljeva-evo-kada-ce-biti-zavrsen-u-potpunosti/vest",
+   "outlet": "B92",
+   "publishedAt": "2026-06-14T07:00:00.000Z",
+   "snippet": "Direktor \"Koridora Srbije\" Aleksandar Antić najavio je danas da će za desetak dana biti otvorena još jedna deonica Moravskog koridora, oko 29 kilometara novog auto-puta, od petlje Preljina- Čačak do petlje Adrani-Kraljevo.",
+   "matched": [
+    "Aleksandar Antić"
+   ],
+   "provider": "google-news-rss",
+   "verified": "tekst",
+   "score": 11,
+   "source": {
+    "kind": "vesti",
+    "title": "B92: Uskoro otvaranje Moravskog koridora do Kraljeva; Evo kada će biti završen u potpunosti",
+    "url": "https://www.b92.net/biz/srbija/vesti/241613/uskoro-otvaranje-moravskog-koridora-do-kraljeva-evo-kada-ce-biti-zavrsen-u-potpunosti/vest",
+    "retrievedAt": "2026-10-30T16:19:40.931Z",
+    "publishedAt": "2026-06-14T07:00:00.000Z",
+    "official": false
+   }
+  },
+  {
+   "id": "dcf1df4cdbb0",
+   "title": "Антић: Отварање Моравског коридора од Чачка до Краљева за десетак дана",
+   "url": "https://rtv.rs/sr_ci/ekonomija/aktuelno/antic-otvaranje-moravskog-koridora-od-cacka-do-kraljeva-za-desetak-dana_1721843.html",
+   "outlet": "Радио-телевизија Војводине",
+   "publishedAt": "2026-06-13T07:00:00.000Z",
+   "snippet": "Директор \"Коридора Србије\" Александар Антић најавио је данас да ће за десетак дана бити отворена још једна деоница Моравског коридора, око 29 километара новог ауто-пута, од петље Прељина- Чачак до петље Адрани-Краљево, и додао да се…",
+   "matched": [
+    "Aleksandar Antić"
+   ],
+   "provider": "google-news-rss",
+   "verified": "tekst",
+   "score": 11,
+   "source": {
+    "kind": "vesti",
+    "title": "Радио-телевизија Војводине: Антић: Отварање Моравског коридора од Чачка до Краљева за десетак дана",
+    "url": "https://rtv.rs/sr_ci/ekonomija/aktuelno/antic-otvaranje-moravskog-koridora-od-cacka-do-kraljeva-za-desetak-dana_1721843.html",
+    "retrievedAt": "2026-10-30T16:19:40.931Z",
+    "publishedAt": "2026-06-13T07:00:00.000Z",
+    "official": false
+   }
+  },
+  {
+   "id": "6db3c8953b88",
+   "title": "\"Srpski telegraf\" i \"Republika\" proslavili 10. rođendan",
+   "url": "https://www.blic.rs/vesti/drustvo/srpski-telegraf-i-republika-proslavili-10-rodjendan/m15zqxq",
+   "outlet": "Blic",
+   "publishedAt": "2026-04-21T07:00:00.000Z",
+   "snippet": "Na proslavi su prisutni ministar unutrašnjih poslova Ivica Dačić, direktor Koridora Srbije Aleksandar Antić i predsednik Gradske skupštine Beograda Nikola Nikodijević",
+   "matched": [
+    "Aleksandar Antić"
+   ],
+   "provider": "google-news-rss",
+   "verified": "tekst",
+   "score": 11,
+   "source": {
+    "kind": "vesti",
+    "title": "Blic: \"Srpski telegraf\" i \"Republika\" proslavili 10. rođendan",
+    "url": "https://www.blic.rs/vesti/drustvo/srpski-telegraf-i-republika-proslavili-10-rodjendan/m15zqxq",
+    "retrievedAt": "2026-10-30T16:19:40.931Z",
+    "publishedAt": "2026-04-21T07:00:00.000Z",
+    "official": false
+   }
+  },
+  {
+   "id": "7d08ea1b4d7d",
+   "title": "Ко ће све ући у изборну трку: РИК до сада прогласио 10 листа",
+   "url": "https://srpskikompas.rs/ko-ce-sve-uci-u-izbornu-trku-rik-do-sada-proglasio-10-lista/",
+   "outlet": "Srpski kompas",
+   "publishedAt": "2026-09-21T07:00:00.000Z",
+   "snippet": "На листи СПС-а су и дипломирани правник Владан Заграђанин из СПС-а, министарка државне управе и локалне самоуправе у техничком мандату Снежана Пауновић, директор ЈП „Србијагас“ и народни посланик Душан Бајатовић, директор „Коридора Србије…",
+   "matched": [
+    "Aleksandar Antić"
+   ],
+   "provider": "google-news-rss",
+   "verified": "tekst",
+   "score": 10,
+   "source": {
+    "kind": "vesti",
+    "title": "Srpski kompas: Ко ће све ући у изборну трку: РИК до сада прогласио 10 листа",
+    "url": "https://srpskikompas.rs/ko-ce-sve-uci-u-izbornu-trku-rik-do-sada-proglasio-10-lista/",
+    "retrievedAt": "2026-10-30T16:19:40.931Z",
+    "publishedAt": "2026-09-21T07:00:00.000Z",
+    "official": false
+   }
+  },
+  {
+   "id": "f5e0d08a5bb9",
+   "title": "Vučić sutra obilazi radove na brzoj saobraćajnici \"Vožd Karađorđe\"",
+   "url": "https://politika.telegraf.rs/4394898-vucic-sutra-obilazi-radove-na-brzoj-saobracajnici-vozd-karadjordje",
+   "outlet": "Telegraf.rs",
+   "publishedAt": "2026-09-11T07:00:00.000Z",
+   "snippet": "Komercijalni ugovor o projektovanju i izgradnji i ugovor o predfinansiranju potpisali su ministarka građevinarstva, saobraćaja i infrastrukture Aleksandra Sofronijević, direktor Koridora Srbije Aleksandar Antić i direktor ogranka Šandong…",
+   "matched": [
+    "Aleksandar Antić"
+   ],
+   "provider": "google-news-rss",
+   "verified": "tekst",
+   "score": 10,
+   "source": {
+    "kind": "vesti",
+    "title": "Telegraf.rs: Vučić sutra obilazi radove na brzoj saobraćajnici \"Vožd Karađorđe\"",
+    "url": "https://politika.telegraf.rs/4394898-vucic-sutra-obilazi-radove-na-brzoj-saobracajnici-vozd-karadjordje",
+    "retrievedAt": "2026-10-30T16:19:40.931Z",
+    "publishedAt": "2026-09-11T07:00:00.000Z",
+    "official": false
+   }
+  },
+  {
+   "id": "d182cf278538",
+   "title": "NOVA SAOBRAĆAJNUCA STIŽE U MAČVU! Vučić obišao radove i otkrio kada će Slepčević–Badovinci biti završen",
+   "url": "https://www.vojvodjanski.com/novosadskatv/drustvo/2026/08/21/nova-saobracajnuca-stize-u-macvu-vucic-obisao-radove-i-otkrio-kada-ce-slepcevicbadovinci-biti-zavrsen",
+   "outlet": "Vojvodjanski",
+   "publishedAt": "2026-08-21T07:00:00.000Z",
+   "snippet": "Vučića su dočekali predstavnici azerbejdžanske kompanije Azvirt, koja izvodi radove na saobraćajnici, kao i predstavnici ambasade Azerbejdžana, direktor Koridora Srbije Aleksandar Antić, direktor Puteva Srbije Zoran Drobnjak…",
+   "matched": [
+    "Aleksandar Antić"
+   ],
+   "provider": "google-news-rss",
+   "verified": "tekst",
+   "score": 10,
+   "source": {
+    "kind": "vesti",
+    "title": "Vojvodjanski: NOVA SAOBRAĆAJNUCA STIŽE U MAČVU! Vučić obišao radove i otkrio kada će Slepčević–Badovinci biti završen",
+    "url": "https://www.vojvodjanski.com/novosadskatv/drustvo/2026/08/21/nova-saobracajnuca-stize-u-macvu-vucic-obisao-radove-i-otkrio-kada-ce-slepcevicbadovinci-biti-zavrsen",
+    "retrievedAt": "2026-10-30T16:19:40.931Z",
+    "publishedAt": "2026-08-21T07:00:00.000Z",
+    "official": false
+   }
+  },
+  {
+   "id": "7b217ed70c08",
+   "title": "Predsednik Vučić: Ceo Moravski koridor biće završen do kraja godine",
+   "url": "https://dunavtelevizija.rs/vest/24385/predsednik-vucic-ceo-moravski-koridor-bice-zavrsen-do-kraja-godine",
+   "outlet": "Dunav Televizija",
+   "publishedAt": "2026-06-26T15:46:00.000Z",
+   "snippet": "U autobusu, koji je krenuo od Preljine ka Adranima, sa predsednikom Vučićem su i ministri Siniša Mali, Aleksandra Sofronijević i Bratislav Gašić, kao i ambasador Turske Ilhan Sajgili, otpravnik poslova ambasade SAD Aleksandar Titolo…",
+   "matched": [
+    "Aleksandar Antić"
+   ],
+   "provider": "google-news-rss",
+   "verified": "tekst",
+   "score": 10,
+   "source": {
+    "kind": "vesti",
+    "title": "Dunav Televizija: Predsednik Vučić: Ceo Moravski koridor biće završen do kraja godine",
+    "url": "https://dunavtelevizija.rs/vest/24385/predsednik-vucic-ceo-moravski-koridor-bice-zavrsen-do-kraja-godine",
+    "retrievedAt": "2026-10-30T16:19:40.931Z",
+    "publishedAt": "2026-06-26T15:46:00.000Z",
+    "official": false
+   }
+  },
+  {
+   "id": "01174d8fa982",
+   "title": "Antić: Otvaranje deonice Moravskog koridora Čačak-Kraljevo u narednih 10 dana",
+   "url": "https://www.euronews.rs/biznis/biznis-vesti/228462/moravski-koridor-uskoro-otvaranje-deonice-do-kraljeva/vest",
+   "outlet": "Euronews.rs",
+   "publishedAt": "2026-06-16T07:00:00.000Z",
+   "snippet": "Direktor Koridora Srbije Aleksandar Antić izjavio je da će u narednih desetak dana biti otvorena deonica Moravskog koridora od Čačka do Kraljeva i da ostaje da se do kraja godine završi deo petlje od Adrana do Vrbe, kao i da se očekuje…",
+   "matched": [
+    "Aleksandar Antić"
+   ],
+   "provider": "google-news-rss",
+   "verified": "tekst",
+   "score": 10,
+   "source": {
+    "kind": "vesti",
+    "title": "Euronews.rs: Antić: Otvaranje deonice Moravskog koridora Čačak-Kraljevo u narednih 10 dana",
+    "url": "https://www.euronews.rs/biznis/biznis-vesti/228462/moravski-koridor-uskoro-otvaranje-deonice-do-kraljeva/vest",
+    "retrievedAt": "2026-10-30T16:19:40.931Z",
+    "publishedAt": "2026-06-16T07:00:00.000Z",
+    "official": false
+   }
+  },
+  {
+   "id": "7aaa95ba3c29",
+   "title": "Neimari pomjerili korito Zapadne Morave i spojili Čačak i Kraljevo: Uskoro otvaranje dionice Moravskog koridora, prve trase u Srbiji pokrivene 5G mrežom",
+   "url": "https://borba.me/neimari-pomjerili-korito-zapadne-morave-i-spojili-cacak-i-kraljevo-uskoro-otvaranje-dionice-moravskog-koridora-prve-trase-u-srbiji-pokrivene-5g-mrezom/",
+   "outlet": "Borba.me",
+   "publishedAt": "2026-06-16T07:00:00.000Z",
+   "snippet": "Za desetak dana biće otvorena dionica Moravskog koridora od Čačka do Kraljeva, u dužini od 29 kilometara , rekao je direktor Koridori Srbije Aleksandar Antić gostujući na TV Prva.",
+   "matched": [
+    "Aleksandar Antić"
+   ],
+   "provider": "google-news-rss",
+   "verified": "tekst",
+   "score": 10,
+   "source": {
+    "kind": "vesti",
+    "title": "Borba.me: Neimari pomjerili korito Zapadne Morave i spojili Čačak i Kraljevo: Uskoro otvaranje dionice Moravskog koridora, prve trase u Srbiji pokrivene 5G mrežom",
+    "url": "https://borba.me/neimari-pomjerili-korito-zapadne-morave-i-spojili-cacak-i-kraljevo-uskoro-otvaranje-dionice-moravskog-koridora-prve-trase-u-srbiji-pokrivene-5g-mrezom/",
+    "retrievedAt": "2026-10-30T16:19:40.931Z",
+    "publishedAt": "2026-06-16T07:00:00.000Z",
+    "official": false
+   }
+  },
+  {
+   "id": "7856ca8b6c2f",
+   "title": "Pomerili korito Morave i izgradili čudo: Uskoro otvaranje deonice Moravskog koridora",
+   "url": "https://srpskiugao.rs/pomerili-korito-morave-i-izgradili-cudo-uskoro-otvaranje-deonice-moravskog-koridora/",
+   "outlet": "srpski ugao",
+   "publishedAt": "2026-06-16T07:00:00.000Z",
+   "snippet": "Za samo desetak dana biće otvorena nova deonica Moravskog koridora od Čačka do Kraljeva, u dužini od 29 kilometara, saopštio je direktor Koridora Srbije Aleksandar Antić.",
+   "matched": [
+    "Aleksandar Antić"
+   ],
+   "provider": "google-news-rss",
+   "verified": "tekst",
+   "score": 10,
+   "source": {
+    "kind": "vesti",
+    "title": "srpski ugao: Pomerili korito Morave i izgradili čudo: Uskoro otvaranje deonice Moravskog koridora",
+    "url": "https://srpskiugao.rs/pomerili-korito-morave-i-izgradili-cudo-uskoro-otvaranje-deonice-moravskog-koridora/",
+    "retrievedAt": "2026-10-30T16:19:40.931Z",
+    "publishedAt": "2026-06-16T07:00:00.000Z",
+    "official": false
+   }
+  },
+  {
+   "id": "1b2eaa37cb8f",
+   "title": "Put koji spaja dva autoputa: Pogledajte kako će izgledati deonica Vožd Karađorđe vredna 1,3 milijarde evra!",
+   "url": "https://biznis.telegraf.rs/info-biz/4321722-put-koji-spaja-dva-autoputa-pogledajte-kako-ce-izgledati-deonica-vozd-karadjordje-vredna-13-milijarde-evra",
+   "outlet": "Telegraf Biznis",
+   "publishedAt": "2026-05-07T07:00:00.000Z",
+   "snippet": "Komercijalni ugovor o projektovanju i izgradnji i ugovor o predfinansiranju potpisali su ministarka građevinarstva, saobraćaja i infrastrukture Aleksandra Sofronijević , direktor Koridora Srbije Aleksandar Antić i direktor ogranka…",
+   "matched": [
+    "Aleksandar Antić"
+   ],
+   "provider": "google-news-rss",
+   "verified": "tekst",
+   "score": 10,
+   "source": {
+    "kind": "vesti",
+    "title": "Telegraf Biznis: Put koji spaja dva autoputa: Pogledajte kako će izgledati deonica Vožd Karađorđe vredna 1,3 milijarde evra!",
+    "url": "https://biznis.telegraf.rs/info-biz/4321722-put-koji-spaja-dva-autoputa-pogledajte-kako-ce-izgledati-deonica-vozd-karadjordje-vredna-13-milijarde-evra",
+    "retrievedAt": "2026-10-30T16:19:40.931Z",
+    "publishedAt": "2026-05-07T07:00:00.000Z",
+    "official": false
+   }
+  }
+ ]
+}

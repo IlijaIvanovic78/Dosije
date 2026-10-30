@@ -13,6 +13,7 @@
     "cli": "tsx scripts/cli.ts",
     "mapa": "tsx scripts/mapa.ts",
     "warm-cache": "tsx scripts/warm-cache.ts",
+    "qa": "tsx scripts/qa.ts",
     "test": "tsx --test test/*.test.ts",
     "typecheck": "tsc --noEmit"
   },

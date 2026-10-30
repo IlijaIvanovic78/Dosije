@@ -1,0 +1,127 @@
+{
+ "source": "acas",
+ "key": "assets-998",
+ "retrievedAt": "2026-10-30T16:19:40.908Z",
+ "data": [
+  {
+   "personId": "998",
+   "fullName": "Aleksandar Antić",
+   "reportDate": "2026-05-15",
+   "reason": "promene u toku vršenja funkcije",
+   "source": {
+    "kind": "acas",
+    "title": "ACAS – Izveštaj o imovini i prihodima funkcionera (2026-05-15)",
+    "url": "https://publicacas.acas.rs/#/acas/funkcionerIzvestajDetails/5039533",
+    "retrievedAt": "2026-10-30T16:19:39.335Z",
+    "publishedAt": "2026-05-15",
+    "official": true
+   },
+   "summary": [
+    "Prihod od javne funkcije (v.d. direktora, \"Koridori Srbije\" d.o.o.): 264.071 RSD mesečno, od 12.11.2020.",
+    "Prihod od javne funkcije (Član saveta, Vlada Republike Srbije): 0 RSD, od 25.11.2022.",
+    "Prihod od javne funkcije (Odbornik, Skupština grada Beograda): 40.000 RSD mesečno, od 21.06.2024.",
+    "Nepokretna imovina: 6 stavki (stan, vinograd ×5)",
+    "Objekti: stan 56,65 m2; vinograd 9 a 49 m2; vinograd 8 a 99 m2; vinograd 22 a 58 m2; vinograd 26 a 68 m2; vinograd 17 a 79 m2"
+   ],
+   "incomes": [
+    {
+     "source": "v.d. direktora, \"Koridori Srbije\" d.o.o.",
+     "amountRsd": 264071,
+     "period": "mesečno, od 12.11.2020."
+    },
+    {
+     "source": "Član saveta, Vlada Republike Srbije",
+     "amountRsd": 0,
+     "period": "od 25.11.2022."
+    },
+    {
+     "source": "Odbornik, Skupština grada Beograda",
+     "amountRsd": 40000,
+     "period": "mesečno, od 21.06.2024."
+    }
+   ]
+  },
+  {
+   "personId": "998",
+   "fullName": "Aleksandar Antić",
+   "reportDate": "2025-06-19",
+   "reason": "promene u toku vršenja funkcije",
+   "source": {
+    "kind": "acas",
+    "title": "ACAS – Izveštaj o imovini i prihodima funkcionera (2025-06-19)",
+    "url": "https://publicacas.acas.rs/#/acas/funkcionerIzvestajDetails/5033583",
+    "retrievedAt": "2026-10-30T16:19:39.831Z",
+    "publishedAt": "2025-06-19",
+    "official": true
+   },
+   "summary": [
+    "Prihod od javne funkcije (v.d. direktora, \"Koridori Srbije\" d.o.o.): 249.972,41 RSD mesečno, od 12.11.2020.",
+    "Prihod od javne funkcije (Član saveta, Vlada Republike Srbije): 0 RSD, od 25.11.2022.",
+    "Prihod od javne funkcije (Odbornik, Skupština grada Beograda): 40.000 RSD mesečno, od 21.06.2024.",
+    "Prihod od javne funkcije (Narodni poslanik, Narodna skupština Republike Srbije): 0 RSD mesečno, 27.11.2024. - 28.01.2025.",
+    "Nepokretna imovina: 6 stavki (stan, vinograd ×5)",
+    "Objekti: stan 56,65 m2; vinograd 9 ari 49 m2; vinograd 8 ari 99 m2; vinograd 22 ara 58 m2; vinograd 26 ari 68 m2; vinograd 17 ari 79 m2"
+   ],
+   "incomes": [
+    {
+     "source": "v.d. direktora, \"Koridori Srbije\" d.o.o.",
+     "amountRsd": 249972.41,
+     "period": "mesečno, od 12.11.2020."
+    },
+    {
+     "source": "Član saveta, Vlada Republike Srbije",
+     "amountRsd": 0,
+     "period": "od 25.11.2022."
+    },
+    {
+     "source": "Odbornik, Skupština grada Beograda",
+     "amountRsd": 40000,
+     "period": "mesečno, od 21.06.2024."
+    },
+    {
+     "source": "Narodni poslanik, Narodna skupština Republike Srbije",
+     "amountRsd": 0,
+     "period": "mesečno, 27.11.2024. - 28.01.2025."
+    }
+   ]
+  },
+  {
+   "personId": "998",
+   "fullName": "Aleksandar Antić",
+   "reportDate": "2024-07-15",
+   "reason": "promene u toku vršenja funkcije",
+   "source": {
+    "kind": "acas",
+    "title": "ACAS – Izveštaj o imovini i prihodima funkcionera (2024-07-15)",
+    "url": "https://publicacas.acas.rs/#/acas/funkcionerIzvestajDetails/5029311",
+    "retrievedAt": "2026-10-30T16:19:40.390Z",
+    "publishedAt": "2024-07-15",
+    "official": true
+   },
+   "summary": [
+    "Prihod od javne funkcije (v.d. direktora, \"Koridori Srbije\" d.o.o.): 249.972,41 RSD mesečno, od 12.11.2020.",
+    "Prihod od javne funkcije (Član saveta, Vlada Republike Srbije): 0 RSD, od 25.11.2022.",
+    "Prihod od javne funkcije (Odbornik, Skupština grada Beograda): 40.000 RSD mesečno, od 21.06.2024.",
+    "Nepokretna imovina: 6 stavki (stan, vinograd ×5)",
+    "Objekti: stan 56,65 m2; vinograd 9 ari 49 m2; vinograd 8 ari 99 m2; vinograd 22 ara 58 m2; vinograd 26 ari 68 m2; vinograd 17 ari 79 m2"
+   ],
+   "incomes": [
+    {
+     "source": "v.d. direktora, \"Koridori Srbije\" d.o.o.",
+     "amountRsd": 249972.41,
+     "period": "mesečno, od 12.11.2020."
+    },
+    {
+     "source": "Član saveta, Vlada Republike Srbije",
+     "amountRsd": 0,
+     "period": "od 25.11.2022."
+    },
+    {
+     "source": "Odbornik, Skupština grada Beograda",
+     "amountRsd": 40000,
+     "period": "mesečno, od 21.06.2024."
+    }
+   ]
+  }
+ ]
+}

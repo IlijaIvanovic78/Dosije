@@ -1,7 +1,7 @@
 {
  "source": "acas",
  "key": "person-zoran-jevtic",
- "retrievedAt": "2026-10-30T13:41:33.350Z",
+ "retrievedAt": "2026-10-30T16:13:42.188Z",
  "data": [
   {
    "id": "5036367",
@@ -17,7 +17,7 @@
     "kind": "acas",
     "title": "ACAS – Registar funkcionera: Infrastruktura železnice Srbije a.d. Beograd",
     "url": "https://publicacas.acas.rs/#/acas/funkcioner",
-    "retrievedAt": "2026-10-30T13:41:33.350Z",
+    "retrievedAt": "2026-10-30T16:13:42.187Z",
     "publishedAt": "2025-05-22",
     "official": true
    }
@@ -37,7 +37,7 @@
     "kind": "acas",
     "title": "ACAS – Registar funkcionera: Skupština opštine Mali Zvornik",
     "url": "https://publicacas.acas.rs/#/acas/funkcioner",
-    "retrievedAt": "2026-10-30T13:41:33.350Z",
+    "retrievedAt": "2026-10-30T16:13:42.188Z",
     "publishedAt": "2024-01-25",
     "official": true
    }
@@ -56,7 +56,7 @@
     "kind": "acas",
     "title": "ACAS – Registar funkcionera: Opština Mali Zvornik",
     "url": "https://publicacas.acas.rs/#/acas/funkcioner",
-    "retrievedAt": "2026-10-30T13:41:33.350Z",
+    "retrievedAt": "2026-10-30T16:13:42.188Z",
     "publishedAt": "2024-01-25",
     "official": true
    }
@@ -76,7 +76,7 @@
     "kind": "acas",
     "title": "ACAS – Registar funkcionera: Opština Mali Zvornik",
     "url": "https://publicacas.acas.rs/#/acas/funkcioner",
-    "retrievedAt": "2026-10-30T13:41:33.350Z",
+    "retrievedAt": "2026-10-30T16:13:42.188Z",
     "publishedAt": "2023-10-31",
     "official": true
    }
@@ -96,7 +96,7 @@
     "kind": "acas",
     "title": "ACAS – Registar funkcionera: Skupština grada Vršca",
     "url": "https://publicacas.acas.rs/#/acas/funkcioner",
-    "retrievedAt": "2026-10-30T13:41:33.350Z",
+    "retrievedAt": "2026-10-30T16:13:42.188Z",
     "publishedAt": "2020-08-21",
     "official": true
    }
@@ -115,7 +115,7 @@
     "kind": "acas",
     "title": "ACAS – Registar funkcionera: JKP za vodovod i kanalizaciju Vodovod-Kruševac",
     "url": "https://publicacas.acas.rs/#/acas/funkcioner",
-    "retrievedAt": "2026-10-30T13:41:33.350Z",
+    "retrievedAt": "2026-10-30T16:13:42.188Z",
     "publishedAt": "2016-09-01",
     "official": true
    }

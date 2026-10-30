@@ -1,0 +1,18 @@
+{
+ "source": "vesti",
+ "key": "search-bojan-stegnjaja-person-d730-l40-c-infrastruktura-zeleznice-srbije-izs",
+ "retrievedAt": "2026-10-30T16:13:59.001Z",
+ "meta": {
+  "query": "Bojan Stegnjaja",
+  "kind": "person",
+  "days": 730,
+  "limit": 40,
+  "aliases": [],
+  "context": [
+   "Infrastruktura železnice Srbije",
+   "IŽS"
+  ],
+  "exclude": []
+ },
+ "data": []
+}

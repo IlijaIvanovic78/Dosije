@@ -1,21 +1,21 @@
 {
  "source": "dri",
  "key": "reports-srbijavoz",
- "retrievedAt": "2026-10-30T14:50:33.168Z",
+ "retrievedAt": "2026-10-30T16:13:07.125Z",
  "data": [
   {
    "id": "15856",
    "title": "Pravilnost i svrsishodnost poslovanja Akcionarskog društva za železnički prevoz putnika Srbijavoz, Beograd – Pravilnost i efikasnost preduzetih mera u vezi sa zapošljavanjem osoba sa invaliditetom",
    "year": 2026,
    "publishedAt": "2026-09-17",
-   "kind": "izveštaj o reviziji",
+   "kind": "revizija pravilnosti i svrsishodnosti",
    "url": "https://www.dri.rs/storage/newaudits/2026_%D0%A1%D0%95%D0%9A%D0%A2%D0%9E%D0%A0%204_IZV_%D0%90%D0%94%20%D0%97%D0%90%20%20%D0%96%D0%95%D0%9B%D0%95%D0%97%D0%9D%D0%98%D0%A7%D0%9A%D0%98%20%D0%9F%D0%A0%D0%95%D0%92%D0%9E%D0%97%20%D0%9F%D0%A3%D0%A2%D0%9D%D0%98%D0%9A%D0%90%20%20%22%D0%A1%D0%A0%D0%91%D0%98%D0%88%D0%90%20%D0%92%D0%9E%D0%97%22,%20%D0%91%D0%95%D0%9E%D0%93%D0%A0%D0%90%D0%94_PS_4D956053-528D-4225-80A8-652419061B8B.pdf",
    "excerpts": [],
    "source": {
     "kind": "dri",
-    "title": "DRI: Pravilnost i svrsishodnost poslovanja Akcionarskog društva za železnički prevoz putnika Srbijavoz, Beograd – Pravilnost i efikasnost preduze",
+    "title": "DRI: Pravilnost i svrsishodnost poslovanja Akcionarskog društva za železnički prevoz putnika Srbijavoz, Beograd – Pravilnost i efikasnost…",
     "url": "https://www.dri.rs/izvestaj/15856",
-    "retrievedAt": "2026-10-30T14:50:29.344Z",
+    "retrievedAt": "2026-10-30T16:13:05.081Z",
     "publishedAt": "2026-09-17",
     "official": true
    }
@@ -25,14 +25,14 @@
    "title": "Izveštaj o reviziji pravilnosti poslovanja Akcionarskog društva za železnički prevoz putnika \"Srbijavoz\" Beograd za 2024. godinu, koja se odnosi na mere ispravljanja po Izveštaju o reviziji finansijskih izveštaja iz 2020. Godine",
    "year": 2024,
    "publishedAt": "2025-08-15",
-   "kind": "finansijska revizija",
+   "kind": "revizija pravilnosti",
    "url": "https://www.dri.rs/storage/newaudits/2025_%D0%A1%D0%95%D0%9A%D0%A2%D0%9E%D0%A0%204_IZV_%D0%90%D0%94%20%D0%97%D0%90%20%20%D0%96%D0%95%D0%9B%D0%95%D0%97%D0%9D%D0%98%D0%A7%D0%9A%D0%98%20%D0%9F%D0%A0%D0%95%D0%92%D0%9E%D0%97%20%D0%9F%D0%A3%D0%A2%D0%9D%D0%98%D0%9A%D0%90%20%20%22%D0%A1%D0%A0%D0%91%D0%98%D0%88%D0%90%20%D0%92%D0%9E%D0%97%22,%20%D0%91%D0%95%D0%9E%D0%93%D0%A0%D0%90%D0%94_P_5E0F4AB8-E296-4515-BAF7-8723CC665192.pdf",
    "excerpts": [],
    "source": {
     "kind": "dri",
-    "title": "DRI: Izveštaj o reviziji pravilnosti poslovanja Akcionarskog društva za železnički prevoz putnika \"Srbijavoz\" Beograd za 2024. godinu, koja se od",
+    "title": "DRI: Izveštaj o reviziji pravilnosti poslovanja Akcionarskog društva za železnički prevoz putnika \"Srbijavoz\" Beograd za 2024. godinu, koja…",
     "url": "https://www.dri.rs/izvestaj/14257",
-    "retrievedAt": "2026-10-30T14:50:29.344Z",
+    "retrievedAt": "2026-10-30T16:13:05.081Z",
     "publishedAt": "2025-08-15",
     "official": true
    }
@@ -47,9 +47,9 @@
    "excerpts": [],
    "source": {
     "kind": "dri",
-    "title": "DRI: Izveštaj o otklanjanju nepravilnosti otkrivenih u reviziji (Odazivni izveštaj) pravilnosti poslovanja Akcionarskog društva za železnički pre",
+    "title": "DRI: Izveštaj o otklanjanju nepravilnosti otkrivenih u reviziji (Odazivni izveštaj) pravilnosti poslovanja Akcionarskog društva za…",
     "url": "https://www.dri.rs/izvestaj/5017",
-    "retrievedAt": "2026-10-30T14:50:29.344Z",
+    "retrievedAt": "2026-10-30T16:13:05.081Z",
     "publishedAt": "2022-11-04",
     "official": true
    }
@@ -64,9 +64,9 @@
    "excerpts": [],
    "source": {
     "kind": "dri",
-    "title": "DRI: Poslerevizioni izveštaj o merama ispravljanja Akcionarskog društva za železnički prevoz putnika „Srbija voz“, Beograd po reviziji pravilnost",
+    "title": "DRI: Poslerevizioni izveštaj o merama ispravljanja Akcionarskog društva za železnički prevoz putnika „Srbija voz“, Beograd po reviziji…",
     "url": "https://www.dri.rs/izvestaj/5018",
-    "retrievedAt": "2026-10-30T14:50:29.344Z",
+    "retrievedAt": "2026-10-30T16:13:05.081Z",
     "publishedAt": "2022-11-04",
     "official": true
    }
@@ -81,9 +81,9 @@
    "excerpts": [],
    "source": {
     "kind": "dri",
-    "title": "DRI: Izveštaj o reviziji Odazivnog izveštaja Akcionarskog društva za železnički prevoz putnika „Srbija Voz“, Beograd koji se odnosi na revizorski",
+    "title": "DRI: Izveštaj o reviziji Odazivnog izveštaja Akcionarskog društva za železnički prevoz putnika „Srbija Voz“, Beograd koji se odnosi na…",
     "url": "https://www.dri.rs/izvestaj/5025",
-    "retrievedAt": "2026-10-30T14:50:29.344Z",
+    "retrievedAt": "2026-10-30T16:13:05.081Z",
     "publishedAt": "2022-11-04",
     "official": true
    }
@@ -98,9 +98,9 @@
    "excerpts": [],
    "source": {
     "kind": "dri",
-    "title": "DRI: Izveštaj o reviziji Odazivnog izveštaja Akcionarskog društva za železnički prevoz putnika „Srbija Voz“, Beograd koji se odnosi na revizorski",
+    "title": "DRI: Izveštaj o reviziji Odazivnog izveštaja Akcionarskog društva za železnički prevoz putnika „Srbija Voz“, Beograd koji se odnosi na…",
     "url": "https://www.dri.rs/izvestaj/4250",
-    "retrievedAt": "2026-10-30T14:50:29.344Z",
+    "retrievedAt": "2026-10-30T16:13:05.081Z",
     "publishedAt": "2021-12-27",
     "official": true
    }
@@ -115,9 +115,9 @@
    "excerpts": [],
    "source": {
     "kind": "dri",
-    "title": "DRI: Izveštaj o otklanjanju nepravilnosti otkrivenih u reviziji (Odazivni izveštaj) finansijskih izveštaja Akcionarskog društva za železnički pre",
+    "title": "DRI: Izveštaj o otklanjanju nepravilnosti otkrivenih u reviziji (Odazivni izveštaj) finansijskih izveštaja Akcionarskog društva za…",
     "url": "https://www.dri.rs/izvestaj/4251",
-    "retrievedAt": "2026-10-30T14:50:29.344Z",
+    "retrievedAt": "2026-10-30T16:13:05.081Z",
     "publishedAt": "2021-12-27",
     "official": true
    }
@@ -132,9 +132,9 @@
    "excerpts": [],
    "source": {
     "kind": "dri",
-    "title": "DRI: Poslerevizioni izveštaj o merama ispravljanja Akcionarskog društva za železnički prevoz putnika „Srbija voz“, Beograd po reviziji finansijsk",
+    "title": "DRI: Poslerevizioni izveštaj o merama ispravljanja Akcionarskog društva za železnički prevoz putnika „Srbija voz“, Beograd po reviziji…",
     "url": "https://www.dri.rs/izvestaj/4252",
-    "retrievedAt": "2026-10-30T14:50:29.344Z",
+    "retrievedAt": "2026-10-30T16:13:05.081Z",
     "publishedAt": "2021-12-27",
     "official": true
    }
@@ -149,9 +149,9 @@
    "excerpts": [],
    "source": {
     "kind": "dri",
-    "title": "DRI: Izveštaj o reviziji pravilnosti poslovanja Akcionarskog društva za železnički prevoz putnika „Srbija voz“, Beograd u delu koji se odnosi na ",
+    "title": "DRI: Izveštaj o reviziji pravilnosti poslovanja Akcionarskog društva za železnički prevoz putnika „Srbija voz“, Beograd u delu koji se…",
     "url": "https://www.dri.rs/izvestaj/3730",
-    "retrievedAt": "2026-10-30T14:50:29.344Z",
+    "retrievedAt": "2026-10-30T16:13:05.081Z",
     "publishedAt": "2021-07-14",
     "official": true
    }
@@ -168,7 +168,7 @@
     "kind": "dri",
     "title": "DRI: Izveštaj o reviziji finansijskih izveštaja Akcionarskog društva za železnički prevoz putnika „Srbija voz“, Beograd za 2019. godinu",
     "url": "https://www.dri.rs/izvestaj/3032",
-    "retrievedAt": "2026-10-30T14:50:29.344Z",
+    "retrievedAt": "2026-10-30T16:13:05.081Z",
     "publishedAt": "2020-11-25",
     "official": true
    }

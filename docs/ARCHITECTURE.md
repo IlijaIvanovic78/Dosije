@@ -44,6 +44,8 @@ whistleblowers and citizens checking whether public data confirms a claim.
 8. **Tool outputs to the LLM are compact JSON (<= 4,000 chars)**; truncate lists and include ready-made `SourceRef`s
    so an agent can copy them into `add_finding`.
 9. **Be polite to public servers**: `http.ts` limits per-host concurrency; add small delays in bulk crawls; cache.
+10. **Serbian number agreement**: every generated text with a count uses `src/shared/plural.ts` (`n(3, "ugovor")` -> "3 ugovora"; one/few/many); text is cut at word boundaries (`src/shared/text.ts`), never mid-word.
+11. **Precision before volume**: a datum is shown only if it provably belongs to the institution (news: `src/data/newsMatch.ts`; DRI: title names it; JN: tender belongs to its CAId; IW/ACAS: authority name matches). `npm run qa` checks this on the six preset institutions and writes `docs/QA.md`.
 
 ## 3. Repository layout and ownership
 
@@ -94,10 +96,10 @@ strip PII and attach a `SourceRef` with a **public** URL.
 | `integrityWatch.ts` | `getLinksForAuthority({name,pib?})` -> `IntegrityWatchLink[]` · `getLinksForSupplier({pib?,mb?,name?})` -> `IntegrityWatchLink[]` |
 | `apr.ts` | `getCompany({mb?,pib?,name?})` -> `CompanyProfile \| null` · `findInstitutionCompany(name)` -> `CompanyProfile \| null` |
 | `dri.ts` | `getReports({name,nameCyr?})` -> `AuditReport[]` (list, no excerpts) · `getReportFindings(report)` -> `AuditReport` (with excerpts) |
-| `news.ts` | `searchNews(query, {days?,limit?})` -> `NewsItem[]` (merged + deduped providers) · `fetchArticle(url)` -> `ArticleText` · `availableProviders()` -> `string[]` |
+| `news.ts` | `searchNews(query, {days?,limit?,kind?,aliases?,context?,exclude?})` -> `NewsItem[]` (precise, merged, deduped, ranked by relevance then recency; queries built by `newsPlan.ts`, rules in `newsMatch.ts`) · `fetchArticle(url)` -> `ArticleText` · `availableProviders()` -> `string[]` |
 
 Search providers in `news.ts`: free and always on: outlet RSS (N1, Danas, Nova, Vreme, Insajder, 021, RTS, Južne
-vesti, raspadsistema), Google News RSS, GDELT DOC API. Optional with keys: `SERPER_API_KEY` (Serper.dev, Google
+vesti, raspadsistema), Google News RSS (exact phrase, Latin and Cyrillic, both language editions, aliases such as "IŽS"), GDELT DOC API. Optional with keys: `SERPER_API_KEY` (Serper.dev, Google
 results) and `BRAVE_API_KEY` (Brave Search News). Missing keys are skipped silently.
 
 ### 4.3 Facade (core)
@@ -195,7 +197,7 @@ Source and analysis tools (thin wrappers over the data facade; analysis is deter
 | `acas_pretraga_osobe({name})` | `Official[]` (is this person an official?) |
 | `pep_provera({name})` | `PepMatch[]` |
 | `dri_izvestaji()` / `dri_nalazi({reportId})` | audit reports / excerpts |
-| `vesti_pretraga({query, days?})` / `vest_tekst({url})` | news items / article text |
+| `vesti_pretraga({query, days?, tip?, kontekst?})` / `vest_tekst({url})` | `{pregled: {naslov, tekst, ukupno, izvori[<=12]}, clanci}` (institution: 12 months, aliases; person: 2 years, article must name person AND institution/firm) / article text |
 | `dosije_pregled()` / `napisi_sazetak({lede, topSignals, toVerify})` | Urednik only |
 
 ### 5.6 Interception: `UrednikGate implements InterceptionHandler`

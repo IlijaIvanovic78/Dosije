@@ -1,0 +1,278 @@
+{
+ "source": "vesti",
+ "key": "search-zoran-jevtic-person-d730-l40-c-infrastruktura-zeleznice-srbije-izs",
+ "retrievedAt": "2026-10-30T15:58:07.565Z",
+ "meta": {
+  "query": "Zoran Jevtić",
+  "kind": "person",
+  "days": 730,
+  "limit": 40,
+  "aliases": [],
+  "context": [
+   "Infrastruktura železnice Srbije",
+   "IŽS"
+  ],
+  "exclude": []
+ },
+ "data": [
+  {
+   "id": "ed54a94406de",
+   "title": "Ko je Zoran Jevtić, novi direktor Infrastrukture železnice Srbije",
+   "url": "https://novaekonomija.rs/vesti-iz-zemlje/ko-je-zoran-jevtic-novi-direktor-infrastrukture-zeleznice-srbije",
+   "outlet": "Nova Ekonomija",
+   "publishedAt": "2025-05-26T07:00:00.000Z",
+   "matched": [
+    "Zoran Jevtić"
+   ],
+   "provider": "google-news-rss",
+   "verified": "naslov",
+   "score": 37,
+   "source": {
+    "kind": "vesti",
+    "title": "Nova Ekonomija: Ko je Zoran Jevtić, novi direktor Infrastrukture železnice Srbije",
+    "url": "https://novaekonomija.rs/vesti-iz-zemlje/ko-je-zoran-jevtic-novi-direktor-infrastrukture-zeleznice-srbije",
+    "retrievedAt": "2026-10-30T15:57:47.021Z",
+    "publishedAt": "2025-05-26T07:00:00.000Z",
+    "official": false
+   }
+  },
+  {
+   "id": "0cc989cf13c6",
+   "title": "Зоран Јевтић нови генерални директор \"Инфраструктуре железнице Србије\"",
+   "url": "https://rtv.rs/sr_ci/drustvo/zoran-jevtic-novi-generalni-direktor-infrastrukture-zeleznice-srbije_1630301.html",
+   "outlet": "Радио-телевизија Војводине",
+   "publishedAt": "2025-05-24T07:00:00.000Z",
+   "matched": [
+    "Zoran Jevtić"
+   ],
+   "provider": "google-news-rss",
+   "verified": "naslov",
+   "score": 37,
+   "source": {
+    "kind": "vesti",
+    "title": "Радио-телевизија Војводине: Зоран Јевтић нови генерални директор \"Инфраструктуре железнице Србије\"",
+    "url": "https://rtv.rs/sr_ci/drustvo/zoran-jevtic-novi-generalni-direktor-infrastrukture-zeleznice-srbije_1630301.html",
+    "retrievedAt": "2026-10-30T15:57:47.021Z",
+    "publishedAt": "2025-05-24T07:00:00.000Z",
+    "official": false
+   }
+  },
+  {
+   "id": "2005f3295b86",
+   "title": "Zoran Jevtić novi direktor \"Infrastrukture železnice Srbije\"",
+   "url": "https://nova.rs/vesti/biznis/zoran-jevtic-novi-direktor-infrastrukture-zeleznice-srbije/",
+   "outlet": "Nova.rs",
+   "publishedAt": "2025-05-24T07:00:00.000Z",
+   "matched": [
+    "Zoran Jevtić"
+   ],
+   "provider": "google-news-rss",
+   "verified": "naslov",
+   "score": 37,
+   "source": {
+    "kind": "vesti",
+    "title": "Nova.rs: Zoran Jevtić novi direktor \"Infrastrukture železnice Srbije\"",
+    "url": "https://nova.rs/vesti/biznis/zoran-jevtic-novi-direktor-infrastrukture-zeleznice-srbije/",
+    "retrievedAt": "2026-10-30T15:57:47.021Z",
+    "publishedAt": "2025-05-24T07:00:00.000Z",
+    "official": false
+   }
+  },
+  {
+   "id": "add8d07a468a",
+   "title": "Zoran Jevtić imenovan za vršioca dužnosti direktora „Infrastrukture železnice Srbije“",
+   "url": "https://www.glas-javnosti.rs/vesti/drustvo/zoran-jevtic-imenovan-za-vrsioca-duznosti-direktora-e2809einfrastrukture-zeleznice-srbije-",
+   "outlet": "Glas javnosti",
+   "publishedAt": "2025-05-24T07:00:00.000Z",
+   "matched": [
+    "Zoran Jevtić"
+   ],
+   "provider": "google-news-rss",
+   "verified": "naslov",
+   "score": 37,
+   "source": {
+    "kind": "vesti",
+    "title": "Glas javnosti: Zoran Jevtić imenovan za vršioca dužnosti direktora „Infrastrukture železnice Srbije“",
+    "url": "https://www.glas-javnosti.rs/vesti/drustvo/zoran-jevtic-imenovan-za-vrsioca-duznosti-direktora-e2809einfrastrukture-zeleznice-srbije-",
+    "retrievedAt": "2026-10-30T15:57:47.021Z",
+    "publishedAt": "2025-05-24T07:00:00.000Z",
+    "official": false
+   }
+  },
+  {
+   "id": "26cab60a10b7",
+   "title": "Zoran Jevtić novi generalni direktor Infrastrukture železnice Srbije",
+   "url": "https://www.tanjug.rs/ekonomija/srbija/164383/zoran-jevtic-novi-generalni-direktor-infrastrukture-zeleznice-srbije/vest",
+   "outlet": "tanjug.rs",
+   "publishedAt": "2025-05-24T07:00:00.000Z",
+   "matched": [
+    "Zoran Jevtić"
+   ],
+   "provider": "google-news-rss",
+   "verified": "naslov",
+   "score": 36,
+   "source": {
+    "kind": "vesti",
+    "title": "tanjug.rs: Zoran Jevtić novi generalni direktor Infrastrukture železnice Srbije",
+    "url": "https://www.tanjug.rs/ekonomija/srbija/164383/zoran-jevtic-novi-generalni-direktor-infrastrukture-zeleznice-srbije/vest",
+    "retrievedAt": "2026-10-30T15:57:47.021Z",
+    "publishedAt": "2025-05-24T07:00:00.000Z",
+    "official": false
+   }
+  },
+  {
+   "id": "2eb4c25719f2",
+   "title": "Direktor Infrastrukture železnice Srbije: Stanica Prokop je bezbedna za korišćenje",
+   "url": "https://www.rts.rs/lat/vesti/drustvo/5766234/infrastruktura-zeleznice-srbije-prokop.html",
+   "outlet": "РТС",
+   "publishedAt": "2025-08-07T07:00:00.000Z",
+   "snippet": "Generalni direktor \"Infrastrukture želenice Srbije\" Zoran Jevtić je povodom informacija u javnosti da navodno \"pucaju konstrukcija i ploča na Prokopu\" rekao da može da potvrdi da je stanica bezbedna za odvijanje železničkog saobraćaja, kao…",
+   "matched": [
+    "Zoran Jevtić"
+   ],
+   "provider": "google-news-rss",
+   "verified": "tekst",
+   "score": 13,
+   "source": {
+    "kind": "vesti",
+    "title": "РТС: Direktor Infrastrukture železnice Srbije: Stanica Prokop je bezbedna za korišćenje",
+    "url": "https://www.rts.rs/lat/vesti/drustvo/5766234/infrastruktura-zeleznice-srbije-prokop.html",
+    "retrievedAt": "2026-10-30T15:57:47.021Z",
+    "publishedAt": "2025-08-07T07:00:00.000Z",
+    "official": false
+   }
+  },
+  {
+   "id": "d4ddaf67719a",
+   "title": "Direktor Infrastrukture železnice Srbije: Stanica Prokop je bezbedna za korišćenje",
+   "url": "https://www.b92.net/lokal/beograd/drustvo/153048/direktor-infrastrukture-zeleznice-srbije-stanica-prokop-je-bezbedna-za-koriscenje/vest",
+   "outlet": "B92",
+   "publishedAt": "2025-08-07T07:00:00.000Z",
+   "snippet": "Generalni Direktor \"Infrastrukture želenice Srbije\" Zoran Jevtić kaže za Tanjug povodom informacija u javnosti da navodno \"pucaju konstrukcija i ploča na Prokopu\" da može da potvrdi da je stanica bezbedna za odvijanje železničkog…",
+   "matched": [
+    "Zoran Jevtić"
+   ],
+   "provider": "google-news-rss",
+   "verified": "tekst",
+   "score": 13,
+   "source": {
+    "kind": "vesti",
+    "title": "B92: Direktor Infrastrukture železnice Srbije: Stanica Prokop je bezbedna za korišćenje",
+    "url": "https://www.b92.net/lokal/beograd/drustvo/153048/direktor-infrastrukture-zeleznice-srbije-stanica-prokop-je-bezbedna-za-koriscenje/vest",
+    "retrievedAt": "2026-10-30T15:57:47.021Z",
+    "publishedAt": "2025-08-07T07:00:00.000Z",
+    "official": false
+   }
+  },
+  {
+   "id": "c6a8ca116e26",
+   "title": "Direktor Infrastrukture železnice Srbije: Železnička stanica Beograd Centar bezbedna za korišćenje",
+   "url": "https://www.nedeljnik.rs/direktor-infrastrukture-zeleznice-srbije-zeleznicka-stanica-beograd-centar-bezbedna-za-koriscenje/",
+   "outlet": "Nedeljnik",
+   "publishedAt": "2025-08-07T07:00:00.000Z",
+   "snippet": "Direktor preduzeća „Infrastrukture železnice Srbije“ Zoran Jevtić je danas kazao da je Železnička stanica „Beograd-Centar“ (Prokop) bezbedna za korišćenje i da saobraćaj neće biti obustavljen tokom planiranih radova, prenela je…",
+   "matched": [
+    "Zoran Jevtić"
+   ],
+   "provider": "google-news-rss",
+   "verified": "tekst",
+   "score": 13,
+   "source": {
+    "kind": "vesti",
+    "title": "Nedeljnik: Direktor Infrastrukture železnice Srbije: Železnička stanica Beograd Centar bezbedna za korišćenje",
+    "url": "https://www.nedeljnik.rs/direktor-infrastrukture-zeleznice-srbije-zeleznicka-stanica-beograd-centar-bezbedna-za-koriscenje/",
+    "retrievedAt": "2026-10-30T15:57:47.021Z",
+    "publishedAt": "2025-08-07T07:00:00.000Z",
+    "official": false
+   }
+  },
+  {
+   "id": "8a5a09e6607f",
+   "title": "Direktor Infrastrukture železnice Srbije uverava građane da je Prokop bezbedan, uprkos slaboj armaturi i pukotinama",
+   "url": "https://novaekonomija.rs/vesti-iz-zemlje/direktor-infrastruktura-zeleznice-srbije-zoran-jeftic-prokop-bezbedan-stubovi-grede-zeleznicka-stanica",
+   "outlet": "Nova Ekonomija",
+   "publishedAt": "2025-08-07T07:00:00.000Z",
+   "snippet": "Generalni direktor Infrastrukture, Zoran Jevtić, povodom informacija u javnosti da navodno „pucaju konstrukcija i ploča na Prokopu“ rekao je da može da potvrdi da je stanica bezbedna za odvijanje železničkog saobraćaja, kao i korišćenje…",
+   "matched": [
+    "Zoran Jevtić"
+   ],
+   "provider": "google-news-rss",
+   "verified": "tekst",
+   "score": 13,
+   "source": {
+    "kind": "vesti",
+    "title": "Nova Ekonomija: Direktor Infrastrukture železnice Srbije uverava građane da je Prokop bezbedan, uprkos slaboj armaturi i pukotinama",
+    "url": "https://novaekonomija.rs/vesti-iz-zemlje/direktor-infrastruktura-zeleznice-srbije-zoran-jeftic-prokop-bezbedan-stubovi-grede-zeleznicka-stanica",
+    "retrievedAt": "2026-10-30T15:57:47.021Z",
+    "publishedAt": "2025-08-07T07:00:00.000Z",
+    "official": false
+   }
+  },
+  {
+   "id": "f46fdc4da046",
+   "title": "Jevtić: Izvršeno testiranje brze pruge od Beograda do Novog Sada, trasa bezbedna za saobraćaj",
+   "url": "https://www.rtv.rs/sr_lat/drustvo/jevtic-izvrseno-testiranje-brze-pruge-od-beograda-do-novog-sada-trasa-bezbedna-za-saobracaj_1649548.html",
+   "outlet": "Радио-телевизија Војводине",
+   "publishedAt": "2025-08-12T07:00:00.000Z",
+   "snippet": "Na trasi brze pruge od Beograda do Novog Sada danas je izvršeno testiranje specijalnim mernim kolima za merenje geometrije koloseka, a prema rečima generalnog direktora kompanije ''Infrastruktura železnice Srbije'' Zorana Jevtića merenja…",
+   "matched": [
+    "Zoran Jevtić"
+   ],
+   "provider": "google-news-rss",
+   "verified": "tekst",
+   "score": 11,
+   "source": {
+    "kind": "vesti",
+    "title": "Радио-телевизија Војводине: Jevtić: Izvršeno testiranje brze pruge od Beograda do Novog Sada, trasa bezbedna za saobraćaj",
+    "url": "https://www.rtv.rs/sr_lat/drustvo/jevtic-izvrseno-testiranje-brze-pruge-od-beograda-do-novog-sada-trasa-bezbedna-za-saobracaj_1649548.html",
+    "retrievedAt": "2026-10-30T15:57:47.021Z",
+    "publishedAt": "2025-08-12T07:00:00.000Z",
+    "official": false
+   }
+  },
+  {
+   "id": "6dc1be1633ec",
+   "title": "ODBILI DA POTPIŠU DA JE PRUGA BEZBEDNA, SADA IM PRETE PREMEŠTAJEM! Poslanica tvrdi: „Stručnjaci nisu hteli da rizikuju živote putnika zarad Vučićeve promocije!“",
+   "url": "https://serbiantimes.info/odbili-da-potpisu-da-je-pruga-bezbedna-sada-im-prete-premestajem-poslanica-tvrdi-strucnjaci-nisu-hteli-da-rizikuju-zivote-putnika-zarad-vuciceve-promocije/",
+   "outlet": "Serbiantimes.info",
+   "publishedAt": "2026-10-08T07:00:00.000Z",
+   "snippet": "Kada je, prema njenim rečima, generalni direktor Zoran Jevtić saznao da Komisija ima primedbe, naređeno je da se za kaznu sistematizuju nova radna mesta za njene članove, ali sa mestom rada koje je udaljeno do 50 kilometara od mesta gde su…",
+   "matched": [
+    "Zoran Jevtić"
+   ],
+   "provider": "google-news-rss",
+   "verified": "tekst",
+   "score": 10,
+   "source": {
+    "kind": "vesti",
+    "title": "Serbiantimes.info: ODBILI DA POTPIŠU DA JE PRUGA BEZBEDNA, SADA IM PRETE PREMEŠTAJEM! Poslanica tvrdi: „Stručnjaci nisu hteli da rizikuju živote putnika zarad Vučićeve promocije!“",
+    "url": "https://serbiantimes.info/odbili-da-potpisu-da-je-pruga-bezbedna-sada-im-prete-premestajem-poslanica-tvrdi-strucnjaci-nisu-hteli-da-rizikuju-zivote-putnika-zarad-vuciceve-promocije/",
+    "retrievedAt": "2026-10-30T15:57:47.021Z",
+    "publishedAt": "2026-10-08T07:00:00.000Z",
+    "official": false
+   }
+  },
+  {
+   "id": "fd03812ea09d",
+   "title": "Milošević: Nova “nadstrešnica” u Nišu: Preti se stručnjacima koji nisu dali zeleno svetlo za otvaranje pruge Niš-Brestovac u kampanji",
+   "url": "https://jugpress.com/milosevic-nova-nadstresnica-u-nisu-preti-se-strucnjacima-koji-nisu-dali-zeleno-svetlo-za-otvaranje-pruge-nis-brestovac-u-kampanji/",
+   "outlet": "Jugpress",
+   "publishedAt": "2026-10-07T07:00:00.000Z",
+   "snippet": "Kada je generalni direktor Zoran Jevtić saznao da komisija ima primedbe, naređeno je da se za kaznu sistematizuju nova radna mesta za članove komisije ali sa mestom rada koje je udaljeno i do 50km od mesta gde su radili u trenutku…",
+   "matched": [
+    "Zoran Jevtić"
+   ],
+   "provider": "google-news-rss",
+   "verified": "tekst",
+   "score": 10,
+   "source": {
+    "kind": "vesti",
+    "title": "Jugpress: Milošević: Nova “nadstrešnica” u Nišu: Preti se stručnjacima koji nisu dali zeleno svetlo za otvaranje pruge Niš-Brestovac u kampanji",
+    "url": "https://jugpress.com/milosevic-nova-nadstresnica-u-nisu-preti-se-strucnjacima-koji-nisu-dali-zeleno-svetlo-za-otvaranje-pruge-nis-brestovac-u-kampanji/",
+    "retrievedAt": "2026-10-30T15:57:47.021Z",
+    "publishedAt": "2026-10-07T07:00:00.000Z",
+    "official": false
+   }
+  }
+ ]
+}

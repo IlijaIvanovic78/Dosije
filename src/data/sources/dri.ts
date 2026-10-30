@@ -11,7 +11,11 @@ import { extractText, getDocumentProxy } from "unpdf"
 import { SRC, shortInstitution, trackActivity } from "../activity"
 import { cached, cacheKey, readCache } from "../cache"
 import { getBuffer, getText } from "../http"
+import { findOrdered, nameTokens, wordsOf } from "../newsMatch"
+import { institutionNames } from "../newsPlan"
 import { asciiFold, cyrToLat, normalizeName, sameWord } from "../translit"
+import { n } from "../../shared/plural"
+import { clipWords } from "../../shared/text"
 import type { AuditReport } from "../types"
 
 const SOURCE = "dri"
@@ -91,20 +95,63 @@ function matchSubjects(subjects: Subject[], inst: { name: string; nameCyr?: stri
 
 // ── report listing ──────────────────────────────────────────────────────────
 
+// The kind is the audit the TITLE announces first: a corrective-measures report for a regularity audit can mention "finansijskih
+// izveštaja" later in the same title ("... po Izveštaju o reviziji finansijskih izveštaja"), which must not make it a financial audit.
+const AUDIT_KINDS: [RegExp, string][] = [
+	[/ревизији\s+финансијских извештаја и правилности/, "finansijska revizija i revizija pravilnosti"],
+	[/ревизији\s+финансијских извештаја/, "finansijska revizija"],
+	[/ревизији\s+правилности и сврсисходности/, "revizija pravilnosti i svrsishodnosti"],
+	[/ревизији\s+правилности/, "revizija pravilnosti"],
+	[/ревизији\s+сврсисходности/, "revizija svrsishodnosti"],
+]
+
 function classify(title: string, tag: string): string {
-	const t = (tag + " " + title).toLowerCase()
 	const ti = title.toLowerCase()
+	const tg = tag.toLowerCase()
 	if (/ревизији одазивног извештаја/.test(ti)) return "revizija odazivnog izveštaja"
-	if (/послеревизион/.test(tag.toLowerCase())) return "poslerevizioni izveštaj"
-	if (/одазивн/.test(tag.toLowerCase())) return "odazivni izveštaj"
+	if (/послеревизион/.test(tg)) return "poslerevizioni izveštaj"
+	if (/одазивн/.test(tg)) return "odazivni izveštaj"
 	if (/послеревизион/.test(ti)) return "poslerevizioni izveštaj"
 	if (/одазивни извештај|отклањању неправилности|спровођењу препорука/.test(ti)) return "odazivni izveštaj"
-	if (/финансијских извештаја и правилности/.test(t)) return "finansijska revizija i revizija pravilnosti"
+	let first: { at: number; kind: string } | undefined
+	for (const [re, kind] of AUDIT_KINDS) {
+		const at = re.exec(ti)?.index
+		if (at !== undefined && (!first || at < first.at)) first = { at, kind }
+	}
+	if (first) return first.kind
+	const t = `${tg} ${ti}`
+	if (/правилност\w*\s+и\s+сврсисходност/.test(t)) return "revizija pravilnosti i svrsishodnosti"
+	if (/правилност/.test(t)) return "revizija pravilnosti"
+	if (/сврсисходност/.test(t)) return "revizija svrsishodnosti"
 	if (/финансијских извештаја/.test(t)) return "finansijska revizija"
-	if (/правилности и сврсисходности/.test(t)) return "revizija pravilnosti i svrsishodnosti"
-	if (/правилности/.test(t)) return "revizija pravilnosti"
-	if (/сврсисходности/.test(t)) return "revizija svrsishodnosti"
 	return "izveštaj o reviziji"
+}
+
+/**
+ * The title names the audited institution (any word order variant, inflected, old brand spelling such as "Srbija voz"). DRI lists
+ * joint audits of several auditees under each of them; those titles name only the audited topic and are not reports "o instituciji".
+ */
+export function titleNamesInstitution(title: string, instName: string): boolean {
+	const own = nameTokens(instName)
+	if (own.length === 0) return false
+	const ws = wordsOf(latinize(title))
+	// "Srbija voz" / "Srbija Voz" are the old spelling of "Srbijavoz": also try adjacent words glued together
+	const glued = ws.map((w, i) => (i + 1 < ws.length ? w + ws[i + 1] : w))
+	const exclude = institutionNames({ name: instName }).exclude.map((n) => nameTokens(n)).filter((t) => t.length > 1)
+	for (const words of [ws, glued]) {
+		const masked = [...words]
+		for (const ex of exclude) {
+			let from = 0
+			for (;;) {
+				const hit = findOrdered(masked, ex, 1, from)
+				if (!hit) break
+				for (let i = hit[0]; i <= hit[1]; i++) masked[i] = "_"
+				from = hit[1] + 1
+			}
+		}
+		if (findOrdered(masked, own, own.length >= 3 ? 1 : 0)) return true
+	}
+	return false
 }
 
 // year = audited period for primary audits ("za 2018. godinu"), otherwise the publication year
@@ -193,7 +240,7 @@ export async function getReports(inst: { name: string; nameCyr?: string }): Prom
 					excerpts: [],
 					source: {
 						kind: "dri",
-						title: `DRI: ${latinize(r.title).slice(0, 140)}`,
+						title: clipWords(`DRI: ${latinize(r.title)}`, 140),
 						url: page,
 						retrievedAt,
 						publishedAt: r.publishedAt,
@@ -204,7 +251,9 @@ export async function getReports(inst: { name: string; nameCyr?: string }): Prom
 		}
 		return [...byId.values()].sort((a, b) => (b.publishedAt ?? "").localeCompare(a.publishedAt ?? ""))
 	}, { activity: { ...SRC.dri, action: "pretraga", label: `DRI izveštaji: ${shortInstitution(inst.name || inst.nameCyr || "")}`, url: `${BASE}/izvestaji`, after: (d, h) => h.items(d.length) } })
-	return env.data
+	// precision at read time as well (older cache files): only reports whose title names the institution
+	const own = inst.name || cyrToLat(inst.nameCyr ?? "")
+	return env.data.filter((r) => titleNamesInstitution(r.title, own))
 }
 
 /** "Izveštaj o reviziji pravilnosti poslovanja" without the auditee's name (which makes DRI titles 300 characters long). */
@@ -362,7 +411,7 @@ async function extractReportText(url: string): Promise<string> {
 
 /** Opinions that are already cached for these reports (report id -> opinion). Never downloads a PDF. */
 export function getCachedOpinions(reports: AuditReport[]): Promise<Map<string, string>> {
-	return trackActivity({ ...SRC.dri, action: "dokument", label: `mišljenja revizora iz već obrađenih PDF-ova (${reports.length} izveštaja)`, url: `${BASE}/izvestaji` }, async (h) => {
+	return trackActivity({ ...SRC.dri, action: "dokument", label: `mišljenja revizora iz već obrađenih PDF-ova (${n(reports.length, "izvestaj")})`, url: `${BASE}/izvestaji` }, async (h) => {
 		const out = new Map<string, string>()
 		let latest: string | undefined
 		for (const r of reports) {

@@ -3,6 +3,7 @@
 
 import { config } from "../config"
 import { LEGAL_LABELS } from "../data/resolver"
+import { n } from "../shared/plural"
 import type { ClaimStatus, DosijeReport, Finding, Section, Severity, SourceRef } from "../shared/types"
 import type { DosijeState, Summary } from "./state"
 import { findingScore } from "./summary"
@@ -41,7 +42,7 @@ function findingBlock(f: Finding): string[] {
 		f.signalCode ? `oznaka: ${f.signalCode}` : "",
 		f.approval === "approved" ? "odobrio novinar" : f.approval === "pending" ? "čeka odluku novinara" : "",
 		`dodao ${f.agentName}`,
-		f.mergedFrom?.length ? `spojeno iz ${f.mergedFrom.length + 1} nalaza` : "",
+		f.mergedFrom?.length ? `spojeno iz ${f.mergedFrom.length + 1} nalaza` : "", // genitive: always "nalaza"
 	].filter(Boolean)
 	return [`### ${title}`, "", f.text, "", `*${meta.join(" · ")}*`, ...(f.note ? ["", `> ${f.note}`] : []), "", ...f.sources.map(sourceLine), ""]
 }
@@ -106,10 +107,10 @@ export function buildReport(state: DosijeState, summary: Summary): DosijeReport 
 	for (const a of dynamic) byGroup.set(a.group, (byGroup.get(a.group) ?? 0) + 1)
 	lines.push("## Kako je nastao", "")
 	lines.push(
-		`Dosije je napravilo **${agents.length} agenata** na zajedničkoj Mozaik sabirnici događaja (5 stalnih + ${dynamic.length} pokrenutih tokom rada${dynamic.length ? `: ${[...byGroup].map(([g, n]) => `${g} ×${n}`).join(", ")}` : ""}), uz novinara kao člana tima.`,
+		`U izradi dosijea radilo je **${n(agents.length, "agent")}** na zajedničkoj Mozaik sabirnici događaja (${agents.length - dynamic.length} stalnih + ${n(dynamic.length, "pokrenutAgent")}${dynamic.length ? `: ${[...byGroup].map(([g, c]) => `${g} ×${c}`).join(", ")}` : ""}), uz novinara kao člana tima.`,
 		"",
-		`- vrhunac istovremenih petlji: **${stats.peakConcurrentLoops}**; ukupno petlji: ${stats.totalLoops}; zaključivanja: ${stats.inferences}; pozivi alata: ${stats.toolCalls}`,
-		`- interceptor Urednika: ${stats.interceptions} presretanja, ${stats.blockedClaims} blokiranih tvrdnji bez izvora, ${stats.conflicts} konflikata izvora rešeno`,
+		`- vrhunac istovremenih petlji: **${stats.peakConcurrentLoops}** (${n(stats.peakConcurrentLoops, "petlja")} u isto vreme); ukupno petlji: ${stats.totalLoops}; zaključivanja: ${stats.inferences}; pozivi alata: ${stats.toolCalls}`,
+		`- interceptor Urednika: ${n(stats.interceptions, "presretanje")}, ${n(stats.blockedClaims, "blokiranaTvrdnja")} bez izvora; rešeno konflikata izvora: ${stats.conflicts}`,
 		`- Mozaik događaja: ${stats.events}; trajanje: ${formatDuration(stats.elapsedMs)}`,
 		`- režim: ${config.mode === "llm" ? `LLM (${config.model}, urednik ${config.editorModel}), ${state.budget.tokens} tokena` : "skriptovani agenti (bez ključa): isti Mozaik runtime, alati, interceptor i stanje; zaključivanje je deterministično"}; podaci: ${config.dataMode === "cache" ? "keš" : config.dataMode === "live" ? "uživo" : "keš pa uživo"}`,
 		`- pravni oblik za proveru roka v.d.: ${inst ? (LEGAL_LABELS[state.institutionRef?.legalType ?? "ostalo"] ?? inst.legalType) : ""}`,

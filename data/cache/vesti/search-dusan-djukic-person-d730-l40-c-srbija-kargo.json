@@ -1,0 +1,170 @@
+{
+ "source": "vesti",
+ "key": "search-dusan-djukic-person-d730-l40-c-srbija-kargo",
+ "retrievedAt": "2026-10-30T16:15:06.913Z",
+ "meta": {
+  "query": "Dušan Đukić",
+  "kind": "person",
+  "days": 730,
+  "limit": 40,
+  "aliases": [],
+  "context": [
+   "Srbija Kargo"
+  ],
+  "exclude": []
+ },
+ "data": [
+  {
+   "id": "30bf254bb023",
+   "title": "Ko je Dušan Đukić, čovek koji otpušta radnike Srbija Kargo: Misterija biografije jednog master ekonomiste",
+   "url": "https://nova.rs/vesti/biznis/ko-je-dusan-djukic-covek-koji-otpusta-radnike-srbija-kargo/",
+   "outlet": "Nova.rs",
+   "publishedAt": "2026-07-13T07:00:00.000Z",
+   "matched": [
+    "Dušan Đukić"
+   ],
+   "provider": "google-news-rss",
+   "verified": "naslov",
+   "score": 37,
+   "source": {
+    "kind": "vesti",
+    "title": "Nova.rs: Ko je Dušan Đukić, čovek koji otpušta radnike Srbija Kargo: Misterija biografije jednog master ekonomiste",
+    "url": "https://nova.rs/vesti/biznis/ko-je-dusan-djukic-covek-koji-otpusta-radnike-srbija-kargo/",
+    "retrievedAt": "2026-10-30T16:14:43.454Z",
+    "publishedAt": "2026-07-13T07:00:00.000Z",
+    "official": false
+   }
+  },
+  {
+   "id": "52f3b32b9bb6",
+   "title": "Vlada smenila rukovodstvo Srbijavoza i Srbija karga: Ljubiša Pejičić i Dušan Đukić novi v.d. direktori",
+   "url": "https://novimagazin.rs/vesti/vlada-smenila-rukovodstvo-srbijavoza-i-srbija-karga-ljubisa-pejicic-i-dusan-djukic-novi-vd-direktori/",
+   "outlet": "Novi magazin",
+   "publishedAt": "2025-06-19T07:00:00.000Z",
+   "matched": [
+    "Dušan Đukić"
+   ],
+   "provider": "google-news-rss",
+   "verified": "naslov",
+   "score": 33,
+   "source": {
+    "kind": "vesti",
+    "title": "Novi magazin: Vlada smenila rukovodstvo Srbijavoza i Srbija karga: Ljubiša Pejičić i Dušan Đukić novi v.d. direktori",
+    "url": "https://novimagazin.rs/vesti/vlada-smenila-rukovodstvo-srbijavoza-i-srbija-karga-ljubisa-pejicic-i-dusan-djukic-novi-vd-direktori/",
+    "retrievedAt": "2026-10-30T16:14:43.454Z",
+    "publishedAt": "2025-06-19T07:00:00.000Z",
+    "official": false
+   }
+  },
+  {
+   "id": "e85285deb83f",
+   "title": "Danas saznaje: Preduzeće „Srbija Kargo“ planira da otpusti više od 420 ljudi zbog lošeg poslovanja",
+   "url": "https://www.danas.rs/vesti/ekonomija/danas-saznaje-preduzece-srbija-kargo-planira-da-otpusti-vise-od-420-ljudi-zbog-loseg-poslovanja/",
+   "outlet": "Danas",
+   "publishedAt": "2026-06-23T07:00:00.000Z",
+   "snippet": "Naime, vršilac dužnosti direktora javnog preduzeća „Srbija Kargo“ Dušan Đukić uputio je u ponedeljak, 22.",
+   "matched": [
+    "Dušan Đukić"
+   ],
+   "provider": "google-news-rss",
+   "verified": "tekst",
+   "score": 13,
+   "source": {
+    "kind": "vesti",
+    "title": "Danas: Danas saznaje: Preduzeće „Srbija Kargo“ planira da otpusti više od 420 ljudi zbog lošeg poslovanja",
+    "url": "https://www.danas.rs/vesti/ekonomija/danas-saznaje-preduzece-srbija-kargo-planira-da-otpusti-vise-od-420-ljudi-zbog-loseg-poslovanja/",
+    "retrievedAt": "2026-10-30T16:14:43.454Z",
+    "publishedAt": "2026-06-23T07:00:00.000Z",
+    "official": false
+   }
+  },
+  {
+   "id": "002904887c2d",
+   "title": "Vučić u Niš doneo otkaze za radnike Srbija karga",
+   "url": "https://www.ozonpress.net/ekonomija/vucic-u-nis-doneo-otkaze-za-radnike-srbija-karga/",
+   "outlet": "Ozon Press",
+   "publishedAt": "2026-08-01T07:00:00.000Z",
+   "snippet": "Na čelu državne firme “Srbija Kargo”, koja otpušta radnike zbog ozbiljnih finansijskih problema, već više od godinu dana je izvesni Dušan Đukić.",
+   "matched": [
+    "Dušan Đukić"
+   ],
+   "provider": "google-news-rss",
+   "verified": "tekst",
+   "score": 12,
+   "source": {
+    "kind": "vesti",
+    "title": "Ozon Press: Vučić u Niš doneo otkaze za radnike Srbija karga",
+    "url": "https://www.ozonpress.net/ekonomija/vucic-u-nis-doneo-otkaze-za-radnike-srbija-karga/",
+    "retrievedAt": "2026-10-30T16:14:43.454Z",
+    "publishedAt": "2026-08-01T07:00:00.000Z",
+    "official": false
+   }
+  },
+  {
+   "id": "cbac5d77c5aa",
+   "title": "Firmu zavili u crno, a otkaze spremaju politički nepodobnima",
+   "url": "https://radar.nova.rs/drustvo/srbija-kargo-otkazi-vagoni-poslovanje/",
+   "outlet": "Nova.rs",
+   "publishedAt": "2026-07-26T07:00:00.000Z",
+   "snippet": "Deo zaposlenih tvrdi da se otkazi dele po „partijskom“ kriterijumu u zavisnosti od toga da li su se zaposleni odazivali na pozive da prisustvuju mitinzima u organizaciji SNS-a, a egzekucija je poverena Dušanu Đukiću, koga je Vlada u julu…",
+   "matched": [
+    "Dušan Đukić"
+   ],
+   "provider": "google-news-rss",
+   "verified": "tekst",
+   "score": 11,
+   "source": {
+    "kind": "vesti",
+    "title": "Nova.rs: Firmu zavili u crno, a otkaze spremaju politički nepodobnima",
+    "url": "https://radar.nova.rs/drustvo/srbija-kargo-otkazi-vagoni-poslovanje/",
+    "retrievedAt": "2026-10-30T16:14:43.454Z",
+    "publishedAt": "2026-07-26T07:00:00.000Z",
+    "official": false
+   }
+  },
+  {
+   "id": "807f3aac41ad",
+   "title": "Vagone iznajmljuju po šest puta nižim cenama",
+   "url": "https://radar.nova.rs/drustvo/srbija-kargo-vagoni-niza-cena/",
+   "outlet": "Nova.rs",
+   "publishedAt": "2025-11-06T08:00:00.000Z",
+   "snippet": "generalnog direktora Srbija Karga Dušan Đukić otvorio je Pandorinu kutiju zaprepašćujućih saznanja i sumnji da ovo nije usamljen slučaj, već masovna pojava“, objašnjavaju za Radar zaposleni, koji su želeli da ostanu anonimni, jer su…",
+   "matched": [
+    "Dušan Đukić"
+   ],
+   "provider": "google-news-rss",
+   "verified": "tekst",
+   "score": 11,
+   "source": {
+    "kind": "vesti",
+    "title": "Nova.rs: Vagone iznajmljuju po šest puta nižim cenama",
+    "url": "https://radar.nova.rs/drustvo/srbija-kargo-vagoni-niza-cena/",
+    "retrievedAt": "2026-10-30T16:14:43.454Z",
+    "publishedAt": "2025-11-06T08:00:00.000Z",
+    "official": false
+   }
+  },
+  {
+   "id": "593da1cafd67",
+   "title": "Bocan-Harčenko: Politika Aleksandra Vučića donosi konkretne rezultate za Srbiju",
+   "url": "https://borba.me/bocan-harcenko-politika-aleksandra-vucica-donosi-konkretne-rezultate-za-srbiju/",
+   "outlet": "Borba.me",
+   "publishedAt": "2026-06-21T07:00:00.000Z",
+   "snippet": "Sa predsjednikom Srbije i ambasadorom Rusije danas su u obilasku bili i generalni direktor Infrastrukture željeznice Srbije Zoran Jevtić, Nenad Stanisavljević iz Infrastrukture željeznice Srbije, direktor Srbija Kargo Dušan Đukić, vršilac…",
+   "matched": [
+    "Dušan Đukić"
+   ],
+   "provider": "google-news-rss",
+   "verified": "tekst",
+   "score": 10,
+   "source": {
+    "kind": "vesti",
+    "title": "Borba.me: Bocan-Harčenko: Politika Aleksandra Vučića donosi konkretne rezultate za Srbiju",
+    "url": "https://borba.me/bocan-harcenko-politika-aleksandra-vucica-donosi-konkretne-rezultate-za-srbiju/",
+    "retrievedAt": "2026-10-30T16:14:43.454Z",
+    "publishedAt": "2026-06-21T07:00:00.000Z",
+    "official": false
+   }
+  }
+ ]
+}

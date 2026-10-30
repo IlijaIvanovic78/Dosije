@@ -1,7 +1,7 @@
 {
  "source": "acas",
  "key": "assets-44101",
- "retrievedAt": "2026-10-30T14:44:48.720Z",
+ "retrievedAt": "2026-10-30T16:12:16.171Z",
  "data": [
   {
    "personId": "44101",
@@ -12,7 +12,7 @@
     "kind": "acas",
     "title": "ACAS – Izveštaj o imovini i prihodima funkcionera (2025-12-09)",
     "url": "https://publicacas.acas.rs/#/acas/funkcionerIzvestajDetails/5036317",
-    "retrievedAt": "2026-10-30T14:44:47.539Z",
+    "retrievedAt": "2026-10-30T16:12:14.673Z",
     "publishedAt": "2025-12-09",
     "official": true
    },
@@ -38,7 +38,7 @@
     "kind": "acas",
     "title": "ACAS – Izveštaj o imovini i prihodima funkcionera (2024-12-12)",
     "url": "https://publicacas.acas.rs/#/acas/funkcionerIzvestajDetails/5030133",
-    "retrievedAt": "2026-10-30T14:44:47.899Z",
+    "retrievedAt": "2026-10-30T16:12:15.174Z",
     "publishedAt": "2024-12-12",
     "official": true
    },
@@ -70,7 +70,7 @@
     "kind": "acas",
     "title": "ACAS – Izveštaj o imovini i prihodima funkcionera (2024-05-20)",
     "url": "https://publicacas.acas.rs/#/acas/funkcionerIzvestajDetails/5026470",
-    "retrievedAt": "2026-10-30T14:44:48.303Z",
+    "retrievedAt": "2026-10-30T16:12:15.694Z",
     "publishedAt": "2024-05-20",
     "official": true
    },

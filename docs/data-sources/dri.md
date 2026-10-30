@@ -64,3 +64,6 @@ Svi izvodi su u kešu (`findings-<id>.json`). Najvažniji za dosije: 2198 (jedin
 - Pauze: 300 ms između strana liste i detalja, `http.ts` ograničava konkurenciju po hostu. Sajt povremeno sporo servira velike PDF-ove (timeout 90 s).
 - Tekstovi PDF-ova mogu imati nestandardne razmake; `flatten()` uklanja ponovljena zaglavlja stranica (linije dužine >= 30 znakova koje se javljaju >= 4 puta).
 
+## Preciznost: naslov mora imenovati instituciju
+
+`getReports` vraća samo izveštaje čiji naslov imenuje instituciju (sve značajne reči naziva, sa padežima, uključujući stari naziv „Srbija voz“ za Srbijavoz). DRI pod svakim revidiranim subjektom navodi i zajedničke revizije više subjekata čiji naslov imenuje samo temu (npr. „Upravljanje bezbednosnim rizicima na prelazima preko pruge“); one se izostavljaju. „Železnice Srbije“ ne prihvata naslove koji pominju „Infrastruktura železnice Srbije“. Vrsta revizije (`kind`) se određuje po prvom pominjanju u naslovu, pa izveštaj o merama ispravljanja po reviziji finansijskih izveštaja nije „finansijska revizija“. Naslov nalaza u dosijeu je `DRI <godina> · <tema>: <prva rečenica izvoda>`, a doslovan izvod je u tekstu.

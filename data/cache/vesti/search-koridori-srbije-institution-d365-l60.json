@@ -1,0 +1,448 @@
+{
+ "source": "vesti",
+ "key": "search-koridori-srbije-institution-d365-l60",
+ "retrievedAt": "2026-10-30T16:21:39.516Z",
+ "meta": {
+  "query": "Koridori Srbije",
+  "kind": "institution",
+  "days": 365,
+  "limit": 60,
+  "aliases": [],
+  "context": [],
+  "exclude": []
+ },
+ "data": [
+  {
+   "id": "a55983bc3f22",
+   "title": "Koridori Srbije podneli zahtev za zelenu dozvolu za 46 km sektora 2 Vožda Karađorđa između Orašca i Čibutkovice - U planu više petlji, mostovskih konstrukcija i dva tunela",
+   "url": "https://www.ekapija.com/news/5645535/koridori-srbije-podneli-zahtev-za-zelenu-dozvolu-za-46-km-sektora-2",
+   "outlet": "eKapija",
+   "publishedAt": "2026-08-19T07:00:00.000Z",
+   "matched": [
+    "Koridori Srbije"
+   ],
+   "provider": "google-news-rss",
+   "verified": "naslov",
+   "score": 35,
+   "source": {
+    "kind": "vesti",
+    "title": "eKapija: Koridori Srbije podneli zahtev za zelenu dozvolu za 46 km sektora 2 Vožda Karađorđa između Orašca i Čibutkovice - U planu više petlji, mostovskih konstrukcija i dva tunela",
+    "url": "https://www.ekapija.com/news/5645535/koridori-srbije-podneli-zahtev-za-zelenu-dozvolu-za-46-km-sektora-2",
+    "retrievedAt": "2026-10-30T16:21:17.905Z",
+    "publishedAt": "2026-08-19T07:00:00.000Z",
+    "official": false
+   }
+  },
+  {
+   "id": "35a4b9f1e78e",
+   "title": "Antić (Koridori Srbije): Za 10 dana Kraljevo među gradovima koji su povezani mrežom autoputeva",
+   "url": "https://www.danas.rs/vesti/ekonomija/antic-koridori-srbije-za-10-dana-kraljevo-medju-gradovima-koji-su-povezani-mrezom-autoputeva/",
+   "outlet": "Danas",
+   "publishedAt": "2026-06-16T07:00:00.000Z",
+   "matched": [
+    "Koridori Srbije"
+   ],
+   "provider": "google-news-rss",
+   "verified": "naslov",
+   "score": 35,
+   "source": {
+    "kind": "vesti",
+    "title": "Danas: Antić (Koridori Srbije): Za 10 dana Kraljevo među gradovima koji su povezani mrežom autoputeva",
+    "url": "https://www.danas.rs/vesti/ekonomija/antic-koridori-srbije-za-10-dana-kraljevo-medju-gradovima-koji-su-povezani-mrezom-autoputeva/",
+    "retrievedAt": "2026-10-30T16:21:17.905Z",
+    "publishedAt": "2026-06-16T07:00:00.000Z",
+    "official": false
+   }
+  },
+  {
+   "id": "f68e385f3bec",
+   "title": "Koridori Srbije pokrenuli ekološku proceduru: Zelena karta za sektor 2 autoputa \"Vožd Karađorđe\"",
+   "url": "https://www.euronews.rs/srbija/aktuelno/238618/zelena-dozvola-za-sektor-2-autoputa-vozd-karadorde/vest",
+   "outlet": "Euronews.rs",
+   "publishedAt": "2026-08-19T07:00:00.000Z",
+   "matched": [
+    "Koridori Srbije"
+   ],
+   "provider": "google-news-rss",
+   "verified": "naslov",
+   "score": 34,
+   "source": {
+    "kind": "vesti",
+    "title": "Euronews.rs: Koridori Srbije pokrenuli ekološku proceduru: Zelena karta za sektor 2 autoputa \"Vožd Karađorđe\"",
+    "url": "https://www.euronews.rs/srbija/aktuelno/238618/zelena-dozvola-za-sektor-2-autoputa-vozd-karadorde/vest",
+    "retrievedAt": "2026-10-30T16:21:17.905Z",
+    "publishedAt": "2026-08-19T07:00:00.000Z",
+    "official": false
+   }
+  },
+  {
+   "id": "0e10137369fe",
+   "title": "Koridori Srbije: Saopštenje",
+   "url": "https://www.ozonpress.net/hronika/koridori-srbije-saopstenje/",
+   "outlet": "Ozon Press",
+   "publishedAt": "2026-06-26T07:00:00.000Z",
+   "matched": [
+    "Koridori Srbije"
+   ],
+   "provider": "google-news-rss",
+   "verified": "naslov",
+   "score": 34,
+   "source": {
+    "kind": "vesti",
+    "title": "Ozon Press: Koridori Srbije: Saopštenje",
+    "url": "https://www.ozonpress.net/hronika/koridori-srbije-saopstenje/",
+    "retrievedAt": "2026-10-30T16:21:17.905Z",
+    "publishedAt": "2026-06-26T07:00:00.000Z",
+    "official": false
+   }
+  },
+  {
+   "id": "90cf948a6bcc",
+   "title": "Renovira se zgrada u centru Beograda - Koridori Srbije traže izvođače radova vrednih 80 miliona dinara",
+   "url": "https://www.ekapija.com/news/5701952/renovira-se-zgrada-u-centru-beograda-koridori-srbije-traze-izvodjace-radova-vrednih",
+   "outlet": "eKapija",
+   "publishedAt": "2026-10-14T10:07:01.000Z",
+   "matched": [
+    "Koridori Srbije"
+   ],
+   "provider": "google-news-rss",
+   "verified": "naslov",
+   "score": 32,
+   "source": {
+    "kind": "vesti",
+    "title": "eKapija: Renovira se zgrada u centru Beograda - Koridori Srbije traže izvođače radova vrednih 80 miliona dinara",
+    "url": "https://www.ekapija.com/news/5701952/renovira-se-zgrada-u-centru-beograda-koridori-srbije-traze-izvodjace-radova-vrednih",
+    "retrievedAt": "2026-10-30T16:21:17.905Z",
+    "publishedAt": "2026-10-14T10:07:01.000Z",
+    "official": false
+   }
+  },
+  {
+   "id": "d0b247149661",
+   "title": "Svi komentari - Renovira se zgrada u Kralja Petra: Koridori Srbije traže izvođače radova",
+   "url": "https://www.b92.net/svi-komentari/276265",
+   "outlet": "B92",
+   "publishedAt": "2026-10-14T07:00:00.000Z",
+   "matched": [
+    "Koridori Srbije"
+   ],
+   "provider": "google-news-rss",
+   "verified": "naslov",
+   "score": 32,
+   "source": {
+    "kind": "vesti",
+    "title": "B92: Svi komentari - Renovira se zgrada u Kralja Petra: Koridori Srbije traže izvođače radova",
+    "url": "https://www.b92.net/svi-komentari/276265",
+    "retrievedAt": "2026-10-30T16:21:17.905Z",
+    "publishedAt": "2026-10-14T07:00:00.000Z",
+    "official": false
+   }
+  },
+  {
+   "id": "3c6c2b4645f0",
+   "title": "Renovira se zgrada u Kralja Petra: Koridori Srbije traže izvođače radova",
+   "url": "https://www.b92.net/lokal/beograd/ekonomija/276265/renovira-se-zgrada-u-kralja-petra-koridori-srbije-traze-izvodjace-radova/vest",
+   "outlet": "B92",
+   "publishedAt": "2026-10-14T07:00:00.000Z",
+   "matched": [
+    "Koridori Srbije"
+   ],
+   "provider": "google-news-rss",
+   "verified": "naslov",
+   "score": 32,
+   "source": {
+    "kind": "vesti",
+    "title": "B92: Renovira se zgrada u Kralja Petra: Koridori Srbije traže izvođače radova",
+    "url": "https://www.b92.net/lokal/beograd/ekonomija/276265/renovira-se-zgrada-u-kralja-petra-koridori-srbije-traze-izvodjace-radova/vest",
+    "retrievedAt": "2026-10-30T16:21:17.905Z",
+    "publishedAt": "2026-10-14T07:00:00.000Z",
+    "official": false
+   }
+  },
+  {
+   "id": "d30c3a8c12cb",
+   "title": "Na proveru ide 94 km Osmeha Vojvodine - Koridori Srbije traže tehničku kontrolu prvih pet sektora buduće saobraćajnice",
+   "url": "https://www.ekapija.com/news/5693023/na-proveru-ide-94-km-osmeha-vojvodine-koridori-srbije-traze-tehnicku-kontrolu",
+   "outlet": "eKapija",
+   "publishedAt": "2026-10-06T07:00:00.000Z",
+   "matched": [
+    "Koridori Srbije"
+   ],
+   "provider": "google-news-rss",
+   "verified": "naslov",
+   "score": 32,
+   "source": {
+    "kind": "vesti",
+    "title": "eKapija: Na proveru ide 94 km Osmeha Vojvodine - Koridori Srbije traže tehničku kontrolu prvih pet sektora buduće saobraćajnice",
+    "url": "https://www.ekapija.com/news/5693023/na-proveru-ide-94-km-osmeha-vojvodine-koridori-srbije-traze-tehnicku-kontrolu",
+    "retrievedAt": "2026-10-30T16:21:17.905Z",
+    "publishedAt": "2026-10-06T07:00:00.000Z",
+    "official": false
+   }
+  },
+  {
+   "id": "29236ed9b487",
+   "title": "Отворене нове деонице Дунавског коридора; Вучић: Остварење снова за исток Србије",
+   "url": "https://www.rts.rs/vesti/ekonomija/6029056/vucic-dunavski-koridor-golubac.html",
+   "outlet": "РТС",
+   "publishedAt": "2026-08-30T07:00:00.000Z",
+   "snippet": "године до данас отворила 212 километара ауто-путева и то 187 километара ауто-путева и брзих саобраћајница које су урадили \"Коридори Србије\" и 25 километара које су урадили \"Путеви Србије\".",
+   "matched": [
+    "Koridori Srbije"
+   ],
+   "provider": "google-news-rss",
+   "verified": "tekst",
+   "score": 11,
+   "source": {
+    "kind": "vesti",
+    "title": "РТС: Отворене нове деонице Дунавског коридора; Вучић: Остварење снова за исток Србије",
+    "url": "https://www.rts.rs/vesti/ekonomija/6029056/vucic-dunavski-koridor-golubac.html",
+    "retrievedAt": "2026-10-30T16:21:17.905Z",
+    "publishedAt": "2026-08-30T07:00:00.000Z",
+    "official": false
+   }
+  },
+  {
+   "id": "af3ee3abe1d8",
+   "title": "Od Beograda do Novog Sada preko Zrenjanina – kako napreduje izgradnja novog auto-puta \"Vojvođansko P\"",
+   "url": "https://www.rts.rs/lat/vesti/ekonomija/6026622/auto-put-banat.html",
+   "outlet": "РТС",
+   "publishedAt": "2026-08-25T07:00:00.000Z",
+   "snippet": "Prema dosadašnjim geoistraživanjima nemamo neke previše zahtevne lokacije osim lokacija koje su blizu reka\", kaže Dušan Stanković, iz stručnog nadzora \"Koridori Srbije\".",
+   "matched": [
+    "Koridori Srbije"
+   ],
+   "provider": "google-news-rss",
+   "verified": "tekst",
+   "score": 11,
+   "source": {
+    "kind": "vesti",
+    "title": "РТС: Od Beograda do Novog Sada preko Zrenjanina – kako napreduje izgradnja novog auto-puta \"Vojvođansko P\"",
+    "url": "https://www.rts.rs/lat/vesti/ekonomija/6026622/auto-put-banat.html",
+    "retrievedAt": "2026-10-30T16:21:17.905Z",
+    "publishedAt": "2026-08-25T07:00:00.000Z",
+    "official": false
+   }
+  },
+  {
+   "id": "7aefd0b1f511",
+   "title": "Saobraćajnica Vožd Karađorđe najavljena pre sedam godina, građani će na nju čekati duže od decenije",
+   "url": "https://novaekonomija.rs/vesti-iz-zemlje/saobracajnica-vozd-karadjordje-najavljena-pre-sedam-godina-gradjani-ce-na-nju-cekati-duze-od-decenije",
+   "outlet": "Nova Ekonomija",
+   "publishedAt": "2026-08-22T07:00:00.000Z",
+   "snippet": "Koridori Srbije podneli su zahtev za davanje saglasnosti na Studiju o proceni uticaja na životnu sredinu projekta izgradnje Državnog puta Vožd Karađorđe od Orašca do Čibutkovice.",
+   "matched": [
+    "Koridori Srbije"
+   ],
+   "provider": "google-news-rss",
+   "verified": "tekst",
+   "score": 11,
+   "source": {
+    "kind": "vesti",
+    "title": "Nova Ekonomija: Saobraćajnica Vožd Karađorđe najavljena pre sedam godina, građani će na nju čekati duže od decenije",
+    "url": "https://novaekonomija.rs/vesti-iz-zemlje/saobracajnica-vozd-karadjordje-najavljena-pre-sedam-godina-gradjani-ce-na-nju-cekati-duze-od-decenije",
+    "retrievedAt": "2026-10-30T16:21:17.905Z",
+    "publishedAt": "2026-08-22T07:00:00.000Z",
+    "official": false
+   }
+  },
+  {
+   "id": "0f11a6f1365f",
+   "title": "У саобраћај пуштен мост преко пруге у Малој Крсни у оквиру Дунавског коридора",
+   "url": "https://www.rts.rs/vesti/drustvo/6023304/nadvoznjak-mala-krsna-.html",
+   "outlet": "РТС",
+   "publishedAt": "2026-08-20T07:00:00.000Z",
+   "snippet": "Ова два нова километра саобраћајнице омогућавају престанак коришћења обилазнице кроз Враново, на којој је долазило до великих задржавања због преласка преко два пружна прелаза, навели су Коридори Србије.",
+   "matched": [
+    "Koridori Srbije"
+   ],
+   "provider": "google-news-rss",
+   "verified": "tekst",
+   "score": 11,
+   "source": {
+    "kind": "vesti",
+    "title": "РТС: У саобраћај пуштен мост преко пруге у Малој Крсни у оквиру Дунавског коридора",
+    "url": "https://www.rts.rs/vesti/drustvo/6023304/nadvoznjak-mala-krsna-.html",
+    "retrievedAt": "2026-10-30T16:21:17.905Z",
+    "publishedAt": "2026-08-20T07:00:00.000Z",
+    "official": false
+   }
+  },
+  {
+   "id": "9fee3ec0abf4",
+   "title": "У Делиблатској пешчари борба са ватром из ваздуха и са копна; Локализован пожар на Жарачкој планини и на Столовима",
+   "url": "https://www.rts.rs/vesti/drustvo/6014512/na-zarackoj-planini-gori-vise-od-80-hektara-borove-sume-pozar-u-deliblatskoj-pescari-se-ponovo-razbuktao.html",
+   "outlet": "РТС",
+   "publishedAt": "2026-08-07T07:00:00.000Z",
+   "snippet": "На територији Србије тренутно су активна четири већа пожара на отвореном простору, на којима је ангажовано укупно 484 припадника различитих служби, Министарства унутрашњих послова, Сектора за ванредне ситуације, Хеликоптерске јединице…",
+   "matched": [
+    "Koridori Srbije"
+   ],
+   "provider": "google-news-rss",
+   "verified": "tekst",
+   "score": 11,
+   "source": {
+    "kind": "vesti",
+    "title": "РТС: У Делиблатској пешчари борба са ватром из ваздуха и са копна; Локализован пожар на Жарачкој планини и на Столовима",
+    "url": "https://www.rts.rs/vesti/drustvo/6014512/na-zarackoj-planini-gori-vise-od-80-hektara-borove-sume-pozar-u-deliblatskoj-pescari-se-ponovo-razbuktao.html",
+    "retrievedAt": "2026-10-30T16:21:17.905Z",
+    "publishedAt": "2026-08-07T07:00:00.000Z",
+    "official": false
+   }
+  },
+  {
+   "id": "d0cefbee6e9d",
+   "title": "Моравски коридор: Прељина - Адрани",
+   "url": "https://www.rts.rs/tv/rts1/5981878/koridor.html",
+   "outlet": "РТС",
+   "publishedAt": "2026-06-26T07:00:00.000Z",
+   "snippet": "Гости емисије: Александар Наумовић Специјалиста за управљање пројектима Коридори Србије Горана Алексић , генерални директор Пословног удружења друмског саобраћаја Србијатранспорт",
+   "matched": [
+    "Koridori Srbije"
+   ],
+   "provider": "google-news-rss",
+   "verified": "tekst",
+   "score": 11,
+   "source": {
+    "kind": "vesti",
+    "title": "РТС: Моравски коридор: Прељина - Адрани",
+    "url": "https://www.rts.rs/tv/rts1/5981878/koridor.html",
+    "retrievedAt": "2026-10-30T16:21:17.905Z",
+    "publishedAt": "2026-06-26T07:00:00.000Z",
+    "official": false
+   }
+  },
+  {
+   "id": "ec12a998b6c2",
+   "title": "Zatvorena naplatna rampa u Preljini zbog spajanja auto-puteva; Antić: Od Kraljeva do Beograda za sat i po",
+   "url": "https://www.rts.rs/lat/vesti/ekonomija/5974373/morava-koridor-kraljevo-cacak-autoput-milos-veliki-antic-preljina.html",
+   "outlet": "РТС",
+   "publishedAt": "2026-06-16T07:00:00.000Z",
+   "snippet": "Direktor JP \"Koridori Srbije\" Aleksandar Antić ističe da će se za desetak dana Kraljevo naći na mapi gradova koji su povezani mrežama auto-puteva.",
+   "matched": [
+    "Koridori Srbije"
+   ],
+   "provider": "google-news-rss",
+   "verified": "tekst",
+   "score": 11,
+   "source": {
+    "kind": "vesti",
+    "title": "РТС: Zatvorena naplatna rampa u Preljini zbog spajanja auto-puteva; Antić: Od Kraljeva do Beograda za sat i po",
+    "url": "https://www.rts.rs/lat/vesti/ekonomija/5974373/morava-koridor-kraljevo-cacak-autoput-milos-veliki-antic-preljina.html",
+    "retrievedAt": "2026-10-30T16:21:17.905Z",
+    "publishedAt": "2026-06-16T07:00:00.000Z",
+    "official": false
+   }
+  },
+  {
+   "id": "608751a1d6a9",
+   "title": "Kreće gradnja poslednje deonice Moravskog koridora: Evo kada se otvara ceo auto-put",
+   "url": "https://www.b92.net/biz/srbija/vesti/190577/krece-gradnja-poslednje-deonice-moravskog-koridora-evo-kada-se-otvara-ceo-auto-put/vest",
+   "outlet": "B92",
+   "publishedAt": "2025-12-16T08:00:00.000Z",
+   "snippet": "Ministarstvo građevinarstva, saobraćaja i infrastrukture izdalo je potvrdu o prijavi radova investitoru „Koridori Srbije“, čime su ispunjeni svi formalni uslovi za početak gradnje ovog dela autoputa Pojate–Preljina.",
+   "matched": [
+    "Koridori Srbije"
+   ],
+   "provider": "google-news-rss",
+   "verified": "tekst",
+   "score": 11,
+   "source": {
+    "kind": "vesti",
+    "title": "B92: Kreće gradnja poslednje deonice Moravskog koridora: Evo kada se otvara ceo auto-put",
+    "url": "https://www.b92.net/biz/srbija/vesti/190577/krece-gradnja-poslednje-deonice-moravskog-koridora-evo-kada-se-otvara-ceo-auto-put/vest",
+    "retrievedAt": "2026-10-30T16:21:17.905Z",
+    "publishedAt": "2025-12-16T08:00:00.000Z",
+    "official": false
+   }
+  },
+  {
+   "id": "a7db8ab512e5",
+   "title": "За мање од две године отворили смо 212 километара ауто-путева и брзих саобраћајница",
+   "url": "https://vucic.rs/Vesti/Najnovije/a65154-Vucic-za-manje-od-dve-godine-otvorili-smo-212-km-auto-puteva-i-brzih-saobracajnica-vucic.rs.html",
+   "outlet": "vucic rs",
+   "publishedAt": "2026-08-30T07:00:00.000Z",
+   "snippet": "године до данас отворила 212 километара ауто-путева, и то 187 километара ауто-путева и брзих саобраћајница које су урадили Коридори Србије и 25 километара које су урадили Путеви Србије.",
+   "matched": [
+    "Koridori Srbije"
+   ],
+   "provider": "google-news-rss",
+   "verified": "tekst",
+   "score": 10,
+   "source": {
+    "kind": "vesti",
+    "title": "vucic rs: За мање од две године отворили смо 212 километара ауто-путева и брзих саобраћајница",
+    "url": "https://vucic.rs/Vesti/Najnovije/a65154-Vucic-za-manje-od-dve-godine-otvorili-smo-212-km-auto-puteva-i-brzih-saobracajnica-vucic.rs.html",
+    "retrievedAt": "2026-10-30T16:21:17.905Z",
+    "publishedAt": "2026-08-30T07:00:00.000Z",
+    "official": false
+   }
+  },
+  {
+   "id": "b1c6ff4f930f",
+   "title": "ЕВО КАКО НАПРЕДУЈЕ ИЗГРАДЊА \"ВОЈВОЂАНСКОГ П\" Назире се ауто-пут у Банату, од Београда до Новог Сада преко Зрењанина (ВИДЕО)",
+   "url": "https://www.dnevnik.rs/biznis/najnovije-vesti/evo-kako-napreduje-izgradnja-vojvodjanskog-p-nazire-auto-put-banatu-od-beograda-do-novog-sada-preko-zrenjanina-video-2026-08-25",
+   "outlet": "Dnevnik online",
+   "publishedAt": "2026-08-25T07:00:00.000Z",
+   "snippet": "Према досадашњим геоистраживањима немамо неке превише захтевне локације осим локација које су близу река\", каже Душан Станковић, из стручног надзора \"Коридори Србије\".",
+   "matched": [
+    "Koridori Srbije"
+   ],
+   "provider": "google-news-rss",
+   "verified": "tekst",
+   "score": 10,
+   "source": {
+    "kind": "vesti",
+    "title": "Dnevnik online: ЕВО КАКО НАПРЕДУЈЕ ИЗГРАДЊА \"ВОЈВОЂАНСКОГ П\" Назире се ауто-пут у Банату, од Београда до Новог Сада преко Зрењанина (ВИДЕО)",
+    "url": "https://www.dnevnik.rs/biznis/najnovije-vesti/evo-kako-napreduje-izgradnja-vojvodjanskog-p-nazire-auto-put-banatu-od-beograda-do-novog-sada-preko-zrenjanina-video-2026-08-25",
+    "retrievedAt": "2026-10-30T16:21:17.905Z",
+    "publishedAt": "2026-08-25T07:00:00.000Z",
+    "official": false
+   }
+  },
+  {
+   "id": "7fc06858c9c7",
+   "title": "Nova deonica Moravskog koridora: Od subote u saobraćaju skoro 29 kilometara auto-puta od Adrana do Preljine",
+   "url": "https://epicentarpress.rs/grad/nova-deonica-moravskog-koridora-od-subote-u-saobracaju-skoro-29-kilometara-auto-puta-od-adrana-do-preljine/",
+   "outlet": "EpicentarPress",
+   "publishedAt": "2026-06-26T07:00:00.000Z",
+   "snippet": "Javno preduzeće \"Koridori Srbije\" d.o.o.",
+   "matched": [
+    "Koridori Srbije"
+   ],
+   "provider": "google-news-rss",
+   "verified": "tekst",
+   "score": 10,
+   "source": {
+    "kind": "vesti",
+    "title": "EpicentarPress: Nova deonica Moravskog koridora: Od subote u saobraćaju skoro 29 kilometara auto-puta od Adrana do Preljine",
+    "url": "https://epicentarpress.rs/grad/nova-deonica-moravskog-koridora-od-subote-u-saobracaju-skoro-29-kilometara-auto-puta-od-adrana-do-preljine/",
+    "retrievedAt": "2026-10-30T16:21:17.905Z",
+    "publishedAt": "2026-06-26T07:00:00.000Z",
+    "official": false
+   }
+  },
+  {
+   "id": "0927a55f82cf",
+   "title": "Пуштање у саобраћај дела аутопута Е761: Појате – Прељина (државни пут IA реда бр. 5)",
+   "url": "https://www.ozonpress.net/hronika/pustanje-u-saobracaj-dela-autoputa-e761-pojate-preljina-drzavni-put-ia-reda-br-5/",
+   "outlet": "Ozon Press",
+   "publishedAt": "2025-12-23T08:00:00.000Z",
+   "snippet": "„Коридори Србије“ упутили су Граду Чачку обавештење о пуштању у саобраћај дела аутопута Е761: Појате – Прељина (државни пут IA реда бр.",
+   "matched": [
+    "Koridori Srbije"
+   ],
+   "provider": "google-news-rss",
+   "verified": "tekst",
+   "score": 10,
+   "source": {
+    "kind": "vesti",
+    "title": "Ozon Press: Пуштање у саобраћај дела аутопута Е761: Појате – Прељина (државни пут IA реда бр. 5)",
+    "url": "https://www.ozonpress.net/hronika/pustanje-u-saobracaj-dela-autoputa-e761-pojate-preljina-drzavni-put-ia-reda-br-5/",
+    "retrievedAt": "2026-10-30T16:21:17.905Z",
+    "publishedAt": "2025-12-23T08:00:00.000Z",
+    "official": false
+   }
+  }
+ ]
+}

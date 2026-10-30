@@ -23,6 +23,7 @@ import { leave } from "./runtime"
 import { computeStatus, mergeSources } from "./state"
 import { defaultSummary } from "./summary"
 import { bus } from "./bus"
+import { n } from "../shared/plural"
 import { jaccard, log, logError, normClaim, nowIso, sleep } from "./util"
 
 const SEVERITY_RANK: Record<Severity, number> = { info: 0, paznja: 1, signal: 2 }
@@ -322,7 +323,7 @@ export async function finalizeCase(reason: "idle" | "zatvori"): Promise<void> {
 		if (!alive()) return
 
 		const urednik = state.agents.get(ids.urednik)
-		const message = `Dosije za ${state.institution?.name ?? "instituciju"} je prikupljen: ${state.findings.size} nalaza, ${state.entities.size} entiteta, ${state.conflicts.size} konflikata. Napiši završni sažetak.`
+		const message = `Dosije za ${state.institution?.name ?? "instituciju"} je prikupljen: ${n(state.findings.size, "nalaz")}, entiteta: ${state.entities.size}, konflikata izvora: ${state.conflicts.size}. Napiši završni sažetak.`
 		if (urednik && startAgentLoop(urednik, message, { editor: true })) {
 			const deadline = Date.now() + (config.mode === "llm" ? 150_000 : 30_000)
 			while (state.loopsOf(ids.urednik) > 0 && Date.now() < deadline && alive()) await sleep(50)
@@ -337,7 +338,7 @@ export async function finalizeCase(reason: "idle" | "zatvori"): Promise<void> {
 		leaveAllDynamic()
 		emit("dosije.zavrsen", ids.urednik, { caseId: state.caseId, report: structuredClone(state.report) })
 		bus.emitStats(state.stats, state.budget)
-		log("dosije", `završen (${reason}): ${state.findings.size} nalaza, vrhunac ${state.stats.peakConcurrentLoops} petlji, ${Math.round(state.stats.elapsedMs / 1000)} s`)
+		log("dosije", `završen (${reason}): ${n(state.findings.size, "nalaz")}, vrhunac ${n(state.stats.peakConcurrentLoops, "petlja")}, ${Math.round(state.stats.elapsedMs / 1000)} s`)
 	} catch (err) {
 		logError("finalize", err)
 		if (alive() && state.status !== "done") {

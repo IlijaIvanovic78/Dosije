@@ -41,8 +41,10 @@ Zadatak: utvrdi ko vodi instituciju, od kada, ko ga je imenovao i da li je v.d. 
 5) paragraf_akti za akt o imenovanju. Ako akt nije pronađen: add_finding severity "paznja",
    signalCode "IMENOVANJE_NEPOZNATO" (izvor: stranica pretrage).
 ```
-Scripted policy: exactly steps 1-5 from the tool outputs (head = first current official whose position contains
-"direktor"/"predsednik"/"načelnik"; others = next 2 current officials).
+Scripted policy: exactly steps 1-5 from the tool outputs (head = the current official with the latest start whose position contains
+"direktor"/"predsednik"/"načelnik"; others = next 2 current officials). "Current" excludes a record without an end date that a later
+record for the same single-holder role has replaced (the register sometimes never closes it); such records do not count as a head
+and the chain of acting heads ends them where the next head starts (the finding says so).
 
 ### Nabavke (Portal javnih nabavki + Integrity Watch): where the money goes
 Trigger: `dosije.started`.
@@ -69,26 +71,36 @@ Zadatak: šta je Državna revizorska institucija našla.
 2) dri_nalazi za 2-3 najnovija ili najrelevantnija izveštaja (finansijski, pravilnost, nabavke).
 3) add_finding (section "revizija"): mišljenje revizora (signalCode "DRI_MISLJENJE"; severity "signal" za
    negativno ili uzdržano, "paznja" za "sa rezervom", "info" za pozitivno) i 1-2 ključna nalaza po izveštaju
-   (signalCode "DRI_NALAZ"), sa kratkim citatom i izvorom (PDF izveštaja).
+   (signalCode "DRI_NALAZ"), sa kratkim citatom i izvorom (PDF izveštaja). Naslov je naslov nalaza
+   ("DRI 2022 · javne nabavke: <prva rečenica izvoda, do 90 znakova, na granici reči>"); doslovan izvod ide u tekst.
 ```
-Scripted policy: same; pick reports with excerpts, most recent first.
+Scripted policy: same; pick reports with excerpts, most recent first. Only reports whose title names the institution
+(including old names such as "Srbija voz") are listed; joint audits of several auditees are not.
 
 ### Mediji (news): what is being reported
 Trigger: `dosije.started` (institution) and, as **Mediji · osoba**, `entity.added` kind=osoba.
 ```
-Zadatak: šta mediji pišu o <instituciji|osobi> (poslednjih 90 dana za instituciju, 2 godine za osobu).
-1) vesti_pretraga.
-2) Za 2-4 najrelevantnija članka (po potrebi vest_tekst): add_finding (section "mediji"): severity "paznja" i
+Zadatak: šta mediji pišu o <instituciji|osobi> (pregled: poslednjih 12 meseci za instituciju, 2 godine za osobu;
+pojedinačni nalazi o instituciji: poslednjih 90 dana).
+1) vesti_pretraga (tip "institucija" / "osoba"). Alat vraća samo precizne članke: za instituciju članak mora da pominje
+   instituciju ili njen kratki naziv (IŽS, Srbija voz) u naslovu ili opisu; za osobu puno ime I instituciju ili firmu
+   (naslov, opis ili preuzet tekst članka). Polje "pregled" ima gotov naslov, tekst i do 12 izvora; "clanci" su članci
+   za pojedinačne nalaze.
+2) Za 1-3 najrelevantnija članka (po potrebi vest_tekst): add_finding (section "mediji"): severity "paznja" i
    signalCode "MEDIJSKI_NAVOD" za navode, zahteve i optužbe drugih (npr. sindikata), inače "info".
    Uvek sa izvorom članka i datumom.
 3) Ako članak navodi funkciju neke osobe (npr. "generalni direktor X"), dodaj claim
    {subject: X, predicate: "funkcija", value: funkcija tačno kako je navedena u članku}.
    Urednik će je uporediti sa zvaničnim registrom.
+4) Na kraju JEDAN nalaz "Pregled medija" (section "mediji", severity "info"): title i text se prepisuju iz
+   pregled.naslov / pregled.tekst ("N članaka u poslednjih 12 meseci; najčešće teme: ..."), a sources su svi objekti iz
+   pregled.izvori (10-12 različitih članaka: izdanje, datum, URL). Isto radi Mediji · osoba (2 godine), ako ima članaka.
 ```
 Scripted policy: core Mediji first calls `add_finding` for the union article **without sources** (deliberate,
-documented demo of the source gate), receives `ODBIJENO`, then retries with the article as the source. Mediji ·
-osoba adds the article that names the person's function with a `funkcija` claim (the real "generalni direktor"
-vs ACAS "v.d." conflict).
+documented demo of the source gate), receives `ODBIJENO`, then retries with the article as the source; then up to two
+more recent articles with a reason to flag them, and finally the "Pregled medija" finding. Mediji · osoba adds the
+article that names the person's function with a `funkcija` claim (the real "generalni direktor" vs ACAS "v.d."
+conflict) and the person's press review.
 
 ### Urednik (editor): deterministic processors + one final LLM loop
 - On `finding.added`: compute status from sources (any `official` -> `zvanicno`; >= 2 distinct hosts ->

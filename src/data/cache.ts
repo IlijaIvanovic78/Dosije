@@ -8,6 +8,7 @@
 //   live   always fetch live and refresh the cache
 
 import crypto from "node:crypto"
+import { appendFileSync } from "node:fs"
 import fs from "node:fs/promises"
 import path from "node:path"
 import { hasActivityContext, isNestedActivity, trackActivity, type ActivityDescriptor, type ActivityHandle } from "./activity"
@@ -17,8 +18,10 @@ export type DataMode = "auto" | "cache" | "live"
 
 export const CACHE_DIR = path.resolve(process.cwd(), "data", "cache")
 
-export function getDataMode(): DataMode {
-	const m = (process.env.DATA_MODE ?? "auto").toLowerCase()
+/** DATA_MODE, or DATA_MODE_<SOURCE> (e.g. DATA_MODE_DRI=live) to refresh one source while the rest stays on the cache. */
+export function getDataMode(source?: string): DataMode {
+	const override = source ? process.env[`DATA_MODE_${source.toUpperCase().replace(/[^A-Z0-9]+/g, "_")}`] : undefined
+	const m = (override ?? process.env.DATA_MODE ?? "auto").toLowerCase()
 	return m === "cache" || m === "live" ? m : "auto"
 }
 
@@ -51,7 +54,10 @@ function filePath(source: string, key: string): string {
 
 export async function readCache<T>(source: string, key: string): Promise<CacheEnvelope<T> | null> {
 	try {
-		return JSON.parse(await fs.readFile(filePath(source, key), "utf8")) as CacheEnvelope<T>
+		const parsed = JSON.parse(await fs.readFile(filePath(source, key), "utf8")) as CacheEnvelope<T>
+		// CACHE_TRACE=<file>: list every cache file a run reads, to find files no code path uses any more (scripts/prune-cache.ts)
+		if (process.env.CACHE_TRACE) appendFileSync(process.env.CACHE_TRACE, `${source}/${key}.json\n`)
+		return parsed
 	} catch {
 		return null
 	}
@@ -91,7 +97,7 @@ export async function cached<T>(
 	fetcher: () => Promise<T>,
 	opts: { mode?: DataMode; meta?: Record<string, unknown>; activity?: CacheActivity<T> } = {},
 ): Promise<CacheEnvelope<T> & { fromCache: boolean }> {
-	const mode = opts.mode ?? getDataMode()
+	const mode = opts.mode ?? getDataMode(source)
 	const act = opts.activity
 	if (!act || !hasActivityContext()) {
 		if (mode !== "live") {

@@ -12,7 +12,7 @@ import { monthsBetween } from "../rules/vdRules"
 import type { CompanyProfile, Contract, IntegrityWatchLink } from "../types"
 import { nameSimilarity, normalizeName } from "../translit"
 import { formatRsd, type InstLike } from "./procurement"
-import { formatDate, monthsLabel } from "./vd"
+import { daysLabel, formatDate, monthsLabel } from "./vd"
 
 const SUPPLIER_MB_FILE = path.resolve(process.cwd(), "data", "static", "supplier-mb.json")
 
@@ -166,7 +166,7 @@ export async function analyzeFirm(inst: InstLike, query: { pib?: string; mb?: st
 				code: "MLADA_FIRMA",
 				label: "Firma mlađa od godinu dana pri prvom ugovoru",
 				severity: "paznja",
-				detail: `Prema APR firma je osnovana ${formatDate(profile.founded)}, a prvi ugovor sa institucijom je iz ${formatDate(dates[0])} (${monthsLabel(gap.months)} i ${gap.days} dana kasnije).`,
+				detail: `Prema APR firma je osnovana ${formatDate(profile.founded)}, a prvi ugovor sa institucijom je iz ${formatDate(dates[0])} (${monthsLabel(gap.months)} i ${daysLabel(gap.days)} kasnije).`,
 			})
 		}
 	}
@@ -176,7 +176,7 @@ export async function analyzeFirm(inst: InstLike, query: { pib?: string; mb?: st
 			code: "MALO_ZAPOSLENIH",
 			label: "Malo zaposlenih, veliki ugovori",
 			severity: "paznja",
-			detail: `Prema APR firma ima ${profile.employees} zaposlenih, a ugovori sa institucijom vrede ${formatRsd(valueForSize)}${soleValue > 0 ? "" : " (vrednost zajedničkih ponuda, nije samo ova firma)"}.`,
+			detail: `Prema APR broj zaposlenih u firmi je ${profile.employees}, a ugovori sa institucijom vrede ${formatRsd(valueForSize)}${soleValue > 0 ? "" : " (vrednost zajedničkih ponuda, nije samo ova firma)"}.`,
 		})
 	}
 	// Integrity Watch lists a supplier for every authority it is flagged at: only flags at THIS institution are a signal

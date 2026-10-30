@@ -13,7 +13,6 @@ else if (!process.env.DATA_MODE || process.env.DATA_MODE === "cache") process.en
 const input = args.filter((a) => !a.startsWith("--")).join(" ").trim() || "Infrastruktura železnice Srbije"
 
 const data = await import("../src/data")
-const { searchName } = await import("../src/data/resolver")
 const { pickHead, pickOthers } = await import("../src/data/analysis/vd")
 const { pickFirmCandidates } = await import("../src/data/analysis/procurement")
 const { lookupSupplierMb } = await import("../src/data/analysis/firms")
@@ -50,7 +49,8 @@ if (head) {
 // Imovina + Mediji · osoba + PEP
 for (const p of people) {
 	await step(`acas: imovina (${p.fullName})`, () => data.acas.getAssetReports(p.id, p.fullName))
-	await step(`vesti: ${p.fullName} (730 dana)`, () => data.news.searchNews(p.fullName, { days: 730, limit: 25 }))
+	const pp = data.personNewsPlan(p.fullName, ref)
+	await step(`vesti: ${p.fullName} + institucija (730 dana)`, () => data.news.searchNews(pp.query, pp.opts))
 	await step(`pep: ${p.fullName}`, () => data.pep.matchPep(p.fullName))
 }
 // Nabavke + Firme
@@ -69,10 +69,12 @@ const wanted = [
 ]
 for (const r of wanted) await step(`dri: nalazi ${r.id} (${r.year}, ${r.kind})`, () => data.dri.getReportFindings(r))
 // Mediji
-const query = searchName(ref.name)
-const found = (await step(`vesti: ${query} (90 dana)`, () => data.news.searchNews(query, { days: 90, limit: 25 }))) ?? []
-const personNews = head ? ((await step(`vesti: ${head.fullName} (730 dana, ponovo za članke)`, () => data.news.searchNews(head.fullName, { days: 730, limit: 25 }))) ?? []) : []
-const articles = [...found.filter((n) => /sindikat|ostavk/i.test(n.title)).slice(0, 1), ...found.slice(0, 2), ...personNews.slice(0, 2)]
+const plan = data.institutionNewsPlan(ref)
+const found = (await step(`vesti: ${plan.query} (${plan.opts.days} dana; nazivi: ${[plan.query, ...(plan.opts.aliases ?? [])].join(", ")})`, () => data.news.searchNews(plan.query, plan.opts))) ?? []
+const recent = found.filter((n) => n.publishedAt && Date.now() - Date.parse(n.publishedAt) <= 90 * 86400e3)
+const personPlan = head ? data.personNewsPlan(head.fullName, ref) : undefined
+const personNews = personPlan ? ((await step(`vesti: ${head!.fullName} (ponovo za članke)`, () => data.news.searchNews(personPlan.query, personPlan.opts))) ?? []) : []
+const articles = [...recent.filter((n) => /sindikat|ostavk/i.test(n.title)).slice(0, 1), ...personNews.filter((n) => /generaln\w*\s+direktor/i.test(n.title)).slice(0, 2)]
 for (const a of [...new Map(articles.map((x) => [x.url, x])).values()]) await step(`vesti: članak ${a.url.slice(0, 70)}`, () => data.news.fetchArticle(a.url), true)
 
 console.log(`\nGotovo: ${ok} uspešno, ${failed} neuspešno. Keš: data/cache/.`)

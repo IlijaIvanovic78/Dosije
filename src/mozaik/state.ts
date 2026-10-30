@@ -25,6 +25,7 @@ import type {
 	SourceRef,
 } from "../shared/types"
 import type { ResolvedInstitution } from "../data/resolver"
+import { clipWords } from "../shared/text"
 import { hostOf, isHttpUrl, normUrl } from "./util"
 
 export interface LoopInfo {
@@ -265,11 +266,11 @@ export class DosijeState extends RuntimeState {
 		if (!input || !isHttpUrl(input.url)) return null
 		const known = this.knownSources.get(normUrl(input.url))
 		// the data layer owns url + official; the model only supplies the display title and date
-		if (known) return { ...known, title: typeof input.title === "string" && input.title.trim() ? input.title.trim().slice(0, 200) : known.title, publishedAt: input.publishedAt ?? known.publishedAt }
+		if (known) return { ...known, title: typeof input.title === "string" && input.title.trim() ? clipWords(input.title, 200) : known.title, publishedAt: input.publishedAt ?? known.publishedAt }
 		const kind = input.kind && typeof input.kind === "string" ? input.kind : "vesti"
 		return {
 			kind,
-			title: String(input.title ?? input.url).slice(0, 200),
+			title: clipWords(String(input.title ?? input.url), 200),
 			url: input.url.trim(),
 			retrievedAt: input.retrievedAt ?? new Date().toISOString(),
 			publishedAt: input.publishedAt,

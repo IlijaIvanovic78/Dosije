@@ -47,8 +47,9 @@ verification, not conclusions**.
 | **1,537 contracts worth 65.36 bn RSD** (2020 to 2026). There were **10 negotiated procedures without a public call**, among them the assessment of the **Novi Sad railway station building** (29.9 M RSD, January 2025, after the canopy collapse). | Portal javnih nabavki |
 | **8 suppliers flagged by Integrity Watch Srbija** as linked to officials or political parties. The open data names no person, so the system says exactly that. | Integrity Watch CSV |
 | **Conflict resolved:** RTV and Tanjug called Jevtić *"novi generalni direktor"*, while ACAS lists him as *"v.d."*. The Urednik (editor agent) resolves it in favor of the official register. | ACAS vs media |
-| **DRI findings** with verbatim quotes: a qualified opinion on the 2018 financial statements, and for 2022 contract award notices published up to 349 days late plus seven procurements without a documented estimated value. | 21 DRI reports |
+| **DRI findings** with verbatim quotes: a qualified opinion on the 2018 financial statements, and for 2022 contract award notices published up to 349 days late plus seven procurements without a documented estimated value. | 19 DRI reports whose title names IŽS |
 | **Today's news:** the union "Nezavisnost" demands the management's resignation within 48 hours. | Danas, 30.10.2026 |
+| **Press review:** 21 relevant articles linked in the dossier (last 12 months), plus a separate review for the acting director. An article counts only if it names the institution, or the person *and* the institution. | Google News (Latin + Cyrillic), outlet RSS, GDELT |
 
 | | |
 |---|---|
@@ -79,7 +80,8 @@ Open **http://localhost:3000** and click **"Infrastruktura železnice Srbije"**.
 | `npm start` | web app on port 3000 |
 | `npm run mapa` | headless Mapa prioriteta: one agent per institution, live ranking, ASCII Gantt |
 | `npm run cli -- "Infrastruktura železnice Srbije"` | headless run: live log, ASCII Gantt of the agents, writes `out/dosije-*.md` |
-| `npm test` | 14 tests, including a full concurrent case, the human-answer cascade, LLM mode against a fake OpenAI API and a parallel Mapa prioriteta |
+| `npm test` | unit tests (precision rules, plurals, head of the institution) plus a full concurrent case, the human-answer cascade, LLM mode against a fake OpenAI API and a parallel Mapa prioriteta |
+| `npm run qa` | full scripted case for each of the six institutions on cached data, then checks every finding has a source, every link works, every datum belongs to the institution, no duplicates or unexplained empty sections, correct Serbian plurals; writes [`docs/QA.md`](docs/QA.md) |
 | `npm run warm-cache -- "<institution>"` | fetches every public source live for another institution and caches it |
 
 ### Two-minute demo script
@@ -144,10 +146,10 @@ each other. A typed name that is not in that table is resolved dynamically, and 
 | rank | institution | score | top reasons |
 |---|---|---|---|
 | 1 | Infrastruktura železnice Srbije | 105 | v.d. 17 mes. (rok 12), lanac v.d. 77 mes., Integrity Watch 8, DRI 1 sa rezervom |
-| 2 | Putevi Srbije | 86 | v.d. 155 mes., 5 postupaka bez objave, DRI 1 sa rezervom |
-| 3 | Koridori Srbije | 85 | v.d. 71 mes., najveći dobavljač 40,7%, DRI 1 sa rezervom |
-| 4 | Srbija Kargo | 83 | v.d. 16 mes., lanac v.d. 109 mes., Integrity Watch 3, DRI 1 sa rezervom |
-| 5 | Srbijavoz | 80 | v.d. 16 mes., lanac v.d. 52 mes., najveći dobavljač 56,8% |
+| 2 | Srbijavoz | 90 | v.d. 16 mes., lanac v.d. 52 mes., Integrity Watch 2, DRI 1 sa rezervom |
+| 3 | Putevi Srbije | 86 | v.d. 155 mes., 5 postupaka bez objave, DRI 1 sa rezervom |
+| 4 | Koridori Srbije | 85 | v.d. 71 mes., DRI 1 sa rezervom |
+| 5 | Srbija Kargo | 83 | v.d. 16 mes., lanac v.d. 109 mes., Integrity Watch 3, DRI 1 sa rezervom |
 | 6 | Železnice Srbije | 60 | v.d. 90 mes. |
 
 ## How the agents work together on Mozaik
@@ -296,11 +298,11 @@ Deeper docs:
 | Contracts, suppliers (PIB), negotiated procedures | **Portal javnih nabavki** | DevExtreme grid JSON API behind the site (unofficial) | 1,537 IŽS contracts crawled politely and cached |
 | Supplier links to officials and parties | **Integrity Watch Srbija** (Transparentnost Srbija) | CSV, 2021 to 2026, 358k rows | compact index of flagged suppliers committed |
 | Company age, activity, revenue, employees | **APR open data** | `openapi.apr.gov.rs`, 134,374 companies | the server sends an incomplete TLS chain; we ship the intermediate cert (`certs/`) and keep verification on |
-| State audit findings | **DRI** | HTML listing + PDF text (`unpdf`) | 21 IŽS reports, verbatim excerpts |
+| State audit findings | **DRI** | HTML listing + PDF text (`unpdf`) | 19 IŽS reports (only reports whose title names the institution), verbatim excerpts |
 | Appointment acts | Službeni glasnik tables of contents (paragraf.rs) | HTML | titles only |
 | Legal limits for acting heads | the law texts | fixed rule table with citations | `src/data/rules/vdRules.ts`, `docs/data-sources/legal.md` |
 | PEP cross-check | OpenSanctions (CC BY-NC) + KRIK profile index | bulk data | name matches are labeled "not proof of identity" |
-| News | 11 outlet RSS feeds, Google News RSS, GDELT | free, no key | optional Serper.dev / Brave keys add web results |
+| News | 11 outlet RSS feeds, Google News RSS (exact phrases, Latin + Cyrillic, both editions, aliases like "IŽS"), GDELT | free, no key | precise: an article must name the institution (a person: the person AND the institution or firm); optional Serper.dev / Brave keys add web results |
 
 **Gaps we do not paper over.** Company owners and directors have no legal automated source, so they become
 human-in-the-loop questions. Budget payments have no open data and are left out.

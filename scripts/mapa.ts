@@ -3,6 +3,7 @@
 // "gde prvo gledati" and the ASCII Gantt of the agents (overlapping rows = real concurrency).
 
 import { applyEntryDefaults, config } from "../src/config"
+import { n } from "../src/shared/plural"
 import type { MapaRow, WireEvent } from "../src/shared/types"
 import { gantt } from "./lib/gantt"
 
@@ -81,7 +82,7 @@ console.log(`${color.bold}Mapa prioriteta${color.reset} · režim ${config.mode}
 await boot()
 try {
 	const { mapaId, institutions } = await startMapa(names.length ? names : undefined)
-	console.log(`${color.dim}mapa ${mapaId}: ${institutions.length} institucija, jedan agent „Trijaža“ po instituciji${color.reset}\n`)
+	console.log(`${color.dim}mapa ${mapaId}: ${n(institutions.length, "institucija")}, jedan agent „Trijaža“ po instituciji${color.reset}\n`)
 } catch (err) {
 	console.error(`Greška: ${(err as Error).message}`)
 	await shutdown()
@@ -107,7 +108,7 @@ for (const row of gantt(events, start, end, ["Trijaža"], [])) console.log(row)
 const s = snap.stats
 const agents = snap.agents.filter((a) => a.group === "trijaza")
 console.log(`\n${color.bold}Statistika${color.reset}`)
-console.log(`  vrhunac istovremenih petlji: ${color.bold}${s.peakConcurrentLoops}${color.reset} · petlji ukupno: ${s.totalLoops} · agenata Trijaža: ${agents.length}`)
+console.log(`  vrhunac: ${color.bold}${n(s.peakConcurrentLoops, "petlja")}${color.reset} istovremeno · petlji ukupno: ${s.totalLoops} · ${n(agents.length, "agent")} Trijaža`)
 console.log(`  pozivi alata: ${s.toolCalls} · zaključivanja: ${s.inferences} · Mozaik događaja: ${s.events} · trajanje: ${(s.elapsedMs / 1000).toFixed(1)} s`)
 console.log(`  institucija: ${view.rows.length} (gotovo ${view.rows.filter((r) => r.status === "done").length}, greška ${view.rows.filter((r) => r.status === "error").length})`)
 console.log(`\nTrag događaja: out/trace-${view.id}.jsonl`)

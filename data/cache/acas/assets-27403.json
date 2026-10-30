@@ -1,0 +1,61 @@
+{
+ "source": "acas",
+ "key": "assets-27403",
+ "retrievedAt": "2026-10-30T16:20:17.014Z",
+ "data": [
+  {
+   "personId": "27403",
+   "fullName": "Dušan Bogojević",
+   "reportDate": "2015-07-27",
+   "reason": "promene u toku vršenja funkcije",
+   "source": {
+    "kind": "acas",
+    "title": "ACAS – Izveštaj o imovini i prihodima funkcionera (2015-07-27)",
+    "url": "https://publicacas.acas.rs/#/acas/funkcionerIzvestajDetails/28342",
+    "retrievedAt": "2026-10-30T16:20:16.013Z",
+    "publishedAt": "2015-07-27",
+    "official": true
+   },
+   "summary": [
+    "Prihod od javne funkcije (Predsednik skupštine, \"Koridori Srbije\" d.o.o.): 53.000 RSD, od 20.09.2012.",
+    "Nepokretna imovina: 6 stavki (ostalo ×6)",
+    "Objekti: ostalo 92 m2; ostalo 310 m2; ostalo 16,5 m2; ostalo 100 m2; ostalo 5 ari; ostalo 1,5 ha",
+    "Pokretna imovina (registrovana): 2 (ostalo ML -55 2000; ostalo 9 1994)"
+   ],
+   "incomes": [
+    {
+     "source": "Predsednik skupštine, \"Koridori Srbije\" d.o.o.",
+     "amountRsd": 53000,
+     "period": "od 20.09.2012."
+    }
+   ]
+  },
+  {
+   "personId": "27403",
+   "fullName": "Dušan Bogojević",
+   "reportDate": "2013-11-13",
+   "reason": "stupanje na javnu funkciju",
+   "source": {
+    "kind": "acas",
+    "title": "ACAS – Izveštaj o imovini i prihodima funkcionera (2013-11-13)",
+    "url": "https://publicacas.acas.rs/#/acas/funkcionerIzvestajDetails/24009",
+    "retrievedAt": "2026-10-30T16:20:16.520Z",
+    "publishedAt": "2013-11-13",
+    "official": true
+   },
+   "summary": [
+    "Prihod od javne funkcije (Predsednik skupštine, \"Koridori Srbije\" d.o.o.): 53.000 RSD, od 20.09.2012.",
+    "Nepokretna imovina: 6 stavki (ostalo ×6)",
+    "Objekti: ostalo 92 m2; ostalo 310 m2; ostalo 16,5 m2; ostalo 100 m2; ostalo 5 ari; ostalo 1,5 ha",
+    "Pokretna imovina (registrovana): 2 (ostalo ML -55 2000; ostalo 9 1994)"
+   ],
+   "incomes": [
+    {
+     "source": "Predsednik skupštine, \"Koridori Srbije\" d.o.o.",
+     "amountRsd": 53000,
+     "period": "od 20.09.2012."
+    }
+   ]
+  }
+ ]
+}

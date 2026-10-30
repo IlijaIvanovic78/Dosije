@@ -6,6 +6,7 @@
 import fs from "node:fs"
 import path from "node:path"
 import { applyEntryDefaults, config } from "../src/config"
+import { n } from "../src/shared/plural"
 import type { WireEvent } from "../src/shared/types"
 import { gantt } from "./lib/gantt"
 
@@ -137,10 +138,10 @@ for (const row of gantt(events, start, end)) console.log(row)
 const s = snap.stats
 const agents = snap.agents.filter((a) => a.group !== "novinar" && a.group !== "sistem")
 console.log(`\n${color.bold}Statistika${color.reset}`)
-console.log(`  vrhunac istovremenih petlji: ${color.bold}${s.peakConcurrentLoops}${color.reset} · petlji ukupno: ${s.totalLoops} · agenata: ${agents.length} (pokrenutih: ${agents.filter((a) => a.dynamic).length})`)
-console.log(`  pozivi alata: ${s.toolCalls} · zaključivanja: ${s.inferences} · interceptor: ${s.interceptions} · blokirano bez izvora: ${s.blockedClaims} · konflikata: ${s.conflicts}`)
-console.log(`  nalaza: ${snap.findings.length} (signala: ${snap.findings.filter((f) => f.severity === "signal").length}) · entiteta: ${snap.entities.length} · zadataka: ${snap.tasks.length} · Mozaik događaja: ${s.events}`)
-if (showSearch) console.log(`  izvori: ${s.activities ?? 0} upita${s.activitiesDropped ? ` (+${s.activitiesDropped} preko ograničenja, nisu prikazani)` : ""}`)
+console.log(`  vrhunac: ${color.bold}${n(s.peakConcurrentLoops, "petlja")}${color.reset} istovremeno · petlji ukupno: ${s.totalLoops} · ${n(agents.length, "agent")} (${n(agents.filter((a) => a.dynamic).length, "pokrenutAgent")})`)
+console.log(`  ${n(s.toolCalls, "pozivAlata")} · ${n(s.inferences, "zakljucivanje")} · ${n(s.interceptions, "presretanje")} · ${n(s.blockedClaims, "blokiranaTvrdnja")} bez izvora · konflikata izvora: ${s.conflicts}`)
+console.log(`  ${n(snap.findings.length, "nalaz")} (signala: ${snap.findings.filter((f) => f.severity === "signal").length}) · ${n(snap.entities.length, "entitet")} · ${n(snap.tasks.length, "zadatak")} · ${n(s.events, "dogadjaj")}`)
+if (showSearch) console.log(`  izvori: ${n(s.activities ?? 0, "upit")}${s.activitiesDropped ? ` (+${s.activitiesDropped} preko ograničenja, nisu prikazani)` : ""}`)
 console.log(`  trajanje: ${(s.elapsedMs / 1000).toFixed(1)} s`)
 
 const outDir = path.resolve(process.cwd(), "out")

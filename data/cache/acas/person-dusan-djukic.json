@@ -1,7 +1,7 @@
 {
  "source": "acas",
  "key": "person-dusan-djukic",
- "retrievedAt": "2026-10-30T15:41:30.152Z",
+ "retrievedAt": "2026-10-30T16:14:42.922Z",
  "data": [
   {
    "id": "5009781",
@@ -17,7 +17,7 @@
     "kind": "acas",
     "title": "ACAS – Registar funkcionera: Srbija Kargo a.d. Beograd",
     "url": "https://publicacas.acas.rs/#/acas/funkcioner",
-    "retrievedAt": "2026-10-30T15:41:30.152Z",
+    "retrievedAt": "2026-10-30T16:14:42.922Z",
     "publishedAt": "2025-06-18",
     "official": true
    }
@@ -37,7 +37,7 @@
     "kind": "acas",
     "title": "ACAS – Registar funkcionera: JKP Regionalna deponija „Srem-Mačva“ Šabac",
     "url": "https://publicacas.acas.rs/#/acas/funkcioner",
-    "retrievedAt": "2026-10-30T15:41:30.152Z",
+    "retrievedAt": "2026-10-30T16:14:42.922Z",
     "publishedAt": "2023-06-15",
     "official": true
    }
@@ -56,7 +56,7 @@
     "kind": "acas",
     "title": "ACAS – Registar funkcionera: D.o.o. Park Palić",
     "url": "https://publicacas.acas.rs/#/acas/funkcioner",
-    "retrievedAt": "2026-10-30T15:41:30.152Z",
+    "retrievedAt": "2026-10-30T16:14:42.922Z",
     "publishedAt": "2022-05-11",
     "official": true
    }

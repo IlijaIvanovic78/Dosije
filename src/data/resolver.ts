@@ -6,6 +6,7 @@ import fs from "node:fs"
 import path from "node:path"
 import type { SourceRef } from "../shared/types"
 import { cached, cacheKey } from "./cache"
+import { searchName } from "./names"
 import * as acas from "./sources/acas"
 import * as apr from "./sources/apr"
 import * as jn from "./sources/jnportal"
@@ -102,10 +103,7 @@ export function listStaticInstitutions(): { slug: string; name: string }[] {
 		.map((i) => ({ slug: i.slug, name: i.name.replace(/\s+a\.d\.$/i, "") }))
 }
 
-/** Name without the legal-form suffix, e.g. "Infrastruktura železnice Srbije a.d." -> "Infrastruktura železnice Srbije". */
-export function searchName(name: string): string {
-	return name.replace(/\s+(a\.d\.|d\.o\.o\.|ad|doo|j\.p\.|jp)(\s+.*)?$/i, "").trim()
-}
+export { searchName }
 
 const ACAS_URL = "https://publicacas.acas.rs/#/acas/funkcioner"
 

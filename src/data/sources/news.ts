@@ -1,18 +1,25 @@
 // News search and article text. Free providers are always on: outlet RSS feeds (+ raspadsistema.com data.json),
-// Google News RSS and GDELT DOC 2.0. Serper.dev (SERPER_API_KEY) and Brave Search News (BRAVE_API_KEY) are optional
-// and skipped silently without a key. Results are merged, deduplicated and filtered for relevance.
-// Only the final merged result / the extracted article is cached (feeds change all the time, so they are never cached on their own).
+// Google News RSS (Latin and Cyrillic, two language editions, exact-phrase queries) and GDELT DOC 2.0. Serper.dev
+// (SERPER_API_KEY) and Brave Search News (BRAVE_API_KEY) are optional and skipped silently without a key.
+// Precision comes first (src/data/newsMatch.ts): an institution article must name the institution, a person article must
+// name the person AND the institution / firm. Search engines match the full text but give no snippet, so a candidate whose
+// headline does not carry the name is verified against the article text. Only the final merged result / the extracted
+// article is cached (feeds change all the time, so they are never cached on their own).
 
 import crypto from "node:crypto"
 import { XMLParser } from "fast-xml-parser"
 import { trackActivity, type ActivityDescriptor } from "../activity"
 import { cached, cacheKey } from "../cache"
 import { getText, httpRequest } from "../http"
-import { asciiFold, cyrToLat, hasCyrillic, latToCyr, normalizeName, sameWord } from "../translit"
+import { buildMatcher, dropRepeats, isNoiseTitle, isOriginalOutlet, normalizeUrl, wordsOf, type Matcher, type SubjectKind } from "../newsMatch"
+import { clipWords } from "../../shared/text"
+import { cyrToLat, hasCyrillic, latToCyr } from "../translit"
 import type { ArticleText, NewsItem } from "../types"
 
 const SOURCE = "vesti"
 const MAX_ARTICLE_CHARS = 6000
+const VERIFY_TIMEOUT_MS = 12000
+const VERIFY_BUDGET_MS = 100_000
 
 // ── outlet feeds (every URL below was verified to return items, Oct 2026) ───────────────────────
 
@@ -63,70 +70,6 @@ function plain(html: string): string {
 	return decodeEntities(html.replace(/<!\[CDATA\[([\s\S]*?)\]\]>/g, "$1").replace(/<[^>]+>/g, " ")).replace(/\s+/g, " ").trim()
 }
 
-const STOP = new Set(["ad", "doo", "jp", "pd", "od", "kd", "za", "na", "u", "i", "o", "po", "sa", "iz", "od", "do", "the", "of"])
-
-function queryTokens(query: string): string[] {
-	const folded = asciiFold(normalizeName(query) || query).replace(/[^a-z0-9]+/g, " ")
-	return [...new Set(folded.split(" ").filter((t) => t.length > 1 && !STOP.has(t)))]
-}
-
-// inflected forms match ("jevtića" ~ "jevtić"); other words sharing a prefix do not ("srbije" !~ "srbijavoz")
-function tokenHit(token: string, words: string[]): boolean {
-	return words.some((w) => sameWord(token, w))
-}
-
-function matchedTokens(text: string, tokens: string[]): string[] {
-	const words = asciiFold(text).replace(/[^a-z0-9]+/g, " ").split(" ").filter(Boolean)
-	return tokens.filter((t) => tokenHit(t, words))
-}
-
-function requiredHits(n: number, engine: boolean): number {
-	if (engine) return n <= 2 ? 1 : Math.ceil(n * 0.5)
-	return n <= 3 ? n : Math.ceil(n * 0.6)
-}
-
-// outlet feeds are unfiltered, so every token must match; search engines already matched the query on the full text,
-// so a partial match is accepted only if it contains the longest (most distinctive) query token
-function enough(item: NewsItem, tokens: string[]): boolean {
-	const engine = !item.provider.startsWith("rss:")
-	if (item.matched.length < requiredHits(tokens.length, engine)) return false
-	if (!engine || item.matched.length === tokens.length) return true
-	const longest = [...tokens].sort((a, b) => b.length - a.length)[0]
-	return item.matched.includes(longest)
-}
-
-function normalizeUrl(raw: string): string {
-	try {
-		const u = new URL(raw)
-		const keep = [...u.searchParams.entries()].filter(([k]) => !/^(utm_|fbclid|gclid|ref|source|amp)/i.test(k))
-		const q = keep.length ? "?" + keep.map(([k, v]) => `${k}=${v}`).join("&") : ""
-		return (u.hostname.replace(/^(www|m|amp)\./, "") + u.pathname.replace(/\/(amp\/?)?$/, "").replace(/\/+$/, "") + q).toLowerCase()
-	} catch {
-		return raw.toLowerCase()
-	}
-}
-
-function titleKey(title: string): string {
-	return asciiFold(title).replace(/\s+-\s+[^-]+$/, "").replace(/[^a-z0-9]+/g, " ").trim()
-}
-
-function titleSimilar(a: string, b: string): boolean {
-	const ta = new Set(titleKey(a).split(" ").filter((t) => t.length > 2))
-	const tb = new Set(titleKey(b).split(" ").filter((t) => t.length > 2))
-	if (ta.size < 3 || tb.size < 3) return titleKey(a) === titleKey(b)
-	let inter = 0
-	for (const t of ta) if (tb.has(t)) inter++
-	return inter / Math.min(ta.size, tb.size) >= 0.85 && inter / Math.max(ta.size, tb.size) >= 0.7
-}
-
-function sameOutlet(a: string, b: string): boolean {
-	return asciiFold(a).replace(/[^a-z0-9]+/g, "") === asciiFold(b).replace(/[^a-z0-9]+/g, "")
-}
-
-function closeInTime(a?: string, b?: string): boolean {
-	return !a || !b || Math.abs(Date.parse(a) - Date.parse(b)) <= 4 * 86400e3
-}
-
 function toIso(s: string | undefined): string | undefined {
 	if (!s) return undefined
 	const t = Date.parse(s)
@@ -145,26 +88,6 @@ function relativeDate(s: string | undefined, now = Date.now()): string | undefin
 	return new Date(now - n * ms).toISOString()
 }
 
-function makeItem(
-	p: { title: string; url: string; outlet: string; publishedAt?: string; snippet?: string; provider: string },
-	tokens: string[],
-	retrievedAt: string,
-): NewsItem {
-	const title = plain(p.title).replace(/^[:\-–—\s]+/, "")
-	const snippet = p.snippet ? plain(p.snippet).slice(0, 400) : undefined
-	return {
-		id: crypto.createHash("sha1").update(normalizeUrl(p.url)).digest("hex").slice(0, 12),
-		title,
-		url: p.url,
-		outlet: p.outlet,
-		publishedAt: p.publishedAt,
-		snippet: snippet || undefined,
-		matched: matchedTokens(`${title} ${snippet ?? ""}`, tokens),
-		provider: p.provider,
-		source: { kind: "vesti", title: `${p.outlet}: ${title}`.slice(0, 200), url: p.url, retrievedAt, publishedAt: p.publishedAt, official: false },
-	}
-}
-
 const xml = new XMLParser({ ignoreAttributes: false, attributeNamePrefix: "@_", textNodeName: "#text", processEntities: true, trimValues: true })
 const arr = <T>(v: T | T[] | undefined): T[] => (v === undefined ? [] : Array.isArray(v) ? v : [v])
 const txt = (v: any): string => (v == null ? "" : typeof v === "object" ? String(v["#text"] ?? "") : String(v))
@@ -177,6 +100,9 @@ interface RawItem {
 	snippet?: string
 	provider: string
 }
+
+const isEngine = (p: string) => !p.startsWith("rss:")
+const itemId = (url: string) => crypto.createHash("sha1").update(normalizeUrl(url)).digest("hex").slice(0, 12)
 
 // ── provider: outlet RSS ────────────────────────────────────────────────────
 
@@ -223,11 +149,10 @@ async function fetchRaspadSistema(): Promise<RawItem[]> {
 
 // ── provider: Google News RSS ───────────────────────────────────────────────
 
-function engineQuery(query: string, tokens: string[]): string {
-	return tokens.length <= 3 ? `"${query.trim()}"` : query.trim()
-}
+/** Google News edition: "sr-Latn" (Latin) and "sr" (Cyrillic) return different result sets for the same query. */
+type Edition = "sr-Latn" | "sr"
 
-async function fetchGoogleNews(q: string, days: number, hl: string): Promise<RawItem[]> {
+async function fetchGoogleNews(q: string, days: number, hl: Edition): Promise<RawItem[]> {
 	const url = `https://news.google.com/rss/search?q=${encodeURIComponent(`${q} when:${Math.max(1, Math.round(days))}d`)}&hl=${hl}&gl=RS&ceid=RS:${hl}`
 	const doc: any = xml.parse(await getText(url, { timeoutMs: 25000, retries: 1 }))
 	return arr<any>(doc?.rss?.channel?.item).map((i) => {
@@ -268,6 +193,8 @@ async function resolveGoogleNewsUrl(link: string): Promise<string> {
 	}
 	return link
 }
+
+const isGoogleLink = (url: string) => /^https?:\/\/news\.google\.com\//.test(url)
 
 // ── provider: GDELT DOC 2.0 (rolling 3 months, one request per 5 s) ─────────────────────────────
 
@@ -352,6 +279,19 @@ async function fetchBrave(q: string, days: number): Promise<RawItem[]> {
 
 // ── search ──────────────────────────────────────────────────────────────────
 
+export interface NewsSearchOptions {
+	days?: number
+	limit?: number
+	/** institution: main name is `query`; person: full name; topic: free words that must all appear */
+	kind?: SubjectKind
+	/** other names of the same institution ("IŽS", "Srbija voz") */
+	aliases?: string[]
+	/** person: institution / firm names; the article must name one of them too */
+	context?: string[]
+	/** longer institution names that contain this one; mentions inside them do not count */
+	exclude?: string[]
+}
+
 /** Source label of a merged search (what a cached result stands for). */
 export function searchSourceLabel(): string {
 	return `Vesti (${["RSS", "Google News", "GDELT", process.env.SERPER_API_KEY ? "Serper" : "", process.env.BRAVE_API_KEY ? "Brave" : ""].filter(Boolean).join(", ")})`
@@ -371,84 +311,211 @@ function tracked(desc: Omit<ActivityDescriptor, "kind">, run: () => Promise<RawI
 	})
 }
 
-const PROVIDER_RANK = (p: string) => (p.startsWith("rss:") ? 0 : p === "serper" || p === "brave" ? 1 : p === "google-news-rss" ? 2 : 3)
+const unique = <T>(list: T[]): T[] => [...new Set(list)]
+const scripts = (name: string): string[] => unique([hasCyrillic(name) ? cyrToLat(name) : name, hasCyrillic(name) ? name : latToCyr(name)])
 
-export async function searchNews(query: string, opts: { days?: number; limit?: number } = {}): Promise<NewsItem[]> {
+async function mapLimit<T, R>(list: T[], limit: number, fn: (item: T, index: number) => Promise<R>): Promise<R[]> {
+	const out = new Array<R>(list.length)
+	let next = 0
+	await Promise.all(
+		Array.from({ length: Math.min(limit, list.length) }, async () => {
+			while (next < list.length) {
+				const i = next++
+				out[i] = await fn(list[i], i)
+			}
+		}),
+	)
+	return out
+}
+
+interface Candidate {
+	raw: RawItem
+	title: string
+	snippet?: string
+	/** the subject is named in the headline / snippet */
+	hit: "naslov" | "opis" | null
+	/** a search engine matched the query in the full text; the article text decides */
+	needsText: boolean
+}
+
+function classify(raw: RawItem, m: Matcher, kind: SubjectKind): Candidate | null {
+	const title = plain(raw.title).replace(/^[:\-–—\s]+/, "")
+	const snippet = raw.snippet ? plain(raw.snippet).slice(0, 400) : undefined
+	if (!title) return null
+	const tw = wordsOf(title)
+	const sw = snippet ? wordsOf(snippet) : []
+	const all = [...tw, "_", ...sw]
+	const inTitle = m.subject(tw)
+	const inSnippet = !inTitle && sw.length > 0 && m.subject(sw)
+	const subjectHit = inTitle || inSnippet
+	if (kind === "person" && isNoiseTitle(title) && !m.context(tw)) return null
+	const ok = subjectHit && m.context(all)
+	if (ok) return { raw, title, snippet, hit: inTitle ? "naslov" : "opis", needsText: false }
+	// a person named without the institution in the headline, or an engine hit whose headline does not carry the name
+	if (kind !== "topic" && (isEngine(raw.provider) || subjectHit)) return { raw, title, snippet, hit: null, needsText: true }
+	return null
+}
+
+/** The sentence of an article around the first mention (what the finding quotes as the reason the article counts). */
+function excerptAround(text: string, m: Matcher): string | undefined {
+	const sentences = text.split(/(?<=[.!?])\s+|\n+/).map((s) => s.trim()).filter((s) => s.length > 25)
+	const hit = sentences.find((s) => m.subject(wordsOf(s))) ?? sentences[0]
+	return hit ? clipWords(hit, 240) : undefined
+}
+
+function relevance(c: Candidate, verified: NewsItem["verified"], m: Matcher, nameMatchers: Matcher[]): number {
+	const tier = verified === "naslov" ? 3 : verified === "opis" ? 2 : 1
+	const tw = wordsOf(c.title)
+	const lead = m.subject(tw.slice(0, 5)) ? 1 : 0
+	const aliasHits = Math.min(2, nameMatchers.filter((x) => x.subject(tw)).length)
+	const ctxTitle = m.spec.kind === "person" && m.context(tw) ? 1 : 0
+	const original = isOriginalOutlet(c.raw.outlet) || c.raw.provider.startsWith("rss:") ? 1 : 0
+	return tier * 10 + lead * 3 + aliasHits + ctxTitle * 2 + original
+}
+
+async function liveSearch(query: string, kind: SubjectKind, days: number, limit: number, aliases: string[], context: string[], exclude: string[]): Promise<NewsItem[]> {
+	const names = unique([query.trim(), ...aliases.map((a) => a.trim())].filter(Boolean))
+	const matcher = buildMatcher({ kind, names, context, exclude })
+	if (matcher.tokens.length === 0) return []
+	const nameMatchers = names.map((n) => buildMatcher({ kind, names: [n], exclude }))
+	const retrievedAt = new Date().toISOString()
+	const cutoff = Date.now() - days * 86400e3
+	const what = query.trim()
+
+	const jobs: Promise<RawItem[]>[] = []
+	const labels: string[] = []
+	const job = (label: string, p: Promise<RawItem[]>) => {
+		labels.push(label)
+		jobs.push(p)
+	}
+
+	for (const feed of FEEDS) job(feed.provider, tracked({ source: `${feed.outlet} (RSS)`, action: "preuzimanje", label: `feed: ${what}`, url: feed.url }, () => fetchFeed(feed)))
+	job("rss:raspadsistema", tracked({ source: "raspadsistema.com", action: "preuzimanje", label: `feed: ${what}`, url: "https://raspadsistema.com/" }, fetchRaspadSistema))
+
+	// Google News: exact phrase for every name, Latin and Cyrillic, in both language editions (they return different items)
+	const gn = new Map<string, { q: string; hl: Edition; label: string }>()
+	const addGn = (q: string, hl: Edition, label: string) => gn.set(`${hl}|${q}`, { q, hl, label })
+	const phrase = (v: string) => (kind === "topic" && matcher.tokens.length > 3 ? v : `"${v}"`)
+	for (const name of names) for (const v of scripts(name)) for (const hl of ["sr-Latn", "sr"] as const) addGn(phrase(v), hl, variantLabel(v))
+	if (kind === "person") {
+		// the bare name is dominated by namesakes: also ask for the name together with the institution / firm
+		for (const c of context.slice(0, 2)) for (const v of scripts(query)) for (const cv of scripts(c).filter((x) => hasCyrillic(x) === hasCyrillic(v))) addGn(`"${v}" "${cv}"`, "sr-Latn", `pretraga: ${cyrToLat(v)} + ${cyrToLat(cv)}`)
+	}
+	for (const { q, hl, label } of gn.values()) {
+		const gnUrl = `https://news.google.com/search?q=${encodeURIComponent(`${q} when:${Math.max(1, Math.round(days))}d`)}&hl=${hl}&gl=RS&ceid=RS:${hl}`
+		job(`google-news-rss(${hl},${q})`, tracked({ source: "Google News", action: "pretraga", label, url: gnUrl }, () => fetchGoogleNews(q, days, hl)))
+	}
+	job(
+		"gdelt",
+		(async () => {
+			const out: RawItem[] = []
+			// GDELT is best effort: it rate-limits to one request per 5 s (often 429), so the whole provider gets a time budget
+			const work = (async () => {
+				for (const v of scripts(query)) out.push(...(await tracked({ source: "GDELT", action: "pretraga", label: variantLabel(v) }, () => fetchGdelt(phrase(v), days)).catch(() => [])))
+			})()
+			await Promise.race([work, new Promise((r) => setTimeout(r, 16000))])
+			return out
+		})(),
+	)
+	if (process.env.SERPER_API_KEY) for (const v of scripts(query)) job("serper", tracked({ source: "Serper", action: "pretraga", label: variantLabel(v) }, () => fetchSerper(v, days)))
+	if (process.env.BRAVE_API_KEY) for (const v of scripts(query)) job("brave", tracked({ source: "Brave", action: "pretraga", label: variantLabel(v) }, () => fetchBrave(v, days)))
+
+	const settled = await Promise.allSettled(jobs)
+	if (process.env.NEWS_DEBUG) settled.forEach((r, i) => console.error(`  [news] ${labels[i]}: ${r.status === "fulfilled" ? `${r.value.length} items` : `FAILED ${String(r.reason).slice(0, 100)}`}`))
+	const raw = settled.flatMap((r) => (r.status === "fulfilled" ? r.value : []))
+
+	// 1. window, links, duplicates of the same link
+	const seenLink = new Set<string>()
+	const inWindow = raw
+		.filter((r) => r.title && r.url && /^https?:/.test(r.url))
+		.filter((r) => !r.publishedAt || Date.parse(r.publishedAt) >= cutoff)
+		.filter((r) => {
+			const k = isGoogleLink(r.url) ? r.url : normalizeUrl(r.url)
+			if (seenLink.has(k)) return false
+			seenLink.add(k)
+			return true
+		})
+
+	// 2. precision: the headline / snippet names the subject (and, for a person, the institution or firm)
+	const candidates = inWindow.map((r) => classify(r, matcher, kind)).filter((c): c is Candidate => !!c)
+	const sure = candidates.filter((c) => !c.needsText)
+	const byDate = (a: Candidate, b: Candidate) => (b.raw.publishedAt ?? "").localeCompare(a.raw.publishedAt ?? "")
+	const verifyCap = kind === "person" ? 30 : sure.length >= 25 ? 0 : 20
+	const toVerify = candidates.filter((c) => c.needsText).sort(byDate).slice(0, verifyCap)
+	if (process.env.NEWS_DEBUG) console.error(`  [news] raw=${raw.length} window=${inWindow.length} sure=${sure.length} toVerify=${toVerify.length}`)
+
+	// 3. resolve Google News redirect links (only for what can still count)
+	const resolved = await mapLimit([...sure, ...toVerify], 4, async (c) => {
+		if (c.raw.provider !== "google-news-rss") return c
+		const url = await resolveGoogleNewsUrl(c.raw.url)
+		return url === c.raw.url ? c : { ...c, raw: { ...c.raw, url } }
+	})
+	const sureResolved = resolved.slice(0, sure.length)
+	const verifyResolved = resolved.slice(sure.length)
+
+	const items = new Map<string, NewsItem>()
+	const add = (c: Candidate, verified: NonNullable<NewsItem["verified"]>, snippet: string | undefined, publishedAt: string | undefined) => {
+		const url = c.raw.url
+		const key = normalizeUrl(url)
+		if (items.has(key)) return
+		const title = c.title
+		const words = wordsOf(`${title} . ${snippet ?? ""}`)
+		const matchedNames = names.filter((_, i) => nameMatchers[i].subject(words))
+		items.set(key, {
+			id: itemId(url),
+			title,
+			url,
+			outlet: c.raw.outlet,
+			publishedAt,
+			snippet,
+			matched: matchedNames.length ? matchedNames : [query.trim()],
+			provider: c.raw.provider,
+			verified,
+			score: relevance(c, verified, matcher, nameMatchers),
+			unresolved: isGoogleLink(url) || undefined,
+			source: { kind: "vesti", title: clipWords(`${c.raw.outlet}: ${title}`, 200), url, retrievedAt, publishedAt, official: false },
+		})
+	}
+	for (const c of sureResolved) add(c, c.hit ?? "naslov", c.snippet, c.raw.publishedAt)
+
+	// 4. verification against the article text (headline did not carry the name)
+	if (toVerify.length > 0) {
+		const deadline = Date.now() + VERIFY_BUDGET_MS
+		await trackActivity({ source: "članci", kind: "vesti", action: "dokument", label: `provera teksta članaka (${verifyResolved.length})` }, async (h) => {
+			let passed = 0
+			await mapLimit(verifyResolved, 3, async (c) => {
+				if (Date.now() > deadline || isGoogleLink(c.raw.url) || items.has(normalizeUrl(c.raw.url))) return
+				try {
+					const a = await extractArticle(c.raw.url, { timeoutMs: VERIFY_TIMEOUT_MS, retries: 0 })
+					const ws = wordsOf(`${a.title} . ${a.text}`)
+					if (!matcher.subject(ws) || !matcher.context(ws)) return
+					const when = c.raw.publishedAt ?? toIso(a.publishedAt)
+					if (when && Date.parse(when) < cutoff) return
+					passed++
+					add(c, "tekst", excerptAround(a.text, matcher), when)
+				} catch {
+					// blocked, paywalled or gone: an unverified candidate is dropped, never guessed
+				}
+			})
+			h.items(passed)
+		})
+	}
+
+	// 5. one story once (aggregator copies lose to the original outlet), relevance first, then recency
+	const ranked = dropRepeats([...items.values()]).sort((a, b) => (b.score ?? 0) - (a.score ?? 0) || (b.publishedAt ?? "").localeCompare(a.publishedAt ?? ""))
+	return ranked.slice(0, limit)
+}
+
+export async function searchNews(query: string, opts: NewsSearchOptions = {}): Promise<NewsItem[]> {
 	const days = opts.days ?? 30
-	const limit = opts.limit ?? 25
-	const env = await cached<NewsItem[]>(SOURCE, cacheKey("search", query, `d${days}`, `l${limit}`), async () => {
-		const tokens = queryTokens(query)
-		if (tokens.length === 0) return []
-		const lat = hasCyrillic(query) ? cyrToLat(query) : query
-		const cyr = hasCyrillic(query) ? query : latToCyr(query)
-		const variants = [...new Set([lat, cyr])]
-		const retrievedAt = new Date().toISOString()
-		const cutoff = Date.now() - days * 86400e3
-
-		const jobs: Promise<RawItem[]>[] = []
-		const labels: string[] = []
-		const job = (label: string, p: Promise<RawItem[]>) => {
-			labels.push(label)
-			jobs.push(p)
-		}
-		const what = query.trim()
-		for (const feed of FEEDS) job(feed.provider, tracked({ source: `${feed.outlet} (RSS)`, action: "preuzimanje", label: `feed: ${what}`, url: feed.url }, () => fetchFeed(feed)))
-		job("rss:raspadsistema", tracked({ source: "raspadsistema.com", action: "preuzimanje", label: `feed: ${what}`, url: "https://raspadsistema.com/" }, fetchRaspadSistema))
-		for (const v of variants) {
-			const gnUrl = `https://news.google.com/search?q=${encodeURIComponent(`${engineQuery(v, tokens)} when:${Math.max(1, Math.round(days))}d`)}&hl=sr&gl=RS&ceid=RS:sr`
-			job(`google-news-rss(${hasCyrillic(v) ? "cyr" : "lat"})`, tracked({ source: "Google News", action: "pretraga", label: variantLabel(v), url: gnUrl }, () => fetchGoogleNews(engineQuery(v, tokens), days, "sr")))
-		}
-		job(
-			"gdelt",
-			(async () => {
-				const out: RawItem[] = []
-				// GDELT is best effort: it rate-limits to one request per 5 s (often 429), so the whole provider gets a time budget
-				const work = (async () => {
-					for (const v of variants) {
-						out.push(...(await tracked({ source: "GDELT", action: "pretraga", label: variantLabel(v) }, () => fetchGdelt(tokens.length <= 3 ? `"${v}"` : v, days)).catch(() => [])))
-					}
-				})()
-				await Promise.race([work, new Promise((r) => setTimeout(r, 16000))])
-				return out
-			})(),
-		)
-		if (process.env.SERPER_API_KEY) for (const v of variants) job("serper", tracked({ source: "Serper", action: "pretraga", label: variantLabel(v) }, () => fetchSerper(v, days)))
-		if (process.env.BRAVE_API_KEY) for (const v of variants) job("brave", tracked({ source: "Brave", action: "pretraga", label: variantLabel(v) }, () => fetchBrave(v, days)))
-
-		const settled = await Promise.allSettled(jobs)
-		if (process.env.NEWS_DEBUG) settled.forEach((r, i) => console.error(`  [news] ${labels[i]}: ${r.status === "fulfilled" ? `${r.value.length} items` : `FAILED ${String(r.reason).slice(0, 100)}`}`))
-		const raw = settled.flatMap((r) => (r.status === "fulfilled" ? r.value : []))
-
-		const relevant = raw
-			.filter((r) => r.title && r.url && /^https?:/.test(r.url))
-			.filter((r) => !r.publishedAt || Date.parse(r.publishedAt) >= cutoff)
-			.map((r) => makeItem(r, tokens, retrievedAt))
-			.filter((i) => enough(i, tokens))
-			.sort((a, b) => PROVIDER_RANK(a.provider) - PROVIDER_RANK(b.provider) || (b.snippet?.length ?? 0) - (a.snippet?.length ?? 0))
-
-		if (process.env.NEWS_DEBUG) console.error(`  [news] raw=${raw.length} relevant=${relevant.length}`)
-		// resolve Google News redirect links only for what survives the relevance filter
-		const resolved = await Promise.all(
-			relevant.map(async (i) => {
-				if (i.provider !== "google-news-rss") return i
-				const url = await resolveGoogleNewsUrl(i.url)
-				return url === i.url ? i : { ...i, id: crypto.createHash("sha1").update(normalizeUrl(url)).digest("hex").slice(0, 12), url, source: { ...i.source, url } }
-			}),
-		)
-
-		const kept: NewsItem[] = []
-		const seen = new Set<string>()
-		for (const i of resolved.sort((a, b) => PROVIDER_RANK(a.provider) - PROVIDER_RANK(b.provider) || (b.snippet?.length ?? 0) - (a.snippet?.length ?? 0))) {
-			const key = normalizeUrl(i.url)
-			if (seen.has(key)) continue
-			// the same story from different outlets is kept (independent sources); only the same outlet repeating a title is merged
-			const dup = kept.find((k) => titleSimilar(k.title, i.title) && sameOutlet(k.outlet, i.outlet) && closeInTime(k.publishedAt, i.publishedAt))
-			if (dup) continue
-			seen.add(key)
-			kept.push(i)
-		}
-		return kept.sort((a, b) => (b.publishedAt ?? "").localeCompare(a.publishedAt ?? "")).slice(0, limit)
-	}, {
+	const limit = opts.limit ?? 60
+	const kind = opts.kind ?? "topic"
+	const aliases = unique(opts.aliases ?? [])
+	const context = unique(opts.context ?? [])
+	const exclude = unique(opts.exclude ?? [])
+	const key = cacheKey("search", query, kind, `d${days}`, `l${limit}`, aliases.length ? `a-${aliases.join(" ")}` : "", context.length ? `c-${context.join(" ")}` : "", exclude.length ? `x-${exclude.join(" ")}` : "")
+	const env = await cached<NewsItem[]>(SOURCE, key, () => liveSearch(query, kind, days, limit, aliases, context, exclude), {
+		meta: { query, kind, days, limit, aliases, context, exclude },
 		activity: {
 			source: searchSourceLabel(),
 			kind: "vesti",
@@ -483,8 +550,7 @@ function hostOutlet(url: string): string {
 }
 
 function shortTitle(title: string): string {
-	const t = title.replace(/\s+/g, " ").trim()
-	return t.length > 70 ? `${t.slice(0, 69).trimEnd()}…` : t
+	return clipWords(title, 70)
 }
 
 function metaContent(html: string, names: string[]): string | undefined {
@@ -552,38 +618,41 @@ function mainText(html: string, ld: any[]): string {
 	return best
 }
 
-/** Fetches an article page and extracts title, date, outlet and main text (max 6000 chars). Google News links are resolved first. */
+/** Downloads an article page and extracts title, date, outlet and main text (max 6000 chars). Google News links are resolved first. Not cached. */
+async function extractArticle(url: string, fetchOpts: { timeoutMs?: number; retries?: number } = {}): Promise<ArticleText> {
+	const finalUrl = await resolveGoogleNewsUrl(url)
+	const html = await getText(finalUrl, { timeoutMs: fetchOpts.timeoutMs ?? 25000, retries: fetchOpts.retries ?? 1, headers: { Accept: "text/html,application/xhtml+xml;q=0.9,*/*;q=0.5" } })
+	const ld = jsonLdNodes(html)
+	const ldArticle = ld.find((n) => /Article|NewsArticle|Report/i.test(String(n["@type"])) && (n.datePublished || n.headline)) ?? ld.find((n) => n.datePublished)
+
+	const rawTitle =
+		metaContent(html, ["og:title", "twitter:title"]) ?? (typeof ldArticle?.headline === "string" ? ldArticle.headline : undefined) ??
+		plain(html.match(/<h1\b[^>]*>([\s\S]*?)<\/h1>/i)?.[1] ?? html.match(/<title[^>]*>([\s\S]*?)<\/title>/i)?.[1] ?? "")
+	const siteName = metaContent(html, ["og:site_name", "application-name"])
+	const outlet = OUTLET_NAMES[new URL(finalUrl).hostname.replace(/^www\./, "")] ?? siteName ?? outletFromUrl(finalUrl)
+	const title = decodeEntities(rawTitle).replace(new RegExp(`\\s*[|–—-]\\s*(${[outlet, siteName].filter(Boolean).map((s) => String(s).replace(/[.*+?^${}()|[\]\\]/g, "\\$&")).join("|")})\\s*$`, "i"), "").trim()
+
+	const published =
+		metaContent(html, ["article:published_time", "og:article:published_time", "datePublished", "pubdate", "publishdate", "DC.date.issued", "date"]) ??
+		(typeof ldArticle?.datePublished === "string" ? ldArticle.datePublished : undefined) ??
+		html.match(/<time\b[^>]+datetime=["']([^"']+)["']/i)?.[1]
+	const publishedAt = toIso(published) ?? published?.slice(0, 10)
+
+	const text = mainText(html, ld)
+	if (text.length < 80) throw new Error(`fetchArticle: no article text extracted from ${finalUrl}`)
+	return {
+		url: finalUrl,
+		title,
+		outlet,
+		publishedAt,
+		text,
+		source: { kind: "vesti", title: clipWords(`${outlet}: ${title}`, 200), url: finalUrl, retrievedAt: new Date().toISOString(), publishedAt, official: false },
+	}
+}
+
+/** Cached `extractArticle`: the text the agents read for a claim. */
 export async function fetchArticle(url: string): Promise<ArticleText> {
-	const env = await cached<ArticleText>(SOURCE, cacheKey("article", url), async () => {
-		const finalUrl = await resolveGoogleNewsUrl(url)
-		const html = await getText(finalUrl, { timeoutMs: 25000, retries: 1, headers: { Accept: "text/html,application/xhtml+xml;q=0.9,*/*;q=0.5" } })
-		const ld = jsonLdNodes(html)
-		const ldArticle = ld.find((n) => /Article|NewsArticle|Report/i.test(String(n["@type"])) && (n.datePublished || n.headline)) ?? ld.find((n) => n.datePublished)
-
-		const rawTitle =
-			metaContent(html, ["og:title", "twitter:title"]) ?? (typeof ldArticle?.headline === "string" ? ldArticle.headline : undefined) ??
-			plain(html.match(/<h1\b[^>]*>([\s\S]*?)<\/h1>/i)?.[1] ?? html.match(/<title[^>]*>([\s\S]*?)<\/title>/i)?.[1] ?? "")
-		const siteName = metaContent(html, ["og:site_name", "application-name"])
-		const outlet = OUTLET_NAMES[new URL(finalUrl).hostname.replace(/^www\./, "")] ?? siteName ?? outletFromUrl(finalUrl)
-		const title = decodeEntities(rawTitle).replace(new RegExp(`\\s*[|–—-]\\s*(${[outlet, siteName].filter(Boolean).map((s) => String(s).replace(/[.*+?^${}()|[\]\\]/g, "\\$&")).join("|")})\\s*$`, "i"), "").trim()
-
-		const published =
-			metaContent(html, ["article:published_time", "og:article:published_time", "datePublished", "pubdate", "publishdate", "DC.date.issued", "date"]) ??
-			(typeof ldArticle?.datePublished === "string" ? ldArticle.datePublished : undefined) ??
-			html.match(/<time\b[^>]+datetime=["']([^"']+)["']/i)?.[1]
-		const publishedAt = toIso(published) ?? published?.slice(0, 10)
-
-		const text = mainText(html, ld)
-		if (text.length < 80) throw new Error(`fetchArticle: no article text extracted from ${finalUrl}`)
-		return {
-			url: finalUrl,
-			title,
-			outlet,
-			publishedAt,
-			text,
-			source: { kind: "vesti", title: `${outlet}: ${title}`.slice(0, 200), url: finalUrl, retrievedAt: new Date().toISOString(), publishedAt, official: false },
-		}
-	}, {
+	const env = await cached<ArticleText>(SOURCE, cacheKey("article", url), () => extractArticle(url), {
 		activity: {
 			source: hostOutlet(url),
 			kind: "vesti",
@@ -595,11 +664,3 @@ export async function fetchArticle(url: string): Promise<ArticleText> {
 	})
 	return env.data
 }
-
-
-
-
-
-
-
-

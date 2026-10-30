@@ -1,7 +1,7 @@
 {
  "source": "acas",
  "key": "assets-5020612",
- "retrievedAt": "2026-10-30T15:41:29.037Z",
+ "retrievedAt": "2026-10-30T16:15:08.948Z",
  "data": [
   {
    "personId": "5020612",
@@ -12,14 +12,14 @@
     "kind": "acas",
     "title": "ACAS – Izveštaj o imovini i prihodima funkcionera (2026-08-27)",
     "url": "https://publicacas.acas.rs/#/acas/funkcionerIzvestajDetails/5040904",
-    "retrievedAt": "2026-10-30T15:41:27.632Z",
+    "retrievedAt": "2026-10-30T16:15:07.160Z",
     "publishedAt": "2026-08-27",
     "official": true
    },
    "summary": [
     "Prihod od javne funkcije (Pomoćnik ministra, Ministarstvo privrede, Beograd): 235.500 RSD mesečno, od 10.11.2022.",
     "Prihod od javne funkcije (Srbija Kargo a.d. Beograd): 81.840 RSD mesečno, od 23.07.2026.",
-    "Nepokretna imovina: 3 stavki (stan ×2, ostalo)",
+    "Nepokretna imovina: 3 stavke (stan ×2, ostalo)",
     "Objekti: stan 37,47 m2; ostalo 12 m2; stan 61 m2",
     "Pokretna imovina (registrovana): 1 (automobil CHERY ARRIZO 8 PHEV 2025)",
     "Akcije i udeli u privrednim društvima: 2 (Nis Novi Sad; AD Aerodrom Nikola Tesla Beograd)"
@@ -46,13 +46,13 @@
     "kind": "acas",
     "title": "ACAS – Izveštaj o imovini i prihodima funkcionera (2026-02-10)",
     "url": "https://publicacas.acas.rs/#/acas/funkcionerIzvestajDetails/5037495",
-    "retrievedAt": "2026-10-30T15:41:28.121Z",
+    "retrievedAt": "2026-10-30T16:15:07.693Z",
     "publishedAt": "2026-02-10",
     "official": true
    },
    "summary": [
     "Prihod od javne funkcije (Pomoćnik ministra, Ministarstvo privrede): 235.500 RSD mesečno, od 10.11.2022.",
-    "Nepokretna imovina: 3 stavki (stan ×2, garaža)",
+    "Nepokretna imovina: 3 stavke (stan ×2, garaža)",
     "Objekti: stan 37,47 m2; garaža 12 m2; stan 61 m2",
     "Pokretna imovina (registrovana): 1 (automobil CHERY ARRIZO 8 PHEV 2025)",
     "Akcije i udeli u privrednim društvima: 2 (Naftna Industrija Srbije; AD Aerodrom Nikola Tesla Beograd)"
@@ -74,13 +74,13 @@
     "kind": "acas",
     "title": "ACAS – Izveštaj o imovini i prihodima funkcionera (2024-02-06)",
     "url": "https://publicacas.acas.rs/#/acas/funkcionerIzvestajDetails/5023984",
-    "retrievedAt": "2026-10-30T15:41:28.616Z",
+    "retrievedAt": "2026-10-30T16:15:08.458Z",
     "publishedAt": "2024-02-06",
     "official": true
    },
    "summary": [
     "Prihod od javne funkcije (v.d. pomoćnika ministra, Ministarstvo privrede, Beograd): 205.500 RSD mesečno, od 10.11.2022.",
-    "Nepokretna imovina: 3 stavki (stan ×2, garaža)",
+    "Nepokretna imovina: 3 stavke (stan ×2, garaža)",
     "Objekti: stan 37,47 m2; garaža 12 m2; stan 61 m2",
     "Pokretna imovina (registrovana): 1 (automobil Skoda Superb 1.8 TSI 2018)",
     "Akcije i udeli u privrednim društvima: 2 (NAFTNA INDUSTRIJA SRBIJE; AD Aerodrom Nikola Tesla Beograd)"

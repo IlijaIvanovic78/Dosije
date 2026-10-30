@@ -1,4 +1,5 @@
 import { asciiFold } from "../data/translit"
+import { clipWords } from "../shared/text"
 
 export const sleep = (ms: number) => new Promise<void>((resolve) => setTimeout(resolve, ms))
 
@@ -33,10 +34,8 @@ export function hashString(s: string): number {
 	return h >>> 0
 }
 
-export function clip(s: string, n: number): string {
-	const t = s.replace(/\s+/g, " ").trim()
-	return t.length > n ? `${t.slice(0, Math.max(0, n - 1)).trimEnd()}…` : t
-}
+/** Word-boundary clip with an ellipsis (see shared/text.ts). */
+export const clip = clipWords
 
 export function hostOf(url: string): string {
 	try {

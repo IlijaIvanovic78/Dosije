@@ -35,18 +35,21 @@ Serper i Brave su implementirani po dokumentaciji, ali **nisu testirani** (na ov
 
 Ne rade ili nisu potrebni: `n1info.rs/rss/`, `nova.rs/rss`, `vreme.com/rss.php` (HTML), `insajder.net/rss` (404), `radar.nova.rs/feed/` (greška veze). B92 i Blic feedovi rade, ali nisu uključeni (raspadsistema.com ih takođe ne koristi kao izvor).
 
-## Pretraga: relevantnost, spajanje, sortiranje
+## Pretraga: preciznost, spajanje, sortiranje
 
-- Tokeni upita: `normalizeName` (bez "a.d.", "d.o.o." i sl.) + `asciiFold`, pa se Latinica i Ćirilica porede kao isto; padeži se tolerišu (zajednički prefiks >= 5 slova).
-- Feedovi izdanja nisu filtrirani na izvoru: **svi** tokeni (upit od <= 3 tokena) ili 60% tokena (duži upit) moraju biti u naslovu ili opisu.
-- Pretraživači (Google, GDELT, Serper, Brave) su već tražili po punom tekstu: prihvata se 1 token (upit od <= 2 tokena) ili 50%, ali delimično poklapanje mora sadržati najduži (najspecifičniji) token. Zato "Zoran Jevtić" ne vraća članke samo o "Zoranu".
-- Upit sa <= 3 tokena se šalje kao fraza u navodnicima.
-- Google News linkovi (`news.google.com/rss/articles/CBMi...`) se razrešavaju u originalni URL posle filtriranja: čita se `data-n-a-sg` / `data-n-a-ts` sa stranice linka pa `POST /_/DotsSplashUi/data/batchexecute` (`Fbv4je` / `garturlreq`). To je interni Google endpoint bez garancije stabilnosti; ako ne uspe, ostaje Google link.
-- Dedupe: normalizovan URL (bez `www`, `utm_*`, završne kose crte) + sličnost naslova (>= 0.85 poklapanje tokena, isto izdanje, razmak <= 4 dana). Isti događaj iz **različitih** izdanja se zadržava (nezavisni izvori za status "potvrđeno").
-- Sortiranje po datumu opadajuće; prednost pri dupliranju: RSS > Serper/Brave > Google > GDELT.
-- `matched` = tokeni upita pronađeni u naslovu/opisu. `NewsItem.source`: `kind: "vesti"`, `official: false`, javni URL članka.
+`searchNews(query, {days?, limit?, kind?, aliases?, context?, exclude?})`. Upit gradi `src/data/newsPlan.ts` (isti za alat agenata, `warm-cache` i `npm run qa`, jer je keš ključ sastavljen od upita); pravila preciznosti su u `src/data/newsMatch.ts`.
+
+- **Institucija** (`kind: "institution"`, 12 meseci): Google News se pita tačnom frazom (`"Infrastruktura železnice Srbije"`) na latinici I ćirilici, u oba izdanja (`hl=sr-Latn` i `hl=sr`: daju različite rezultate, npr. 100 prema 44 stavke), i za svaki kratki naziv iz `data/static/news-aliases.json` + `shortName` iz `institutions.json` (npr. `IŽS`, `Srbija voz`). Članak se prihvata samo ako **naslov ili opis** sadrži sve značajne reči naziva, redom, bez razmaka većeg od jedne reči, sa padežnim nastavcima (`sameWord`): „Direktor Infrastrukture železnice Srbije“ da, „Infrastruktura puteva u Srbiji i železnice“ ne.
+- **Duži nazivi se ne računaju kao kraći**: `exclude` (iz tabele institucija: svaka druga institucija čije reči sadrže ove) maskira pominjanja unutar njih, pa „Infrastruktura železnice Srbije“ nije „Železnice Srbije“.
+- **Osoba** (`kind: "person"`, 2 godine): puno ime (u bilo kom redosledu, sa padežima, „Petar“ ~ „Petra“) I institucija ili firma (`context`) u naslovu, opisu ili preuzetom tekstu članka. Google ne daje opis, pa kandidati čiji naslov ne nosi ime (do 30) se proveravaju na tekstu članka (12 s, 3 istovremeno; ne ide u keš, u rezultatu ostaje rečenica sa imenom kao `snippet`, `verified: "tekst"`). Sportske i čitulje naslovi bez institucije se odbacuju (imenjaci).
+- Provere na tekstu važe i za instituciju kad naslovi daju manje od 25 pogodaka (do 20 članaka). Članak koji ne može da se preuzme (403, paywall) ostaje neproveren i **ne ulazi** u rezultat.
+- Dedupe: normalizovan URL + sličnost naslova (>= 0.85 poklapanje reči, <= 4 dana): isto izdanje koje ponavlja naslov i **agregatori** (Google News, MSN, Naslovi.net, ...) se spajaju, ostaje originalno izdanje (lista izdanja koja objavljuju sopstvene vesti, pa najraniji datum). Ista vest u dva različita izdanja ostaje (nezavisni izvori za status „potvrđeno“), a „Pregled medija“ ih broji kao jednu.
+- Poredak: relevantnost (naslov > opis > tekst, naziv na početku naslova, dodatni nazivi, izdanje sa sopstvenim izveštavanjem), pa najnovije. Linkovi sa Google-a koji se ne razreše idu na kraj i ne ulaze u pregled.
+- Google News linkovi (`news.google.com/rss/articles/CBMi...`) se razrešavaju u originalni URL posle filtriranja: čita se `data-n-a-sg` / `data-n-a-ts` sa stranice linka pa `POST /_/DotsSplashUi/data/batchexecute` (`Fbv4je` / `garturlreq`). To je interni Google endpoint bez garancije stabilnosti.
+- **Pregled medija** (`newsOverview`): do 12 najrelevantnijih različitih članaka (najviše 2 po izdanju), broj različitih priča, najčešće teme iz naslova (rečnik tema u `newsMatch.ts`: nesreće i bezbednost, javne nabavke i ugovori, rukovodstvo, radovi, sindikat, saobraćaj, revizija, finansije).
+- `NewsItem`: `matched` = pronađeni nazivi, `verified` = gde je poklapanje nađeno (naslov / opis / tekst), `score`, `source` (`kind: "vesti"`, `official: false`, javni URL članka).
 - raspadsistema.com stavke imaju `outlet: "raspadsistema.com (Danas)"` i `url` originalnog članka; `snippet` je njihov kratak opis i funkcija osobe, `provider: "rss:raspadsistema"`.
-
+- Ključ keša: `search-<upit>-<tip>-d<dani>-l<limit>[-a-<nazivi>][-c-<kontekst>][-x-<izuzeci>]`. Promena pravila ili naziva menja ključ: stari fajlovi se brišu (vidi `docs/QA.md`).
 ## fetchArticle
 
 HTML preko `getText`, zatim: naslov (`og:title` / JSON-LD `headline` / `<h1>`, bez sufiksa izdanja), datum (`article:published_time`, JSON-LD `datePublished`, `<time datetime>`), izdanje (poznata imena po hostu / `og:site_name`), tekst (najveći `<article>`, a ako je kratak, kontejner sa klasom article/content/entry; uklanja se `script/style/nav/aside/figure/form/footer`; pasusi >= 40 znakova bez "Pročitajte i / Foto:..."; spaja se sa `\n\n`; maks. 6000 znakova na granici pasusa; poslednja opcija je JSON-LD `articleBody`). Google News linkovi se prvo razrešavaju. Greška ako je izvučeno < 80 znakova.

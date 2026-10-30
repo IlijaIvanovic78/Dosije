@@ -6,6 +6,7 @@
 // fields explicitly, so none of that ever reaches the return values or the cache.
 // Endpoint notes: docs/data-sources/acas.md
 
+import { n } from "../../shared/plural"
 import { SRC, shortInstitution } from "../activity"
 import { cached, cacheKey } from "../cache"
 import { getJson } from "../http"
@@ -305,7 +306,7 @@ async function summarizeReport(report: RawReport, fullName: string): Promise<{ s
 
 	if (nepokretna.length) {
 		const kinds = groupCount(nepokretna.map((n) => lowerLatin(str(n.vrstaString) || str(n.vrstaOstalo))))
-		summary.push(`Nepokretna imovina: ${nepokretna.length} ${nepokretna.length === 1 ? "stavka" : "stavki"} (${kinds})`)
+		summary.push(`Nepokretna imovina: ${n(nepokretna.length, "stavka")} (${kinds})`)
 		const buildings = nepokretna
 			.filter((n) => !/њива|шума|ливада|воћњак|земљиште|njiva|šuma|livada|voćnjak|zemljište/i.test(str(n.vrstaString) || str(n.vrstaOstalo)))
 			.map((n) => [lowerLatin(str(n.vrstaString) || str(n.vrstaOstalo)), latin(str(n.povrsina)).slice(0, 24)].filter(Boolean).join(" "))
@@ -322,7 +323,7 @@ async function summarizeReport(report: RawReport, fullName: string): Promise<{ s
 	}
 
 	if (pravoKoriscenja.length) {
-		summary.push(`Pravo korišćenja nepokretnosti: ${pravoKoriscenja.length} ${pravoKoriscenja.length === 1 ? "stavka" : "stavki"}`)
+		summary.push(`Pravo korišćenja nepokretnosti: ${n(pravoKoriscenja.length, "stavka")}`)
 	}
 
 	const stakes = [...akcije, ...udeli].map((a) => {

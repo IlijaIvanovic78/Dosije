@@ -1,0 +1,9 @@
+{
+	"_comment": "Names the media use for an institution besides its official name (aliases: searched and accepted as the institution) and longer names that contain it (exclude: a mention inside them is another institution, e.g. 'Infrastruktura železnice Srbije' is not 'Železnice Srbije'). Used by src/data/newsPlan.ts.",
+	"infrastruktura-zeleznice-srbije": { "aliases": ["IŽS"], "exclude": [] },
+	"srbijavoz": { "aliases": ["Srbija voz"], "exclude": [] },
+	"srbija-kargo": { "aliases": [], "exclude": [] },
+	"zeleznice-srbije": { "aliases": [], "exclude": ["Zavod za zdravstvenu zaštitu radnika Železnice Srbije"] },
+	"putevi-srbije": { "aliases": [], "exclude": [] },
+	"koridori-srbije": { "aliases": [], "exclude": [] }
+}

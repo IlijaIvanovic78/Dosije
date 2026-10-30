@@ -5,6 +5,8 @@
 import { formatRsd } from "../../data/analysis/procurement"
 import { formatDate } from "../../data/analysis/vd"
 import { asciiFold } from "../../data/translit"
+import { n } from "../../shared/plural"
+import { headline } from "../../shared/text"
 import { entityIdFor } from "../domain"
 import { clip } from "../util"
 
@@ -32,7 +34,10 @@ const APR_SEARCH = "https://pretraga2.apr.gov.rs/unifiedentitysearch"
 
 type Src = Record<string, unknown>
 const srcs = (list: unknown): Src[] => (Array.isArray(list) ? (list as Src[]) : [])
-const money = (n: unknown) => (typeof n === "number" ? formatRsd(n) : "nepoznata vrednost")
+const money = (v: unknown) => (typeof v === "number" ? formatRsd(v) : "nepoznata vrednost")
+/** Serbian number formats: 1.537 and 2,56. */
+const num = (v: number) => v.toLocaleString("sr-RS")
+const dec = (v: unknown) => String(v).replace(".", ",")
 const isHeadTitle = (p: string) => /(direktor|predsednik|na[čc]elnik)/i.test(p) && !/(skup[šs]tin|odbor|[čc]lan|zamenik|pomo[ćc]nik|savet|komisij)/i.test(p)
 
 // ─── Kadrovik ────────────────────────────────────────────────────────────────
@@ -77,7 +82,7 @@ async function* kadrovik(): AsyncGenerator<Step, string, ToolResult> {
 			const chain = vd.chain
 			yield call("add_finding", {
 				section: "rukovodstvo",
-				title: `Od ${formatDate(chain.since)} institucijom rukovode samo vršioci dužnosti (${chain.actingCount} uzastopna)`,
+				title: `Od ${formatDate(chain.since)} institucijom rukovode samo vršioci dužnosti (${n(chain.actingCount, "uzastopniVd")})`,
 				text: chain.explanation,
 				severity: "signal",
 				signalCode: "VD_LANAC",
@@ -113,7 +118,7 @@ async function* kadrovik(): AsyncGenerator<Step, string, ToolResult> {
 	if (vd?.overLimit) {
 		yield call("add_finding", {
 			section: "rukovodstvo",
-			title: `${head.name} je v.d. ${vd.months} meseci; zakonski maksimum je ${vd.rule?.maxMonths}`,
+			title: `${head.name} je v.d. ${n(vd.months, "mesec")}; zakonski maksimum je ${n(vd.rule?.maxMonths ?? 12, "mesec")}`,
 			text: String(vd.explanation),
 			severity: "signal",
 			signalCode: "VD_PREKO_ROKA",
@@ -122,7 +127,7 @@ async function* kadrovik(): AsyncGenerator<Step, string, ToolResult> {
 			claim: { subject: head.name, predicate: "datum_imenovanja", value: String(head.from) },
 		})
 	}
-	return `Kadrovik: proveren čelnik ${head.name} i ${others.length} druga funkcionera, rok v.d. i akt o imenovanju.`
+	return `Kadrovik: proveren čelnik ${head.name} i ${n(others.length, "funkcioner")}, rok v.d. i akt o imenovanju.`
 }
 
 // ─── Nabavke ─────────────────────────────────────────────────────────────────
@@ -154,8 +159,8 @@ async function* nabavke(): AsyncGenerator<Step, string, ToolResult> {
 
 	yield call("add_finding", {
 		section: "novac",
-		title: `Portal javnih nabavki: ${pr.totalContracts} ugovora, ukupno ${money(pr.totalValueRsd)}`,
-		text: `Prema Portalu javnih nabavki, ${pr.institution} je od ${formatDate(pr.period?.from)} do ${formatDate(pr.period?.to)} zaključila ${pr.totalContracts} ugovora ukupne vrednosti ${money(pr.totalValueRsd)} bez PDV (vrednosti pri potpisivanju${pr.contractsWithoutRsdValue ? `; ${pr.contractsWithoutRsdValue} ugovora u EUR nije preračunato` : ""}). Koncentracija po svim ponuđačima (HHI): ${pr.hhiSviPonudjaci}.`,
+		title: `Portal javnih nabavki: ${n(pr.totalContracts, "ugovor", num(pr.totalContracts))}, ukupno ${money(pr.totalValueRsd)}`,
+		text: `Prema Portalu javnih nabavki, ${pr.institution} je od ${formatDate(pr.period?.from)} do ${formatDate(pr.period?.to)} zaključila ${n(pr.totalContracts, "ugovor", num(pr.totalContracts))} ukupne vrednosti ${money(pr.totalValueRsd)} bez PDV (vrednosti pri potpisivanju${pr.contractsWithoutRsdValue ? `; za ${n(pr.contractsWithoutRsdValue, "ugovor")} u stranoj valuti nije izvršeno preračunavanje u RSD` : ""}). Koncentracija po svim ponuđačima (HHI): ${pr.hhiSviPonudjaci}.`,
 		severity: "info",
 		sources: jnSource,
 	})
@@ -165,8 +170,8 @@ async function* nabavke(): AsyncGenerator<Step, string, ToolResult> {
 		const big = nwp.najveci
 		yield call("add_finding", {
 			section: "novac",
-			title: `${nwp.count} pregovaračkih postupaka bez objavljivanja javnog poziva (${money(nwp.valueRsd)})`,
-			text: `Portal javnih nabavki beleži ${nwp.count} postupaka bez objavljivanja javnog poziva (${nwp.saUgovorom} sa objavljenim ugovorom ukupne vrednosti ${money(nwp.valueRsd)}, ${nwp.bezUgovora} bez objavljenog ugovora), što je ${nwp.sharePct}% ukupne vrednosti ugovora.${big ? ` Najveći: „${clip(big.title, 110)}“, ${big.supplier}, ${money(big.valueRsd)} (${formatDate(big.signedAt)}); pravni osnov naveden u postupku: ${big.procedure ?? "nije naveden"}.` : ""} Ovaj postupak je zakonski dozvoljen u propisanim slučajevima; razloge treba proveriti u odluci o pokretanju postupka.`,
+			title: `${n(nwp.count, "pregovarackiPostupak")} bez objavljivanja javnog poziva (${money(nwp.valueRsd)})`,
+			text: `Portal javnih nabavki beleži ${n(nwp.count, "postupak")} bez objavljivanja javnog poziva (sa objavljenim ugovorom ukupne vrednosti ${money(nwp.valueRsd)}: ${nwp.saUgovorom}; bez objavljenog ugovora: ${nwp.bezUgovora}), što je ${dec(nwp.sharePct)}% ukupne vrednosti ugovora.${big ? ` Najveći: „${clip(big.title, 110)}“, ${big.supplier}, ${money(big.valueRsd)} (${formatDate(big.signedAt)}); pravni osnov naveden u postupku: ${big.procedure ?? "nije naveden"}.` : ""} Ovaj postupak je zakonski dozvoljen u propisanim slučajevima; razloge treba proveriti u odluci o pokretanju postupka.`,
 			severity: nwp.sharePct > 10 ? "signal" : "paznja",
 			signalCode: "BEZ_OBJAVE",
 			sources: srcs(pr.sources).slice(0, 2),
@@ -178,8 +183,8 @@ async function* nabavke(): AsyncGenerator<Step, string, ToolResult> {
 		const top = cands.find((c) => c.pib === k.topPib)
 		yield call("add_finding", {
 			section: "novac",
-			title: `Koncentracija: ${k.topName} učestvuje u ${k.topSharePct}% vrednosti ugovora (bez državnih preduzeća)`,
-			text: `Bez državnih preduzeća i javnih sistema (EPS, NIS, fakulteti; izuzeto ${money(pr.javniSistemi?.iskljuceno)}) firma ${k.topName} učestvuje, samostalno ili u zajedničkim ponudama, u ugovorima vrednosti ${money(k.topValueRsd)}, što je ${k.topSharePct}% preostale vrednosti (${money(k.vrednostBezJavnihSistema)}); HHI po ponuđačima: ${k.hhiBezJavnihSistema}. Vrednost zajedničke ponude nije vrednost jedne firme. Koncentracija sama po sebi nije nepravilnost, ali je razlog za dalju proveru.`,
+			title: `Koncentracija: ${k.topName} učestvuje u ${dec(k.topSharePct)}% vrednosti ugovora (bez državnih preduzeća)`,
+			text: `Bez državnih preduzeća i javnih sistema (EPS, NIS, fakulteti; izuzeto ${money(pr.javniSistemi?.iskljuceno)}) firma ${k.topName} učestvuje, samostalno ili u zajedničkim ponudama, u ugovorima vrednosti ${money(k.topValueRsd)}, što je ${dec(k.topSharePct)}% preostale vrednosti (${money(k.vrednostBezJavnihSistema)}); HHI po ponuđačima: ${k.hhiBezJavnihSistema}. Vrednost zajedničke ponude nije vrednost jedne firme. Koncentracija sama po sebi nije nepravilnost, ali je razlog za dalju proveru.`,
 			severity: "paznja",
 			signalCode: "KONCENTRACIJA",
 			sources: jnSource,
@@ -201,7 +206,7 @@ async function* nabavke(): AsyncGenerator<Step, string, ToolResult> {
 			entityIds: cand ? [entityIdFor("firma", cand.name, { mb: cand.mb, pib: cand.pib })] : [],
 		})
 	}
-	return `Nabavke: ${pr.totalContracts} ugovora, ${cands.length} dobavljača prosleđeno na proveru, ${(iw?.links ?? []).length} oznaka Integrity Watch.`
+	return `Nabavke: ${n(pr.totalContracts, "ugovor", num(pr.totalContracts))}; za proveru izdvojeno ${n(cands.length, "dobavljac")}; oznaka Integrity Watch: ${(iw?.links ?? []).length}.`
 }
 
 // ─── Revizor ─────────────────────────────────────────────────────────────────
@@ -210,6 +215,31 @@ const AUDIT_KEYWORDS = /(v\.?\s?d\.?|vr[šs]ioc|nabavk|pregovara[čc]k|nije u sk
 
 function excerptScore(e: string): number {
 	return (e.match(new RegExp(AUDIT_KEYWORDS, "gi")) ?? []).length
+}
+
+// what a verbatim excerpt is about, for a headline ("DRI 2023 · javne nabavke: ...")
+const DRI_TOPICS: [RegExp, string][] = [
+	[/vr[šs]ioc\w* dužnosti|v\. ?d\./i, "vršioci dužnosti"],
+	[/javn\w+ nabavk|postupak\w* javn|pregovara[čc]k/i, "javne nabavke"],
+	[/ugovor\w* o (?:radu|obavljanju|delu)|rad van radnog|naknad\w+ po ugovor|zarad|porez na zarade|doprinos/i, "zarade i angažovanje"],
+	[/prihod\w* od putarin|putarin/i, "prihodi od putarine"],
+	[/oprem|osnovn\w+ sredstv|nekretnin|popis/i, "imovina i oprema"],
+	[/osoba sa invaliditetom|invalidit/i, "zapošljavanje osoba sa invaliditetom"],
+	[/finansijsk\w+ izve[šs]taj|bilans|računovodstv|racunovodstv|knjigovodstv/i, "finansijski izveštaji"],
+]
+
+/** Headline of a DRI excerpt: first clause of the verbatim sentence, cut at a word boundary (full excerpt stays in the text). */
+export function driTitle(year: number | string | undefined, kind: string | undefined, excerpt: string): string {
+	const body = excerpt
+		.replace(/…$/u, "")
+		.replace(/^(?:zaklju[čc]ak|nalaz|otkrivena nepravilnost|prioritet)\b[^:]{0,12}:\s*/i, "")
+		.replace(/^(?:međutim|pored toga|takođe|navedeno)\b,?\s*/i, "")
+		// an introductory clause ("U skladu sa ovim odredbama Zakona i Pravilnika, ...") says nothing: start at the statement
+		.replace(/^(?:u skladu sa|s obzirom (?:da|na)|kao što je|za|prema|zbog)\s[^,]{5,90},\s+(?=\p{L})/iu, "")
+	const cut = body.search(/,?\s+(?:što|jer|odnosno)\s|;|\s\(Napomena/i)
+	const clause = cut >= 40 ? body.slice(0, cut) : body
+	const topic = DRI_TOPICS.find(([re]) => re.test(excerpt))?.[1] ?? kind ?? "izveštaj"
+	return `DRI ${year ?? ""} · ${topic}: ${headline(clause, 90)}`.replace(/\s+/g, " ")
 }
 
 async function* revizor(): AsyncGenerator<Step, string, ToolResult> {
@@ -225,25 +255,25 @@ async function* revizor(): AsyncGenerator<Step, string, ToolResult> {
 
 	let findings = 0
 	for (const r of picks) {
-		const n = (yield call("dri_nalazi", { reportId: r.id })).json
-		if (!n || n.ok === false) continue
-		const label = `${n.kind ?? "izveštaj"} za ${n.year ?? "?"}. godinu`
-		const sources = srcs(n.sources)
-		if (n.opinion) {
-			const op = String(n.opinion)
+		const nz = (yield call("dri_nalazi", { reportId: r.id })).json
+		if (!nz || nz.ok === false) continue
+		const label = `${nz.kind ?? "izveštaj"} za ${nz.year ?? "?"}. godinu`
+		const sources = srcs(nz.sources)
+		if (nz.opinion) {
+			const op = String(nz.opinion)
 			const severity = /negativ|uzdr/i.test(op) ? "signal" : /rezerv/i.test(op) ? "paznja" : "info"
 			findings++
 			yield call("add_finding", {
 				section: "revizija",
-				title: `DRI (${n.year}): ${op}`,
-				text: `Državna revizorska institucija je u izveštaju (${label}, objavljen ${formatDate(n.publishedAt)}) izrazila ${op}.${n.excerpts?.[0] ? ` Izvod iz izveštaja: „${clip(String(n.excerpts[0]), 300)}“` : ""}`,
+				title: `DRI ${nz.year} · ${nz.kind ?? "revizija"}: ${op}`,
+				text: `Državna revizorska institucija je u izveštaju (${label}, objavljen ${formatDate(nz.publishedAt)}) izrazila ${op}.${nz.excerpts?.[0] ? ` Izvod iz izveštaja: „${clip(String(nz.excerpts[0]), 300)}“` : ""}`,
 				severity,
 				signalCode: "DRI_MISLJENJE",
 				sources,
 			})
 		}
-		const excerpts = ((n.excerpts ?? []) as string[])
-			.filter((e) => e.length > 80 && !/^po na[šs]em mi[šs]ljenju/i.test(e))
+		const excerpts = ((nz.excerpts ?? []) as string[])
+			.filter((e) => e.length > 80 && !/^po na[šs]em mi[šs]ljenju/i.test(e) && !/Preporuka broj|^Rezime\b|Rezime (?:nalaza|datih)/i.test(e))
 			.map((e) => ({ e, s: excerptScore(e) }))
 			.sort((a, b) => b.s - a.s)
 			.slice(0, 2)
@@ -251,20 +281,20 @@ async function* revizor(): AsyncGenerator<Step, string, ToolResult> {
 			findings++
 			yield call("add_finding", {
 				section: "revizija",
-				title: `DRI (${n.year}, ${n.kind}): ${clip(e, 85)}`,
-				text: `Prema izveštaju DRI (${label}, ${formatDate(n.publishedAt)}): „${clip(e, 360)}“ Doslovan izvod; pun kontekst je u izveštaju.`,
+				title: driTitle(nz.year, nz.kind, e),
+				text: `Prema izveštaju DRI (${label}, ${formatDate(nz.publishedAt)}): „${clip(e, 400)}“ Doslovan izvod; pun kontekst je u izveštaju.`,
 				severity: s > 0 ? "paznja" : "info",
 				signalCode: "DRI_NALAZ",
 				sources,
 			})
 		}
 	}
-	return `Revizor: pregledano ${picks.length} izveštaja DRI, upisano ${findings} nalaza.`
+	return `Revizor: pregledano ${n(picks.length, "izvestaj")} DRI, upisano ${n(findings, "nalaz")}.`
 }
 
 // ─── Mediji ──────────────────────────────────────────────────────────────────
 
-type Item = { title: string; outlet?: string; publishedAt?: string; url: string; snippet?: string }
+type Item = { title: string; outlet?: string; publishedAt?: string; url: string; snippet?: string; nalazi?: string }
 const itemSource = (i: Item) => ({ kind: "vesti", title: `${i.outlet ?? "Vesti"}: ${i.title}`, url: i.url, publishedAt: i.publishedAt })
 const stripOutlet = (s: string) => s.replace(/\s+/g, " ").trim()
 
@@ -283,22 +313,29 @@ function lead(text: string, max = 340): string {
 	return end > 80 ? cut.slice(0, end + 1) : clip(t, max)
 }
 
+const NEWS_RECENT_DAYS = 90
+const isRecent = (i: Item) => !!i.publishedAt && Date.now() - Date.parse(i.publishedAt) <= NEWS_RECENT_DAYS * 86400e3
+
+type Overview = { naslov: string; tekst: string; ukupno: number; izvori: Record<string, unknown>[] }
+
+/** The "Pregled medija" finding: counts, themes and 10-12 distinct articles, exactly as the search tool prepared them. */
+function pregledMedija(res: { pregled?: Overview } | undefined): Record<string, unknown> | undefined {
+	const p = res?.pregled
+	if (!p || !p.ukupno || !p.izvori?.length) return undefined
+	return { section: "mediji", title: p.naslov, text: p.tekst, severity: "info", sources: p.izvori }
+}
+
 async function* medijiInstitucija(c: PolicyCtx): AsyncGenerator<Step, string, ToolResult> {
 	const query = /upit: (.+?)\.(?: Fokus|$)/.exec(c.message)?.[1] ?? /Institucija: (.+?)[.(]/.exec(c.message)?.[1]?.trim() ?? "institucija"
-	const res = (yield call("vesti_pretraga", { query, days: 90 })).json
-	const wanted = asciiFold(query)
-		.split(/[^a-z0-9]+/)
-		.filter((w) => w.length > 3)
-		.map((w) => w.slice(0, 5))
-	const relevant = (i: Item) => {
-		const hay = asciiFold(`${i.title} ${i.snippet ?? ""}`)
-		return wanted.length === 0 || wanted.filter((w) => hay.includes(w)).length >= Math.ceil(wanted.length * 0.6)
-	}
-	const items = ((res?.items ?? []) as Item[]).filter((i) => i.url && relevant(i))
-	if (!items.length) return "Mediji: nema članaka o instituciji u traženom periodu."
+	const res = (yield call("vesti_pretraga", { query, days: 365, tip: "institucija" })).json
+	if (!res || res.ok === false) return `Mediji: pretraga nije dostupna (${clip(String(res?.error ?? "nema rezultata"), 80)}).`
+	const items = ((res.clanci ?? []) as Item[]).filter((i) => i.url)
+	const review = pregledMedija(res)
+	if (!items.length && !review) return "Mediji: nema članaka o instituciji u poslednjih 12 meseci."
 	let written = 0
 
-	const union = items.find((i) => /sindikat|ostavk/i.test(asciiFold(i.title)))
+	// a claim about the institution needs the institution in the headline (an article that mentions it only in passing is not "about" it)
+	const union = items.find((i) => isRecent(i) && i.nalazi === "naslov" && /sindikat|ostavk/i.test(asciiFold(i.title)))
 	if (union) {
 		const art = (yield call("vest_tekst", { url: union.url })).json
 		const body = art?.text ? lead(String(art.text)) : (union.snippet ?? union.title)
@@ -316,12 +353,12 @@ async function* medijiInstitucija(c: PolicyCtx): AsyncGenerator<Step, string, To
 		yield call("add_finding", { ...finding, sources: [itemSource(union)] })
 	}
 
+	// specific claims come from the last 90 days: the title or snippet must carry a reason to flag it
+	const keyword = /(ugovor|nabavk|dodelila|tender|direktor|ostavk|revizij|nepravilnost)/i
 	const others = items
-		.filter((i) => i !== union)
-		.map((i) => ({ i, s: (/(ugovor|nabavk|dodelila|tender|direktor|ostavk|revizij|nepravilnost)/i.test(asciiFold(i.title)) ? 2 : 0) + (i.publishedAt ?? "").slice(0, 4) }))
-		.sort((a, b) => String(b.s).localeCompare(String(a.s)))
+		.filter((i) => i !== union && isRecent(i) && i.nalazi === "naslov" && keyword.test(asciiFold(i.title)))
+		.sort((a, b) => (b.publishedAt ?? "").localeCompare(a.publishedAt ?? ""))
 		.slice(0, 2)
-		.map((x) => x.i)
 	for (const i of others) {
 		written++
 		const important = /(ugovor|nabavk|dodelila|tender|nepravilnost|revizij)/i.test(asciiFold(i.title))
@@ -334,31 +371,24 @@ async function* medijiInstitucija(c: PolicyCtx): AsyncGenerator<Step, string, To
 			sources: [itemSource(i)],
 		})
 	}
-	return `Mediji: pregledano ${items.length} članaka, upisano ${written + 1} nalaza (uključujući ponovljen pokušaj sa izvorom).`
+	if (review) {
+		written++
+		yield call("add_finding", review)
+	}
+	return `Mediji: ${n(res.pregled?.ukupno ?? items.length, "clanak")} u poslednjih 12 meseci, upisano ${n(written, "nalaz")}${union ? " (uključujući ponovljen pokušaj sa izvorom)" : ""}.`
 }
 
 async function* medijiOsoba(c: PolicyCtx): AsyncGenerator<Step, string, ToolResult> {
 	const name = /Osoba: (.+?)(?:,| \(|\. )/.exec(c.message)?.[1]?.trim() ?? ""
 	if (!name) return "Mediji: nije zadato ime osobe."
 	yield call("dosije_pregled")
-	const res = (yield call("vesti_pretraga", { query: name, days: 730 })).json
+	// same names are common: the tool keeps an article only if it names the person AND the institution (or the owned firm)
+	const firm = /vlasnik firme (.+?)(?:\. |, |$)/.exec(c.message)?.[1]?.trim()
+	const res = (yield call("vesti_pretraga", { query: name, days: 730, tip: "osoba", kontekst: firm ? [firm] : [] })).json
 	if (!res || res.ok === false) return `Mediji: pretraga za ${name} nije dostupna (${clip(String(res?.error ?? "nema rezultata"), 80)}).`
-	const items = ((res.items ?? []) as Item[]).filter((i) => i.url)
-	if (!items.length) return `Mediji: nema članaka o osobi ${name} u poslednje 2 godine.`
-	// same names are common: an article counts only if it names the person AND the institution (or the owned firm)
-	const stems = (s: string) =>
-		asciiFold(s)
-			.split(/[^a-z0-9]+/)
-			.filter((w) => w.length > 3)
-			.map((w) => w.slice(0, 5))
-	const nameStems = stems(name)
-	const contexts = [/Institucija: (.+?)\. Pretraži/.exec(c.message)?.[1], /vlasnik firme (.+?)(?:\. |, |$)/.exec(c.message)?.[1]].filter((x): x is string => !!x).map(stems)
-	const about = items.filter((i) => {
-		const hay = asciiFold(`${i.title} ${i.snippet ?? ""}`)
-		if (!nameStems.every((w) => hay.includes(w))) return false
-		return contexts.some((ctx) => ctx.length > 0 && ctx.filter((w) => hay.includes(w)).length >= Math.ceil(ctx.length * 0.6))
-	})
-	if (!about.length) return `Mediji · ${name}: nijedan od ${items.length} članaka ne povezuje osobu sa institucijom (imenjaci su česti), pa nema nalaza.`
+	const about = ((res.clanci ?? []) as Item[]).filter((i) => i.url)
+	const review = pregledMedija(res)
+	if (!about.length && !review) return `Mediji · ${name}: nema članaka koji pominju osobu zajedno sa institucijom ili firmom u poslednje 2 godine (imenjaci su česti), pa nema nalaza.`
 	let written = 0
 	const withFunction = about.find((i) => /generaln\w*\s+direktor/.test(asciiFold(i.title)) && !/\bv\.?\s?d\b|vrsilac|vrsioc/.test(asciiFold(i.title)))
 	if (withFunction) {
@@ -385,17 +415,11 @@ async function* medijiOsoba(c: PolicyCtx): AsyncGenerator<Step, string, ToolResu
 			sources: [itemSource(recent)],
 		})
 	}
-	if (!written && about[0]) {
+	if (review) {
 		written++
-		yield call("add_finding", {
-			section: "mediji",
-			title: clip(about[0].title, 150),
-			text: `${about[0].outlet ?? "Medij"} (${formatDate(about[0].publishedAt)}) pominje ${name}: ${clip(about[0].snippet ?? about[0].title, 220)}`,
-			severity: "info",
-			sources: [itemSource(about[0])],
-		})
+		yield call("add_finding", review)
 	}
-	return `Mediji · ${name}: ${items.length} članaka, upisano ${written} nalaza.`
+	return `Mediji · ${name}: ${n(res.pregled?.ukupno ?? about.length, "clanak")}, upisano ${n(written, "nalaz")}.`
 }
 
 async function* mediji(c: PolicyCtx): AsyncGenerator<Step, string, ToolResult> {
@@ -422,12 +446,14 @@ async function* firme(c: PolicyCtx): AsyncGenerator<Step, string, ToolResult> {
 	const iw = srcs(fs.sources).filter((s) => s.kind === "integrity_watch")
 	const p = fs.profile
 	const ct = fs.contracts
+	// a bidder that only appears in joint bids has no name on the portal: show the registered APR name instead of "PIB ..."
+	const shown = /^(PIB|MB) \d+$/.test(name) && p?.name ? clip(p.name, 40) : name
 	const profileText = p
-		? `Prema APR (otvoreni podaci): ${p.name} je osnovana ${formatDate(p.founded)}, opština ${p.municipality ?? "nepoznata"}, šifra delatnosti ${p.activityCode ?? "nepoznata"}, ${p.employees ?? "nepoznat broj"} zaposlenih${p.revenueRsd !== undefined ? `, ukupni prihodi za ${p.revenueYear}. godinu ${money(p.revenueRsd)}` : ""}. `
+		? `Prema APR (otvoreni podaci): ${p.name} je osnovana ${formatDate(p.founded)}, opština ${p.municipality ?? "nepoznata"}, šifra delatnosti ${p.activityCode ?? "nepoznata"}, ${typeof p.employees === "number" ? n(p.employees, "zaposleni") : "broj zaposlenih nije poznat"}${p.revenueRsd !== undefined ? `, ukupni prihodi za ${p.revenueYear}. godinu ${money(p.revenueRsd)}` : ""}. `
 		: `Firma nije pouzdano pronađena u APR otvorenim podacima (${fs.matchBasis}), pa profil nije prikazan. `
 	yield call("add_finding", {
 		section: "firme",
-		title: `${name}: ${ct.count} ugovora sa institucijom${p ? `, osnovana ${formatDate(p.founded)}` : ""}`,
+		title: `${shown}: ${n(ct.count, "ugovor")} sa institucijom${p ? `, osnovana ${formatDate(p.founded)}` : ""}`,
 		text: `${profileText}Ugovori sa institucijom prema Portalu javnih nabavki: ${ct.count} (${ct.soleCount} samostalno, ${ct.jointCount} u zajedničkim ponudama), samostalno ${money(ct.soleValueRsd)}, vrednost zajedničkih ponuda ${money(ct.jointValueRsd)} (nije vrednost ove firme); prvi ugovor ${formatDate(ct.first)}, poslednji ${formatDate(ct.last)}.`,
 		severity: "info",
 		sources: jn.length ? jn : srcs(fs.sources),
@@ -435,7 +461,7 @@ async function* firme(c: PolicyCtx): AsyncGenerator<Step, string, ToolResult> {
 	for (const s of (fs.signals ?? []) as { code: string; label: string; severity: string; detail: string }[]) {
 		yield call("add_finding", {
 			section: "firme",
-			title: `${name}: ${s.label}`,
+			title: `${shown}: ${s.label}`,
 			text: s.detail,
 			severity: s.severity,
 			signalCode: s.code,
@@ -454,7 +480,7 @@ async function* firme(c: PolicyCtx): AsyncGenerator<Step, string, ToolResult> {
 			entityName: name,
 		})
 	}
-	return `Firme: provereno ${name}, ${(fs.signals ?? []).length} signala${rank <= 2 ? ", postavljeno pitanje o vlasnicima" : ""}.`
+	return `Firme: provereno ${name}, ${n((fs.signals ?? []).length, "signal")}${rank <= 2 ? ", postavljeno pitanje o vlasnicima" : ""}.`
 }
 
 async function* firmeOdgovor(question: string, answer: string): AsyncGenerator<Step, string, ToolResult> {
@@ -519,7 +545,7 @@ async function* imovina(c: PolicyCtx): AsyncGenerator<Step, string, ToolResult> 
 			sources: srcs(r.sources).slice(0, 1),
 		})
 	}
-	return `Imovina: ${reports.length} izveštaja za ${name}.`
+	return `Imovina: ${n(reports.length, "izvestaj")} za ${name}.`
 }
 
 // ─── Provera ─────────────────────────────────────────────────────────────────
@@ -539,8 +565,8 @@ async function* provera(c: PolicyCtx): AsyncGenerator<Step, string, ToolResult> 
 
 	if (acasMatches.length || pepMatches.length) {
 		const parts: string[] = []
-		if (acasMatches.length) parts.push(`${a.distinctPersons} osoba u registru funkcionera ACAS (npr. ${acasMatches[0].position}, ${clip(acasMatches[0].institution, 60)})`)
-		if (pepMatches.length) parts.push(`${pepMatches.length} unosa na PEP listama (${[...new Set(pepMatches.map((x) => x.dataset))].join(", ")})`)
+		if (acasMatches.length) parts.push(`${n(a.distinctPersons, "osoba")} u registru funkcionera ACAS (npr. ${acasMatches[0].position}, ${clip(acasMatches[0].institution, 60)})`)
+		if (pepMatches.length) parts.push(`${n(pepMatches.length, "unos")} na PEP listama (${[...new Set(pepMatches.map((x) => x.dataset))].join(", ")})`)
 		yield call("add_finding", {
 			section: "firme",
 			title: `Ime vlasnika firme ${clip(firm, 40)} poklapa se sa registrom: ${name}`,
@@ -570,8 +596,8 @@ async function* urednik(): AsyncGenerator<Step, string, ToolResult> {
 	const top = (pr.preporucenTopSignala ?? []) as { id: string; title: string }[]
 	const conflicts = (pr.konflikti ?? []) as unknown[]
 	const lede =
-		`U dosijeu o ${pr.institucija} tim agenata je prikupio ${c.nalaza} nalaza: ${c.signala} označeno kao signal za proveru i ${c.pazni} kao pažnja` +
-		`${conflicts.length ? `; ${conflicts.length} konflikt(a) između izvora rešeno je u korist zvaničnog registra` : ""}. ` +
+		`U dosijeu o ${pr.institucija} tim agenata je prikupio ${n(c.nalaza, "nalaz")} (signala za proveru: ${c.signala}, pažnje: ${c.pazni})` +
+		`${conflicts.length ? `; konflikata između izvora, rešenih u korist zvaničnog registra: ${conflicts.length}` : ""}. ` +
 		(top.length ? `Najvažnije za proveru: ${top.slice(0, 3).map((t) => clip(t.title, 80)).join("; ")}. ` : "") +
 		"To su signali za verifikaciju, ne zaključci; odluku donosi novinar."
 	yield call("napisi_sazetak", {
@@ -586,7 +612,7 @@ async function* urednik(): AsyncGenerator<Step, string, ToolResult> {
 
 async function* trijaza(): AsyncGenerator<Step, string, ToolResult> {
 	const r = (yield call("trijaza_rukovodstvo")).json
-	const n = (yield call("trijaza_nabavke")).json
+	const nb = (yield call("trijaza_nabavke")).json
 	const d = (yield call("trijaza_revizija")).json
 
 	const lead =
@@ -595,16 +621,16 @@ async function* trijaza(): AsyncGenerator<Step, string, ToolResult> {
 			: !r.head
 				? "U registru ACAS nema tekućeg čelnika"
 				: r.head.acting && r.vd?.months !== undefined
-					? `Prema ACAS, čelnik je v.d. ${r.vd.months} meseci (zakonski rok ${r.vd.limitMonths})${r.vd.overLimit ? ", signal za proveru" : ""}${r.chain ? `; institucijom rukovode samo v.d. već ${r.chain.totalMonths} meseci (${r.chain.actingCount} uzastopna)` : ""}`
+					? `Prema ACAS, čelnik je v.d. ${n(r.vd.months, "mesec")} (zakonski rok ${n(r.vd.limitMonths, "mesec")})${r.vd.overLimit ? ", signal za proveru" : ""}${r.chain ? `; institucijom rukovode samo v.d. već ${n(r.chain.totalMonths, "mesec")} (${n(r.chain.actingCount, "uzastopniVd")})` : ""}`
 					: "Prema ACAS, čelnik nije vođen kao v.d."
 	const buy =
-		n?.ok === false || !n
+		nb?.ok === false || !nb
 			? "Portal javnih nabavki nije odgovorio"
-			: `Portal javnih nabavki: ${n.contracts} ugovora, ${n.bezObjavljivanja?.count ?? 0} postupaka bez objave javnog poziva (${String(n.bezObjavljivanja?.sharePct ?? 0).replace(".", ",")}% vrednosti)`
+			: `Portal javnih nabavki: ${n(nb.contracts, "ugovor", num(nb.contracts))}, ${n(nb.bezObjavljivanja?.count ?? 0, "postupak")} bez objave javnog poziva (${dec(nb.bezObjavljivanja?.sharePct ?? 0)}% vrednosti)`
 	const audit =
 		d?.ok === false || !d
 			? "DRI nije odgovorio."
-			: `DRI: ${d.total} izveštaja o reviziji${d.saRezervomIliNegativna ? `, ${d.saRezervomIliNegativna} sa rezervom ili negativnih mišljenja među poznatim` : ""}.`
+			: `DRI: ${n(d.total, "izvestaj")} o reviziji${d.saRezervomIliNegativna ? `; među poznatim mišljenjima: ${d.saRezervomIliNegativna} sa rezervom ili negativnih` : ""}.`
 	yield call("upisi_red", { summary: `${lead}. ${buy}; ${audit}` })
 	return "Trijaža završena: red je upisan u Mapu prioriteta."
 }

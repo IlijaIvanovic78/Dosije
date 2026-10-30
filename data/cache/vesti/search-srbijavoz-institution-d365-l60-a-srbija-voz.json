@@ -1,0 +1,1278 @@
+{
+ "source": "vesti",
+ "key": "search-srbijavoz-institution-d365-l60-a-srbija-voz",
+ "retrievedAt": "2026-10-30T16:13:36.766Z",
+ "meta": {
+  "query": "Srbijavoz",
+  "kind": "institution",
+  "days": 365,
+  "limit": 60,
+  "aliases": [
+   "Srbija voz"
+  ],
+  "context": [],
+  "exclude": []
+ },
+ "data": [
+  {
+   "id": "2b5f93867f4b",
+   "title": "Srbijavoz izdvaja 40 miliona dinara za proveru vozova Soko",
+   "url": "https://biznis.rs/vesti/srbijavoz-izdvaja-40-miliona-dinara-za-proveru-vozova-soko/",
+   "outlet": "Biznis.rs",
+   "publishedAt": "2026-10-29T07:45:18.000Z",
+   "matched": [
+    "Srbijavoz"
+   ],
+   "provider": "google-news-rss",
+   "verified": "naslov",
+   "score": 35,
+   "source": {
+    "kind": "vesti",
+    "title": "Biznis.rs: Srbijavoz izdvaja 40 miliona dinara za proveru vozova Soko",
+    "url": "https://biznis.rs/vesti/srbijavoz-izdvaja-40-miliona-dinara-za-proveru-vozova-soko/",
+    "retrievedAt": "2026-10-30T16:13:12.382Z",
+    "publishedAt": "2026-10-29T07:45:18.000Z",
+    "official": false
+   }
+  },
+  {
+   "id": "4626c9b3925a",
+   "title": "Kreni-Promeni: Srbijavoz da obezbedi dodatne polaske u četvrtak",
+   "url": "https://n1info.rs/vesti/kreni-promeni-srbijavoz-da-obezbedi-dodatne-polaske-u-cetvrtak/",
+   "outlet": "N1",
+   "publishedAt": "2026-10-20T07:00:00.000Z",
+   "matched": [
+    "Srbijavoz"
+   ],
+   "provider": "google-news-rss",
+   "verified": "naslov",
+   "score": 35,
+   "source": {
+    "kind": "vesti",
+    "title": "N1: Kreni-Promeni: Srbijavoz da obezbedi dodatne polaske u četvrtak",
+    "url": "https://n1info.rs/vesti/kreni-promeni-srbijavoz-da-obezbedi-dodatne-polaske-u-cetvrtak/",
+    "retrievedAt": "2026-10-30T16:13:12.382Z",
+    "publishedAt": "2026-10-20T07:00:00.000Z",
+    "official": false
+   }
+  },
+  {
+   "id": "bc4b91ef4e0c",
+   "title": "Novi red vožnje Srbijavoza od 19. oktobra: Ovo su detaljni polasci i dolasci",
+   "url": "https://www.blic.rs/vesti/drustvo/novi-red-voznje-srbijavoza-od-19-oktobra-ovo-su-detaljni-polasci-i-dolasci/ne81wgw",
+   "outlet": "Blic",
+   "publishedAt": "2026-10-19T07:00:00.000Z",
+   "matched": [
+    "Srbijavoz"
+   ],
+   "provider": "google-news-rss",
+   "verified": "naslov",
+   "score": 35,
+   "source": {
+    "kind": "vesti",
+    "title": "Blic: Novi red vožnje Srbijavoza od 19. oktobra: Ovo su detaljni polasci i dolasci",
+    "url": "https://www.blic.rs/vesti/drustvo/novi-red-voznje-srbijavoza-od-19-oktobra-ovo-su-detaljni-polasci-i-dolasci/ne81wgw",
+    "retrievedAt": "2026-10-30T16:13:12.382Z",
+    "publishedAt": "2026-10-19T07:00:00.000Z",
+    "official": false
+   }
+  },
+  {
+   "id": "73ce22cf9069",
+   "title": "Danas: Srbijavoz za današnji skup SNS-a u Novom Sadu uveo vanredne vozove",
+   "url": "https://n1info.rs/vesti/danas-srbijavoz-za-danasnji-skup-sns-a-u-novom-sadu-uveo-vanredne-vozove/",
+   "outlet": "N1",
+   "publishedAt": "2026-10-16T07:00:00.000Z",
+   "matched": [
+    "Srbijavoz"
+   ],
+   "provider": "google-news-rss",
+   "verified": "naslov",
+   "score": 35,
+   "source": {
+    "kind": "vesti",
+    "title": "N1: Danas: Srbijavoz za današnji skup SNS-a u Novom Sadu uveo vanredne vozove",
+    "url": "https://n1info.rs/vesti/danas-srbijavoz-za-danasnji-skup-sns-a-u-novom-sadu-uveo-vanredne-vozove/",
+    "retrievedAt": "2026-10-30T16:13:12.382Z",
+    "publishedAt": "2026-10-16T07:00:00.000Z",
+    "official": false
+   }
+  },
+  {
+   "id": "8d72fb591630",
+   "title": "Danas saznaje: Srbijavoz za skup SNS-a u Novom Sadu uvodi vanredne vozove",
+   "url": "https://www.danas.rs/vesti/ekonomija/srbijavoz-skup-sns-novi-sad-vozovi/",
+   "outlet": "Danas",
+   "publishedAt": "2026-10-15T07:00:00.000Z",
+   "matched": [
+    "Srbijavoz"
+   ],
+   "provider": "google-news-rss",
+   "verified": "naslov",
+   "score": 35,
+   "source": {
+    "kind": "vesti",
+    "title": "Danas: Danas saznaje: Srbijavoz za skup SNS-a u Novom Sadu uvodi vanredne vozove",
+    "url": "https://www.danas.rs/vesti/ekonomija/srbijavoz-skup-sns-novi-sad-vozovi/",
+    "retrievedAt": "2026-10-30T16:13:12.382Z",
+    "publishedAt": "2026-10-15T07:00:00.000Z",
+    "official": false
+   }
+  },
+  {
+   "id": "5e9d5359c3f4",
+   "title": "Srbijavoz: Od 19. oktobra menjaju se stajališta za Soko i Inter regio vozove",
+   "url": "https://n1info.rs/vesti/srbijavoz-promena-stajalista-soko-i-inter-regio-voz/",
+   "outlet": "N1",
+   "publishedAt": "2026-10-15T07:00:00.000Z",
+   "matched": [
+    "Srbijavoz"
+   ],
+   "provider": "google-news-rss",
+   "verified": "naslov",
+   "score": 35,
+   "source": {
+    "kind": "vesti",
+    "title": "N1: Srbijavoz: Od 19. oktobra menjaju se stajališta za Soko i Inter regio vozove",
+    "url": "https://n1info.rs/vesti/srbijavoz-promena-stajalista-soko-i-inter-regio-voz/",
+    "retrievedAt": "2026-10-30T16:13:12.382Z",
+    "publishedAt": "2026-10-15T07:00:00.000Z",
+    "official": false
+   }
+  },
+  {
+   "id": "572e9fc8ac4f",
+   "title": "„Србијавоз” демантује медије: цене карата се не мењају, од 12. октобра само нови ред вожње",
+   "url": "https://www.politika.rs/scc/clanak/792126/srbijavoz-demantuje-medije-cene-karata-se-ne-menjaju-od-12-oktobra-samo-novi-red-voznje",
+   "outlet": "Politika",
+   "publishedAt": "2026-10-09T07:00:00.000Z",
+   "matched": [
+    "Srbijavoz"
+   ],
+   "provider": "google-news-rss",
+   "verified": "naslov",
+   "score": 35,
+   "source": {
+    "kind": "vesti",
+    "title": "Politika: „Србијавоз” демантује медије: цене карата се не мењају, од 12. октобра само нови ред вожње",
+    "url": "https://www.politika.rs/scc/clanak/792126/srbijavoz-demantuje-medije-cene-karata-se-ne-menjaju-od-12-oktobra-samo-novi-red-voznje",
+    "retrievedAt": "2026-10-30T16:13:12.382Z",
+    "publishedAt": "2026-10-09T07:00:00.000Z",
+    "official": false
+   }
+  },
+  {
+   "id": "95ec4b0a5aef",
+   "title": "Srbijavoz: Nije došlo do poskupljenja voznih karata",
+   "url": "https://www.danas.rs/vesti/ekonomija/srbijavoz-nije-doslo-do-poskupljenja-voznih-karata/",
+   "outlet": "Danas",
+   "publishedAt": "2026-10-09T07:00:00.000Z",
+   "matched": [
+    "Srbijavoz"
+   ],
+   "provider": "google-news-rss",
+   "verified": "naslov",
+   "score": 35,
+   "source": {
+    "kind": "vesti",
+    "title": "Danas: Srbijavoz: Nije došlo do poskupljenja voznih karata",
+    "url": "https://www.danas.rs/vesti/ekonomija/srbijavoz-nije-doslo-do-poskupljenja-voznih-karata/",
+    "retrievedAt": "2026-10-30T16:13:12.382Z",
+    "publishedAt": "2026-10-09T07:00:00.000Z",
+    "official": false
+   }
+  },
+  {
+   "id": "08ebc22987f7",
+   "title": "Srbijavoz demantuje navode o povećanju cene voznih karata",
+   "url": "https://www.021.rs/novi-sad/vesti/457645/srbijavoz-demantuje-navode-o-povecanju-cene-voznih-karata",
+   "outlet": "021.rs",
+   "publishedAt": "2026-10-09T07:00:00.000Z",
+   "matched": [
+    "Srbijavoz"
+   ],
+   "provider": "google-news-rss",
+   "verified": "naslov",
+   "score": 35,
+   "source": {
+    "kind": "vesti",
+    "title": "021.rs: Srbijavoz demantuje navode o povećanju cene voznih karata",
+    "url": "https://www.021.rs/novi-sad/vesti/457645/srbijavoz-demantuje-navode-o-povecanju-cene-voznih-karata",
+    "retrievedAt": "2026-10-30T16:13:12.382Z",
+    "publishedAt": "2026-10-09T07:00:00.000Z",
+    "official": false
+   }
+  },
+  {
+   "id": "8265006396c1",
+   "title": "Srbijavoz stipendira učenike železničkih škola i nudi posao nakon školovanja",
+   "url": "https://www.rtv.rs/sr_lat/mladi/konkursi/srbijavoz-stipendira-ucenike-zeleznickih-skola-i-nudi-posao-nakon-skolovanja_1745390.html",
+   "outlet": "Радио-телевизија Војводине",
+   "publishedAt": "2026-09-22T07:00:00.000Z",
+   "matched": [
+    "Srbijavoz"
+   ],
+   "provider": "google-news-rss",
+   "verified": "naslov",
+   "score": 35,
+   "source": {
+    "kind": "vesti",
+    "title": "Радио-телевизија Војводине: Srbijavoz stipendira učenike železničkih škola i nudi posao nakon školovanja",
+    "url": "https://www.rtv.rs/sr_lat/mladi/konkursi/srbijavoz-stipendira-ucenike-zeleznickih-skola-i-nudi-posao-nakon-skolovanja_1745390.html",
+    "retrievedAt": "2026-10-30T16:13:12.382Z",
+    "publishedAt": "2026-09-22T07:00:00.000Z",
+    "official": false
+   }
+  },
+  {
+   "id": "14914375734b",
+   "title": "Srbijavoz: Otežan putnički saobraćaj zato što su ukradeni kablovi na železničkoj stanici Novi Beograd",
+   "url": "https://www.danas.rs/vesti/ekonomija/srbijavoz-ukradeni-kablovi/",
+   "outlet": "Danas",
+   "publishedAt": "2026-09-09T07:00:00.000Z",
+   "matched": [
+    "Srbijavoz"
+   ],
+   "provider": "google-news-rss",
+   "verified": "naslov",
+   "score": 35,
+   "source": {
+    "kind": "vesti",
+    "title": "Danas: Srbijavoz: Otežan putnički saobraćaj zato što su ukradeni kablovi na železničkoj stanici Novi Beograd",
+    "url": "https://www.danas.rs/vesti/ekonomija/srbijavoz-ukradeni-kablovi/",
+    "retrievedAt": "2026-10-30T16:13:12.382Z",
+    "publishedAt": "2026-09-09T07:00:00.000Z",
+    "official": false
+   }
+  },
+  {
+   "id": "281dc8d9f938",
+   "title": "„Србијавоз“ продужава летњу сезону возова за Бар до краја септембра",
+   "url": "https://infoera.rs/sr-cyrl/srbijavoz-produzava-letnju-sezonu-vozova-za-bar-do-kraja-septembra",
+   "outlet": "Infoera",
+   "publishedAt": "2026-08-26T07:00:00.000Z",
+   "matched": [
+    "Srbijavoz"
+   ],
+   "provider": "google-news-rss",
+   "verified": "naslov",
+   "score": 35,
+   "source": {
+    "kind": "vesti",
+    "title": "Infoera: „Србијавоз“ продужава летњу сезону возова за Бар до краја септембра",
+    "url": "https://infoera.rs/sr-cyrl/srbijavoz-produzava-letnju-sezonu-vozova-za-bar-do-kraja-septembra",
+    "retrievedAt": "2026-10-30T16:13:12.382Z",
+    "publishedAt": "2026-08-26T07:00:00.000Z",
+    "official": false
+   }
+  },
+  {
+   "id": "22084c165dca",
+   "title": "Srbijavoz će liniju do Budimpešte opremiti sa šest Siemens vozova",
+   "url": "https://www.danas.rs/vesti/ekonomija/srbijavoz-budimpesta-siemens/",
+   "outlet": "Danas",
+   "publishedAt": "2026-08-19T07:00:00.000Z",
+   "matched": [
+    "Srbijavoz"
+   ],
+   "provider": "google-news-rss",
+   "verified": "naslov",
+   "score": 35,
+   "source": {
+    "kind": "vesti",
+    "title": "Danas: Srbijavoz će liniju do Budimpešte opremiti sa šest Siemens vozova",
+    "url": "https://www.danas.rs/vesti/ekonomija/srbijavoz-budimpesta-siemens/",
+    "retrievedAt": "2026-10-30T16:13:12.382Z",
+    "publishedAt": "2026-08-19T07:00:00.000Z",
+    "official": false
+   }
+  },
+  {
+   "id": "75af63f612d2",
+   "title": "„Србијавоз” купује шест нових Сиеменсових локомотива",
+   "url": "https://www.politika.rs/scc/clanak/779301/srbijavoz-kupuje-sest-novih-siemensovih-lokomotiva",
+   "outlet": "Politika",
+   "publishedAt": "2026-08-18T07:00:00.000Z",
+   "matched": [
+    "Srbijavoz"
+   ],
+   "provider": "google-news-rss",
+   "verified": "naslov",
+   "score": 35,
+   "source": {
+    "kind": "vesti",
+    "title": "Politika: „Србијавоз” купује шест нових Сиеменсових локомотива",
+    "url": "https://www.politika.rs/scc/clanak/779301/srbijavoz-kupuje-sest-novih-siemensovih-lokomotiva",
+    "retrievedAt": "2026-10-30T16:13:12.382Z",
+    "publishedAt": "2026-08-18T07:00:00.000Z",
+    "official": false
+   }
+  },
+  {
+   "id": "e02aa95e8343",
+   "title": "Srbijavoz povećao cene karata: Putnici se žale na kašnjenja i uslugu",
+   "url": "https://novaekonomija.rs/price-i-analize/srbijavoz-poskupljenje-karata-usluga-putnici",
+   "outlet": "Nova Ekonomija",
+   "publishedAt": "2026-07-31T07:00:00.000Z",
+   "matched": [
+    "Srbijavoz"
+   ],
+   "provider": "google-news-rss",
+   "verified": "naslov",
+   "score": 35,
+   "source": {
+    "kind": "vesti",
+    "title": "Nova Ekonomija: Srbijavoz povećao cene karata: Putnici se žale na kašnjenja i uslugu",
+    "url": "https://novaekonomija.rs/price-i-analize/srbijavoz-poskupljenje-karata-usluga-putnici",
+    "retrievedAt": "2026-10-30T16:13:12.382Z",
+    "publishedAt": "2026-07-31T07:00:00.000Z",
+    "official": false
+   }
+  },
+  {
+   "id": "437f18947740",
+   "title": "(ANKETA) Poskupele karte u \"Srbijavozu\": Putovanje vozom skuplje, ali i dalje jeftinije od autobusa",
+   "url": "https://n1info.rs/vesti/anketa-srbijavoz-cene-karte-poskupljenje/",
+   "outlet": "N1",
+   "publishedAt": "2026-07-17T07:00:00.000Z",
+   "matched": [
+    "Srbijavoz"
+   ],
+   "provider": "google-news-rss",
+   "verified": "naslov",
+   "score": 35,
+   "source": {
+    "kind": "vesti",
+    "title": "N1: (ANKETA) Poskupele karte u \"Srbijavozu\": Putovanje vozom skuplje, ali i dalje jeftinije od autobusa",
+    "url": "https://n1info.rs/vesti/anketa-srbijavoz-cene-karte-poskupljenje/",
+    "retrievedAt": "2026-10-30T16:13:12.382Z",
+    "publishedAt": "2026-07-17T07:00:00.000Z",
+    "official": false
+   }
+  },
+  {
+   "id": "8dc06b36333f",
+   "title": "Poskupele karte za voz: „Srbijavoz“ objavio za šta cene ostaju iste",
+   "url": "https://www.danas.rs/vesti/ekonomija/poskupele-karte-za-voz-srbijavoz/",
+   "outlet": "Danas",
+   "publishedAt": "2026-07-15T07:00:00.000Z",
+   "matched": [
+    "Srbijavoz"
+   ],
+   "provider": "google-news-rss",
+   "verified": "naslov",
+   "score": 35,
+   "source": {
+    "kind": "vesti",
+    "title": "Danas: Poskupele karte za voz: „Srbijavoz“ objavio za šta cene ostaju iste",
+    "url": "https://www.danas.rs/vesti/ekonomija/poskupele-karte-za-voz-srbijavoz/",
+    "retrievedAt": "2026-10-30T16:13:12.382Z",
+    "publishedAt": "2026-07-15T07:00:00.000Z",
+    "official": false
+   }
+  },
+  {
+   "id": "2df26e20bde4",
+   "title": "Srbijavoz: Od 15. jula poskupljenje voznih karata",
+   "url": "https://www.danas.rs/vesti/ekonomija/srbijavoz-od-15-jula-poskupljenje-voznih-karata/",
+   "outlet": "Danas",
+   "publishedAt": "2026-07-11T07:00:00.000Z",
+   "matched": [
+    "Srbijavoz"
+   ],
+   "provider": "google-news-rss",
+   "verified": "naslov",
+   "score": 35,
+   "source": {
+    "kind": "vesti",
+    "title": "Danas: Srbijavoz: Od 15. jula poskupljenje voznih karata",
+    "url": "https://www.danas.rs/vesti/ekonomija/srbijavoz-od-15-jula-poskupljenje-voznih-karata/",
+    "retrievedAt": "2026-10-30T16:13:12.382Z",
+    "publishedAt": "2026-07-11T07:00:00.000Z",
+    "official": false
+   }
+  },
+  {
+   "id": "d999737137a3",
+   "title": "Srbijavoz: Od 15. jula poskupljuju vozne karte",
+   "url": "https://novaekonomija.rs/vesti-iz-zemlje/srbijavoz-od-15-jula-poskupljuju-vozne-karte",
+   "outlet": "Nova Ekonomija",
+   "publishedAt": "2026-07-11T07:00:00.000Z",
+   "matched": [
+    "Srbijavoz"
+   ],
+   "provider": "google-news-rss",
+   "verified": "naslov",
+   "score": 35,
+   "source": {
+    "kind": "vesti",
+    "title": "Nova Ekonomija: Srbijavoz: Od 15. jula poskupljuju vozne karte",
+    "url": "https://novaekonomija.rs/vesti-iz-zemlje/srbijavoz-od-15-jula-poskupljuju-vozne-karte",
+    "retrievedAt": "2026-10-30T16:13:12.382Z",
+    "publishedAt": "2026-07-11T07:00:00.000Z",
+    "official": false
+   }
+  },
+  {
+   "id": "c13d8bb66aa0",
+   "title": "Srbijavoz objavio: Poskupljuju karte za voz od 15. jula",
+   "url": "https://www.danas.rs/vesti/ekonomija/srbijavoz-objavio-poskupljuju-karte-za-voz-od-15-jula/",
+   "outlet": "Danas",
+   "publishedAt": "2026-06-10T07:00:00.000Z",
+   "matched": [
+    "Srbijavoz"
+   ],
+   "provider": "google-news-rss",
+   "verified": "naslov",
+   "score": 35,
+   "source": {
+    "kind": "vesti",
+    "title": "Danas: Srbijavoz objavio: Poskupljuju karte za voz od 15. jula",
+    "url": "https://www.danas.rs/vesti/ekonomija/srbijavoz-objavio-poskupljuju-karte-za-voz-od-15-jula/",
+    "retrievedAt": "2026-10-30T16:13:12.382Z",
+    "publishedAt": "2026-06-10T07:00:00.000Z",
+    "official": false
+   }
+  },
+  {
+   "id": "a1b0f48ec048",
+   "title": "Srbijavoz: Vozovi na liniji Zaječar-Majdanpek ponovo staju u Boru",
+   "url": "https://www.blic.rs/vesti/drustvo/srbijavoz-vozovi-na-liniji-zajecar-majdanpek-ponovo-staju-u-boru/gjl8z9j",
+   "outlet": "Blic",
+   "publishedAt": "2026-06-08T07:00:00.000Z",
+   "matched": [
+    "Srbijavoz"
+   ],
+   "provider": "google-news-rss",
+   "verified": "naslov",
+   "score": 35,
+   "source": {
+    "kind": "vesti",
+    "title": "Blic: Srbijavoz: Vozovi na liniji Zaječar-Majdanpek ponovo staju u Boru",
+    "url": "https://www.blic.rs/vesti/drustvo/srbijavoz-vozovi-na-liniji-zajecar-majdanpek-ponovo-staju-u-boru/gjl8z9j",
+    "retrievedAt": "2026-10-30T16:13:12.382Z",
+    "publishedAt": "2026-06-08T07:00:00.000Z",
+    "official": false
+   }
+  },
+  {
+   "id": "68e9e52b60e9",
+   "title": "Srbijavoz: U toku velika modernizacija železnice",
+   "url": "https://forbes.n1info.rs/vesti/srbijavoz-u-toku-velika-modernizacija-zeleznice/",
+   "outlet": "Forbes Srbija",
+   "publishedAt": "2026-06-01T07:00:00.000Z",
+   "matched": [
+    "Srbijavoz"
+   ],
+   "provider": "google-news-rss",
+   "verified": "naslov",
+   "score": 35,
+   "source": {
+    "kind": "vesti",
+    "title": "Forbes Srbija: Srbijavoz: U toku velika modernizacija železnice",
+    "url": "https://forbes.n1info.rs/vesti/srbijavoz-u-toku-velika-modernizacija-zeleznice/",
+    "retrievedAt": "2026-10-30T16:13:12.382Z",
+    "publishedAt": "2026-06-01T07:00:00.000Z",
+    "official": false
+   }
+  },
+  {
+   "id": "a558b1c79de0",
+   "title": "Srbijavoz od Dojče banke uzima kredit od skoro 264 miliona evra za nabavku 30 vozova za BG voz",
+   "url": "https://www.danas.rs/vesti/ekonomija/srbijavoz-od-dojce-banke-uzima-kredit-od-skoro-264-miliona-evra-za-nabavku-30-vozova-za-bg-voz/",
+   "outlet": "Danas",
+   "publishedAt": "2026-05-29T07:00:00.000Z",
+   "matched": [
+    "Srbijavoz"
+   ],
+   "provider": "google-news-rss",
+   "verified": "naslov",
+   "score": 35,
+   "source": {
+    "kind": "vesti",
+    "title": "Danas: Srbijavoz od Dojče banke uzima kredit od skoro 264 miliona evra za nabavku 30 vozova za BG voz",
+    "url": "https://www.danas.rs/vesti/ekonomija/srbijavoz-od-dojce-banke-uzima-kredit-od-skoro-264-miliona-evra-za-nabavku-30-vozova-za-bg-voz/",
+    "retrievedAt": "2026-10-30T16:13:12.382Z",
+    "publishedAt": "2026-05-29T07:00:00.000Z",
+    "official": false
+   }
+  },
+  {
+   "id": "16601011540b",
+   "title": "Srbijavoz nabavlja 30 novih CAF vozova, garancija države za kredit od 5,5 milijardi",
+   "url": "https://www.rtv.rs/sr_lat/ekonomija/aktuelno/srbijavoz-nabavlja-30-novih-caf-vozova-garancija-drzave-za-kredit-od-5-5-milijardi_1717320.html",
+   "outlet": "Радио-телевизија Војводине",
+   "publishedAt": "2026-05-26T07:00:00.000Z",
+   "matched": [
+    "Srbijavoz"
+   ],
+   "provider": "google-news-rss",
+   "verified": "naslov",
+   "score": 35,
+   "source": {
+    "kind": "vesti",
+    "title": "Радио-телевизија Војводине: Srbijavoz nabavlja 30 novih CAF vozova, garancija države za kredit od 5,5 milijardi",
+    "url": "https://www.rtv.rs/sr_lat/ekonomija/aktuelno/srbijavoz-nabavlja-30-novih-caf-vozova-garancija-drzave-za-kredit-od-5-5-milijardi_1717320.html",
+    "retrievedAt": "2026-10-30T16:13:12.382Z",
+    "publishedAt": "2026-05-26T07:00:00.000Z",
+    "official": false
+   }
+  },
+  {
+   "id": "94bf7a78dbd2",
+   "title": "Srbijavoz prošle godine u minusu od 1,8 milijardi dinara: Velike investicije, još veći troškovi, loš imidž — šta je još uticalo na pad?",
+   "url": "https://www.danas.rs/vesti/ekonomija/srbijavoz-minus-troskovi/",
+   "outlet": "Danas",
+   "publishedAt": "2026-05-26T07:00:00.000Z",
+   "matched": [
+    "Srbijavoz"
+   ],
+   "provider": "google-news-rss",
+   "verified": "naslov",
+   "score": 35,
+   "source": {
+    "kind": "vesti",
+    "title": "Danas: Srbijavoz prošle godine u minusu od 1,8 milijardi dinara: Velike investicije, još veći troškovi, loš imidž — šta je još uticalo na pad?",
+    "url": "https://www.danas.rs/vesti/ekonomija/srbijavoz-minus-troskovi/",
+    "retrievedAt": "2026-10-30T16:13:12.382Z",
+    "publishedAt": "2026-05-26T07:00:00.000Z",
+    "official": false
+   }
+  },
+  {
+   "id": "2e9918db383f",
+   "title": "Srbijavoz nastavlja sa obustavom vozova tokom protesta: Da li putnici imaju pravo na refundaciju?",
+   "url": "https://www.danas.rs/vesti/ekonomija/srbijavoz-nastavlja-sa-obustavom-vozova-tokom-protesta-da-li-putnici-imaju-pravo-na-refundaciju/",
+   "outlet": "Danas",
+   "publishedAt": "2026-05-25T07:00:00.000Z",
+   "matched": [
+    "Srbijavoz"
+   ],
+   "provider": "google-news-rss",
+   "verified": "naslov",
+   "score": 35,
+   "source": {
+    "kind": "vesti",
+    "title": "Danas: Srbijavoz nastavlja sa obustavom vozova tokom protesta: Da li putnici imaju pravo na refundaciju?",
+    "url": "https://www.danas.rs/vesti/ekonomija/srbijavoz-nastavlja-sa-obustavom-vozova-tokom-protesta-da-li-putnici-imaju-pravo-na-refundaciju/",
+    "retrievedAt": "2026-10-30T16:13:12.382Z",
+    "publishedAt": "2026-05-25T07:00:00.000Z",
+    "official": false
+   }
+  },
+  {
+   "id": "7021888b4446",
+   "title": "Srbijavoz nabavlja 30 novih vozova za EXPO 2027",
+   "url": "https://novaekonomija.rs/vesti-iz-zemlje/srbijavoz-nabavlja-30-novih-vozova-za-expo-2027",
+   "outlet": "Nova Ekonomija",
+   "publishedAt": "2026-05-25T07:00:00.000Z",
+   "matched": [
+    "Srbijavoz"
+   ],
+   "provider": "google-news-rss",
+   "verified": "naslov",
+   "score": 35,
+   "source": {
+    "kind": "vesti",
+    "title": "Nova Ekonomija: Srbijavoz nabavlja 30 novih vozova za EXPO 2027",
+    "url": "https://novaekonomija.rs/vesti-iz-zemlje/srbijavoz-nabavlja-30-novih-vozova-za-expo-2027",
+    "retrievedAt": "2026-10-30T16:13:12.382Z",
+    "publishedAt": "2026-05-25T07:00:00.000Z",
+    "official": false
+   }
+  },
+  {
+   "id": "733bca09dd79",
+   "title": "Srbijavoz se zadužuje 46,9 mil EUR za nabavku 30 novih CAF elektromotornih vozova za beogradsku železnicu - Država garantuje za kredit",
+   "url": "https://www.ekapija.com/news/5553876/srbijavoz-se-zaduzuje-469-mil-eur-za-nabavku-30-caf-novih-elektromotornih",
+   "outlet": "eKapija",
+   "publishedAt": "2026-05-24T07:00:00.000Z",
+   "matched": [
+    "Srbijavoz"
+   ],
+   "provider": "google-news-rss",
+   "verified": "naslov",
+   "score": 35,
+   "source": {
+    "kind": "vesti",
+    "title": "eKapija: Srbijavoz se zadužuje 46,9 mil EUR za nabavku 30 novih CAF elektromotornih vozova za beogradsku železnicu - Država garantuje za kredit",
+    "url": "https://www.ekapija.com/news/5553876/srbijavoz-se-zaduzuje-469-mil-eur-za-nabavku-30-caf-novih-elektromotornih",
+    "retrievedAt": "2026-10-30T16:13:12.382Z",
+    "publishedAt": "2026-05-24T07:00:00.000Z",
+    "official": false
+   }
+  },
+  {
+   "id": "f2e0d86e54a9",
+   "title": "\"Srbijavoz\": Normalizovan saobraćaj svih vozova",
+   "url": "https://www.blic.rs/vesti/drustvo/srbijavoz-normalizovan-saobracaj-vozova/xs7hrbe",
+   "outlet": "Blic",
+   "publishedAt": "2026-05-24T07:00:00.000Z",
+   "matched": [
+    "Srbijavoz"
+   ],
+   "provider": "google-news-rss",
+   "verified": "naslov",
+   "score": 35,
+   "source": {
+    "kind": "vesti",
+    "title": "Blic: \"Srbijavoz\": Normalizovan saobraćaj svih vozova",
+    "url": "https://www.blic.rs/vesti/drustvo/srbijavoz-normalizovan-saobracaj-vozova/xs7hrbe",
+    "retrievedAt": "2026-10-30T16:13:12.382Z",
+    "publishedAt": "2026-05-24T07:00:00.000Z",
+    "official": false
+   }
+  },
+  {
+   "id": "c87fb1d461ad",
+   "title": "Srbijavoz: Obustavljeni svi polasci vozova",
+   "url": "https://biznis.rs/vesti/srbijavoz-obustavljeni-svi-polasci-vozova/",
+   "outlet": "Biznis.rs",
+   "publishedAt": "2026-05-23T07:00:00.000Z",
+   "matched": [
+    "Srbijavoz"
+   ],
+   "provider": "google-news-rss",
+   "verified": "naslov",
+   "score": 35,
+   "source": {
+    "kind": "vesti",
+    "title": "Biznis.rs: Srbijavoz: Obustavljeni svi polasci vozova",
+    "url": "https://biznis.rs/vesti/srbijavoz-obustavljeni-svi-polasci-vozova/",
+    "retrievedAt": "2026-10-30T16:13:12.382Z",
+    "publishedAt": "2026-05-23T07:00:00.000Z",
+    "official": false
+   }
+  },
+  {
+   "id": "a4ce802d12bc",
+   "title": "Srbijavoz: Do daljeg obustavljen saobraćaj svih vozova; Anonimna dojava o bombama u svim vozovima i depoima",
+   "url": "https://www.rtv.rs/sr_lat/drustvo/srbijavoz-do-daljeg-obustavljen-saobracaj-svih-vozova_1716657.html",
+   "outlet": "Радио-телевизија Војводине",
+   "publishedAt": "2026-05-23T07:00:00.000Z",
+   "matched": [
+    "Srbijavoz"
+   ],
+   "provider": "google-news-rss",
+   "verified": "naslov",
+   "score": 35,
+   "source": {
+    "kind": "vesti",
+    "title": "Радио-телевизија Војводине: Srbijavoz: Do daljeg obustavljen saobraćaj svih vozova; Anonimna dojava o bombama u svim vozovima i depoima",
+    "url": "https://www.rtv.rs/sr_lat/drustvo/srbijavoz-do-daljeg-obustavljen-saobracaj-svih-vozova_1716657.html",
+    "retrievedAt": "2026-10-30T16:13:12.382Z",
+    "publishedAt": "2026-05-23T07:00:00.000Z",
+    "official": false
+   }
+  },
+  {
+   "id": "eb9db6f788c0",
+   "title": "Srbijavoz: Obustavljeni svi vozovi",
+   "url": "https://n1info.rs/vesti/srbijavoz-obustavljeni-svi-vozovi-do-daljeg/",
+   "outlet": "N1",
+   "publishedAt": "2026-05-23T07:00:00.000Z",
+   "matched": [
+    "Srbijavoz"
+   ],
+   "provider": "google-news-rss",
+   "verified": "naslov",
+   "score": 35,
+   "source": {
+    "kind": "vesti",
+    "title": "N1: Srbijavoz: Obustavljeni svi vozovi",
+    "url": "https://n1info.rs/vesti/srbijavoz-obustavljeni-svi-vozovi-do-daljeg/",
+    "retrievedAt": "2026-10-30T16:13:12.382Z",
+    "publishedAt": "2026-05-23T07:00:00.000Z",
+    "official": false
+   }
+  },
+  {
+   "id": "1b74fb066731",
+   "title": "Srbijavoz bez objašnjenja obustavio sav saobraćaj \"do daljnjeg\"",
+   "url": "https://novaekonomija.rs/vesti-iz-zemlje/srbijavoz-bez-objasnjenja-obustavio-sav-saobracaj-do-daljnjeg",
+   "outlet": "Nova Ekonomija",
+   "publishedAt": "2026-05-23T07:00:00.000Z",
+   "matched": [
+    "Srbijavoz"
+   ],
+   "provider": "google-news-rss",
+   "verified": "naslov",
+   "score": 35,
+   "source": {
+    "kind": "vesti",
+    "title": "Nova Ekonomija: Srbijavoz bez objašnjenja obustavio sav saobraćaj \"do daljnjeg\"",
+    "url": "https://novaekonomija.rs/vesti-iz-zemlje/srbijavoz-bez-objasnjenja-obustavio-sav-saobracaj-do-daljnjeg",
+    "retrievedAt": "2026-10-30T16:13:12.382Z",
+    "publishedAt": "2026-05-23T07:00:00.000Z",
+    "official": false
+   }
+  },
+  {
+   "id": "fad2133dfd48",
+   "title": "Srbijavoz: Obustavljen saobraćaj svih vozova do daljeg",
+   "url": "https://www.ekapija.com/news/5553865/srbijavoz-obustavljen-saobracaj-svih-vozova-do-daljeg",
+   "outlet": "eKapija",
+   "publishedAt": "2026-05-23T07:00:00.000Z",
+   "matched": [
+    "Srbijavoz"
+   ],
+   "provider": "google-news-rss",
+   "verified": "naslov",
+   "score": 35,
+   "source": {
+    "kind": "vesti",
+    "title": "eKapija: Srbijavoz: Obustavljen saobraćaj svih vozova do daljeg",
+    "url": "https://www.ekapija.com/news/5553865/srbijavoz-obustavljen-saobracaj-svih-vozova-do-daljeg",
+    "retrievedAt": "2026-10-30T16:13:12.382Z",
+    "publishedAt": "2026-05-23T07:00:00.000Z",
+    "official": false
+   }
+  },
+  {
+   "id": "9ec575d1f076",
+   "title": "„Srbijavoz“ obustavio saobraćaj svih vozova",
+   "url": "https://www.juznevesti.com/drustvo/srbijavoz-obustavio-saobracaj-svih-vozova/",
+   "outlet": "Južne vesti",
+   "publishedAt": "2026-05-23T07:00:00.000Z",
+   "matched": [
+    "Srbijavoz"
+   ],
+   "provider": "google-news-rss",
+   "verified": "naslov",
+   "score": 35,
+   "source": {
+    "kind": "vesti",
+    "title": "Južne vesti: „Srbijavoz“ obustavio saobraćaj svih vozova",
+    "url": "https://www.juznevesti.com/drustvo/srbijavoz-obustavio-saobracaj-svih-vozova/",
+    "retrievedAt": "2026-10-30T16:13:12.382Z",
+    "publishedAt": "2026-05-23T07:00:00.000Z",
+    "official": false
+   }
+  },
+  {
+   "id": "02c95fe4948d",
+   "title": "Na dan studentskog protesta Srbijavoz saopštava da su obustavljeni svi vozovi",
+   "url": "https://vreme.com/vesti/srbijavoz-zeleznicki-saobracaj-obustava-studentski-protest/",
+   "outlet": "Vreme",
+   "publishedAt": "2026-05-23T07:00:00.000Z",
+   "matched": [
+    "Srbijavoz"
+   ],
+   "provider": "google-news-rss",
+   "verified": "naslov",
+   "score": 35,
+   "source": {
+    "kind": "vesti",
+    "title": "Vreme: Na dan studentskog protesta Srbijavoz saopštava da su obustavljeni svi vozovi",
+    "url": "https://vreme.com/vesti/srbijavoz-zeleznicki-saobracaj-obustava-studentski-protest/",
+    "retrievedAt": "2026-10-30T16:13:12.382Z",
+    "publishedAt": "2026-05-23T07:00:00.000Z",
+    "official": false
+   }
+  },
+  {
+   "id": "8857584b38a5",
+   "title": "\"Србијавоз\": Oбустављен саобраћај свих возова до даљег",
+   "url": "https://www.rts.rs/vesti/drustvo/5956778/srbijavoz-obustavljen-saobracaj-svih-vozova-do-daljeg.html",
+   "outlet": "РТС",
+   "publishedAt": "2026-05-23T07:00:00.000Z",
+   "matched": [
+    "Srbijavoz"
+   ],
+   "provider": "google-news-rss",
+   "verified": "naslov",
+   "score": 35,
+   "source": {
+    "kind": "vesti",
+    "title": "РТС: \"Србијавоз\": Oбустављен саобраћај свих возова до даљег",
+    "url": "https://www.rts.rs/vesti/drustvo/5956778/srbijavoz-obustavljen-saobracaj-svih-vozova-do-daljeg.html",
+    "retrievedAt": "2026-10-30T16:13:12.382Z",
+    "publishedAt": "2026-05-23T07:00:00.000Z",
+    "official": false
+   }
+  },
+  {
+   "id": "8b187938b639",
+   "title": "Pitali smo \"Srbija voz\" zašto ne idu vozovi danas i odgovor je očekivan",
+   "url": "https://nova.rs/vesti/drustvo/pitali-smo-srbija-voz-zasto-ne-idu-vozovi-danas-i-odgovor-je-ocekivan/",
+   "outlet": "Nova.rs",
+   "publishedAt": "2026-05-23T07:00:00.000Z",
+   "matched": [
+    "Srbija voz"
+   ],
+   "provider": "google-news-rss",
+   "verified": "naslov",
+   "score": 35,
+   "source": {
+    "kind": "vesti",
+    "title": "Nova.rs: Pitali smo \"Srbija voz\" zašto ne idu vozovi danas i odgovor je očekivan",
+    "url": "https://nova.rs/vesti/drustvo/pitali-smo-srbija-voz-zasto-ne-idu-vozovi-danas-i-odgovor-je-ocekivan/",
+    "retrievedAt": "2026-10-30T16:13:12.382Z",
+    "publishedAt": "2026-05-23T07:00:00.000Z",
+    "official": false
+   }
+  },
+  {
+   "id": "9619b69d9a13",
+   "title": "\"Srbijavoz\": Obustavljen saobraćaj svih vozova",
+   "url": "https://www.blic.rs/vesti/drustvo/srbijavoz-obustavljen-saobracaj-svih-vozova/fbpggy7",
+   "outlet": "Blic",
+   "publishedAt": "2026-05-23T07:00:00.000Z",
+   "matched": [
+    "Srbijavoz"
+   ],
+   "provider": "google-news-rss",
+   "verified": "naslov",
+   "score": 35,
+   "source": {
+    "kind": "vesti",
+    "title": "Blic: \"Srbijavoz\": Obustavljen saobraćaj svih vozova",
+    "url": "https://www.blic.rs/vesti/drustvo/srbijavoz-obustavljen-saobracaj-svih-vozova/fbpggy7",
+    "retrievedAt": "2026-10-30T16:13:12.382Z",
+    "publishedAt": "2026-05-23T07:00:00.000Z",
+    "official": false
+   }
+  },
+  {
+   "id": "614bbd5bfe3a",
+   "title": "\"Србијавоз\": Кондуктерка у возу препознала несталу девојчицу",
+   "url": "https://www.rts.rs/vesti/drustvo/5940323/srbijavoz-sistem-pronadji-me-nestali-tinjdzeri.html",
+   "outlet": "РТС",
+   "publishedAt": "2026-05-03T07:00:00.000Z",
+   "matched": [
+    "Srbijavoz"
+   ],
+   "provider": "google-news-rss",
+   "verified": "naslov",
+   "score": 35,
+   "source": {
+    "kind": "vesti",
+    "title": "РТС: \"Србијавоз\": Кондуктерка у возу препознала несталу девојчицу",
+    "url": "https://www.rts.rs/vesti/drustvo/5940323/srbijavoz-sistem-pronadji-me-nestali-tinjdzeri.html",
+    "retrievedAt": "2026-10-30T16:13:12.382Z",
+    "publishedAt": "2026-05-03T07:00:00.000Z",
+    "official": false
+   }
+  },
+  {
+   "id": "b051e9e44aa0",
+   "title": "Srbijavoz: Greška mašinovođe uzrok jučerašnjeg incidenta u stanici Lovćenac-Mali Iđoš",
+   "url": "https://rtv.rs/sr_lat/drustvo/srbijavoz-greska-masinovodje-uzrok-jucerasnjeg-incidenta-u-stanici-lovcenac-mali-idjos_1705599.html",
+   "outlet": "Радио-телевизија Војводине",
+   "publishedAt": "2026-04-06T07:00:00.000Z",
+   "matched": [
+    "Srbijavoz"
+   ],
+   "provider": "google-news-rss",
+   "verified": "naslov",
+   "score": 35,
+   "source": {
+    "kind": "vesti",
+    "title": "Радио-телевизија Војводине: Srbijavoz: Greška mašinovođe uzrok jučerašnjeg incidenta u stanici Lovćenac-Mali Iđoš",
+    "url": "https://rtv.rs/sr_lat/drustvo/srbijavoz-greska-masinovodje-uzrok-jucerasnjeg-incidenta-u-stanici-lovcenac-mali-idjos_1705599.html",
+    "retrievedAt": "2026-10-30T16:13:12.382Z",
+    "publishedAt": "2026-04-06T07:00:00.000Z",
+    "official": false
+   }
+  },
+  {
+   "id": "fae254c2a6fe",
+   "title": "Srbija voz: Olujno vreme zaustavilo vozove ka Subotici",
+   "url": "https://www.glas-javnosti.rs/vesti/drustvo/srbija-voz-olujno-vreme-zaustavilo-vozove-ka-subotici",
+   "outlet": "Glas javnosti",
+   "publishedAt": "2026-01-20T08:00:00.000Z",
+   "matched": [
+    "Srbija voz"
+   ],
+   "provider": "google-news-rss",
+   "verified": "naslov",
+   "score": 35,
+   "source": {
+    "kind": "vesti",
+    "title": "Glas javnosti: Srbija voz: Olujno vreme zaustavilo vozove ka Subotici",
+    "url": "https://www.glas-javnosti.rs/vesti/drustvo/srbija-voz-olujno-vreme-zaustavilo-vozove-ka-subotici",
+    "retrievedAt": "2026-10-30T16:13:12.382Z",
+    "publishedAt": "2026-01-20T08:00:00.000Z",
+    "official": false
+   }
+  },
+  {
+   "id": "cfb1627a503f",
+   "title": "Produžen tender Srbijavoza za nabavku šest lokomotiva",
+   "url": "https://biznis.rs/vesti/produzen-tender-srbijavoza-za-nabavku-sest-lokomotiva/",
+   "outlet": "Biznis.rs",
+   "publishedAt": "2025-12-24T08:00:00.000Z",
+   "matched": [
+    "Srbijavoz"
+   ],
+   "provider": "google-news-rss",
+   "verified": "naslov",
+   "score": 35,
+   "source": {
+    "kind": "vesti",
+    "title": "Biznis.rs: Produžen tender Srbijavoza za nabavku šest lokomotiva",
+    "url": "https://biznis.rs/vesti/produzen-tender-srbijavoza-za-nabavku-sest-lokomotiva/",
+    "retrievedAt": "2026-10-30T16:13:12.382Z",
+    "publishedAt": "2025-12-24T08:00:00.000Z",
+    "official": false
+   }
+  },
+  {
+   "id": "c4986ddb4b0d",
+   "title": "Srbijavoz objavio novi red vožnje, važiće do 12. decembra 2026.",
+   "url": "https://biznis.rs/vesti/srbija/srbijavoz-objavio-novi-red-voznje-vazice-do-12-decembra-2026/",
+   "outlet": "Biznis.rs",
+   "publishedAt": "2025-12-13T08:00:00.000Z",
+   "matched": [
+    "Srbijavoz"
+   ],
+   "provider": "google-news-rss",
+   "verified": "naslov",
+   "score": 35,
+   "source": {
+    "kind": "vesti",
+    "title": "Biznis.rs: Srbijavoz objavio novi red vožnje, važiće do 12. decembra 2026.",
+    "url": "https://biznis.rs/vesti/srbija/srbijavoz-objavio-novi-red-voznje-vazice-do-12-decembra-2026/",
+    "retrievedAt": "2026-10-30T16:13:12.382Z",
+    "publishedAt": "2025-12-13T08:00:00.000Z",
+    "official": false
+   }
+  },
+  {
+   "id": "3531e4997423",
+   "title": "Srbijavoz u istom danu dodelio dva ugovora firmi Jovane Joksimović: Na spisku njenih klijenata i Telekom",
+   "url": "https://nova.rs/vesti/biznis/srbijavoz-dodelio-dva-ugovora-firmi-jovane-joksimovic/",
+   "outlet": "Nova.rs",
+   "publishedAt": "2025-11-20T08:00:00.000Z",
+   "matched": [
+    "Srbijavoz"
+   ],
+   "provider": "google-news-rss",
+   "verified": "naslov",
+   "score": 35,
+   "source": {
+    "kind": "vesti",
+    "title": "Nova.rs: Srbijavoz u istom danu dodelio dva ugovora firmi Jovane Joksimović: Na spisku njenih klijenata i Telekom",
+    "url": "https://nova.rs/vesti/biznis/srbijavoz-dodelio-dva-ugovora-firmi-jovane-joksimovic/",
+    "retrievedAt": "2026-10-30T16:13:12.382Z",
+    "publishedAt": "2025-11-20T08:00:00.000Z",
+    "official": false
+   }
+  },
+  {
+   "id": "b1a104d57d0b",
+   "title": "Srbijavoz: Počelo uspostavljanje saobraćaja vozova za prevoz putnika",
+   "url": "https://www.rtv.rs/sr_lat/drustvo/srbijavoz-pocelo-uspostavljanje-saobracaja-vozova-za-prevoz-putnika_1668698.html",
+   "outlet": "Радио-телевизија Војводине",
+   "publishedAt": "2025-11-03T08:00:00.000Z",
+   "matched": [
+    "Srbijavoz"
+   ],
+   "provider": "google-news-rss",
+   "verified": "naslov",
+   "score": 35,
+   "source": {
+    "kind": "vesti",
+    "title": "Радио-телевизија Војводине: Srbijavoz: Počelo uspostavljanje saobraćaja vozova za prevoz putnika",
+    "url": "https://www.rtv.rs/sr_lat/drustvo/srbijavoz-pocelo-uspostavljanje-saobracaja-vozova-za-prevoz-putnika_1668698.html",
+    "retrievedAt": "2026-10-30T16:13:12.382Z",
+    "publishedAt": "2025-11-03T08:00:00.000Z",
+    "official": false
+   }
+  },
+  {
+   "id": "485367f71d06",
+   "title": "Srbijavoz: Zbog dojava o bombama obustavljen saobraćaj svih vozova za prevoz putnika",
+   "url": "https://rtv.rs/sr_lat/drustvo/srbijavoz-zbog-dojava-o-bombama-obustavljen-saobracaj-svih-vozova-za-prevoz-putnika_1668092.html",
+   "outlet": "Радио-телевизија Војводине",
+   "publishedAt": "2025-10-31T07:00:00.000Z",
+   "matched": [
+    "Srbijavoz"
+   ],
+   "provider": "google-news-rss",
+   "verified": "naslov",
+   "score": 35,
+   "source": {
+    "kind": "vesti",
+    "title": "Радио-телевизија Војводине: Srbijavoz: Zbog dojava o bombama obustavljen saobraćaj svih vozova za prevoz putnika",
+    "url": "https://rtv.rs/sr_lat/drustvo/srbijavoz-zbog-dojava-o-bombama-obustavljen-saobracaj-svih-vozova-za-prevoz-putnika_1668092.html",
+    "retrievedAt": "2026-10-30T16:13:12.382Z",
+    "publishedAt": "2025-10-31T07:00:00.000Z",
+    "official": false
+   }
+  },
+  {
+   "id": "09296e68af9c",
+   "title": "Srbijavoz potvrdio: Vozovi širom Srbije obustavljeni zbog dojave o bombama",
+   "url": "https://www.danas.rs/vesti/ekonomija/vozovi-iz-beograda-do-novog-sada-obustavljeni/",
+   "outlet": "Danas",
+   "publishedAt": "2025-10-31T07:00:00.000Z",
+   "matched": [
+    "Srbijavoz"
+   ],
+   "provider": "google-news-rss",
+   "verified": "naslov",
+   "score": 35,
+   "source": {
+    "kind": "vesti",
+    "title": "Danas: Srbijavoz potvrdio: Vozovi širom Srbije obustavljeni zbog dojave o bombama",
+    "url": "https://www.danas.rs/vesti/ekonomija/vozovi-iz-beograda-do-novog-sada-obustavljeni/",
+    "retrievedAt": "2026-10-30T16:13:12.382Z",
+    "publishedAt": "2025-10-31T07:00:00.000Z",
+    "official": false
+   }
+  },
+  {
+   "id": "d036ed7d30af",
+   "title": "KO ĆE ODRŽAVATI „SOKOLA“? Srbijavoz traži sertifikovane stručnjake za dijagnostiku i popravke u zemunskom depou",
+   "url": "https://nsreporter.rs/2026/10/ko-ce-odrzavati-sokola-srbijavoz-trazi-sertifikovane-strucnjake-za-dijagnostiku-i-popravke-u-zemunskom-depou/",
+   "outlet": "NS Reporter",
+   "publishedAt": "2026-10-29T02:50:14.000Z",
+   "matched": [
+    "Srbijavoz"
+   ],
+   "provider": "google-news-rss",
+   "verified": "naslov",
+   "score": 34,
+   "source": {
+    "kind": "vesti",
+    "title": "NS Reporter: KO ĆE ODRŽAVATI „SOKOLA“? Srbijavoz traži sertifikovane stručnjake za dijagnostiku i popravke u zemunskom depou",
+    "url": "https://nsreporter.rs/2026/10/ko-ce-odrzavati-sokola-srbijavoz-trazi-sertifikovane-strucnjake-za-dijagnostiku-i-popravke-u-zemunskom-depou/",
+    "retrievedAt": "2026-10-30T16:13:12.382Z",
+    "publishedAt": "2026-10-29T02:50:14.000Z",
+    "official": false
+   }
+  },
+  {
+   "id": "d9e5e790c6d2",
+   "title": "Litas i Srbija voz danas saobraćaju po redovnom redu vožnje",
+   "url": "https://boom93.rs/article/61700/litas-i-srbija-voz-danas-saobracaju-po-redovnom-redu-voznje",
+   "outlet": "Boom93",
+   "publishedAt": "2026-10-22T07:00:00.000Z",
+   "matched": [
+    "Srbija voz"
+   ],
+   "provider": "google-news-rss",
+   "verified": "naslov",
+   "score": 34,
+   "source": {
+    "kind": "vesti",
+    "title": "Boom93: Litas i Srbija voz danas saobraćaju po redovnom redu vožnje",
+    "url": "https://boom93.rs/article/61700/litas-i-srbija-voz-danas-saobracaju-po-redovnom-redu-voznje",
+    "retrievedAt": "2026-10-30T16:13:12.382Z",
+    "publishedAt": "2026-10-22T07:00:00.000Z",
+    "official": false
+   }
+  },
+  {
+   "id": "794cb724c2ed",
+   "title": "Крени-Промени: Србијавоз да обезбеди додатне поласке у четвртак",
+   "url": "https://pravda.rs/srbija/kreni-promeni-srbijavoz-da-obezbedi-dodatne-polaske-u-cetvrtak-2026-10-20",
+   "outlet": "Правда",
+   "publishedAt": "2026-10-20T07:00:00.000Z",
+   "matched": [
+    "Srbijavoz"
+   ],
+   "provider": "google-news-rss",
+   "verified": "naslov",
+   "score": 34,
+   "source": {
+    "kind": "vesti",
+    "title": "Правда: Крени-Промени: Србијавоз да обезбеди додатне поласке у четвртак",
+    "url": "https://pravda.rs/srbija/kreni-promeni-srbijavoz-da-obezbedi-dodatne-polaske-u-cetvrtak-2026-10-20",
+    "retrievedAt": "2026-10-30T16:13:12.382Z",
+    "publishedAt": "2026-10-20T07:00:00.000Z",
+    "official": false
+   }
+  },
+  {
+   "id": "2fb169ea5f31",
+   "title": "Srbijavoz: Od 19. oktobra vozovi se zaustavljaju na stajalištu Petrovaradin i Tošin Bunar",
+   "url": "https://www.tanjug.rs/srbija/drustvo/289894/srbijavoz-od-19-oktobra-vozovi-se-zaustavljaju-na-stajalistu-petrovaradin-i-tosin-bunar/vest",
+   "outlet": "tanjug.rs",
+   "publishedAt": "2026-10-15T07:00:00.000Z",
+   "matched": [
+    "Srbijavoz"
+   ],
+   "provider": "google-news-rss",
+   "verified": "naslov",
+   "score": 34,
+   "source": {
+    "kind": "vesti",
+    "title": "tanjug.rs: Srbijavoz: Od 19. oktobra vozovi se zaustavljaju na stajalištu Petrovaradin i Tošin Bunar",
+    "url": "https://www.tanjug.rs/srbija/drustvo/289894/srbijavoz-od-19-oktobra-vozovi-se-zaustavljaju-na-stajalistu-petrovaradin-i-tosin-bunar/vest",
+    "retrievedAt": "2026-10-30T16:13:12.382Z",
+    "publishedAt": "2026-10-15T07:00:00.000Z",
+    "official": false
+   }
+  },
+  {
+   "id": "902799f85e1d",
+   "title": "\"Srbijavoz\": Od ponedeljka \"Soko\" ponovo staje i u Petrovaradinu, a regio vozovi – na Tošinom Bunaru",
+   "url": "https://www.mojnovisad.com/srbijavoz-od-ponedeljka-soko-ponovo-staje-u-petrovaradinu/",
+   "outlet": "Moj Novi Sad",
+   "publishedAt": "2026-10-15T07:00:00.000Z",
+   "matched": [
+    "Srbijavoz"
+   ],
+   "provider": "google-news-rss",
+   "verified": "naslov",
+   "score": 34,
+   "source": {
+    "kind": "vesti",
+    "title": "Moj Novi Sad: \"Srbijavoz\": Od ponedeljka \"Soko\" ponovo staje i u Petrovaradinu, a regio vozovi – na Tošinom Bunaru",
+    "url": "https://www.mojnovisad.com/srbijavoz-od-ponedeljka-soko-ponovo-staje-u-petrovaradinu/",
+    "retrievedAt": "2026-10-30T16:13:12.382Z",
+    "publishedAt": "2026-10-15T07:00:00.000Z",
+    "official": false
+   }
+  },
+  {
+   "id": "540ea8298a87",
+   "title": "Srbijavoz objavio: Od 19. oktobra novi red vožnje vozova na stajalištima Tošin Bunar i Petrovaradin",
+   "url": "https://naslovi.net/2026-10-15/b92/srbijavoz-objavio-od-19-oktobra-novi-red-voznje-vozova-na-stajalistima-tosin-bunar-i-petrovaradin/42490481",
+   "outlet": "Naslovi.net",
+   "publishedAt": "2026-10-15T07:00:00.000Z",
+   "matched": [
+    "Srbijavoz"
+   ],
+   "provider": "google-news-rss",
+   "verified": "naslov",
+   "score": 34,
+   "source": {
+    "kind": "vesti",
+    "title": "Naslovi.net: Srbijavoz objavio: Od 19. oktobra novi red vožnje vozova na stajalištima Tošin Bunar i Petrovaradin",
+    "url": "https://naslovi.net/2026-10-15/b92/srbijavoz-objavio-od-19-oktobra-novi-red-voznje-vozova-na-stajalistima-tosin-bunar-i-petrovaradin/42490481",
+    "retrievedAt": "2026-10-30T16:13:12.382Z",
+    "publishedAt": "2026-10-15T07:00:00.000Z",
+    "official": false
+   }
+  },
+  {
+   "id": "8b506d842319",
+   "title": "Danas: Srbijavoz uvodi vanredne vozove za SNS miting u Novom Sadu",
+   "url": "https://www.mojnovisad.com/danas-srbijavoz-uvodi-vanredne-vozove-za-sns-miting-u-novom-sadu/",
+   "outlet": "Moj Novi Sad",
+   "publishedAt": "2026-10-15T07:00:00.000Z",
+   "matched": [
+    "Srbijavoz"
+   ],
+   "provider": "google-news-rss",
+   "verified": "naslov",
+   "score": 34,
+   "source": {
+    "kind": "vesti",
+    "title": "Moj Novi Sad: Danas: Srbijavoz uvodi vanredne vozove za SNS miting u Novom Sadu",
+    "url": "https://www.mojnovisad.com/danas-srbijavoz-uvodi-vanredne-vozove-za-sns-miting-u-novom-sadu/",
+    "retrievedAt": "2026-10-30T16:13:12.382Z",
+    "publishedAt": "2026-10-15T07:00:00.000Z",
+    "official": false
+   }
+  },
+  {
+   "id": "d4533a5d3a08",
+   "title": "Србијавоз за скуп СНС-а у Новом Саду уводи ванредне возове",
+   "url": "https://pravda.rs/srbija/srbijavoz-za-skup-sns-a-u-novom-sadu-uvodi-vanredne-vozove-2026-10-15",
+   "outlet": "Правда",
+   "publishedAt": "2026-10-15T07:00:00.000Z",
+   "matched": [
+    "Srbijavoz"
+   ],
+   "provider": "google-news-rss",
+   "verified": "naslov",
+   "score": 34,
+   "source": {
+    "kind": "vesti",
+    "title": "Правда: Србијавоз за скуп СНС-а у Новом Саду уводи ванредне возове",
+    "url": "https://pravda.rs/srbija/srbijavoz-za-skup-sns-a-u-novom-sadu-uvodi-vanredne-vozove-2026-10-15",
+    "retrievedAt": "2026-10-30T16:13:12.382Z",
+    "publishedAt": "2026-10-15T07:00:00.000Z",
+    "official": false
+   }
+  },
+  {
+   "id": "97364449b057",
+   "title": "Огласио се Србијавоз, ово је нови ред вожње: „Соко” стаје у Петроварадину, заустављање и на Тошином бунару",
+   "url": "https://www.dnevnik.rs/vesti/drustvo/novi-red-voznje-voza-soko-zaustavljanje-petrovaradinu-tosinom-bunaru-od-19-oktobra-2026-10-15",
+   "outlet": "Dnevnik online",
+   "publishedAt": "2026-10-15T07:00:00.000Z",
+   "matched": [
+    "Srbijavoz"
+   ],
+   "provider": "google-news-rss",
+   "verified": "naslov",
+   "score": 34,
+   "source": {
+    "kind": "vesti",
+    "title": "Dnevnik online: Огласио се Србијавоз, ово је нови ред вожње: „Соко” стаје у Петроварадину, заустављање и на Тошином бунару",
+    "url": "https://www.dnevnik.rs/vesti/drustvo/novi-red-voznje-voza-soko-zaustavljanje-petrovaradinu-tosinom-bunaru-od-19-oktobra-2026-10-15",
+    "retrievedAt": "2026-10-30T16:13:12.382Z",
+    "publishedAt": "2026-10-15T07:00:00.000Z",
+    "official": false
+   }
+  },
+  {
+   "id": "20f61739e9f0",
+   "title": "„Srbijavoz“ domaćin međunarodnog sastanka UIC-a u Beogradu",
+   "url": "https://srbijavoz.rs/srbijavoz-domacin-medjunarodnog-sastanka-uic-a-u-beogradu/",
+   "outlet": "Srbija voz",
+   "publishedAt": "2026-10-13T07:00:00.000Z",
+   "matched": [
+    "Srbijavoz"
+   ],
+   "provider": "google-news-rss",
+   "verified": "naslov",
+   "score": 34,
+   "source": {
+    "kind": "vesti",
+    "title": "Srbija voz: „Srbijavoz“ domaćin međunarodnog sastanka UIC-a u Beogradu",
+    "url": "https://srbijavoz.rs/srbijavoz-domacin-medjunarodnog-sastanka-uic-a-u-beogradu/",
+    "retrievedAt": "2026-10-30T16:13:12.382Z",
+    "publishedAt": "2026-10-13T07:00:00.000Z",
+    "official": false
+   }
+  },
+  {
+   "id": "5e1612c1eb3f",
+   "title": "Oglasio se Srbijavoz: Nema poskupljenja karata, od ponedeljka se menja samo red vožnje",
+   "url": "https://biznis.kurir.rs/novcanik/10128867/srbijavoz-demantuje-poskupljenje-karata",
+   "outlet": "Biznis Kurir",
+   "publishedAt": "2026-10-09T07:00:00.000Z",
+   "matched": [
+    "Srbijavoz"
+   ],
+   "provider": "google-news-rss",
+   "verified": "naslov",
+   "score": 34,
+   "source": {
+    "kind": "vesti",
+    "title": "Biznis Kurir: Oglasio se Srbijavoz: Nema poskupljenja karata, od ponedeljka se menja samo red vožnje",
+    "url": "https://biznis.kurir.rs/novcanik/10128867/srbijavoz-demantuje-poskupljenje-karata",
+    "retrievedAt": "2026-10-30T16:13:12.382Z",
+    "publishedAt": "2026-10-09T07:00:00.000Z",
+    "official": false
+   }
+  },
+  {
+   "id": "b24cafe2e7ab",
+   "title": "Novi red vožnje Srbijavoza od ponedeljka, \"Soko\" polazi ranije i staje na TPS Novi Sad",
+   "url": "https://www.tanjug.rs/srbija/drustvo/287998/novi-red-voznje-srbijavoza-od-ponedeljka-soko-polazi-ranije-i-staje-na-tps-novi-sad/vest",
+   "outlet": "tanjug.rs",
+   "publishedAt": "2026-10-09T07:00:00.000Z",
+   "matched": [
+    "Srbijavoz"
+   ],
+   "provider": "google-news-rss",
+   "verified": "naslov",
+   "score": 34,
+   "source": {
+    "kind": "vesti",
+    "title": "tanjug.rs: Novi red vožnje Srbijavoza od ponedeljka, \"Soko\" polazi ranije i staje na TPS Novi Sad",
+    "url": "https://www.tanjug.rs/srbija/drustvo/287998/novi-red-voznje-srbijavoza-od-ponedeljka-soko-polazi-ranije-i-staje-na-tps-novi-sad/vest",
+    "retrievedAt": "2026-10-30T16:13:12.382Z",
+    "publishedAt": "2026-10-09T07:00:00.000Z",
+    "official": false
+   }
+  }
+ ]
+}

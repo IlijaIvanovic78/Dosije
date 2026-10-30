@@ -1,6 +1,7 @@
 // Ranking and the deterministic summary of a case. Used by the Urednik's tools (dosije_pregled), by the scripted final
 // loop, as the fallback when the editor model fails to write a summary, and by the report.
 
+import { n } from "../shared/plural"
 import type { Finding, Section } from "../shared/types"
 import type { DosijeState, Summary } from "./state"
 import { clip } from "./util"
@@ -86,7 +87,7 @@ export function defaultSummary(state: DosijeState): Summary {
 	const name = state.institution?.name ?? "instituciji"
 	const heads = top.slice(0, 3).map((f) => clip(f.title, 90))
 	const lede =
-		`U dosijeu o ${name} tim agenata je prikupio ${all.length} nalaza: ${signals} označeno kao signal za proveru, ${attention} kao pažnja, ${official} sa zvaničnim izvorom. ` +
+		`U dosijeu o ${name} tim agenata je prikupio ${n(all.length, "nalaz")} (signala za proveru: ${signals}, pažnje: ${attention}, sa zvaničnim izvorom: ${official}). ` +
 		(heads.length ? `Najvažnije za proveru: ${heads.join("; ")}. ` : "") +
 		"To su signali za verifikaciju, ne zaključci; odluku donosi novinar."
 	return {

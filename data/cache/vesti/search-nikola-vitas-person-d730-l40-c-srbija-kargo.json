@@ -1,0 +1,17 @@
+{
+ "source": "vesti",
+ "key": "search-nikola-vitas-person-d730-l40-c-srbija-kargo",
+ "retrievedAt": "2026-10-30T16:15:25.857Z",
+ "meta": {
+  "query": "Nikola Vitas",
+  "kind": "person",
+  "days": 730,
+  "limit": 40,
+  "aliases": [],
+  "context": [
+   "Srbija Kargo"
+  ],
+  "exclude": []
+ },
+ "data": []
+}

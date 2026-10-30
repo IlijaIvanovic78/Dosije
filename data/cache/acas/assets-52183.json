@@ -1,0 +1,137 @@
+{
+ "source": "acas",
+ "key": "assets-52183",
+ "retrievedAt": "2026-10-30T16:18:29.812Z",
+ "data": [
+  {
+   "personId": "52183",
+   "fullName": "Predrag Rajić",
+   "reportDate": "2025-06-03",
+   "reason": "stupanje na javnu funkciju",
+   "source": {
+    "kind": "acas",
+    "title": "ACAS – Izveštaj o imovini i prihodima funkcionera (2025-06-03)",
+    "url": "https://publicacas.acas.rs/#/acas/funkcionerIzvestajDetails/5034678",
+    "retrievedAt": "2026-10-30T16:18:28.218Z",
+    "publishedAt": "2025-06-03",
+    "official": true
+   },
+   "summary": [
+    "Prihod od javne funkcije (v.d. člana nadzornog odbora, Javno preduzeće Putevi Srbije): 75.000 RSD mesečno, od 27.03.2025.",
+    "Prihod od javne funkcije (Vlada Republike Srbije): 196.000 RSD mesečno, od 01.05.2025.",
+    "Prihod od javne funkcije (Kulturni centar Novog Sada): 43.000 RSD, od 01.02.2016.",
+    "Nepokretna imovina: nije prijavljena"
+   ],
+   "incomes": [
+    {
+     "source": "v.d. člana nadzornog odbora, Javno preduzeće Putevi Srbije",
+     "amountRsd": 75000,
+     "period": "mesečno, od 27.03.2025."
+    },
+    {
+     "source": "Vlada Republike Srbije",
+     "amountRsd": 196000,
+     "period": "mesečno, od 01.05.2025."
+    },
+    {
+     "source": "Kulturni centar Novog Sada",
+     "amountRsd": 43000,
+     "period": "od 01.02.2016."
+    }
+   ]
+  },
+  {
+   "personId": "52183",
+   "fullName": "Predrag Rajić",
+   "reportDate": "2021-06-14",
+   "reason": "promene u toku vršenja funkcije",
+   "source": {
+    "kind": "acas",
+    "title": "ACAS – Izveštaj o imovini i prihodima funkcionera (2021-06-14)",
+    "url": "https://publicacas.acas.rs/#/acas/funkcionerIzvestajDetails/5005904",
+    "retrievedAt": "2026-10-30T16:18:28.767Z",
+    "publishedAt": "2021-06-14",
+    "official": true
+   },
+   "summary": [
+    "Prihod od javne funkcije (Narodni poslanik, Narodna skupština Republike Srbije): 50.000 RSD mesečno, od 03.08.2020.",
+    "Prihod od javne funkcije (Skupština AP Vojvodine): 70.000 RSD mesečno, od 04.09.2020.",
+    "Prihod od javne funkcije (Ministarstvo spoljnih poslova): 100.000 RSD mesečno, od 22.02.2021.",
+    "Prihod od javne funkcije (Kulturni centar grada Novog Sada): 20.000 RSD mesečno, od 20.02.2017.",
+    "Nepokretna imovina: nije prijavljena"
+   ],
+   "incomes": [
+    {
+     "source": "Narodni poslanik, Narodna skupština Republike Srbije",
+     "amountRsd": 50000,
+     "period": "mesečno, od 03.08.2020."
+    },
+    {
+     "source": "Skupština AP Vojvodine",
+     "amountRsd": 70000,
+     "period": "mesečno, od 04.09.2020."
+    },
+    {
+     "source": "Ministarstvo spoljnih poslova",
+     "amountRsd": 100000,
+     "period": "mesečno, od 22.02.2021."
+    },
+    {
+     "source": "Kulturni centar grada Novog Sada",
+     "amountRsd": 20000,
+     "period": "mesečno, od 20.02.2017."
+    }
+   ]
+  },
+  {
+   "personId": "52183",
+   "fullName": "Predrag Rajić",
+   "reportDate": "2020-11-26",
+   "reason": "stupanje na javnu funkciju",
+   "source": {
+    "kind": "acas",
+    "title": "ACAS – Izveštaj o imovini i prihodima funkcionera (2020-11-26)",
+    "url": "https://publicacas.acas.rs/#/acas/funkcionerIzvestajDetails/5003729",
+    "retrievedAt": "2026-10-30T16:18:29.265Z",
+    "publishedAt": "2020-11-26",
+    "official": true
+   },
+   "summary": [
+    "Prihod od javne funkcije (v.d. pomoćnika generalnog sekretara, Skupština AP Vojvodine): 102.458,02 RSD, 28.12.2018. - 18.08.2020.",
+    "Prihod od javne funkcije (Pokrajinski sekretarijat za poljoprivredu, vodoprivredu i šumarstvo): 75.600 RSD mesečno, od 25.01.2018.",
+    "Prihod od javne funkcije (Kulturni centar grada Novog Sada): 20.000 RSD, od 20.02.2017.",
+    "Prihod od javne funkcije (Narodni poslanik, Narodna skupština Republike Srbije): 0 RSD mesečno, od 03.08.2020.",
+    "Prihod od javne funkcije (Skupština AP Vojvodine): 115.000 RSD mesečno, od 24.12.2018.",
+    "Nepokretna imovina: nije prijavljena",
+    "Pokretna imovina (registrovana): 1 (ostalo Mercedes C-200 2004)"
+   ],
+   "incomes": [
+    {
+     "source": "v.d. pomoćnika generalnog sekretara, Skupština AP Vojvodine",
+     "amountRsd": 102458.02,
+     "period": "28.12.2018. - 18.08.2020."
+    },
+    {
+     "source": "Pokrajinski sekretarijat za poljoprivredu, vodoprivredu i šumarstvo",
+     "amountRsd": 75600,
+     "period": "mesečno, od 25.01.2018."
+    },
+    {
+     "source": "Kulturni centar grada Novog Sada",
+     "amountRsd": 20000,
+     "period": "od 20.02.2017."
+    },
+    {
+     "source": "Narodni poslanik, Narodna skupština Republike Srbije",
+     "amountRsd": 0,
+     "period": "mesečno, od 03.08.2020."
+    },
+    {
+     "source": "Skupština AP Vojvodine",
+     "amountRsd": 115000,
+     "period": "mesečno, od 24.12.2018."
+    }
+   ]
+  }
+ ]
+}

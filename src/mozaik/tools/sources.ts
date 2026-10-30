@@ -9,7 +9,9 @@ import { findFirmProfile, lookupSupplierMb } from "../../data/analysis/firms"
 import type { Official } from "../../data/types"
 import type { SourceRef } from "../../shared/types"
 import { config } from "../../config"
-import { cyrToLat } from "../../data/translit"
+import type { NewsSearchOptions } from "../../data/sources/news"
+import { asciiFold, cyrToLat } from "../../data/translit"
+import { n } from "../../shared/plural"
 import { S, type ToolCtx } from "../domain"
 import { clip } from "../util"
 import { buildTool, srcOut, str, uniqueSources } from "./helpers"
@@ -18,6 +20,25 @@ function instRef() {
 	const ref = S().institutionRef
 	if (!ref) throw new Error("Nema aktivne institucije.")
 	return ref
+}
+
+const nameKey = (s: string) => asciiFold(s).replace(/[^a-z0-9]+/g, " ").trim()
+const looksLikePerson = (q: string) => /^\p{Lu}\p{L}+(?:\s+\p{Lu}\p{L}+(?:-\p{Lu}\p{L}+)?){1,2}$/u.test(q.trim())
+
+/** Which media search an agent's request stands for: the case institution (with aliases), a person tied to it, or a free topic. */
+function newsPlanFor(query: string, args: Record<string, unknown>): { query: string; opts: NewsSearchOptions } {
+	const ref = S().institutionRef
+	const inst = ref ? { slug: ref.slug, name: ref.name, shortName: ref.shortName } : undefined
+	const tip = str(args.tip)
+	const days = typeof args.days === "number" && args.days > 0 ? Math.round(args.days) : undefined
+	const names = inst ? data.institutionNames(inst) : undefined
+	const isInstitution = tip === "institucija" || (!tip && !!names && [names.query, ...names.aliases].some((a) => nameKey(a) === nameKey(query)))
+	if (isInstitution && inst) return data.institutionNewsPlan(inst, days ?? 365)
+	if ((tip === "osoba" || (!tip && looksLikePerson(query))) && inst) {
+		const firms = Array.isArray(args.kontekst) ? args.kontekst.filter((x): x is string => typeof x === "string" && x.trim().length > 1).slice(0, 3) : []
+		return data.personNewsPlan(query, inst, firms, days ?? 730)
+	}
+	return { query, opts: { days: days ?? 90, limit: 40, kind: "topic" } }
 }
 
 const jnInst = () => {
@@ -44,6 +65,8 @@ export function kadrovikTools(ctx: ToolCtx): Tool[] {
 				const r = instRef()
 				const officials = await officialsOfInstitution()
 				const generic = officials[0] ? { ...officials[0].source, publishedAt: undefined } : undefined
+				const inOffice = new Set(data.analysis.currentOfficials(officials))
+				const stale = data.analysis.supersededOpen(officials)
 				return {
 					institution: r.name,
 					acasId: r.acasId,
@@ -56,9 +79,10 @@ export function kadrovikTools(ctx: ToolCtx): Tool[] {
 						acting: o.isActing,
 						from: o.from,
 						to: o.to,
-						current: !o.to,
+						current: inOffice.has(o),
 						appointedBy: o.appointedBy,
 					})),
+					napomena: stale.size ? `Bez datuma prestanka, ali zamenjeno kasnijim zapisom za istu funkciju (ne računa se kao tekuće): ${n(stale.size, "zapis")}.` : undefined,
 					sources: generic ? [srcOut(generic)] : [],
 				}
 			},
@@ -299,26 +323,54 @@ export function medijiTools(ctx: ToolCtx): Tool[] {
 	return [
 		buildTool(ctx, {
 			name: "vesti_pretraga",
-			description: "Pretraga vesti (RSS izdanja, Google News, GDELT; Serper/Brave ako su podešeni). Vraća naslov, izdanje, datum, URL i kratak opis.",
-			properties: { query: { type: "string" }, days: { type: "number", description: "koliko dana unazad (90 za instituciju, 730 za osobu)" } },
+			description:
+				"Precizna pretraga vesti (RSS izdanja, Google News latinica i ćirilica, GDELT). tip: institucija (ime institucije slučaja i njeni kratki nazivi; poslednjih 365 dana), osoba (puno ime; članak mora da pominje i instituciju ili firmu; 730 dana) ili tema. Vraća pregled (gotov tekst i do 12 izvora za nalaz 'Pregled medija') i članke za pojedinačne nalaze.",
+			properties: {
+				query: { type: "string", description: "ime institucije ili puno ime osobe" },
+				days: { type: "number", description: "koliko dana unazad (365 za instituciju, 730 za osobu)" },
+				tip: { type: "string", enum: ["institucija", "osoba", "tema"] },
+				kontekst: { type: "array", items: { type: "string" }, description: "osoba: nazivi firmi (pored institucije slučaja) koje članak može da pominje" },
+			},
 			required: ["query"],
+			max: 9000,
 			handler: async (args) => {
 				const query = str(args.query) ?? ""
 				if (!query) return { ok: false, error: "query je obavezan" }
-				const days = typeof args.days === "number" && args.days > 0 ? Math.round(args.days) : 90
-				const items = await data.news.searchNews(query, { days, limit: 25 })
+				const plan = newsPlanFor(query, args)
+				const items = await data.news.searchNews(plan.query, plan.opts)
 				S().registerSources(items.map((i) => i.source))
+				const days = plan.opts.days ?? 365
+				const ov = data.newsOverview(items, days, 12)
+				const person = plan.opts.kind === "person"
+				const dayMs = 86400e3
+				const recent = items.filter((i) => i.publishedAt && Date.now() - Date.parse(i.publishedAt) <= 90 * dayMs).sort((a, b) => (b.publishedAt ?? "").localeCompare(a.publishedAt ?? "")).slice(0, 6)
+				// articles that state a function ("generalni direktor ...") are always shown: they feed the comparison with the official register
+				const withRole = items.filter((i) => /generaln\w*\s+direktor/.test(asciiFold(i.title))).slice(0, 3)
+				const shown = [...new Map([...items.filter((i) => !i.unresolved).slice(0, 5), ...recent.slice(0, 5), ...withRole].map((i) => [i.url, i])).values()].slice(0, 10)
+				const topics = ov.topics.length ? `; najčešće teme: ${ov.topics.join(", ")}` : ""
 				return {
-					query,
+					query: plan.query,
+					tip: person ? "osoba" : plan.opts.kind === "institution" ? "institucija" : "tema",
 					days,
-					total: items.length,
-					items: items.slice(0, 10).map((i) => ({
-						kind: "vesti",
-						title: clip(cyrToLat(i.title), 120),
+					pregled: {
+						naslov: `Pregled medija${person ? ` · ${plan.query}` : ""}: ${n(ov.total, "clanak")} u ${data.windowLabel(days)}`,
+						tekst: `${n(ov.total, "clanak")} u ${data.windowLabel(days)}${topics}.`,
+						ukupno: ov.total,
+						izvori: ov.items.map((i) => ({
+							kind: "vesti",
+							title: clip(cyrToLat(`${i.outlet}: ${i.title}`), 110),
+							url: i.url,
+							publishedAt: i.publishedAt?.slice(0, 10),
+							official: false,
+						})),
+					},
+					clanci: shown.map((i) => ({
 						outlet: cyrToLat(i.outlet),
 						publishedAt: i.publishedAt?.slice(0, 10),
+						nalazi: i.verified,
+						title: clip(cyrToLat(i.title), 100),
 						url: i.url,
-						snippet: i.snippet ? clip(cyrToLat(i.snippet), 110) : undefined,
+						snippet: i.snippet ? clip(cyrToLat(i.snippet), 80) : undefined,
 					})),
 				}
 			},

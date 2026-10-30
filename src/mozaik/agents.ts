@@ -39,13 +39,15 @@ const TASKS: Record<string, string> = {
 1) dri_izvestaji.
 2) dri_nalazi za 3-4 najnovija ili najrelevantnija izveštaja (finansijski, pravilnost, nabavke).
 3) add_finding (section "revizija"): mišljenje revizora (signalCode "DRI_MISLJENJE"; severity "signal" za negativno ili uzdržano, "paznja" za "sa rezervom", "info" za pozitivno) i 1-2 ključna nalaza po izveštaju (signalCode "DRI_NALAZ"), sa kratkim citatom i izvorom (stranica i PDF izveštaja).`,
-	medijiInstitucija: `Zadatak: šta mediji pišu o instituciji (poslednjih 90 dana).
-1) vesti_pretraga.
-2) Za 2-4 najrelevantnija članka (po potrebi vest_tekst): add_finding (section "mediji"): severity "paznja" i signalCode "MEDIJSKI_NAVOD" za navode, zahteve i optužbe drugih (npr. sindikata), inače "info". Uvek sa izvorom članka i datumom.
-3) Ako članak navodi funkciju neke osobe (npr. "generalni direktor X"), dodaj claim {subject: X, predicate: "funkcija", value: funkcija tačno kako je navedena u članku}. Urednik će je uporediti sa zvaničnim registrom.`,
+	medijiInstitucija: `Zadatak: šta mediji pišu o instituciji (pregled: poslednjih 12 meseci, pojedinačni nalazi: poslednjih 90 dana).
+1) vesti_pretraga (tip "institucija", days 365). Alat već vraća samo članke koji pominju instituciju (ili njen kratki naziv); polje "pregled" ima gotov naslov, tekst i do 12 izvora, polje "clanci" članke za pojedinačne nalaze.
+2) Za 1-3 najrelevantnija članka iz poslednjih 90 dana (po potrebi vest_tekst): add_finding (section "mediji"): severity "paznja" i signalCode "MEDIJSKI_NAVOD" za navode, zahteve i optužbe drugih (npr. sindikata), inače "info". Uvek sa izvorom članka i datumom.
+3) Ako članak navodi funkciju neke osobe (npr. "generalni direktor X"), dodaj claim {subject: X, predicate: "funkcija", value: funkcija tačno kako je navedena u članku}. Urednik će je uporediti sa zvaničnim registrom.
+4) Na kraju JEDAN nalaz "Pregled medija": add_finding (section "mediji", severity "info", bez signalCode) sa title i text prepisanim iz pregled.naslov i pregled.tekst (ne dodaj ništa od sebe) i sa svim objektima iz pregled.izvori kao sources (izdanje, datum i URL svakog članka).`,
 	medijiOsoba: `Zadatak: šta mediji pišu o osobi (poslednje 2 godine).
-1) vesti_pretraga (days 730) sa imenom osobe.
-2) Za 1-3 najrelevantnija članka: add_finding (section "mediji"), uvek sa izvorom i datumom. Ako članak navodi funkciju osobe (npr. "generalni direktor X"), dodaj claim {subject: ime, predicate: "funkcija", value: funkcija tačno kako je navedena u članku}; Urednik će je uporediti sa zvaničnim registrom.`,
+1) vesti_pretraga (tip "osoba", days 730) sa punim imenom osobe; ako je osoba vlasnik firme, u kontekst stavi naziv firme. Alat vraća samo članke koji pominju osobu ZAJEDNO sa institucijom ili firmom (imenjaci su česti).
+2) Ako članak navodi funkciju osobe (npr. "generalni direktor X"), add_finding (section "mediji") sa izvorom i datumom i claim {subject: ime, predicate: "funkcija", value: funkcija tačno kako je navedena u članku}; Urednik će je uporediti sa zvaničnim registrom. Za zahteve ili navode drugih u kojima se osoba pominje: severity "paznja", signalCode "MEDIJSKI_NAVOD".
+3) Ako ima članaka: JEDAN nalaz "Pregled medija" (section "mediji", severity "info", bez signalCode) sa title i text prepisanim iz pregled.naslov i pregled.tekst i svim objektima iz pregled.izvori kao sources.`,
 	firme: `Zadatak: proveri dobavljača iz ugla javnog interesa.
 1) firma_signali.
 2) add_finding (section "firme", "info"): profil (osnovana, delatnost, opština, zaposleni, prihod) i ugovori sa institucijom.
@@ -208,7 +210,7 @@ export function coreMessage(group: AgentGroup, ref: ResolvedInstitution, focus: 
 		case "revizor":
 			return `Institucija: ${ref.name}. ${f}`
 		default:
-			return `Institucija: ${ref.name}. Pretraži medije (poslednjih 90 dana), upit: ${searchName(ref.name)}. ${f}`
+			return `Institucija: ${ref.name}. Pretraži medije (poslednjih 12 meseci), upit: ${searchName(ref.name)}. ${f}`
 	}
 }
 

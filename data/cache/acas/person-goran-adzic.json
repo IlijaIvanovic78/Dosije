@@ -1,0 +1,45 @@
+{
+ "source": "acas",
+ "key": "person-goran-adzic",
+ "retrievedAt": "2026-10-30T16:16:26.839Z",
+ "data": [
+  {
+   "id": "5012808",
+   "fullName": "Goran Adžić",
+   "fullNameCyr": "Горан Аџић",
+   "position": "Član nadzornog odbora",
+   "positionCyr": "Члан надзорног одбора",
+   "isActing": false,
+   "institutionName": "JKP Čoka sa PO",
+   "from": "2021-11-30",
+   "appointedBy": "Skupština opštine Čoka",
+   "source": {
+    "kind": "acas",
+    "title": "ACAS – Registar funkcionera: JKP Čoka sa PO",
+    "url": "https://publicacas.acas.rs/#/acas/funkcioner",
+    "retrievedAt": "2026-10-30T16:16:26.839Z",
+    "publishedAt": "2021-11-30",
+    "official": true
+   }
+  },
+  {
+   "id": "40794",
+   "fullName": "Goran Adžić",
+   "fullNameCyr": "Горан Аџић",
+   "position": "v.d. generalnog direktora",
+   "positionCyr": "В.Д. Генералног Директора",
+   "isActing": true,
+   "institutionName": "Akcionarsko društvo Železnice Srbije, Beograd",
+   "from": "2019-04-04",
+   "appointedBy": "Vlada Republike Srbije",
+   "source": {
+    "kind": "acas",
+    "title": "ACAS – Registar funkcionera: Akcionarsko društvo Železnice Srbije, Beograd",
+    "url": "https://publicacas.acas.rs/#/acas/funkcioner",
+    "retrievedAt": "2026-10-30T16:16:26.839Z",
+    "publishedAt": "2019-04-04",
+    "official": true
+   }
+  }
+ ]
+}

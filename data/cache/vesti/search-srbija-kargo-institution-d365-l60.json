@@ -1,0 +1,444 @@
+{
+ "source": "vesti",
+ "key": "search-srbija-kargo-institution-d365-l60",
+ "retrievedAt": "2026-10-30T16:16:20.016Z",
+ "meta": {
+  "query": "Srbija Kargo",
+  "kind": "institution",
+  "days": 365,
+  "limit": 60,
+  "aliases": [],
+  "context": [],
+  "exclude": []
+ },
+ "data": [
+  {
+   "id": "e85285deb83f",
+   "title": "Danas saznaje: Preduzeće „Srbija Kargo“ planira da otpusti više od 420 ljudi zbog lošeg poslovanja",
+   "url": "https://www.danas.rs/vesti/ekonomija/danas-saznaje-preduzece-srbija-kargo-planira-da-otpusti-vise-od-420-ljudi-zbog-loseg-poslovanja/",
+   "outlet": "Danas",
+   "publishedAt": "2026-06-23T07:00:00.000Z",
+   "matched": [
+    "Srbija Kargo"
+   ],
+   "provider": "google-news-rss",
+   "verified": "naslov",
+   "score": 35,
+   "source": {
+    "kind": "vesti",
+    "title": "Danas: Danas saznaje: Preduzeće „Srbija Kargo“ planira da otpusti više od 420 ljudi zbog lošeg poslovanja",
+    "url": "https://www.danas.rs/vesti/ekonomija/danas-saznaje-preduzece-srbija-kargo-planira-da-otpusti-vise-od-420-ljudi-zbog-loseg-poslovanja/",
+    "retrievedAt": "2026-10-30T16:16:00.271Z",
+    "publishedAt": "2026-06-23T07:00:00.000Z",
+    "official": false
+   }
+  },
+  {
+   "id": "f9e644312739",
+   "title": "SSP: Srbija Kargo otpustila 359 zaposlenih, u najavi još 200 otkaza",
+   "url": "https://www.vranjenews.rs/news/ssp-srbija-kargo-otpustila-359-zaposlenih-u-najavi-jo%C5%A1-200-otkaza",
+   "outlet": "VRANJENEWS |",
+   "publishedAt": "2026-08-04T07:00:00.000Z",
+   "matched": [
+    "Srbija Kargo"
+   ],
+   "provider": "google-news-rss",
+   "verified": "naslov",
+   "score": 34,
+   "source": {
+    "kind": "vesti",
+    "title": "VRANJENEWS |: SSP: Srbija Kargo otpustila 359 zaposlenih, u najavi još 200 otkaza",
+    "url": "https://www.vranjenews.rs/news/ssp-srbija-kargo-otpustila-359-zaposlenih-u-najavi-jo%C5%A1-200-otkaza",
+    "retrievedAt": "2026-10-30T16:16:00.271Z",
+    "publishedAt": "2026-08-04T07:00:00.000Z",
+    "official": false
+   }
+  },
+  {
+   "id": "6bd7b58089a1",
+   "title": "Srbija :: Otkazi u Srbija kargo",
+   "url": "http://www.fonet.rs/politika/Srbija/36864618/otkazi-u-srbija-kargo.html",
+   "outlet": "Fonet :: Naslovna",
+   "publishedAt": "2026-08-01T07:00:00.000Z",
+   "matched": [
+    "Srbija Kargo"
+   ],
+   "provider": "google-news-rss",
+   "verified": "naslov",
+   "score": 34,
+   "source": {
+    "kind": "vesti",
+    "title": "Fonet :: Naslovna: Srbija :: Otkazi u Srbija kargo",
+    "url": "http://www.fonet.rs/politika/Srbija/36864618/otkazi-u-srbija-kargo.html",
+    "retrievedAt": "2026-10-30T16:16:00.271Z",
+    "publishedAt": "2026-08-01T07:00:00.000Z",
+    "official": false
+   }
+  },
+  {
+   "id": "53cc4ac77021",
+   "title": "У Србија Карго у једном дану 359 отказа: Отпуштени мајстори, инжењери, диспечери...",
+   "url": "https://pravda.rs/srbija/u-srbija-kargo-u-jednom-danu-359-otkaza-otpusteni-majstori-inzenjeri-dispeceri-2026-08-01",
+   "outlet": "Правда",
+   "publishedAt": "2026-08-01T07:00:00.000Z",
+   "matched": [
+    "Srbija Kargo"
+   ],
+   "provider": "google-news-rss",
+   "verified": "naslov",
+   "score": 34,
+   "source": {
+    "kind": "vesti",
+    "title": "Правда: У Србија Карго у једном дану 359 отказа: Отпуштени мајстори, инжењери, диспечери...",
+    "url": "https://pravda.rs/srbija/u-srbija-kargo-u-jednom-danu-359-otkaza-otpusteni-majstori-inzenjeri-dispeceri-2026-08-01",
+    "retrievedAt": "2026-10-30T16:16:00.271Z",
+    "publishedAt": "2026-08-01T07:00:00.000Z",
+    "official": false
+   }
+  },
+  {
+   "id": "c6dcb9d75af5",
+   "title": "SNS uništila Srbija Kargo, planirano otpuštanje više od 400 zaposlenih",
+   "url": "https://www.ozonpress.net/ekonomija/sns-unistila-srbija-kargo-planirano-otpustanje-vise-od-400-zaposlenih/",
+   "outlet": "Ozon Press",
+   "publishedAt": "2026-06-12T07:00:00.000Z",
+   "matched": [
+    "Srbija Kargo"
+   ],
+   "provider": "google-news-rss",
+   "verified": "naslov",
+   "score": 34,
+   "source": {
+    "kind": "vesti",
+    "title": "Ozon Press: SNS uništila Srbija Kargo, planirano otpuštanje više od 400 zaposlenih",
+    "url": "https://www.ozonpress.net/ekonomija/sns-unistila-srbija-kargo-planirano-otpustanje-vise-od-400-zaposlenih/",
+    "retrievedAt": "2026-10-30T16:16:00.271Z",
+    "publishedAt": "2026-06-12T07:00:00.000Z",
+    "official": false
+   }
+  },
+  {
+   "id": "37f99c7154db",
+   "title": "Otpušteni nakon 25 i 30 godina rada u Srbija Kargo: \"Samo neki brojevi i šifre - tako smo shvatili da smo otpisani\"",
+   "url": "https://n1info.rs/vesti/otpusteni-srbija-kargo/",
+   "outlet": "N1",
+   "publishedAt": "2026-08-03T07:00:00.000Z",
+   "matched": [
+    "Srbija Kargo"
+   ],
+   "provider": "google-news-rss",
+   "verified": "naslov",
+   "score": 32,
+   "source": {
+    "kind": "vesti",
+    "title": "N1: Otpušteni nakon 25 i 30 godina rada u Srbija Kargo: \"Samo neki brojevi i šifre - tako smo shvatili da smo otpisani\"",
+    "url": "https://n1info.rs/vesti/otpusteni-srbija-kargo/",
+    "retrievedAt": "2026-10-30T16:16:00.271Z",
+    "publishedAt": "2026-08-03T07:00:00.000Z",
+    "official": false
+   }
+  },
+  {
+   "id": "f27394b6a599",
+   "title": "Otac troje dece iz Niša među otpuštenima iz „Srbija Karga“: „Posle četvrt veka teškog rada, jedina nada mi je sud“",
+   "url": "https://www.juznevesti.com/drustvo/otac-troje-dece-iz-nisa-medju-otpustenima-iz-srbija-karga-posle-cetvrt-veka-teskog-rada-jedina-nada-mi-je-sud/",
+   "outlet": "Južne vesti",
+   "publishedAt": "2026-08-01T07:00:00.000Z",
+   "matched": [
+    "Srbija Kargo"
+   ],
+   "provider": "google-news-rss",
+   "verified": "naslov",
+   "score": 32,
+   "source": {
+    "kind": "vesti",
+    "title": "Južne vesti: Otac troje dece iz Niša među otpuštenima iz „Srbija Karga“: „Posle četvrt veka teškog rada, jedina nada mi je sud“",
+    "url": "https://www.juznevesti.com/drustvo/otac-troje-dece-iz-nisa-medju-otpustenima-iz-srbija-karga-posle-cetvrt-veka-teskog-rada-jedina-nada-mi-je-sud/",
+    "retrievedAt": "2026-10-30T16:16:00.271Z",
+    "publishedAt": "2026-08-01T07:00:00.000Z",
+    "official": false
+   }
+  },
+  {
+   "id": "798e7c9077db",
+   "title": "SSP: Partijski kadrovi otpuštaju radnike u Srbija Kargo, to je manir ove bahate, kriminalne vlasti",
+   "url": "https://www.danas.rs/vesti/ekonomija/ssp-partijski-kadrovi-otpustaju-radnike-u-srbija-kargo-to-je-manir-ove-bahate-kriminalne-vlasti/",
+   "outlet": "Danas",
+   "publishedAt": "2026-08-01T07:00:00.000Z",
+   "matched": [
+    "Srbija Kargo"
+   ],
+   "provider": "google-news-rss",
+   "verified": "naslov",
+   "score": 32,
+   "source": {
+    "kind": "vesti",
+    "title": "Danas: SSP: Partijski kadrovi otpuštaju radnike u Srbija Kargo, to je manir ove bahate, kriminalne vlasti",
+    "url": "https://www.danas.rs/vesti/ekonomija/ssp-partijski-kadrovi-otpustaju-radnike-u-srbija-kargo-to-je-manir-ove-bahate-kriminalne-vlasti/",
+    "retrievedAt": "2026-10-30T16:16:00.271Z",
+    "publishedAt": "2026-08-01T07:00:00.000Z",
+    "official": false
+   }
+  },
+  {
+   "id": "c6b6bdfc3ca4",
+   "title": "Sindikat o otkazima u „Srbija Kargo“: Plan za 420 radnika donet ishitreno i bez ozbiljne analize",
+   "url": "https://www.danas.rs/vesti/ekonomija/sindikat-o-otkazima-u-srbija-kargo-plan-za-420-radnika-donet-ishitreno-i-bez-ozbiljne-analize/",
+   "outlet": "Danas",
+   "publishedAt": "2026-07-08T07:00:00.000Z",
+   "matched": [
+    "Srbija Kargo"
+   ],
+   "provider": "google-news-rss",
+   "verified": "naslov",
+   "score": 32,
+   "source": {
+    "kind": "vesti",
+    "title": "Danas: Sindikat o otkazima u „Srbija Kargo“: Plan za 420 radnika donet ishitreno i bez ozbiljne analize",
+    "url": "https://www.danas.rs/vesti/ekonomija/sindikat-o-otkazima-u-srbija-kargo-plan-za-420-radnika-donet-ishitreno-i-bez-ozbiljne-analize/",
+    "retrievedAt": "2026-10-30T16:16:00.271Z",
+    "publishedAt": "2026-07-08T07:00:00.000Z",
+    "official": false
+   }
+  },
+  {
+   "id": "002904887c2d",
+   "title": "Vučić u Niš doneo otkaze za radnike Srbija karga",
+   "url": "https://www.ozonpress.net/ekonomija/vucic-u-nis-doneo-otkaze-za-radnike-srbija-karga/",
+   "outlet": "Ozon Press",
+   "publishedAt": "2026-08-01T07:00:00.000Z",
+   "matched": [
+    "Srbija Kargo"
+   ],
+   "provider": "google-news-rss",
+   "verified": "naslov",
+   "score": 31,
+   "source": {
+    "kind": "vesti",
+    "title": "Ozon Press: Vučić u Niš doneo otkaze za radnike Srbija karga",
+    "url": "https://www.ozonpress.net/ekonomija/vucic-u-nis-doneo-otkaze-za-radnike-srbija-karga/",
+    "retrievedAt": "2026-10-30T16:16:00.271Z",
+    "publishedAt": "2026-08-01T07:00:00.000Z",
+    "official": false
+   }
+  },
+  {
+   "id": "83fbeb148590",
+   "title": "Dali smo život železnici, a preko noći proglašeni viškom – glas radnika Srbija Karga",
+   "url": "https://www.ozonpress.net/hronika/dali-smo-zivot-zeleznici-a-preko-noci-proglaseni-viskom-glas-radnika-srbija-karga/",
+   "outlet": "Ozon Press",
+   "publishedAt": "2026-07-21T07:00:00.000Z",
+   "matched": [
+    "Srbija Kargo"
+   ],
+   "provider": "google-news-rss",
+   "verified": "naslov",
+   "score": 31,
+   "source": {
+    "kind": "vesti",
+    "title": "Ozon Press: Dali smo život železnici, a preko noći proglašeni viškom – glas radnika Srbija Karga",
+    "url": "https://www.ozonpress.net/hronika/dali-smo-zivot-zeleznici-a-preko-noci-proglaseni-viskom-glas-radnika-srbija-karga/",
+    "retrievedAt": "2026-10-30T16:16:00.271Z",
+    "publishedAt": "2026-07-21T07:00:00.000Z",
+    "official": false
+   }
+  },
+  {
+   "id": "4b37c395a654",
+   "title": "Radar: Pomoćnik ministarke iz Ćacilenda sprema otkaze trećini zaposlenih u Srbija Kargo",
+   "url": "https://razglas-news.com/2026/03/20/radar-pomocnik-ministarke-iz-cacilenda-sprema-otkaze-trecini-zaposlenih-u-kargu/",
+   "outlet": "razglas news",
+   "publishedAt": "2026-03-20T07:00:00.000Z",
+   "matched": [
+    "Srbija Kargo"
+   ],
+   "provider": "google-news-rss",
+   "verified": "naslov",
+   "score": 31,
+   "source": {
+    "kind": "vesti",
+    "title": "razglas news: Radar: Pomoćnik ministarke iz Ćacilenda sprema otkaze trećini zaposlenih u Srbija Kargo",
+    "url": "https://razglas-news.com/2026/03/20/radar-pomocnik-ministarke-iz-cacilenda-sprema-otkaze-trecini-zaposlenih-u-kargu/",
+    "retrievedAt": "2026-10-30T16:16:00.271Z",
+    "publishedAt": "2026-03-20T07:00:00.000Z",
+    "official": false
+   }
+  },
+  {
+   "id": "cbac5d77c5aa",
+   "title": "Firmu zavili u crno, a otkaze spremaju politički nepodobnima",
+   "url": "https://radar.nova.rs/drustvo/srbija-kargo-otkazi-vagoni-poslovanje/",
+   "outlet": "Nova.rs",
+   "publishedAt": "2026-07-26T07:00:00.000Z",
+   "snippet": "Nekad uspešno državno preduzeće Srbija Kargo za železnički prevoz robe dovedeno je do kolapsa, a cenu za to plaćaju savesni radnici koji se trenutno otpuštaju.",
+   "matched": [
+    "Srbija Kargo"
+   ],
+   "provider": "google-news-rss",
+   "verified": "tekst",
+   "score": 11,
+   "source": {
+    "kind": "vesti",
+    "title": "Nova.rs: Firmu zavili u crno, a otkaze spremaju politički nepodobnima",
+    "url": "https://radar.nova.rs/drustvo/srbija-kargo-otkazi-vagoni-poslovanje/",
+    "retrievedAt": "2026-10-30T16:16:00.271Z",
+    "publishedAt": "2026-07-26T07:00:00.000Z",
+    "official": false
+   }
+  },
+  {
+   "id": "3dc91ab96bbf",
+   "title": "U Skupštini nastavljena rasprava, poslanici postavljali pitanja o Torlaku i pritisku na zaposlene u prosveti",
+   "url": "https://n1info.rs/vesti/u-skupstini-nastavljena-rasprava-o-18-tacaka-dnevnog-reda/",
+   "outlet": "N1",
+   "publishedAt": "2026-07-07T07:00:00.000Z",
+   "snippet": "Narodna poslanica Stranke slobode i pravde (SSP) Mila Popović postavila je pitanje ministarki privrede Adrijani Mesarović i ministarki građevinarstva, saobraćaja i infrastrukture Aleksandri Sofronijević \"ko je u ovoj državi višak - radnici…",
+   "matched": [
+    "Srbija Kargo"
+   ],
+   "provider": "google-news-rss",
+   "verified": "tekst",
+   "score": 11,
+   "source": {
+    "kind": "vesti",
+    "title": "N1: U Skupštini nastavljena rasprava, poslanici postavljali pitanja o Torlaku i pritisku na zaposlene u prosveti",
+    "url": "https://n1info.rs/vesti/u-skupstini-nastavljena-rasprava-o-18-tacaka-dnevnog-reda/",
+    "retrievedAt": "2026-10-30T16:16:00.271Z",
+    "publishedAt": "2026-07-07T07:00:00.000Z",
+    "official": false
+   }
+  },
+  {
+   "id": "807f3aac41ad",
+   "title": "Vagone iznajmljuju po šest puta nižim cenama",
+   "url": "https://radar.nova.rs/drustvo/srbija-kargo-vagoni-niza-cena/",
+   "outlet": "Nova.rs",
+   "publishedAt": "2025-11-06T08:00:00.000Z",
+   "snippet": "Bauvezenu, koji je oštetio i EPS, Srbija Kargo je prodao nekoliko stotina vagona kao staro gvožđe, da bi ih on potom izvezao strancima",
+   "matched": [
+    "Srbija Kargo"
+   ],
+   "provider": "google-news-rss",
+   "verified": "tekst",
+   "score": 11,
+   "source": {
+    "kind": "vesti",
+    "title": "Nova.rs: Vagone iznajmljuju po šest puta nižim cenama",
+    "url": "https://radar.nova.rs/drustvo/srbija-kargo-vagoni-niza-cena/",
+    "retrievedAt": "2026-10-30T16:16:00.271Z",
+    "publishedAt": "2025-11-06T08:00:00.000Z",
+    "official": false
+   }
+  },
+  {
+   "id": "2ac2f7f18d32",
+   "title": "Novi Radar otkriva: Gde je i šta radi Slaviša Kokeza nakon što je pre godinu dana nestao bez traga i glasa",
+   "url": "https://radar.nova.rs/drustvo/novi-radar-gde-je-i-sta-radi-slavisa-kokeza/",
+   "outlet": "Nova.rs",
+   "publishedAt": "2025-11-05T08:00:00.000Z",
+   "snippet": "Saznali smo i da je Srbija Kargo, državno preduzeće za železnički transport robe, uprkos dotacijama vlasnika za prethodnih šest godina uknjižilo gubitak veći od 80 miliona evra.",
+   "matched": [
+    "Srbija Kargo"
+   ],
+   "provider": "google-news-rss",
+   "verified": "tekst",
+   "score": 11,
+   "source": {
+    "kind": "vesti",
+    "title": "Nova.rs: Novi Radar otkriva: Gde je i šta radi Slaviša Kokeza nakon što je pre godinu dana nestao bez traga i glasa",
+    "url": "https://radar.nova.rs/drustvo/novi-radar-gde-je-i-sta-radi-slavisa-kokeza/",
+    "retrievedAt": "2026-10-30T16:16:00.271Z",
+    "publishedAt": "2025-11-05T08:00:00.000Z",
+    "official": false
+   }
+  },
+  {
+   "id": "fcc40b004e39",
+   "title": "Potpisan ugovor između Srbijavoza i Simensa o nabavci šest električnih lokomotiva",
+   "url": "https://nsuzivo.rs/srbija/potpisan-ugovor-izmedju-srbijavoza-i-simensa-o-nabavci-sest-elektricnih-lokomotiva/",
+   "outlet": "NS Uživo",
+   "publishedAt": "2026-08-18T11:26:04.000Z",
+   "snippet": "Dodao je da je ta kompanija za kupce u Srbiji ranije isporučivala softverska rešenja, kao i lokomotive kompaniji „Srbija kargo“.",
+   "matched": [
+    "Srbija Kargo"
+   ],
+   "provider": "google-news-rss",
+   "verified": "tekst",
+   "score": 10,
+   "source": {
+    "kind": "vesti",
+    "title": "NS Uživo: Potpisan ugovor između Srbijavoza i Simensa o nabavci šest električnih lokomotiva",
+    "url": "https://nsuzivo.rs/srbija/potpisan-ugovor-izmedju-srbijavoza-i-simensa-o-nabavci-sest-elektricnih-lokomotiva/",
+    "retrievedAt": "2026-10-30T16:16:00.271Z",
+    "publishedAt": "2026-08-18T11:26:04.000Z",
+    "official": false
+   }
+  },
+  {
+   "id": "3d7071ba28ff",
+   "title": "ZA OTKAZ SAZNAO PREKO SMS PORUKE: Srđan je 25 godina rizikovao život na železnici, otac troje dece ostao bez posla!",
+   "url": "https://serbiantimes.info/za-otkaz-saznao-preko-sms-poruke-srdjan-je-25-godina-rizikovao-zivot-na-zeleznici-otac-troje-dece-ostao-bez-posla/",
+   "outlet": "Serbiantimes.info",
+   "publishedAt": "2026-08-04T07:00:00.000Z",
+   "snippet": "Među gotovo 400 radnika koji su prošle nedelje otpušteni iz državnog preduzeća Srbija Kargo je i Srđan Jovanović (45) iz Niša, otac troje dece, od kojih je jedno sa smetnjama u razvoju.",
+   "matched": [
+    "Srbija Kargo"
+   ],
+   "provider": "google-news-rss",
+   "verified": "tekst",
+   "score": 10,
+   "source": {
+    "kind": "vesti",
+    "title": "Serbiantimes.info: ZA OTKAZ SAZNAO PREKO SMS PORUKE: Srđan je 25 godina rizikovao život na železnici, otac troje dece ostao bez posla!",
+    "url": "https://serbiantimes.info/za-otkaz-saznao-preko-sms-poruke-srdjan-je-25-godina-rizikovao-zivot-na-zeleznici-otac-troje-dece-ostao-bez-posla/",
+    "retrievedAt": "2026-10-30T16:16:00.271Z",
+    "publishedAt": "2026-08-04T07:00:00.000Z",
+    "official": false
+   }
+  },
+  {
+   "id": "c2a56261ecc5",
+   "title": "Тренд је охрабрујући: Вишегодишњи подаци показују пад аерозагађења у Ужицу",
+   "url": "https://oglasnatabla.info/trend-je-ohrabrujuci-visegodisnji-podaci-pokazuju-pad-aerozagadjenja-u-uzicu/",
+   "outlet": "oglasnatabla.info",
+   "publishedAt": "2026-08-03T07:00:00.000Z",
+   "snippet": "Према речима Бранка Филиповића директора ЈКП „Градска топлана“ Ужице, сам пројекат постројења Међај је завршен, а све неопходне дозволе па ни почетак градње није могуће добити/започети до момента решења имовинско правних односа града Ужица…",
+   "matched": [
+    "Srbija Kargo"
+   ],
+   "provider": "google-news-rss",
+   "verified": "tekst",
+   "score": 10,
+   "source": {
+    "kind": "vesti",
+    "title": "oglasnatabla.info: Тренд је охрабрујући: Вишегодишњи подаци показују пад аерозагађења у Ужицу",
+    "url": "https://oglasnatabla.info/trend-je-ohrabrujuci-visegodisnji-podaci-pokazuju-pad-aerozagadjenja-u-uzicu/",
+    "retrievedAt": "2026-10-30T16:16:00.271Z",
+    "publishedAt": "2026-08-03T07:00:00.000Z",
+    "official": false
+   }
+  },
+  {
+   "id": "cecabe5aefda",
+   "title": "СКАНДАЛ У ДРЖАВНОЈ ФИРМИ: Ако не скупљаш гласове за СНС - технолошки вишак",
+   "url": "https://pravda.rs/srbija/skandal-u-drzavnoj-firmi-ako-ne-skupljas-glasove-za-sns-tehnoloski-visak-2026-06-17",
+   "outlet": "Правда",
+   "publishedAt": "2026-06-17T07:00:00.000Z",
+   "snippet": "Посланик ССП Мила Поповић тврди да директори \"Србија Карго\" прете запосленима отказима уколико активно не учествују у кампањи \"сигуран глас\".",
+   "matched": [
+    "Srbija Kargo"
+   ],
+   "provider": "google-news-rss",
+   "verified": "tekst",
+   "score": 10,
+   "source": {
+    "kind": "vesti",
+    "title": "Правда: СКАНДАЛ У ДРЖАВНОЈ ФИРМИ: Ако не скупљаш гласове за СНС - технолошки вишак",
+    "url": "https://pravda.rs/srbija/skandal-u-drzavnoj-firmi-ako-ne-skupljas-glasove-za-sns-tehnoloski-visak-2026-06-17",
+    "retrievedAt": "2026-10-30T16:16:00.271Z",
+    "publishedAt": "2026-06-17T07:00:00.000Z",
+    "official": false
+   }
+  }
+ ]
+}

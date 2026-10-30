@@ -155,8 +155,14 @@ export interface NewsItem {
 	outlet: string // e.g. "N1", "Danas", "raspadsistema.com"
 	publishedAt?: string
 	snippet?: string
-	matched: string[] // query terms found in title/snippet
+	matched: string[] // subject names found in title/snippet/text
 	provider: string // "rss:n1" | "google-news-rss" | "gdelt" | "serper" | "brave"
+	/** where the subject was found: the headline, the feed snippet, or the article text fetched to verify it */
+	verified?: "naslov" | "opis" | "tekst"
+	/** relevance (higher = more relevant); searchNews returns items ordered by it, then by recency */
+	score?: number
+	/** the Google News redirect link could not be resolved to the outlet's own URL */
+	unresolved?: boolean
 	source: SourceRef
 }
 

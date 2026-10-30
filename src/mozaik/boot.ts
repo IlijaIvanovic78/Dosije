@@ -6,6 +6,7 @@ import { type Agent } from "@mozaik-ai/core"
 import { config, editorModelLabel, modelLabel } from "../config"
 import * as data from "../data"
 import { LEGAL_LABELS, listStaticInstitutions, type ResolvedInstitution } from "../data/resolver"
+import { n } from "../shared/plural"
 import type { AgentInfo, DosijeReport, DosijeSnapshot, InstitutionView, MapaView, RuntimeConfigView } from "../shared/types"
 import { installActivityBridge } from "./activity"
 import { CORE_AGENTS, OBSERVERS, createCoreAgent } from "./agents"
@@ -115,7 +116,7 @@ async function doBoot(): Promise<void> {
 		}
 		join(agent)
 	}
-	log("boot", `Mozaik runtime spreman: ${state.participants.size} učesnika, režim ${config.mode}${config.mode === "llm" ? ` (${config.provider}, ${config.model})` : ""}, podaci ${config.dataMode}`)
+	log("boot", `Mozaik runtime spreman: ${n(state.participants.size, "ucesnik")}, režim ${config.mode}${config.mode === "llm" ? ` (${config.provider}, ${config.model})` : ""}, podaci ${config.dataMode}`)
 }
 
 function institutionView(ref: ResolvedInstitution): InstitutionView {

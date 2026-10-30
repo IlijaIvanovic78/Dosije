@@ -5,6 +5,7 @@
 import fs from "node:fs"
 import path from "node:path"
 import { scoreSignals } from "../data/analysis/priority"
+import { n } from "../shared/plural"
 import type { MapaRow, MapaSignals, SourceRef } from "../shared/types"
 import { bus } from "./bus"
 import { emit, ids, S } from "./domain"
@@ -164,7 +165,7 @@ export function checkMapaDone(): boolean {
 	const ranking = structuredClone(rankRows([...m.rows.values()]))
 	emit("mapa.zavrsena", ids.urednik, { mapaId: m.id, ranking })
 	bus.emitStats(state.stats, state.budget)
-	log("mapa", `završena: ${ranking.length} institucija, vrhunac ${state.stats.peakConcurrentLoops} petlji, ${Math.round(state.stats.elapsedMs / 1000)} s`)
+	log("mapa", `završena: ${n(ranking.length, "institucija")}, vrhunac ${n(state.stats.peakConcurrentLoops, "petlja")}, ${Math.round(state.stats.elapsedMs / 1000)} s`)
 	return true
 }
 

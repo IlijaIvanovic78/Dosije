@@ -7,6 +7,8 @@
 import { SRC, shortInstitution, trackActivity } from "../activity"
 import { cached, cacheKey, readCache, writeCache } from "../cache"
 import { getJson, HttpError, USER_AGENT } from "../http"
+import { institutionNames } from "../newsPlan"
+import { clipWords } from "../../shared/text"
 import { cyrToLat, latToCyr, nameSimilarity, normalizeName } from "../translit"
 import type { Contract, ProcurementSummary, SupplierAggregate } from "../types"
 import type { SourceRef } from "../../shared/types"
@@ -101,6 +103,9 @@ async function grid<T>(name: string, params: Record<string, string>): Promise<Gr
 	}
 	throw lastErr
 }
+
+/** Raw grid access for probes and the QA script (attribution checks). */
+export { grid as rawGrid }
 
 /** One live activity per page of a crawl ("ugovori, strana 3/16"); no events outside a tool's activity context. */
 async function gridAll<T>(name: string, filter: unknown, sort: unknown, what = "podaci"): Promise<T[]> {
@@ -219,7 +224,7 @@ const NEGOTIATED_NO_PUBLICATION = 6
 
 const isoDate = (s?: string | null) => (s ? s.slice(0, 10) : undefined)
 const cpvCode = (s?: string) => s?.match(/^\d{8}/)?.[0]
-const clip = (s: string, n: number) => (s.length > n ? `${s.slice(0, n - 1)}…` : s)
+const clip = clipWords
 
 function procedureLabel(id: number | undefined, raw?: string, article?: string | null): string | undefined {
 	const base = raw ? cyrToLat(raw) : id !== undefined ? PROCEDURE_NAMES[id] : undefined
@@ -395,25 +400,28 @@ function coreNameCyr(cyr: string): string {
 		.trim()
 }
 
-async function fetchStore(auth: { id: string; name: string; pib?: string }): Promise<string> {
+async function fetchStore(auth: { id: string; name: string; pib?: string }, otherNames: string[] = []): Promise<string> {
 	const cyrName = latToCyr(auth.name)
 	let lots = await gridAll<RawLotContract>("VContracts", ["OfficialName", "=", cyrName], LOT_SORT, "ugovori")
 	if (lots.length === 0) lots = await gridAll<RawLotContract>("VContracts", ["OfficialName", "contains", cyrName], LOT_SORT, "ugovori")
 	const tenders = await gridAll<RawTender>("TendersAll", ["CAId", "=", Number(auth.id)], [{ selector: "Id", desc: false }], "postupci nabavki")
+	const mine = new Set(tenders.map((t) => t.Id))
+	const key = (l: RawLotContract) => `${l.TenderId}|${l.LotId}|${l.ContractNo}`
 
-	// A renamed authority (e.g. "Javno preduzeće Putevi Srbije" -> "Društvo sa ograničenom odgovornošću Putevi Srbije") keeps
-	// its CAId, but older contracts carry the old OfficialName. Add them only when the tender belongs to THIS authority's CAId.
-	const core = coreNameCyr(cyrName)
-	if (core.length >= 8) {
+	// A renamed authority (e.g. "Javno preduzeće Putevi Srbije" -> "Društvo sa ograničenom odgovornošću Putevi Srbije", or
+	// "Srbija Voz" -> "Srbijavoz") keeps its CAId, but older contracts carry the old OfficialName. Add them only when the
+	// tender belongs to THIS authority's CAId.
+	const cores = [...new Set([coreNameCyr(cyrName), ...otherNames.map((n) => coreNameCyr(latToCyr(n)))].filter((c) => c.length >= 8))]
+	for (const [i, core] of cores.entries()) {
 		const probe = await grid<RawLotContract>("VContracts", { filter: JSON.stringify(["OfficialName", "contains", core]), skip: "0", take: "1", requireTotalCount: "true" })
-		if ((probe.totalCount ?? 0) > lots.length) {
-			const mine = new Set(tenders.map((t) => t.Id))
-			const key = (l: RawLotContract) => `${l.TenderId}|${l.LotId}|${l.ContractNo}`
-			const have = new Set(lots.map(key))
-			const more = await gridAll<RawLotContract>("VContracts", ["OfficialName", "contains", core], LOT_SORT, "ugovori (raniji naziv)")
-			lots = [...lots, ...more.filter((l) => mine.has(l.TenderId) && !have.has(key(l)))]
-		}
+		const total = probe.totalCount ?? 0
+		if (total === 0 || (i === 0 && total <= lots.length)) continue
+		const have = new Set(lots.map(key))
+		const more = await gridAll<RawLotContract>("VContracts", ["OfficialName", "contains", core], LOT_SORT, `ugovori (raniji naziv: ${cyrToLat(core)})`)
+		lots = [...lots, ...more.filter((l) => mine.has(l.TenderId) && !have.has(key(l)))]
 	}
+	// the authority's own tenders are the ground truth: a lot found by name that belongs to another body's tender is not its contract
+	if (mine.size > 0) lots = lots.filter((l) => mine.has(l.TenderId))
 	return JSON.stringify(buildStore(auth, lots, tenders))
 }
 
@@ -424,7 +432,7 @@ async function load(inst: InstLike): Promise<Loaded> {
 	const first = !p
 	if (!p) {
 		p = (async () => {
-			const env = await cached<string>(SOURCE, key, () => fetchStore(auth), { meta: { authority: auth } })
+			const env = await cached<string>(SOURCE, key, () => fetchStore(auth, institutionNames({ name: auth.name }).aliases), { meta: { authority: auth } })
 			const store = JSON.parse(env.data) as Store
 			await remember(store.authority)
 			return { store, retrievedAt: env.retrievedAt, fromCache: env.fromCache }

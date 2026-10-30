@@ -1,0 +1,20 @@
+{
+ "source": "vesti",
+ "key": "search-goran-adzic-person-d730-l40-c-zeleznice-srbije-x-zavod-za-zdravstvenu-zas-f9061a6dcf",
+ "retrievedAt": "2026-10-30T16:16:45.156Z",
+ "meta": {
+  "query": "Goran Adžić",
+  "kind": "person",
+  "days": 730,
+  "limit": 40,
+  "aliases": [],
+  "context": [
+   "Železnice Srbije"
+  ],
+  "exclude": [
+   "Zavod za zdravstvenu zaštitu radnika Železnice Srbije",
+   "Infrastruktura železnice Srbije"
+  ]
+ },
+ "data": []
+}

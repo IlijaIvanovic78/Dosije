@@ -85,12 +85,20 @@ export function normalizeName(input: string): string {
 
 const CASE_ENDINGS = new Set(["", "a", "e", "i", "o", "u", "om", "em", "im", "am", "ama", "ima", "ih", "og", "oj", "ovi", "ova", "ove", "ega", "emu", "omu", "ju", "ja", "je", "ji"])
 
+/** Fleeting "a": "petar" ~ "petra", "petru", "petrom". */
+function fleetingA(a: string, b: string): boolean {
+	if (!a.endsWith("ar")) return false
+	const stem = `${a.slice(0, -2)}r`
+	return stem.length >= 4 && b.startsWith(stem) && CASE_ENDINGS.has(b.slice(stem.length))
+}
+
 /**
  * Same Serbian word up to a case ending, on ASCII-folded lowercase tokens: "zeleznice" ~ "zeleznica",
  * "jevtic" ~ "jevtica", but "srbija" !~ "srbijavoz" and "srbijavoz" !~ "srbijavode".
  */
 export function sameWord(a: string, b: string): boolean {
 	if (a === b) return true
+	if (fleetingA(a, b) || fleetingA(b, a)) return true
 	const min = Math.min(a.length, b.length)
 	if (min < 5) return false
 	let i = 0

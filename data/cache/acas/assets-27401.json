@@ -1,0 +1,46 @@
+{
+ "source": "acas",
+ "key": "assets-27401",
+ "retrievedAt": "2026-10-30T16:20:36.551Z",
+ "data": [
+  {
+   "personId": "27401",
+   "fullName": "Nenad Ivanišević",
+   "reportDate": "2013-11-14",
+   "reason": "stupanje na javnu funkciju",
+   "source": {
+    "kind": "acas",
+    "title": "ACAS – Izveštaj o imovini i prihodima funkcionera (2013-11-14)",
+    "url": "https://publicacas.acas.rs/#/acas/funkcionerIzvestajDetails/19790",
+    "retrievedAt": "2026-10-30T16:20:35.983Z",
+    "publishedAt": "2013-11-14",
+    "official": true
+   },
+   "summary": [
+    "Prihod od javne funkcije (Član skupštine društva, \"Koridori Srbije\" d.o.o.): 35.540 RSD, od 23.09.2012.",
+    "Prihod od javne funkcije (Posebni savetnik ministra, Ministarstvo regionalnog razvoja i lokalne samouprave): 110.000 RSD, od 02.10.2013.",
+    "Prihod od javne funkcije (Građevinski fakultet u Beogradu): 100.000 RSD, od 13.04.2008.",
+    "Nepokretna imovina: 7 stavki (ostalo ×7)",
+    "Objekti: ostalo 85 m2; ostalo 51 m2; ostalo 50 m2; ostalo 12 m2; ostalo 38 m2; ostalo 26 m2; …(+1)",
+    "Pokretna imovina (registrovana): 2 (ostalo Pežo 1997; ostalo Pežo 2007)"
+   ],
+   "incomes": [
+    {
+     "source": "Član skupštine društva, \"Koridori Srbije\" d.o.o.",
+     "amountRsd": 35540,
+     "period": "od 23.09.2012."
+    },
+    {
+     "source": "Posebni savetnik ministra, Ministarstvo regionalnog razvoja i lokalne samouprave",
+     "amountRsd": 110000,
+     "period": "od 02.10.2013."
+    },
+    {
+     "source": "Građevinski fakultet u Beogradu",
+     "amountRsd": 100000,
+     "period": "od 13.04.2008."
+    }
+   ]
+  }
+ ]
+}

@@ -12,6 +12,7 @@ import {
 	type InterceptionHandler,
 } from "@mozaik-ai/core"
 import { config } from "../config"
+import { n } from "../shared/plural"
 import type { AgentGroup, Finding, HumanTask } from "../shared/types"
 import { rewrittenInputs } from "./bus"
 import { APPROVAL_CODES, emit, ids, parseClaim, parseSources, S, scheduleBudgetEvent, updateTask } from "./domain"
@@ -149,7 +150,7 @@ export class UrednikGate implements InterceptionHandler {
 			if (overLoop || state.budget.exhausted) {
 				this.skipped++
 				const text = overLoop
-					? `BUDŽET: ovaj agent je iskoristio ${config.budget.maxToolCallsPerLoop} poziva alata. Završi sada jednom kratkom rečenicom šta si uradio.`
+					? `BUDŽET: ovaj agent je iskoristio ${n(config.budget.maxToolCallsPerLoop, "pozivAlata")}. Završi sada jednom kratkom rečenicom šta si uradio.`
 					: "BUDŽET: tim je iskoristio ukupan budžet (pozivi alata ili tokeni). Završi sada jednom kratkom rečenicom šta si uradio."
 				return this.skipped >= 3 ? this.endLoop(t, "Budžet je iskorišćen; agent završava rad.") : this.skip(t, text)
 			}
