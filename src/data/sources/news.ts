@@ -7,7 +7,7 @@ import crypto from "node:crypto"
 import { XMLParser } from "fast-xml-parser"
 import { cached, cacheKey } from "../cache"
 import { getText, httpRequest } from "../http"
-import { asciiFold, cyrToLat, hasCyrillic, latToCyr, normalizeName } from "../translit"
+import { asciiFold, cyrToLat, hasCyrillic, latToCyr, normalizeName, sameWord } from "../translit"
 import type { ArticleText, NewsItem } from "../types"
 
 const SOURCE = "vesti"
@@ -69,15 +69,9 @@ function queryTokens(query: string): string[] {
 	return [...new Set(folded.split(" ").filter((t) => t.length > 1 && !STOP.has(t)))]
 }
 
+// inflected forms match ("jevtića" ~ "jevtić"); other words sharing a prefix do not ("srbije" !~ "srbijavoz")
 function tokenHit(token: string, words: string[]): boolean {
-	return words.some((w) => {
-		if (w === token) return true
-		const min = Math.min(w.length, token.length)
-		if (min < 5) return false
-		let i = 0
-		while (i < min && w[i] === token[i]) i++
-		return i >= Math.max(5, min - 2)
-	})
+	return words.some((w) => sameWord(token, w))
 }
 
 function matchedTokens(text: string, tokens: string[]): string[] {

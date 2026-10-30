@@ -83,6 +83,22 @@ export function normalizeName(input: string): string {
 		.trim()
 }
 
+const CASE_ENDINGS = new Set(["", "a", "e", "i", "o", "u", "om", "em", "im", "am", "ama", "ima", "ih", "og", "oj", "ovi", "ova", "ove", "ega", "emu", "omu", "ju", "ja", "je", "ji"])
+
+/**
+ * Same Serbian word up to a case ending, on ASCII-folded lowercase tokens: "zeleznice" ~ "zeleznica",
+ * "jevtic" ~ "jevtica", but "srbija" !~ "srbijavoz" and "srbijavoz" !~ "srbijavode".
+ */
+export function sameWord(a: string, b: string): boolean {
+	if (a === b) return true
+	const min = Math.min(a.length, b.length)
+	if (min < 5) return false
+	let i = 0
+	while (i < min && a[i] === b[i]) i++
+	if (i < 4) return false
+	return CASE_ENDINGS.has(a.slice(i)) && CASE_ENDINGS.has(b.slice(i))
+}
+
 /** Token-set similarity (0..1) on normalized names. */
 export function nameSimilarity(a: string, b: string): number {
 	const ta = new Set(normalizeName(a).split(" ").filter(Boolean))

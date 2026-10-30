@@ -1,0 +1,31 @@
+{
+ "source": "resolver",
+ "key": "institution-srbijavoz",
+ "retrievedAt": "2026-10-30T14:44:45.344Z",
+ "data": {
+  "query": "Srbijavoz",
+  "slug": "srbijavoz-a-d-beograd",
+  "name": "Srbijavoz a.d. Beograd",
+  "nameCyr": "Србијавоз а.д. Београд",
+  "legalType": "drustvo_kapitala_drzavno",
+  "pib": "109108438",
+  "acasId": "9720",
+  "jnId": "5238",
+  "sources": [
+   {
+    "kind": "acas",
+    "title": "ACAS – Registar funkcionera: Srbijavoz a.d. Beograd",
+    "url": "https://publicacas.acas.rs/#/acas/funkcioner",
+    "retrievedAt": "2026-10-30T14:44:43.937Z",
+    "official": true
+   },
+   {
+    "kind": "jnportal",
+    "title": "Portal javnih nabavki – ugovori naručioca: \"Srbijavoz\" a.d. Beograd",
+    "url": "https://jnportal.ujn.gov.rs/ugovori?initFilter=%5B%22OfficialName%22%2C%22%3D%22%2C%22%5C%22%D0%A1%D1%80%D0%B1%D0%B8%D1%98%D0%B0%D0%B2%D0%BE%D0%B7%5C%22%20%D0%B0.%D0%B4.%20%D0%91%D0%B5%D0%BE%D0%B3%D1%80%D0%B0%D0%B4%22%5D",
+    "retrievedAt": "2026-10-30T14:44:45.340Z",
+    "official": true
+   }
+  ]
+ }
+}

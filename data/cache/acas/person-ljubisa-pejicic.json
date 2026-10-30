@@ -1,0 +1,66 @@
+{
+ "source": "acas",
+ "key": "person-ljubisa-pejicic",
+ "retrievedAt": "2026-10-30T14:44:49.460Z",
+ "data": [
+  {
+   "id": "53907",
+   "fullName": "Ljubiša Pejičić",
+   "fullNameCyr": "Љубиша Пејичић",
+   "position": "v.d. generalnog direktora",
+   "positionCyr": "В.Д. Генералног Директора",
+   "isActing": true,
+   "institutionName": "Srbijavoz a.d. Beograd",
+   "from": "2025-06-18",
+   "appointedBy": "Vlada Republike Srbije",
+   "source": {
+    "kind": "acas",
+    "title": "ACAS – Registar funkcionera: Srbijavoz a.d. Beograd",
+    "url": "https://publicacas.acas.rs/#/acas/funkcioner",
+    "retrievedAt": "2026-10-30T14:44:49.460Z",
+    "publishedAt": "2025-06-18",
+    "official": true
+   }
+  },
+  {
+   "id": "53907",
+   "fullName": "Ljubiša Pejičić",
+   "fullNameCyr": "Љубиша Пејичић",
+   "position": "Zamenik sekretara",
+   "positionCyr": "Заменик секретара",
+   "isActing": false,
+   "institutionName": "Skupština gradske opštine Voždovac",
+   "from": "2024-07-11",
+   "to": "2025-06-18",
+   "appointedBy": "Neposredno od građana",
+   "source": {
+    "kind": "acas",
+    "title": "ACAS – Registar funkcionera: Skupština gradske opštine Voždovac",
+    "url": "https://publicacas.acas.rs/#/acas/funkcioner",
+    "retrievedAt": "2026-10-30T14:44:49.460Z",
+    "publishedAt": "2024-07-11",
+    "official": true
+   }
+  },
+  {
+   "id": "53907",
+   "fullName": "Ljubiša Pejičić",
+   "fullNameCyr": "Љубиша Пејичић",
+   "position": "Član veća",
+   "positionCyr": "Члан Већа",
+   "isActing": false,
+   "institutionName": "Gradska Opština Voždovac",
+   "from": "2020-09-04",
+   "to": "2024-07-11",
+   "appointedBy": "Skupština gradske opštine Voždovac",
+   "source": {
+    "kind": "acas",
+    "title": "ACAS – Registar funkcionera: Gradska Opština Voždovac",
+    "url": "https://publicacas.acas.rs/#/acas/funkcioner",
+    "retrievedAt": "2026-10-30T14:44:49.460Z",
+    "publishedAt": "2020-09-04",
+    "official": true
+   }
+  }
+ ]
+}

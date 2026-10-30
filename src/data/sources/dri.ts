@@ -10,7 +10,7 @@
 import { extractText, getDocumentProxy } from "unpdf"
 import { cached, cacheKey } from "../cache"
 import { getBuffer, getText } from "../http"
-import { asciiFold, cyrToLat, normalizeName } from "../translit"
+import { asciiFold, cyrToLat, normalizeName, sameWord } from "../translit"
 import type { AuditReport } from "../types"
 
 const SOURCE = "dri"
@@ -66,14 +66,8 @@ function tokens(s: string): string[] {
 	return asciiFold(s).replace(/[^a-z0-9]+/g, " ").split(" ").filter((t) => t.length > 1)
 }
 
-function sameToken(a: string, b: string): boolean {
-	if (a === b) return true
-	const min = Math.min(a.length, b.length)
-	if (min < 5) return false
-	let i = 0
-	while (i < min && a[i] === b[i]) i++
-	return i >= Math.max(5, min - 2)
-}
+// equal up to a Serbian case ending ("železnice" ~ "železnica"); "srbija" must not match "srbijavoz" or "srbijavode"
+const sameToken = sameWord
 
 function matchSubjects(subjects: Subject[], inst: { name: string; nameCyr?: string }): Subject[] {
 	const wanted = tokens(normalizeName(inst.name || inst.nameCyr || ""))
@@ -83,8 +77,10 @@ function matchSubjects(subjects: Subject[], inst: { name: string; nameCyr?: stri
 			const labelTokens = tokens(s.label)
 			const hit = wanted.filter((w) => labelTokens.some((l) => sameToken(w, l))).length
 			const quoted = s.label.match(/[„"“«]([^„"“”«»]+)[”"“»]/)?.[1]
-			const exact = quoted ? tokens(normalizeName(quoted)).join(" ") === wanted.join(" ") : false
-			return { s, hit: hit / wanted.length, extra: labelTokens.length - wanted.length, exact }
+			const quotedTokens = quoted ? tokens(normalizeName(quoted)) : []
+			// DRI sometimes splits a brand name: „СРБИЈА ВОЗ" is Srbijavoz
+			const exact = quoted ? quotedTokens.join(" ") === wanted.join(" ") || quotedTokens.join("") === wanted.join("") : false
+			return { s, hit: exact ? 1 : hit / wanted.length, extra: labelTokens.length - wanted.length, exact }
 		})
 		.filter((x) => x.hit === 1 && x.s.reports > 0)
 	const exact = scored.filter((x) => x.exact)

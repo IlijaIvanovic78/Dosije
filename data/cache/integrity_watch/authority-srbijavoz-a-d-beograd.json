@@ -1,0 +1,39 @@
+{
+ "source": "integrity_watch",
+ "key": "authority-srbijavoz-a-d-beograd",
+ "retrievedAt": "2026-10-30T14:44:45.647Z",
+ "data": [
+  {
+   "supplierName": "PROINTER SISTEM DOO",
+   "supplierPib": "107859729",
+   "supplierMb": "20884860",
+   "contractingAuthority": "\"Srbijavoz\" a.d. Beograd",
+   "linkType": "povezanost sa političkim subjektom",
+   "detail": "Integrity Watch označava ponuđača kao kompaniju povezanu sa političkim subjektom; izvor povezivanja: https://nova.rs/vesti/biznis/sta-sve-mozes-kad-imas-firmu-u-srbiji-i-blizak-si-sns-mozes-koliko-hoces-i-jos-vise/; označenih ugovora kod naručioca: 2; od toga u zajedničkoj ponudi: 2 (vrednost cele ponude 50,899,996 RSD, nije pripisana firmi); period: 2025-11-17 do 2025-11-19; najveći: 1/2025-1879 (2025-11-19, 45,000,000 RSD)",
+   "contracts": 2,
+   "source": {
+    "kind": "integrity_watch",
+    "title": "Integrity Watch Srbija – PROINTER SISTEM DOO / \"Srbijavoz\" a.d. Beograd",
+    "url": "https://integritywatchserbia.org.rs/companies.php?l=sr",
+    "retrievedAt": "2026-10-30T13:47:26.488Z",
+    "official": false
+   }
+  },
+  {
+   "supplierName": "KBV DATACOM d.o.o. Beograd",
+   "supplierPib": "106983968",
+   "supplierMb": "20718749",
+   "contractingAuthority": "\"Srbijavoz\" a.d. Beograd",
+   "linkType": "povezanost sa političkim subjektom",
+   "detail": "Integrity Watch označava ponuđača kao kompaniju povezanu sa političkim subjektom; izvor povezivanja: https://www.krik.rs/studija-slucaja-u-zemlji-brace-kumova-i-drugara-iz-detinjstva/; označenih ugovora kod naručioca: 1; od toga u zajedničkoj ponudi: 1 (vrednost cele ponude 12,000,000 RSD, nije pripisana firmi); period: 2023-11-09 do 2023-11-09; najveći: 1/2023-1492 (2023-11-09, 12,000,000 RSD)",
+   "contracts": 1,
+   "source": {
+    "kind": "integrity_watch",
+    "title": "Integrity Watch Srbija – KBV DATACOM d.o.o. Beograd / \"Srbijavoz\" a.d. Beograd",
+    "url": "https://integritywatchserbia.org.rs/companies.php?l=sr",
+    "retrievedAt": "2026-10-30T13:47:26.488Z",
+    "official": false
+   }
+  }
+ ]
+}

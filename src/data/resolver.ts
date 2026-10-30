@@ -148,12 +148,22 @@ export function guessLegalType(name: string, fromAcas: boolean): LegalType {
 	return "ostalo"
 }
 
+// APR registers the full legal name ("Akcionarsko društvo za železnički prevoz putnika Srbijavoz Beograd"), so a short
+// query needs the ranked search; accept it only when exactly one company contains every query token
+async function findCompanyForInstitution(query: string) {
+	const direct = await apr.findInstitutionCompany(query).catch(() => null)
+	if (direct) return direct
+	const candidates = await apr.searchCompanies(query, 5).catch(() => [])
+	const strong = candidates.filter((c) => c.match === "exact" || c.match === "contains")
+	return strong.length === 1 ? strong[0].profile : null
+}
+
 async function resolveDynamic(query: string): Promise<ResolvedInstitution> {
 	const env = await cached<ResolvedInstitution | null>("resolver", cacheKey("institution", key(query)), async () => {
 		const [acasHits, jnHits, aprHit] = await Promise.all([
 			acas.findInstitution(query).catch(() => []),
 			jn.findAuthority(searchName(query)).catch(() => []),
-			apr.findInstitutionCompany(query).catch(() => null),
+			findCompanyForInstitution(query),
 		])
 		const acasBest = acasHits.find((h) => nameSimilarity(h.name, query) >= 0.5)
 		const jnBest = jnHits.find((h) => nameSimilarity(h.name, query) >= 0.5)
