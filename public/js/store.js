@@ -24,6 +24,11 @@ export const state = {
 	stats: null,
 	report: null,
 
+	// "Mapa prioriteta" (separate from the case): runKind says which run the lanes / Gantt / metrics belong to
+	runKind: "case",
+	mapa: { id: null, status: "idle", startedAt: null, finishedAt: null, rows: new Map() },
+	ui: { view: "dosije" }, // right column: "dosije" | "mapa"
+
 	lanes: new Map(),
 	loops: new Map(), // loopId -> { agentId, t }
 	active: 0,
@@ -70,8 +75,22 @@ function syncClock(t) {
 
 export const openTasks = () => [...state.tasks.values()].filter((t) => t.status === "open")
 
+/** Status of the run on screen: the case, or the map when the lanes belong to a map. */
+export function runStatus() {
+	return state.runKind === "mapa" ? state.mapa.status : state.status
+}
+
+export const isRunning = () => runStatus() === "running" || runStatus() === "finalizing"
+export const isDone = () => runStatus() === "done"
+
+export function setView(view) {
+	if (state.ui.view === view) return
+	state.ui.view = view
+	emit("view", view)
+}
+
 export function laneEnd() {
-	if (state.status === "done" && state.tEnd) return state.tEnd
+	if (isDone() && state.tEnd) return state.tEnd
 	return now()
 }
 
@@ -81,8 +100,8 @@ export function elapsedMs() {
 }
 
 export function activeCount() {
-	if (state.status === "idle") return 0
-	if (state.loops.size === 0 && state.stats && state.status === "running") return state.stats.activeLoops || 0
+	if (runStatus() === "idle") return 0
+	if (state.loops.size === 0 && state.stats && runStatus() === "running") return state.stats.activeLoops || 0
 	return state.active
 }
 
@@ -135,6 +154,7 @@ function stubInfo(ev) {
 	if (lower.startsWith("firme")) group = "firme"
 	else if (lower.startsWith("imovina")) group = "imovina"
 	else if (lower.startsWith("provera")) group = "provera"
+	else if (lower.startsWith("trijaž")) group = "trijaza"
 	return {
 		id: ev.producerId,
 		name,
@@ -221,8 +241,15 @@ function resetDerived(keepAgents = false) {
 
 export function applySnapshot(snap) {
 	if (!snap) return
-	const newCase = snap.caseId !== state.caseId
+	const prevMapa = state.mapa.id
+	const newCase = snap.caseId !== state.caseId || (!snap.caseId && (snap.mapa?.id || null) !== prevMapa)
 	if (newCase) resetDerived()
+	if (snap.mapa) {
+		state.mapa = { id: snap.mapa.id, status: snap.mapa.status, startedAt: snap.mapa.startedAt || null, finishedAt: snap.mapa.finishedAt || null, rows: new Map((snap.mapa.rows || []).map((r) => [r.slug, r])) }
+	}
+	state.runKind = snap.caseId ? "case" : snap.mapa?.id ? "mapa" : "case"
+	if (newCase && snap.caseId) state.ui.view = "dosije"
+	else if (newCase && snap.mapa?.id && (state.live || snap.mapa.status === "running")) state.ui.view = "mapa"
 	state.caseId = snap.caseId
 	state.status = snap.status || "idle"
 	state.input = snap.input || ""
@@ -245,7 +272,7 @@ export function applySnapshot(snap) {
 	if (t0) state.t0 = t0
 	const t1 = parseIso(snap.stats?.finishedAt)
 	if (t1) state.tEnd = t1
-	if (state.status === "done") for (const lane of state.lanes.values()) lane.answered = true
+	if (isDone()) for (const lane of state.lanes.values()) lane.answered = true
 
 	if (!newCase && wasDisconnected) {
 		// events were missed: do not leave segments hanging open forever
@@ -264,6 +291,8 @@ export function applySnapshot(snap) {
 	emit("agents")
 	emit("tasks", { initial: true })
 	emit("meta")
+	emit("mapa")
+	emit("view", state.ui.view)
 }
 
 export function setConn(c) {
@@ -416,7 +445,67 @@ export function applyEvent(ev) {
 			emit("lane", lane.id)
 			break
 		}
+		case "mapa.started": {
+			if (p.mapaId && p.mapaId !== state.mapa.id) {
+				resetDerived(true)
+				state.caseId = null
+				state.status = "idle"
+				state.findings.clear()
+				state.entities.clear()
+				state.conflicts.clear()
+				state.tasks.clear()
+				state.report = null
+				state.mapa = { id: p.mapaId, status: "running", startedAt: new Date(t).toISOString(), finishedAt: null, rows: new Map((p.institutions || []).map((i) => [i.slug, { slug: i.slug, name: i.name, status: "queued", score: 0, signals: {}, reasons: [], sources: [] }])) }
+				seen.add(ev.seq)
+				state.eventCount = 1
+				state.lastEvent = ev
+				emit("snapshot", { newCase: true })
+			}
+			state.runKind = "mapa"
+			state.mapa.status = "running"
+			state.t0 = t
+			state.tEnd = null
+			if (state.live) state.ui.view = "mapa"
+			emit("meta")
+			emit("agents")
+			emit("mapa")
+			emit("view", state.ui.view)
+			break
+		}
+		case "mapa.red": {
+			const row = p.row
+			if (!row) break
+			if (p.mapaId && !state.mapa.id) state.mapa.id = p.mapaId
+			state.mapa.rows.set(row.slug, row)
+			const lane = row.agentId ? state.lanes.get(row.agentId) : null
+			if (lane && row.status === "done") {
+				lane.marks.push({ k: "finding", t, id: row.slug, label: `${row.name}: ocena ${row.score}`, sev: row.score >= 60 ? "signal" : "info" })
+				lane.findings++
+			}
+			emit("mapa", { slug: row.slug })
+			break
+		}
+		case "mapa.zavrsena": {
+			state.mapa.status = "done"
+			state.mapa.finishedAt = new Date(t).toISOString()
+			for (const row of p.ranking || []) state.mapa.rows.set(row.slug, row)
+			state.tEnd = t
+			for (const lane of state.lanes.values()) {
+				closeAll(lane, t)
+				lane.loopsOpen = 0
+				lane.answered = true
+			}
+			state.loops.clear()
+			refreshActive(t)
+			emit("meta")
+			emit("mapa", { done: true })
+			emit("lane")
+			break
+		}
 		case "dosije.started": {
+			state.runKind = "case"
+			state.ui.view = "dosije"
+			emit("view", "dosije")
 			if (p.caseId && p.caseId !== state.caseId) {
 				resetDerived(true)
 				state.caseId = p.caseId

@@ -1,0 +1,56 @@
+{
+ "source": "integrity_watch",
+ "key": "authority-srbija-kargo-a-d",
+ "retrievedAt": "2026-10-30T15:07:45.694Z",
+ "data": [
+  {
+   "supplierName": "DOBERGARD DOO",
+   "supplierPib": "103509048",
+   "supplierMb": "17569775",
+   "contractingAuthority": "Srbija Kargo a.d.",
+   "linkType": "povezanost sa političkim subjektom",
+   "detail": "Integrity Watch označava ponuđača kao kompaniju povezanu sa političkim subjektom; izvor povezivanja: https://inmedija.rs/vlasnik-firmi-za-obezbedjenje-blizak-sns-a-pokrenuo-medij/; označenih ugovora kod naručioca: 1; od toga u zajedničkoj ponudi: 1 (vrednost cele ponude 420,000,000 RSD, nije pripisana firmi); period: 2021-09-27 do 2021-09-27; najveći: 1/2021-4479 (2021-09-27, 420,000,000 RSD)",
+   "contracts": 1,
+   "source": {
+    "kind": "integrity_watch",
+    "title": "Integrity Watch Srbija – DOBERGARD DOO / Srbija Kargo a.d.",
+    "url": "https://integritywatchserbia.org.rs/companies.php?l=sr",
+    "retrievedAt": "2026-10-30T13:47:26.488Z",
+    "official": false
+   }
+  },
+  {
+   "supplierName": "Asseco SEE doo Beograd",
+   "supplierPib": "100389094",
+   "supplierMb": "07432461",
+   "contractingAuthority": "Srbija Kargo a.d.",
+   "linkType": "povezanost sa političkim subjektom",
+   "detail": "Integrity Watch označava ponuđača kao kompaniju povezanu sa političkim subjektom; izvor povezivanja: https://birn.rs/poslovi-porodice-kisic/; označenih ugovora kod naručioca: 6; od toga u zajedničkoj ponudi: 5 (vrednost cele ponude 122,032,786 RSD, nije pripisana firmi); period: 2021-12-16 do 2024-06-06; najveći: 1/2021-5493 (2021-12-16, 73,936,233 RSD)",
+   "contracts": 6,
+   "valueRsd": 2445000,
+   "source": {
+    "kind": "integrity_watch",
+    "title": "Integrity Watch Srbija – Asseco SEE doo Beograd / Srbija Kargo a.d.",
+    "url": "https://integritywatchserbia.org.rs/companies.php?l=sr",
+    "retrievedAt": "2026-10-30T13:47:26.488Z",
+    "official": false
+   }
+  },
+  {
+   "supplierName": "PROINTER SISTEM DOO",
+   "supplierPib": "107859729",
+   "supplierMb": "20884860",
+   "contractingAuthority": "Srbija Kargo a.d.",
+   "linkType": "povezanost sa političkim subjektom",
+   "detail": "Integrity Watch označava ponuđača kao kompaniju povezanu sa političkim subjektom; izvor povezivanja: https://nova.rs/vesti/biznis/sta-sve-mozes-kad-imas-firmu-u-srbiji-i-blizak-si-sns-mozes-koliko-hoces-i-jos-vise/; označenih ugovora kod naručioca: 1; od toga u zajedničkoj ponudi: 1 (vrednost cele ponude 9,818,000 RSD, nije pripisana firmi); period: 2025-06-13 do 2025-06-13; najveći: 1/2025-1635 (2025-06-13, 9,818,000 RSD)",
+   "contracts": 1,
+   "source": {
+    "kind": "integrity_watch",
+    "title": "Integrity Watch Srbija – PROINTER SISTEM DOO / Srbija Kargo a.d.",
+    "url": "https://integritywatchserbia.org.rs/companies.php?l=sr",
+    "retrievedAt": "2026-10-30T13:47:26.488Z",
+    "official": false
+   }
+  }
+ ]
+}

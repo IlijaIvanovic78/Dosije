@@ -1,0 +1,31 @@
+{
+ "source": "acas",
+ "key": "institution-koridori-srbije",
+ "retrievedAt": "2026-10-30T14:57:15.017Z",
+ "data": [
+  {
+   "id": "8269",
+   "name": "\"Koridori Srbije\" DOO",
+   "nameCyr": "\"Коридори Србије\" ДОО",
+   "source": {
+    "kind": "acas",
+    "title": "ACAS – Registar funkcionera: \"Koridori Srbije\" DOO",
+    "url": "https://publicacas.acas.rs/#/acas/funkcioner",
+    "retrievedAt": "2026-10-30T14:57:15.017Z",
+    "official": true
+   }
+  },
+  {
+   "id": "8284",
+   "name": "\"Koridori Srbije\" d.o.o.",
+   "nameCyr": "\"Коридори Србије\" д.о.о.",
+   "source": {
+    "kind": "acas",
+    "title": "ACAS – Registar funkcionera: \"Koridori Srbije\" d.o.o.",
+    "url": "https://publicacas.acas.rs/#/acas/funkcioner",
+    "retrievedAt": "2026-10-30T14:57:15.017Z",
+    "official": true
+   }
+  }
+ ]
+}

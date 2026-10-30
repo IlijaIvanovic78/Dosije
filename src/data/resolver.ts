@@ -27,6 +27,8 @@ interface StaticInstitution {
 	acasId?: string
 	jnId?: string
 	municipality?: string
+	/** verified for "Mapa prioriteta" only: not offered as a demo chip */
+	mapaOnly?: boolean
 }
 
 export interface MentionedOfficial {
@@ -95,7 +97,9 @@ function aliases(): Map<string, string> {
 }
 
 export function listStaticInstitutions(): { slug: string; name: string }[] {
-	return institutions().map((i) => ({ slug: i.slug, name: i.name.replace(/\s+a\.d\.$/i, "") }))
+	return institutions()
+		.filter((i) => !i.mapaOnly)
+		.map((i) => ({ slug: i.slug, name: i.name.replace(/\s+a\.d\.$/i, "") }))
 }
 
 /** Name without the legal-form suffix, e.g. "Infrastruktura železnice Srbije a.d." -> "Infrastruktura železnice Srbije". */
@@ -127,7 +131,7 @@ async function fromStatic(s: StaticInstitution, query: string): Promise<Resolved
 		const p = await apr.getCompany({ mb: s.mb }).catch(() => null)
 		if (p) sources.push(p.source)
 	}
-	const { officialName, ...rest } = s
+	const { officialName, mapaOnly: _mapaOnly, ...rest } = s
 	return { ...rest, query, officialName, sources }
 }
 

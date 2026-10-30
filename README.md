@@ -77,8 +77,9 @@ Open **http://localhost:3000** and click **"Infrastruktura železnice Srbije"**.
 | command | what it does |
 |---|---|
 | `npm start` | web app on port 3000 |
+| `npm run mapa` | headless Mapa prioriteta: one agent per institution, live ranking, ASCII Gantt |
 | `npm run cli -- "Infrastruktura železnice Srbije"` | headless run: live log, ASCII Gantt of the agents, writes `out/dosije-*.md` |
-| `npm test` | 9 tests, including a full concurrent case, the human-answer cascade and LLM mode against a fake OpenAI API |
+| `npm test` | 14 tests, including a full concurrent case, the human-answer cascade, LLM mode against a fake OpenAI API and a parallel Mapa prioriteta |
 | `npm run warm-cache -- "<institution>"` | fetches every public source live for another institution and caches it |
 
 ### Two-minute demo script
@@ -94,6 +95,58 @@ Open **http://localhost:3000** and click **"Infrastruktura železnice Srbije"**.
    registers the person, and **Provera + Mediji agents spawn for that name**, checking the ACAS register and PEP
    lists. A human answer turns into new concurrent work.
 6. Open the report and export it as `.md` or PDF.
+
+## Mapa prioriteta: where to look first
+
+For a **transition team or a new government**: a *list* of institutions goes through the same multi-agent system **in
+parallel**, and the output is a live rank list "gde prvo gledati". It is also the strongest visual proof of
+concurrency: one **"Trijaža · <institucija>"** agent per institution, all running at the same moment.
+
+![Mapa prioriteta: six Trijaža agents, one live ranking](docs/img/06-mapa.png)
+
+- **From the UI:** click **"Mapa prioriteta"** in the header, edit the list (one institution per line, at most 8; the
+  default is the transport-sector preset in `data/static/mapa-preset.json`) and click **"Pokreni mapu"**. Rows slide into
+  rank order as scores arrive; each row expands into its reasons, sources and **"Otvori dosije"** (a full case for that
+  institution). A map and a case exclude each other: `POST /api/mapa` answers 409 while a case runs, and vice versa.
+- **Headless:** `npm run mapa` (or `npm run mapa -- "Srbijavoz" "Koridori Srbije"`) prints the live log, the final ranking
+  and the ASCII Gantt. REST: `POST /api/mapa {institutions?: string[]}`, `GET /api/mapa`.
+- **No orchestrator:** the Novinar publishes `mapa.started`; the **Fabrika** reacts by resolving every institution and
+  spawning one Trijaža agent each, all started in the same tick with their own `runLoop`, fresh context and UrednikGate.
+  Each agent calls `trijaza_rukovodstvo` (ACAS head, v.d. check, chain), `trijaza_nabavke` (contracts, negotiated
+  procedures without publication, top supplier, Integrity Watch) and `trijaza_revizija` (DRI list + opinions already
+  extracted; no PDF is downloaded), then `upisi_red({summary})`. **Figures and the score are computed in code** from what
+  the tools returned; the model only adds a 1-2 sentence neutral summary. Events: `mapa.started`, `mapa.red` (row upsert),
+  `mapa.zavrsena` (ranking, published by the Urednik).
+
+| signal (deterministic, `src/data/analysis/priority.ts`) | points |
+|---|---|
+| acting head (v.d.) past the legal limit | +40, plus min(20, months over the limit) |
+| consecutive acting heads for >= 24 months (chain) | +15 |
+| negotiated procedures without publication > 5% of contract value | +15 |
+| ... and at least 5 such procedures | +5 |
+| top supplier (without state utilities and public systems) > 40% of the value | +10 |
+| suppliers flagged by Integrity Watch Srbija | +3 each, max 15 |
+| DRI qualified / adverse / disclaimer opinions | +10 each, max 20 |
+| at least 5 DRI reports | +5 |
+
+Every contribution becomes a short reason with its points, so a score can always be explained. Missing data never scores:
+a source that did not answer is listed as "nema podataka". DRI opinions are counted only where the PDF was already
+processed, so a low DRI count means "not extracted", not "clean". **Signals for verification, not verdicts.**
+
+**Numbers from a cached run** (`DATA_MODE=cache`, scripted, `DEMO_SPEED=1`): 6 institutions, 6 agents, **peak 6 concurrent
+loops**, 24 tool calls, 30 inferences, 174 Mozaik events in **about 8 s**. The first live run that warmed the cache took 72 s.
+The preset runs offline: IŽS and Srbijavoz were already cached, and the other four (Železnice Srbije, Srbija Kargo,
+Putevi Srbije, Koridori Srbije) are in `data/static/institutions.json` with ACAS id, JN id, PIB and APR MB checked against
+each other. A typed name that is not in that table is resolved dynamically, and the row shows what it was matched to.
+
+| rank | institution | score | top reasons |
+|---|---|---|---|
+| 1 | Infrastruktura železnice Srbije | 105 | v.d. 17 mes. (rok 12), lanac v.d. 77 mes., Integrity Watch 8, DRI 1 sa rezervom |
+| 2 | Putevi Srbije | 86 | v.d. 155 mes., 5 postupaka bez objave, DRI 1 sa rezervom |
+| 3 | Koridori Srbije | 85 | v.d. 71 mes., najveći dobavljač 40,7%, DRI 1 sa rezervom |
+| 4 | Srbija Kargo | 83 | v.d. 16 mes., lanac v.d. 109 mes., Integrity Watch 3, DRI 1 sa rezervom |
+| 5 | Srbijavoz | 80 | v.d. 16 mes., lanac v.d. 52 mes., najveći dobavljač 56,8% |
+| 6 | Železnice Srbije | 60 | v.d. 90 mes. |
 
 ## How the agents work together on Mozaik
 
@@ -298,9 +351,8 @@ docs/                       architecture, agent behavior, per-source notes, scre
   Prompts are tuned for one tool call per step, because Mozaik 4.2 executes the first function call of each response.
 - **The procurement portal's API is unofficial.** DRI excerpt selection is heuristic. APR matching is by name, with
   curated PIB-to-MB pairs for the demo suppliers; the portal publishes PIB, while the registry has only MB.
-- **Next: "Mapa prioriteta"** for transition teams. Run a list of institutions through the same agents in parallel
-  and rank them by where to look first: acting heads past their limit, many procedures without a public call, DRI
-  findings.
+- **Next:** a Mapa prioriteta over many more institutions (the portal crawl is the slow part; each institution is cached once),
+  and DRI opinions extracted for every report, so the DRI signal is comparable across institutions.
 
 ## License
 MIT for the code. Data belongs to its publishers under their terms: ACAS, Uprava za javne nabavke, APR (open data

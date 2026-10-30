@@ -582,7 +582,34 @@ async function* urednik(): AsyncGenerator<Step, string, ToolResult> {
 	return "Urednik: sažetak dosijea je napisan."
 }
 
-const POLICIES: Record<string, Policy> = { kadrovik, nabavke, revizor, mediji, firme, imovina, provera, urednik }
+// ─── Trijaža (Mapa prioriteta): the three triage tools, upisi_red, one sentence ─────────────────────────────
+
+async function* trijaza(): AsyncGenerator<Step, string, ToolResult> {
+	const r = (yield call("trijaza_rukovodstvo")).json
+	const n = (yield call("trijaza_nabavke")).json
+	const d = (yield call("trijaza_revizija")).json
+
+	const lead =
+		r?.ok === false || !r
+			? "Registar ACAS nije odgovorio"
+			: !r.head
+				? "U registru ACAS nema tekućeg čelnika"
+				: r.head.acting && r.vd?.months !== undefined
+					? `Prema ACAS, čelnik je v.d. ${r.vd.months} meseci (zakonski rok ${r.vd.limitMonths})${r.vd.overLimit ? ", signal za proveru" : ""}${r.chain ? `; institucijom rukovode samo v.d. već ${r.chain.totalMonths} meseci (${r.chain.actingCount} uzastopna)` : ""}`
+					: "Prema ACAS, čelnik nije vođen kao v.d."
+	const buy =
+		n?.ok === false || !n
+			? "Portal javnih nabavki nije odgovorio"
+			: `Portal javnih nabavki: ${n.contracts} ugovora, ${n.bezObjavljivanja?.count ?? 0} postupaka bez objave javnog poziva (${String(n.bezObjavljivanja?.sharePct ?? 0).replace(".", ",")}% vrednosti)`
+	const audit =
+		d?.ok === false || !d
+			? "DRI nije odgovorio."
+			: `DRI: ${d.total} izveštaja o reviziji${d.saRezervomIliNegativna ? `, ${d.saRezervomIliNegativna} sa rezervom ili negativnih mišljenja među poznatim` : ""}.`
+	yield call("upisi_red", { summary: `${lead}. ${buy}; ${audit}` })
+	return "Trijaža završena: red je upisan u Mapu prioriteta."
+}
+
+const POLICIES: Record<string, Policy> = { kadrovik, nabavke, revizor, mediji, firme, imovina, provera, urednik, trijaza }
 
 export function policyFor(group: string): Policy | undefined {
 	return POLICIES[group]

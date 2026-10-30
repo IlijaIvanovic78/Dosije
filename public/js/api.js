@@ -24,6 +24,7 @@ export const api = {
 	start: (input, focus) => request("POST", "/api/dosije", { input, focus: focus || undefined }),
 	answer: (payload) => request("POST", "/api/odgovor", payload),
 	lead: (name, kind) => request("POST", "/api/trag", { name, kind }),
+	mapa: (institutions) => request("POST", "/api/mapa", institutions?.length ? { institutions } : {}),
 	finish: () => request("POST", "/api/zavrsi", {}),
 	reportMd: () => request("GET", "/api/report.md"),
 }

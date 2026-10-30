@@ -6,6 +6,7 @@ import { state, on, now, openTasks, setFilter, CORE_ORDER } from "./store.js"
 import { openInbox } from "./inbox.js"
 
 const DYN_GROUPS = [
+	{ id: "trijaza", label: "Trijaža" },
 	{ id: "firme", label: "Firme" },
 	{ id: "imovina", label: "Imovina" },
 	{ id: "mediji", label: "Mediji · osobe" },
@@ -82,7 +83,7 @@ function buildLane(lane) {
 	rows.set(info.id, rec)
 
 	if (info.dynamic && lane.spawnT && state.live && now() - lane.spawnT < 9000) {
-		const text = `← pokrenuo: entity.added · ${spawnerName(info) || "Fabrika"}`
+		const text = `← pokrenuo: ${info.group === "trijaza" ? "mapa.started" : "entity.added"} · ${spawnerName(info) || "Fabrika"}`
 		const note = h("div", { class: "spawn-note" }, text)
 		root.classList.add("entering")
 		root.querySelector(".lane-track").appendChild(note)

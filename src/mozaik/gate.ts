@@ -55,6 +55,13 @@ export class UrednikGate implements InterceptionHandler {
 
 	constructor(private readonly ctx: GateCtx) {}
 
+	/** The run this loop belongs to is still the current one: the open case, or (Trijaža) the running map. */
+	private live(): boolean {
+		const state = S()
+		if (this.ctx.group === "trijaza") return state.mapaRunning(this.ctx.caseId)
+		return state.isCurrent(this.ctx.caseId) && (this.ctx.group === "urednik" || state.status === "running")
+	}
+
 	/**
 	 * Mozaik calls this exactly once per transition. Only calls that need an editorial intervention are intercepted
 	 * (so interception.started on the bus means the Urednik really acted); plain calls are just counted here.
@@ -65,7 +72,7 @@ export class UrednikGate implements InterceptionHandler {
 			const state = S()
 			const { call } = transition.input
 			const isEditor = this.ctx.group === "urednik"
-			if (!state.isCurrent(this.ctx.caseId) || (!isEditor && state.status !== "running")) return true
+			if (!this.live()) return true
 			this.calls++
 			if (!isEditor) {
 				state.refreshExhausted()
@@ -133,8 +140,7 @@ export class UrednikGate implements InterceptionHandler {
 		const isEditor = group === "urednik"
 
 		// (0) stale or closed case
-		const closed = !state.isCurrent(this.ctx.caseId) || (!isEditor && state.status !== "running")
-		if (closed) return this.endLoop(t, "Dosije je zatvoren: završi rad jednom rečenicom.")
+		if (!this.live()) return this.endLoop(t, "Dosije je zatvoren: završi rad jednom rečenicom.")
 
 		// (1) budget (calls were counted in isSatisfiedBy)
 		if (!isEditor) {

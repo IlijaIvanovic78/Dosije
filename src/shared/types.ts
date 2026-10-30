@@ -147,6 +147,7 @@ export type AgentGroup =
 	| "firme"
 	| "imovina"
 	| "provera"
+	| "trijaza" // Mapa prioriteta: one triage agent per institution
 	| "novinar"
 	| "sistem";
 
@@ -217,6 +218,53 @@ export interface InstitutionView {
 
 export type CaseStatus = "idle" | "running" | "finalizing" | "done";
 
+// ─── Mapa prioriteta (a list of institutions triaged in parallel; separate from the case) ──────────────
+
+export type MapaStatus = "idle" | "running" | "done";
+export type MapaRowStatus = "queued" | "running" | "done" | "error";
+
+/** Figures the triage tools fetched (all optional: a source can be unavailable). Shares are fractions 0..1. */
+export interface MapaSignals {
+	vdMonths?: number; // months the current head has been acting (v.d.)
+	vdLimitMonths?: number; // legal maximum applied by the v.d. check
+	vdOver?: boolean;
+	vdChainMonths?: number; // consecutive acting heads: months since the first one
+	vdChainCount?: number;
+	contracts?: number;
+	valueRsd?: number;
+	nwpCount?: number; // negotiated procedures without a public call
+	nwpValueRsd?: number;
+	nwpShare?: number; // of the total contract value
+	topSupplierName?: string; // top supplier without public systems / state utilities
+	topSupplierShare?: number; // of the value without public systems
+	iwFlags?: number; // suppliers flagged by Integrity Watch Srbija
+	driReports?: number;
+	driQualified?: number; // qualified / adverse / disclaimer opinions among the opinions already extracted
+	driKnown?: number; // reports whose opinion is known
+}
+
+export interface MapaRow {
+	slug: string;
+	name: string;
+	resolvedName?: string; // what the resolver matched (official name)
+	status: MapaRowStatus;
+	agentId?: string;
+	score: number; // deterministic, see src/data/analysis/priority.ts
+	signals: MapaSignals;
+	reasons: string[]; // short Serbian phrases, each with its points
+	summary?: string; // 1-2 neutral sentences from the triage agent
+	sources: SourceRef[];
+	error?: string;
+}
+
+export interface MapaView {
+	id: string | null;
+	status: MapaStatus;
+	startedAt?: string;
+	finishedAt?: string;
+	rows: MapaRow[]; // sorted by score, highest first
+}
+
 export interface RuntimeConfigView {
 	mode: "llm" | "scripted";
 	model: string;
@@ -224,6 +272,7 @@ export interface RuntimeConfigView {
 	dataMode: "auto" | "cache" | "live";
 	searchProviders: string[]; // e.g. ["google-news-rss", "gdelt", "serper"]
 	demoInstitutions: { slug: string; name: string }[];
+	mapaPreset?: { slug: string; name: string }[]; // default list of "Mapa prioriteta"
 }
 
 export interface DosijeSnapshot {
@@ -240,6 +289,7 @@ export interface DosijeSnapshot {
 	budget: Budget;
 	stats: RunStats;
 	report?: DosijeReport;
+	mapa?: MapaView; // present once a map has been started (separate from the case)
 	config: RuntimeConfigView;
 }
 
@@ -291,6 +341,9 @@ export interface WirePayloads {
 	"budget.updated": { budget: Budget };
 	"dosije.zatvori": { caseId: string };
 	"dosije.zavrsen": { caseId: string; report: DosijeReport };
+	"mapa.started": { mapaId: string; institutions: { slug: string; name: string }[] };
+	"mapa.red": { mapaId: string; row: MapaRow }; // upsert, every time a row changes
+	"mapa.zavrsena": { mapaId: string; ranking: MapaRow[] }; // sorted by score, highest first
 }
 
 // ─── REST ────────────────────────────────────────────────────────────────────
@@ -302,3 +355,5 @@ export interface WirePayloads {
 // POST /api/trag     {name, kind: "osoba"|"firma"} -> { ok }       journalist adds a lead (entity.added by the human)
 // POST /api/zavrsi   {}                          -> { ok }         finish now (dosije.zatvori)
 // GET  /api/report.md                            -> text/markdown  the report
+// POST /api/mapa     {institutions?: string[]}  -> { mapaId }     start a "Mapa prioriteta" (default: the preset list); 409 while a case runs
+// GET  /api/mapa                                 -> MapaView       the current map

@@ -1,7 +1,7 @@
 // Live Gantt (canvas, ~10 fps) on a shared time axis + concurrency sparkline (SVG).
 // Overlapping bars across lanes are the visual proof that agents run concurrently.
 
-import { state, on, laneEnd, activeCount, peakCount } from "./store.js"
+import { state, on, laneEnd, activeCount, peakCount, isRunning, isDone } from "./store.js"
 import { laneRows } from "./lanes.js"
 import { s, parseIso, fmtDur, truncate } from "./format.js"
 
@@ -53,7 +53,7 @@ function axis(W) {
 	const t0 = state.t0
 	if (!t0) return null
 	const end = laneEnd()
-	const running = state.status === "running" || state.status === "finalizing"
+	const running = isRunning()
 	const span = Math.max((end - t0) * (running ? 1.03 : 1.01), 15000)
 	const innerW = Math.max(10, W - PAD_L - PAD_R)
 	return { t0, end, span, innerW, X: (t) => PAD_L + ((t - t0) / span) * innerW }
@@ -93,11 +93,11 @@ function draw() {
 	if (!ax) {
 		ctx.fillStyle = "rgba(139,151,179,.55)"
 		ctx.font = "11px ui-monospace, Consolas, monospace"
-		ctx.fillText("vremenska osa počinje kad krene dosije", PAD_L, RULER_H + 24)
+		ctx.fillText("vremenska osa počinje kad krene dosije ili mapa", PAD_L, RULER_H + 24)
 		return
 	}
 	const { X, end, span, innerW, t0 } = ax
-	const running = state.status === "running" || state.status === "finalizing"
+	const running = isRunning()
 	if (!stripe) stripe = makeStripePattern(ctx)
 	const phase = (performance.now() / 60) % 10
 	if (stripe && stripe.setTransform) stripe.setTransform(new DOMMatrix().translate(-phase, 0))
@@ -388,7 +388,7 @@ function drawSpark() {
 	const last = series[series.length - 1].n
 	sparkDot.setAttribute("cx", xe.toFixed(1))
 	sparkDot.setAttribute("cy", Y(last).toFixed(1))
-	sparkDot.setAttribute("r", state.status === "done" ? "0" : "3.5")
+	sparkDot.setAttribute("r", isDone() ? "0" : "3.5")
 }
 
 // ─── tooltip ──────────────────────────────────────────────────────────────
@@ -446,13 +446,13 @@ export function initGantt() {
 	dynEl.addEventListener("scroll", markDirty, { passive: true })
 	window.addEventListener("resize", markDirty)
 	new ResizeObserver(markDirty).observe(wrap)
-	for (const t of ["lane", "agents", "snapshot", "filters", "tasks", "meta", "done"]) on(t, markDirty)
+	for (const t of ["lane", "agents", "snapshot", "filters", "tasks", "meta", "done", "mapa"]) on(t, markDirty)
 
 	let last = 0
 	const frame = (ts) => {
 		requestAnimationFrame(frame)
 		if (document.hidden) return
-		const running = state.status === "running" || state.status === "finalizing"
+		const running = isRunning()
 		if (ts - last < 95) return
 		if (!dirty && !running) return
 		last = ts

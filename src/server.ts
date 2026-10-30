@@ -1,13 +1,13 @@
 // HTTP + SSE + REST (node:http only). Serves public/ and implements the contract at the bottom of src/shared/types.ts:
 //   GET /api/events (SSE: snapshot, ev, stats) · GET /api/config · GET /api/state · GET /api/report.md
-//   POST /api/dosije · /api/odgovor · /api/trag · /api/zavrsi
+//   GET /api/mapa · POST /api/dosije · /api/mapa · /api/odgovor · /api/trag · /api/zavrsi
 
 import fs from "node:fs"
 import http from "node:http"
 import path from "node:path"
 import { fileURLToPath } from "node:url"
 import { applyEntryDefaults, config, editorModelLabel, modelLabel } from "./config"
-import { ApiError, addLead, boot, closeCase, configView, getReport, getSnapshot, shutdown, startCase, submitAnswer } from "./mozaik/boot"
+import { ApiError, addLead, boot, closeCase, configView, getMapa, getReport, getSnapshot, shutdown, startCase, startMapa, submitAnswer } from "./mozaik/boot"
 import { bus } from "./mozaik/bus"
 import { S } from "./mozaik/domain"
 import { logError } from "./mozaik/util"
@@ -81,6 +81,7 @@ async function handleApi(req: http.IncomingMessage, res: http.ServerResponse, pa
 	if (method === "GET") {
 		if (pathname === "/api/config") return json(res, 200, configView()), true
 		if (pathname === "/api/state") return json(res, 200, getSnapshot()), true
+		if (pathname === "/api/mapa") return json(res, 200, getMapa()), true
 		if (pathname === "/api/report.md") {
 			const report = getReport()
 			if (!report) {
@@ -126,6 +127,10 @@ async function handleApi(req: http.IncomingMessage, res: http.ServerResponse, pa
 			if (err instanceof ApiError) throw err
 			throw new ApiError(422, (err as Error).message)
 		}
+	}
+	if (pathname === "/api/mapa") {
+		const { mapaId } = await startMapa(body.institutions)
+		return json(res, 200, { mapaId }), true
 	}
 	if (pathname === "/api/odgovor") return submitAnswer(body), json(res, 200, { ok: true }), true
 	if (pathname === "/api/trag") return addLead(body), json(res, 200, { ok: true }), true
@@ -175,7 +180,7 @@ const server = http.createServer((req, res) => {
 })
 
 bus.onWire((ev) => {
-	if (ev.type === "dosije.started") history = []
+	if (ev.type === "dosije.started" || ev.type === "mapa.started") history = []
 	history.push(ev)
 	if (history.length > HISTORY_MAX) history.splice(0, history.length - HISTORY_MAX)
 	broadcast("ev", ev)
@@ -186,7 +191,7 @@ const statsTimer = setInterval(() => {
 	if (clients.size === 0) return
 	try {
 		const state = S()
-		if (state.status === "running" || state.status === "finalizing") broadcast("stats", { stats: state.refreshStats(), budget: state.budget })
+		if (state.status === "running" || state.status === "finalizing" || state.mapa.status === "running") broadcast("stats", { stats: state.refreshStats(), budget: state.budget })
 	} catch {
 		// runtime not ready yet
 	}

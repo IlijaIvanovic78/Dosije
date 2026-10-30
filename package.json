@@ -11,6 +11,7 @@
     "start": "tsx src/server.ts",
     "dev": "tsx watch src/server.ts",
     "cli": "tsx scripts/cli.ts",
+    "mapa": "tsx scripts/mapa.ts",
     "warm-cache": "tsx scripts/warm-cache.ts",
     "test": "tsx --test test/*.test.ts",
     "typecheck": "tsc --noEmit"

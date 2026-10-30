@@ -2879,6 +2879,220 @@ body.inbox-open .toasts {
 	color: #fff;
 }
 
+/* ─── mapa prioriteta ────────────────────────────────────────────────── */
+
+.mapa-btn {
+	gap: 7px;
+	padding: 0 14px;
+}
+.mapa-btn.active {
+	border-color: var(--accent);
+	background: rgba(122, 162, 255, 0.14);
+	color: #fff;
+}
+.mapa-lede {
+	margin: 2px 0 14px;
+	color: var(--text-2);
+	font-size: 13px;
+	line-height: 1.55;
+}
+.mapa-lede b {
+	color: #fff;
+}
+.mapa-form {
+	display: flex;
+	flex-direction: column;
+	gap: 7px;
+	padding: 12px 14px;
+	border-radius: 14px;
+	border: 1px solid var(--border-2);
+	background: linear-gradient(135deg, rgba(122, 162, 255, 0.08), rgba(17, 26, 46, 0.7) 55%);
+}
+.mapa-form label {
+	font-size: 11px;
+	letter-spacing: 0.08em;
+	text-transform: uppercase;
+	color: var(--muted);
+}
+.mapa-form textarea {
+	font-size: 13px;
+	min-height: 118px;
+	max-height: 200px;
+	resize: vertical;
+}
+.mapa-form textarea:disabled {
+	opacity: 0.6;
+}
+.mapa-form-row {
+	display: flex;
+	align-items: center;
+	gap: 14px;
+	flex-wrap: wrap;
+}
+.mapa-progress {
+	margin-left: auto;
+	font-size: 12px;
+	color: var(--text-2);
+	font-variant-numeric: tabular-nums;
+}
+.mapa-table {
+	margin-top: 16px;
+}
+.mrow-main,
+.mhead {
+	display: grid;
+	grid-template-columns: 30px minmax(150px, 1.3fr) 112px minmax(0, 1.8fr) 70px 82px;
+	align-items: center;
+	gap: 12px;
+}
+.mhead {
+	padding: 0 14px 7px;
+	font-size: 10.5px;
+	letter-spacing: 0.09em;
+	text-transform: uppercase;
+	color: var(--dim);
+}
+.mrows {
+	position: relative;
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+}
+.mrow {
+	border-radius: 12px;
+	border: 1px solid var(--border);
+	background: var(--panel-2);
+	transition: transform 0.65s var(--ease), border-color 0.2s, box-shadow 0.3s;
+}
+.mrow.moving {
+	z-index: 2;
+	border-color: var(--border-2);
+	box-shadow: 0 10px 28px -16px rgba(122, 162, 255, 0.6);
+}
+.mrow[data-status="running"] {
+	border-color: rgba(167, 139, 250, 0.35);
+}
+.mrow[data-status="error"] {
+	border-color: rgba(255, 93, 108, 0.4);
+}
+.mrow-main {
+	padding: 11px 14px;
+}
+.rk {
+	font-size: 17px;
+	font-weight: 800;
+	color: var(--text-2);
+	font-variant-numeric: tabular-nums;
+	text-align: center;
+}
+.mname {
+	min-width: 0;
+	display: flex;
+	flex-direction: column;
+}
+.mn {
+	font-size: 13.5px;
+	line-height: 1.3;
+}
+.ms {
+	color: var(--dim);
+	font-size: 11px;
+	min-height: 14px;
+}
+.mscore {
+	display: flex;
+	flex-direction: column;
+	gap: 5px;
+}
+.mscore .num {
+	font-size: 18px;
+	font-weight: 750;
+	line-height: 1;
+	font-variant-numeric: tabular-nums;
+}
+.bar {
+	height: 6px;
+	border-radius: 6px;
+	background: rgba(255, 255, 255, 0.07);
+	overflow: hidden;
+}
+.bar i {
+	display: block;
+	height: 100%;
+	width: 0;
+	border-radius: 6px;
+	background: linear-gradient(90deg, #5578f0, #a78bfa);
+	transition: width 0.6s var(--ease), background 0.3s;
+}
+.bar i[data-tone="mid"] {
+	background: linear-gradient(90deg, #a78bfa, #ffb547);
+}
+.bar i[data-tone="hi"] {
+	background: linear-gradient(90deg, #ffb547, #ff5d6c);
+}
+.mchips {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 5px;
+	min-width: 0;
+}
+.mrow .pill {
+	justify-self: start;
+	font-size: 11px;
+	padding: 2px 9px;
+}
+.mtoggle {
+	justify-self: end;
+	white-space: nowrap;
+}
+.mdetail {
+	padding: 2px 14px 13px 56px;
+	border-top: 1px dashed var(--border);
+	margin-top: -1px;
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+}
+.mdetail > :first-child {
+	margin-top: 10px;
+}
+.m-sum {
+	font-size: 13px;
+	line-height: 1.55;
+	color: var(--text-2);
+}
+.m-err {
+	font-size: 12.5px;
+	color: #ff9aa4;
+}
+.m-none {
+	font-size: 12px;
+	color: var(--muted);
+}
+.m-reasons {
+	margin: 0;
+	padding-left: 18px;
+	font-size: 12.5px;
+	color: var(--text-2);
+	line-height: 1.55;
+}
+.m-actions {
+	display: flex;
+	align-items: center;
+	gap: 12px;
+}
+.m-resolved {
+	font-size: 11px;
+	color: var(--dim);
+}
+@media (max-width: 1300px) {
+	.mrow-main,
+	.mhead {
+		grid-template-columns: 26px minmax(100px, 1fr) 96px minmax(0, 1.5fr) 66px 70px;
+		gap: 8px;
+	}
+}
+
 /* ─── responsive ─────────────────────────────────────────────────────── */
 
 @media (max-width: 1500px) {

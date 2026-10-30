@@ -1,0 +1,25 @@
+{
+ "source": "jnportal",
+ "key": "authority-zeleznice-srbije",
+ "retrievedAt": "2026-10-30T14:57:12.000Z",
+ "data": [
+  {
+   "Id": 4192,
+   "Name": "Инфраструктура железнице Србије",
+   "IdentificationNumber": "109108420",
+   "City": "Београд"
+  },
+  {
+   "Id": 6910,
+   "Name": "Завод за здравствену заштиту радника \"Железнице Србије\"",
+   "IdentificationNumber": "100348642",
+   "City": "Београд"
+  },
+  {
+   "Id": 2997,
+   "Name": "ЖЕЛЕЗНИЦЕ СРБИЈЕ АД",
+   "IdentificationNumber": "103859991",
+   "City": "БЕОГРАД"
+  }
+ ]
+}

@@ -1,17 +1,42 @@
 {
  "source": "jnportal",
  "key": "authority-index",
- "retrievedAt": "2026-10-30T14:44:45.342Z",
+ "retrievedAt": "2026-10-30T14:57:16.493Z",
  "data": {
+  "2997": {
+   "id": "2997",
+   "name": "ŽELEZNICE SRBIJE AD",
+   "pib": "103859991"
+  },
   "4192": {
    "id": "4192",
    "name": "Infrastruktura železnice Srbije",
    "pib": "109108420"
   },
+  "4258": {
+   "id": "4258",
+   "name": "Srbija Kargo a.d.",
+   "pib": "109108446"
+  },
+  "5117": {
+   "id": "5117",
+   "name": "Društvo sa ograničenom odgovornošću \"Putevi Srbije\" Beograd",
+   "pib": "104260456"
+  },
   "5238": {
    "id": "5238",
    "name": "\"Srbijavoz\" a.d. Beograd",
    "pib": "109108438"
+  },
+  "6910": {
+   "id": "6910",
+   "name": "Zavod za zdravstvenu zaštitu radnika \"Železnice Srbije\"",
+   "pib": "100348642"
+  },
+  "7584": {
+   "id": "7584",
+   "name": "\"KORIDORI SRBIJE\" DOO BEOGRAD",
+   "pib": "105940792"
   }
  }
 }

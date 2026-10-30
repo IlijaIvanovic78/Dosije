@@ -10,6 +10,7 @@ import { initDosije } from "./js/dosije.js"
 import { initInbox } from "./js/inbox.js"
 import { initEventLog } from "./js/eventlog.js"
 import { initReport } from "./js/report.js"
+import { initMapa } from "./js/mapa.js"
 import { initMetrics } from "./js/metrics.js"
 import { toast } from "./js/toast.js"
 
@@ -75,7 +76,7 @@ async function startCase(inputValue) {
 }
 
 function renderView() {
-	const hasCase = !!state.caseId
+	const hasCase = !!state.caseId || state.ui.view === "mapa"
 	document.body.dataset.view = hasCase ? "case" : "hero"
 	$("metrics").classList.toggle("open", hasCase)
 }
@@ -93,6 +94,7 @@ async function boot() {
 	initInbox()
 	initEventLog()
 	initReport()
+	initMapa()
 
 	on("conn", renderBadges)
 	on("snapshot", () => {
@@ -101,6 +103,7 @@ async function boot() {
 		renderView()
 	})
 	on("meta", renderView)
+	on("view", renderView)
 	renderBadges()
 	renderView()
 

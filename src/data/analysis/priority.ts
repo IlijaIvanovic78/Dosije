@@ -1,0 +1,60 @@
+// "Mapa prioriteta": deterministic priority score of one institution ("where to look first") from the signals the triage
+// tools fetched. The score is plain code, never a model's opinion; it ranks where a human should start, it does not judge.
+//
+//   signal                                                                   points
+//   acting head (v.d.) past the legal limit                                  +40, plus min(20, months over the limit)
+//   consecutive acting heads for >= 24 months (chain)                        +15
+//   negotiated procedures without publication, share of contract value > 5%  +15
+//   ... and at least 5 such procedures                                       +5
+//   top supplier (without public systems / state utilities) share > 40%      +10
+//   Integrity Watch Srbija flagged suppliers                                 +3 each, at most 15
+//   DRI qualified / adverse / disclaimer opinions                            +10 each, at most 20
+//   at least 5 DRI reports                                                   +5
+//
+// Maximum 145. Every contribution produces a short Serbian reason with its points, so a score can always be explained.
+
+import type { MapaSignals } from "../../shared/types"
+
+export const PRIORITY_MAX = 145
+
+export interface PriorityResult {
+	score: number
+	reasons: string[]
+}
+
+const pct = (share: number): string => `${(Math.round(share * 1000) / 10).toLocaleString("sr-RS")}%`
+
+export function scoreSignals(s: MapaSignals): PriorityResult {
+	let score = 0
+	const reasons: string[] = []
+	const add = (points: number, text: string) => {
+		score += points
+		reasons.push(`${text} (+${points})`)
+	}
+
+	if (s.vdOver && s.vdMonths !== undefined && s.vdLimitMonths !== undefined) {
+		const over = Math.max(0, s.vdMonths - s.vdLimitMonths)
+		add(40 + Math.min(20, over), `v.d. ${s.vdMonths} mes., zakonski rok ${s.vdLimitMonths}`)
+	}
+	if (s.vdChainMonths !== undefined && s.vdChainMonths >= 24) {
+		add(15, `lanac v.d. ${s.vdChainMonths} mes.${s.vdChainCount ? ` (${s.vdChainCount} uzastopna)` : ""}`)
+	}
+	if (s.nwpShare !== undefined && s.nwpShare > 0.05) add(15, `bez objave javnog poziva ${pct(s.nwpShare)} vrednosti`)
+	if (s.nwpCount !== undefined && s.nwpCount >= 5) add(5, `${s.nwpCount} postupaka bez objave javnog poziva`)
+	if (s.topSupplierShare !== undefined && s.topSupplierShare > 0.4) add(10, `najveći dobavljač ${pct(s.topSupplierShare)} vrednosti`)
+	if (s.iwFlags) add(Math.min(15, 3 * s.iwFlags), `${s.iwFlags} dobavljača označeno u Integrity Watch`)
+	if (s.driQualified) add(Math.min(20, 10 * s.driQualified), `${s.driQualified} DRI mišljenja sa rezervom ili negativna`)
+	if (s.driReports !== undefined && s.driReports >= 5) add(5, `${s.driReports} DRI izveštaja`)
+	return { score, reasons }
+}
+
+/** Short signal chips for tables and logs, e.g. "v.d. 17/12 mes.", "bez objave 10 · 0,1%", "IW 8", "DRI 21 · 1 sa rezervom". */
+export function signalChips(s: MapaSignals): string[] {
+	const chips: string[] = []
+	if (s.vdMonths !== undefined && s.vdLimitMonths !== undefined && (s.vdOver || s.vdMonths > 0)) chips.push(`v.d. ${s.vdMonths}/${s.vdLimitMonths} mes.`)
+	if (s.vdChainMonths !== undefined && s.vdChainMonths >= 24) chips.push(`lanac v.d. ${s.vdChainMonths} mes.`)
+	if (s.nwpCount) chips.push(`bez objave ${s.nwpCount}${s.nwpShare !== undefined ? ` · ${pct(s.nwpShare)}` : ""}`)
+	if (s.iwFlags) chips.push(`IW ${s.iwFlags}`)
+	if (s.driReports) chips.push(`DRI ${s.driReports}${s.driQualified ? ` · ${s.driQualified} sa rezervom` : ""}`)
+	return chips
+}

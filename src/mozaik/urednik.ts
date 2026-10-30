@@ -17,6 +17,7 @@ import {
 } from "./domain"
 import { handler } from "./handlers"
 import { startAgentLoop } from "./loop"
+import { mapaLoopEnded } from "./mapa"
 import { buildReport } from "./report"
 import { leave } from "./runtime"
 import { computeStatus, mergeSources } from "./state"
@@ -240,6 +241,7 @@ function onLoopEnded(p: { loopId?: string }, producerId: string): void {
 	if (!p.loopId || state.staleLoops.has(p.loopId)) return
 	state.loopEnded(p.loopId)
 	maybeLeave(producerId)
+	if (state.agentInfo.get(producerId)?.group === "trijaza") mapaLoopEnded(producerId)
 }
 
 // ─── completion ──────────────────────────────────────────────────────────────

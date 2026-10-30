@@ -1,0 +1,534 @@
+{
+ "source": "dri",
+ "key": "reports-putevi-srbije",
+ "retrievedAt": "2026-10-30T15:08:18.259Z",
+ "data": [
+  {
+   "id": "15752",
+   "title": "Izveštaj o reviziji pravilnosti i svrsishodnosti poslovanja „Pravilnost i efikasnost preduzetih mera Javnog preduzeća Putevi Srbije, Beograd, u vezi sa zapošljavanjem osoba sa invaliditetom“",
+   "year": 2026,
+   "publishedAt": "2026-01-29",
+   "kind": "poslerevizioni izveštaj",
+   "url": "https://www.dri.rs/storage/newaudits/2025_%D0%A1%D0%95%D0%9A%D0%A2%D0%9E%D0%A0%204_PR_%D0%88%D0%90%D0%92%D0%9D%D0%9E%20%D0%9F%D0%A0%D0%95%D0%94%D0%A3%D0%97%D0%95%D0%8B%D0%95%20%D0%9F%D0%A3%D0%A2%D0%95%D0%92%D0%98%20%D0%A1%D0%A0%D0%91%D0%98%D0%88%D0%95,%20%D0%91%D0%95%D0%9E%D0%93%D0%A0%D0%90%D0%94_PS_C1AA3832-2F09-44FB-9964-930E8A340EEA.pdf",
+   "excerpts": [],
+   "source": {
+    "kind": "dri",
+    "title": "DRI: Izveštaj o reviziji pravilnosti i svrsishodnosti poslovanja „Pravilnost i efikasnost preduzetih mera Javnog preduzeća Putevi Srbije, Beograd",
+    "url": "https://www.dri.rs/izvestaj/15752",
+    "retrievedAt": "2026-10-30T15:08:11.495Z",
+    "publishedAt": "2026-01-29",
+    "official": true
+   }
+  },
+  {
+   "id": "15753",
+   "title": "Izveštaj o reviziji pravilnosti i svrsishodnosti poslovanja „Pravilnost i efikasnost preduzetih mera Javnog preduzeća Putevi Srbije, Beograd, u vezi sa zapošljavanjem osoba sa invaliditetom“",
+   "year": 2026,
+   "publishedAt": "2026-01-29",
+   "kind": "odazivni izveštaj",
+   "url": "https://www.dri.rs/storage/newaudits/2025_%D0%A1%D0%95%D0%9A%D0%A2%D0%9E%D0%A0%204_OD_%D0%88%D0%90%D0%92%D0%9D%D0%9E%20%D0%9F%D0%A0%D0%95%D0%94%D0%A3%D0%97%D0%95%D0%8B%D0%95%20%D0%9F%D0%A3%D0%A2%D0%95%D0%92%D0%98%20%D0%A1%D0%A0%D0%91%D0%98%D0%88%D0%95,%20%D0%91%D0%95%D0%9E%D0%93%D0%A0%D0%90%D0%94_PS_844FF031-59B4-4BF6-A6DA-8AFD338109AE.pdf",
+   "excerpts": [],
+   "source": {
+    "kind": "dri",
+    "title": "DRI: Izveštaj o reviziji pravilnosti i svrsishodnosti poslovanja „Pravilnost i efikasnost preduzetih mera Javnog preduzeća Putevi Srbije, Beograd",
+    "url": "https://www.dri.rs/izvestaj/15753",
+    "retrievedAt": "2026-10-30T15:08:11.495Z",
+    "publishedAt": "2026-01-29",
+    "official": true
+   }
+  },
+  {
+   "id": "14509",
+   "title": "Izveštaj o reviziji pravilnosti i svrsishodnosti poslovanja „Pravilnost i efikasnost preduzetih mera Javnog preduzeća Putevi Srbije, Beograd, u vezi sa zapošljavanjem osoba sa invaliditetom“",
+   "year": 2025,
+   "publishedAt": "2025-10-07",
+   "kind": "revizija pravilnosti i svrsishodnosti",
+   "url": "https://www.dri.rs/storage/newaudits/2025_%D0%A1%D0%95%D0%9A%D0%A2%D0%9E%D0%A0%204_IZV_%D0%88%D0%90%D0%92%D0%9D%D0%9E%20%D0%9F%D0%A0%D0%95%D0%94%D0%A3%D0%97%D0%95%D0%8B%D0%95%20%D0%9F%D0%A3%D0%A2%D0%95%D0%92%D0%98%20%D0%A1%D0%A0%D0%91%D0%98%D0%88%D0%95,%20%D0%91%D0%95%D0%9E%D0%93%D0%A0%D0%90%D0%94_PS_398BF60B-5955-4A82-A037-D2FA8BE63BC6.pdf",
+   "excerpts": [],
+   "source": {
+    "kind": "dri",
+    "title": "DRI: Izveštaj o reviziji pravilnosti i svrsishodnosti poslovanja „Pravilnost i efikasnost preduzetih mera Javnog preduzeća Putevi Srbije, Beograd",
+    "url": "https://www.dri.rs/izvestaj/14509",
+    "retrievedAt": "2026-10-30T15:08:11.495Z",
+    "publishedAt": "2025-10-07",
+    "official": true
+   }
+  },
+  {
+   "id": "14344",
+   "title": "Izveštaj o otklanjanju nepravilnosti otkrivenih u reviziji (Odazivni izveštaj) pravilnosti poslovanja Javnog preduzeća „Putevi Srbije“, Beograd, za 2023. godinu, u delu koji se odnosi na mere ispravljanja po Izveštaju o reviziji pravilnosti poslovanja iz 2020. godine",
+   "year": 2025,
+   "publishedAt": "2025-03-03",
+   "kind": "odazivni izveštaj",
+   "url": "https://www.dri.rs/storage/newaudits/2025-4-OD%20JP%20Putevi%20Srbije.pdf",
+   "excerpts": [],
+   "source": {
+    "kind": "dri",
+    "title": "DRI: Izveštaj o otklanjanju nepravilnosti otkrivenih u reviziji (Odazivni izveštaj) pravilnosti poslovanja Javnog preduzeća „Putevi Srbije“, Beog",
+    "url": "https://www.dri.rs/izvestaj/14344",
+    "retrievedAt": "2026-10-30T15:08:11.495Z",
+    "publishedAt": "2025-03-03",
+    "official": true
+   }
+  },
+  {
+   "id": "14345",
+   "title": "Poslerevizioni izveštaj o merama ispravljanja Javnog preduzeća „Putevi Srbije“, Beograd, u delu koji se odnosi na mere ispravljanja po izveštaju o reviziji pravilnosti poslovanja iz 2020. godine",
+   "year": 2025,
+   "publishedAt": "2025-03-03",
+   "kind": "poslerevizioni izveštaj",
+   "url": "https://www.dri.rs/storage/newaudits/2025-4-PR%20JP%20Putevi%20Srbije.pdf",
+   "excerpts": [],
+   "source": {
+    "kind": "dri",
+    "title": "DRI: Poslerevizioni izveštaj o merama ispravljanja Javnog preduzeća „Putevi Srbije“, Beograd, u delu koji se odnosi na mere ispravljanja po izveš",
+    "url": "https://www.dri.rs/izvestaj/14345",
+    "retrievedAt": "2026-10-30T15:08:11.495Z",
+    "publishedAt": "2025-03-03",
+    "official": true
+   }
+  },
+  {
+   "id": "14316",
+   "title": "Izveštaj o sprovođenju preporuka radi otklanjanja nesvrsishodnosti otkrivenih u reviziji (Odazivni izveštaj) „Upravljanje informacionim sistemom Javnog preduzeća Putevi Srbije“, Javno preduzeće „Putevi Srbije“, Beograd",
+   "year": 2025,
+   "publishedAt": "2025-02-11",
+   "kind": "odazivni izveštaj",
+   "url": "https://www.dri.rs/storage/newaudits/2025-6-OD%20SV%20Upravljanje%20informacionim%20sistemom%20JP%20Putevi%20Srbije.pdf",
+   "excerpts": [],
+   "source": {
+    "kind": "dri",
+    "title": "DRI: Izveštaj o sprovođenju preporuka radi otklanjanja nesvrsishodnosti otkrivenih u reviziji (Odazivni izveštaj) „Upravljanje informacionim sist",
+    "url": "https://www.dri.rs/izvestaj/14316",
+    "retrievedAt": "2026-10-30T15:08:11.495Z",
+    "publishedAt": "2025-02-11",
+    "official": true
+   }
+  },
+  {
+   "id": "14317",
+   "title": "Poslerevizioni izveštaj o merama ispravljanja Javnog preduzeća „Putevi Srbije“, Bul. kralja Aleksandra 282, 11050 Beograd, po reviziji svrsishodnosti poslovanja „Upravljanje informacionim sistemom Javnog preduzeća Putevi Srbije“",
+   "year": 2025,
+   "publishedAt": "2025-02-11",
+   "kind": "poslerevizioni izveštaj",
+   "url": "https://www.dri.rs/storage/newaudits/2025-6-PR%20SV%20Upravljanje%20informacionim%20sistemom%20JP%20Putevi%20Srbije.pdf",
+   "excerpts": [],
+   "source": {
+    "kind": "dri",
+    "title": "DRI: Poslerevizioni izveštaj o merama ispravljanja Javnog preduzeća „Putevi Srbije“, Bul. kralja Aleksandra 282, 11050 Beograd, po reviziji svrsi",
+    "url": "https://www.dri.rs/izvestaj/14317",
+    "retrievedAt": "2026-10-30T15:08:11.495Z",
+    "publishedAt": "2025-02-11",
+    "official": true
+   }
+  },
+  {
+   "id": "14114",
+   "title": "Izveštaj o reviziji odazivnog izveštaja Javnog preduzeća „Putevi Srbije“, Beograd koji se odnosi na revizorski izveštaj broj 400-795/2023-06/15 od 22. decembra 2023. godine",
+   "year": 2024,
+   "publishedAt": "2024-12-30",
+   "kind": "revizija odazivnog izveštaja",
+   "url": "https://www.dri.rs/storage/newaudits/2024-4-Izvestaj%20o%20reviziji%20odazivnog%20izvestaja%20JP%20Putevi%20Srbije.pdf",
+   "excerpts": [],
+   "source": {
+    "kind": "dri",
+    "title": "DRI: Izveštaj o reviziji odazivnog izveštaja Javnog preduzeća „Putevi Srbije“, Beograd koji se odnosi na revizorski izveštaj broj 400-795/2023-06",
+    "url": "https://www.dri.rs/izvestaj/14114",
+    "retrievedAt": "2026-10-30T15:08:11.495Z",
+    "publishedAt": "2024-12-30",
+    "official": true
+   }
+  },
+  {
+   "id": "14115",
+   "title": "Izveštaj o otklanjanju nepravilnosti otkrivenih u reviziji (Odazivni izveštaj) finansijskih izveštaja Javnog preduzeća „Putevi Srbije“, Beograd za 2022. godinu",
+   "year": 2024,
+   "publishedAt": "2024-12-30",
+   "kind": "odazivni izveštaj",
+   "url": "https://www.dri.rs/storage/newaudits/2024-4-OD%20JP%20Putevi%20Srbije.pdf",
+   "excerpts": [],
+   "source": {
+    "kind": "dri",
+    "title": "DRI: Izveštaj o otklanjanju nepravilnosti otkrivenih u reviziji (Odazivni izveštaj) finansijskih izveštaja Javnog preduzeća „Putevi Srbije“, Beog",
+    "url": "https://www.dri.rs/izvestaj/14115",
+    "retrievedAt": "2026-10-30T15:08:11.495Z",
+    "publishedAt": "2024-12-30",
+    "official": true
+   }
+  },
+  {
+   "id": "14116",
+   "title": "Poslerevizioni izveštaj o merama ispravljanja Javnog preduzeća „Putevi Srbije“, Beograd po reviziji finansijskih izveštaja za 2022. godinu",
+   "year": 2024,
+   "publishedAt": "2024-12-30",
+   "kind": "poslerevizioni izveštaj",
+   "url": "https://www.dri.rs/storage/newaudits/2024-4-PR%20JP%20Putevi%20Srbije.pdf",
+   "excerpts": [],
+   "source": {
+    "kind": "dri",
+    "title": "DRI: Poslerevizioni izveštaj o merama ispravljanja Javnog preduzeća „Putevi Srbije“, Beograd po reviziji finansijskih izveštaja za 2022. godinu",
+    "url": "https://www.dri.rs/izvestaj/14116",
+    "retrievedAt": "2026-10-30T15:08:11.495Z",
+    "publishedAt": "2024-12-30",
+    "official": true
+   }
+  },
+  {
+   "id": "13599",
+   "title": "Izveštaj o reviziji pravilnosti poslovanja Javnog preduzeća „Putevi Srbije“, Beograd, za 2023. godinu, u delu koji se odnosi na mere ispravljanja po Izveštaju o reviziji pravilnosti poslovanja iz 2020. godine",
+   "year": 2023,
+   "publishedAt": "2024-11-15",
+   "kind": "revizija pravilnosti",
+   "url": "https://www.dri.rs/storage/newaudits/2024-4-JP%20Putevi%20Srbije.pdf",
+   "excerpts": [],
+   "source": {
+    "kind": "dri",
+    "title": "DRI: Izveštaj o reviziji pravilnosti poslovanja Javnog preduzeća „Putevi Srbije“, Beograd, za 2023. godinu, u delu koji se odnosi na mere ispravl",
+    "url": "https://www.dri.rs/izvestaj/13599",
+    "retrievedAt": "2026-10-30T15:08:11.495Z",
+    "publishedAt": "2024-11-15",
+    "official": true
+   }
+  },
+  {
+   "id": "13465",
+   "title": "Izveštaj o reviziji svrsishodnosti poslovanja „Upravljanje informacionim sistemom JP „Putevi Srbije“",
+   "year": 2024,
+   "publishedAt": "2024-10-02",
+   "kind": "revizija svrsishodnosti",
+   "url": "https://www.dri.rs/storage/newaudits/2024-5-SV%20Upravljanje%20informacionim%20sistemom%20JP%20Putevi%20Srbije.pdf",
+   "excerpts": [],
+   "source": {
+    "kind": "dri",
+    "title": "DRI: Izveštaj o reviziji svrsishodnosti poslovanja „Upravljanje informacionim sistemom JP „Putevi Srbije“",
+    "url": "https://www.dri.rs/izvestaj/13465",
+    "retrievedAt": "2026-10-30T15:08:11.495Z",
+    "publishedAt": "2024-10-02",
+    "official": true
+   }
+  },
+  {
+   "id": "12614",
+   "title": "Izveštaj o reviziji odazivnog izveštaja Javnog preduzeća „Putevi Srbije“, Beograd koji se odnosi na revizorski izveštaj broj 400-88/2022-06/13 od 10. avgusta 2022. godine",
+   "year": 2023,
+   "publishedAt": "2023-12-27",
+   "kind": "revizija odazivnog izveštaja",
+   "url": "https://www.dri.rs/storage/newaudits/2023-4-Izvestaj%20o%20reviziji%20odazivnog%20izvestaja_JP%20Putevi%20Srbije.pdf",
+   "excerpts": [],
+   "source": {
+    "kind": "dri",
+    "title": "DRI: Izveštaj o reviziji odazivnog izveštaja Javnog preduzeća „Putevi Srbije“, Beograd koji se odnosi na revizorski izveštaj broj 400-88/2022-06/",
+    "url": "https://www.dri.rs/izvestaj/12614",
+    "retrievedAt": "2026-10-30T15:08:11.495Z",
+    "publishedAt": "2023-12-27",
+    "official": true
+   }
+  },
+  {
+   "id": "12615",
+   "title": "Izveštaj o otklanjanju nepravilnosti otkrivenih u reviziji (Odazivni izveštaj) pravilnosti poslovanja Javnog preduzeća „Putevi Srbije“ Beograd koja se odnosi na prihode od putarine i zarade i naknade zarada za 2021. godinu",
+   "year": 2023,
+   "publishedAt": "2023-12-27",
+   "kind": "odazivni izveštaj",
+   "url": "https://www.dri.rs/storage/newaudits/2023-4-OD%20JP%20Putevi%20Srbije.pdf",
+   "excerpts": [],
+   "source": {
+    "kind": "dri",
+    "title": "DRI: Izveštaj o otklanjanju nepravilnosti otkrivenih u reviziji (Odazivni izveštaj) pravilnosti poslovanja Javnog preduzeća „Putevi Srbije“ Beogr",
+    "url": "https://www.dri.rs/izvestaj/12615",
+    "retrievedAt": "2026-10-30T15:08:11.495Z",
+    "publishedAt": "2023-12-27",
+    "official": true
+   }
+  },
+  {
+   "id": "12616",
+   "title": "Poslerevizioni izveštaj o merama ispravljanja Javnog preduzeća „Putevi Srbije“, Beograd po reviziji pravilnosti poslovanja koja se odnosi na prihode od putarine i zarade i naknade zarada za 2021. godinu",
+   "year": 2023,
+   "publishedAt": "2023-12-27",
+   "kind": "poslerevizioni izveštaj",
+   "url": "https://www.dri.rs/storage/newaudits/2023-4-PR%20JP%20Putevi%20Srbije.pdf",
+   "excerpts": [],
+   "source": {
+    "kind": "dri",
+    "title": "DRI: Poslerevizioni izveštaj o merama ispravljanja Javnog preduzeća „Putevi Srbije“, Beograd po reviziji pravilnosti poslovanja koja se odnosi na",
+    "url": "https://www.dri.rs/izvestaj/12616",
+    "retrievedAt": "2026-10-30T15:08:11.495Z",
+    "publishedAt": "2023-12-27",
+    "official": true
+   }
+  },
+  {
+   "id": "12583",
+   "title": "Izveštaj o reviziji finansijskih izveštaja Javnog preduzeća „Putevi Srbije“, Beograd za 2022. godinu",
+   "year": 2022,
+   "publishedAt": "2023-12-26",
+   "kind": "finansijska revizija",
+   "url": "https://www.dri.rs/storage/newaudits/2023-4-JP%20Putevi%20Srbije.pdf",
+   "excerpts": [],
+   "source": {
+    "kind": "dri",
+    "title": "DRI: Izveštaj o reviziji finansijskih izveštaja Javnog preduzeća „Putevi Srbije“, Beograd za 2022. godinu",
+    "url": "https://www.dri.rs/izvestaj/12583",
+    "retrievedAt": "2026-10-30T15:08:11.495Z",
+    "publishedAt": "2023-12-26",
+    "official": true
+   }
+  },
+  {
+   "id": "11695",
+   "title": "Izveštaj o sprovođenju preporuka radi otklanjanja nesvrsishodnosti otkrivenih u reviziji (Odazivni izveštaj) „Unapređenje biciklističkog saobraćaja“ Javnog preduzeća „Putevi Srbije“, Beograd",
+   "year": 2023,
+   "publishedAt": "2023-04-25",
+   "kind": "odazivni izveštaj",
+   "url": "https://www.dri.rs/storage/newaudits/2022-4-%20OD%20SV%20Unapredjenje%20biciklistickog%20saobracaja%20JP%20Putevi%20Srbije.pdf",
+   "excerpts": [],
+   "source": {
+    "kind": "dri",
+    "title": "DRI: Izveštaj o sprovođenju preporuka radi otklanjanja nesvrsishodnosti otkrivenih u reviziji (Odazivni izveštaj) „Unapređenje biciklističkog sao",
+    "url": "https://www.dri.rs/izvestaj/11695",
+    "retrievedAt": "2026-10-30T15:08:11.495Z",
+    "publishedAt": "2023-04-25",
+    "official": true
+   }
+  },
+  {
+   "id": "11696",
+   "title": "Poslerevizioni izveštaj o merama ispravljanja Javnog preduzeća „Putevi Srbije“ Beograd (Zvezdara) po reviziji svrsishodnosti poslovanja „Unapređenje biciklističkog saobraćaja“",
+   "year": 2023,
+   "publishedAt": "2023-04-25",
+   "kind": "poslerevizioni izveštaj",
+   "url": "https://www.dri.rs/storage/newaudits/2022-4-PR%20SV%20Unapredjenje%20biciklistickog%20saobracaja%20JP%20Putevi%20Srbije.pdf",
+   "excerpts": [],
+   "source": {
+    "kind": "dri",
+    "title": "DRI: Poslerevizioni izveštaj o merama ispravljanja Javnog preduzeća „Putevi Srbije“ Beograd (Zvezdara) po reviziji svrsishodnosti poslovanja „Una",
+    "url": "https://www.dri.rs/izvestaj/11696",
+    "retrievedAt": "2026-10-30T15:08:11.495Z",
+    "publishedAt": "2023-04-25",
+    "official": true
+   }
+  },
+  {
+   "id": "11570",
+   "title": "Izveštaj o sprovođenju preporuka radi otklanjanja nesvrsishodnosti otkrivenih u reviziji (Odazivni izveštaj) „Efikasnost uspostavljanja interne finansijske kontrole u javnim preduzećima i društvima kapitala koja obavljaju delatnost od opšteg interesa“ Javnog preduzeća „Putevi Srbije“, Beograd",
+   "year": 2023,
+   "publishedAt": "2023-03-27",
+   "kind": "odazivni izveštaj",
+   "url": "https://www.dri.rs/storage/newaudits/2022-4-OD%20SV%20Interna%20finansijska%20kontrola%20u%20JP%20Putevi%20Srbije.pdf",
+   "excerpts": [],
+   "source": {
+    "kind": "dri",
+    "title": "DRI: Izveštaj o sprovođenju preporuka radi otklanjanja nesvrsishodnosti otkrivenih u reviziji (Odazivni izveštaj) „Efikasnost uspostavljanja inte",
+    "url": "https://www.dri.rs/izvestaj/11570",
+    "retrievedAt": "2026-10-30T15:08:11.495Z",
+    "publishedAt": "2023-03-27",
+    "official": true
+   }
+  },
+  {
+   "id": "11571",
+   "title": "Poslerevizioni izveštaj o merama ispravljanja Javnog preduzeća „Putevi Srbije“, Beograd po reviziji svrsishodnosti poslovanja „Efikasnost uspostavljanja interne finansijske kontrole u javnim preduzećima i društvima kapitala koja obavljaju delatnost od opšteg interesa“",
+   "year": 2023,
+   "publishedAt": "2023-03-27",
+   "kind": "poslerevizioni izveštaj",
+   "url": "https://www.dri.rs/storage/newaudits/2022-4-PR%20SV%20Interna%20finansijska%20kontrola%20u%20JP%20Putevi%20Srbije.pdf",
+   "excerpts": [],
+   "source": {
+    "kind": "dri",
+    "title": "DRI: Poslerevizioni izveštaj o merama ispravljanja Javnog preduzeća „Putevi Srbije“, Beograd po reviziji svrsishodnosti poslovanja „Efikasnost us",
+    "url": "https://www.dri.rs/izvestaj/11571",
+    "retrievedAt": "2026-10-30T15:08:11.495Z",
+    "publishedAt": "2023-03-27",
+    "official": true
+   }
+  },
+  {
+   "id": "11439",
+   "title": "Izveštaj o reviziji svrsishodnosti poslovanja „Unapređenje biciklističkog saobraćaja“",
+   "year": 2023,
+   "publishedAt": "2023-02-08",
+   "kind": "revizija svrsishodnosti",
+   "url": "https://www.dri.rs/storage/newaudits/2022-4-Unapredjenje%20biciklistickog%20saobracaja.pdf",
+   "excerpts": [],
+   "source": {
+    "kind": "dri",
+    "title": "DRI: Izveštaj o reviziji svrsishodnosti poslovanja „Unapređenje biciklističkog saobraćaja“",
+    "url": "https://www.dri.rs/izvestaj/11439",
+    "retrievedAt": "2026-10-30T15:08:11.495Z",
+    "publishedAt": "2023-02-08",
+    "official": true
+   }
+  },
+  {
+   "id": "11295",
+   "title": "Izveštaj o reviziji svrsishodnosti poslovanja „Efikasnost uspostavljanja interne finansijske kontrole u javnim preduzećima i društvima kapitala koja obavljaju delatnost od opšteg interesa“",
+   "year": 2023,
+   "publishedAt": "2023-01-31",
+   "kind": "revizija svrsishodnosti",
+   "url": "https://www.dri.rs/storage/newaudits/2022-4-%20V%20Efikasnost%20uspostavljanja%20IFK%20u%20JP%20i%20dru%C5%A1tvima%20kapitala%20koja%20obavljaju%20delatnost%20od%20op%C5%A1teg%20interesa.pdf",
+   "excerpts": [],
+   "source": {
+    "kind": "dri",
+    "title": "DRI: Izveštaj o reviziji svrsishodnosti poslovanja „Efikasnost uspostavljanja interne finansijske kontrole u javnim preduzećima i društvima kapit",
+    "url": "https://www.dri.rs/izvestaj/11295",
+    "retrievedAt": "2026-10-30T15:08:11.495Z",
+    "publishedAt": "2023-01-31",
+    "official": true
+   }
+  },
+  {
+   "id": "4812",
+   "title": "Izveštaj o reviziji pravilnosti poslovanja Javnog preduzeća „Putevi Srbije“, Beograd koja se odnosi na prihode od putarine i zarade i naknade zarada za 2021. godinu",
+   "year": 2021,
+   "publishedAt": "2022-08-12",
+   "kind": "revizija pravilnosti",
+   "url": "https://www.dri.rs/storage/upload/documents/revision/2022/2022-4-Putevi%20Srbije%20.pdf",
+   "excerpts": [],
+   "source": {
+    "kind": "dri",
+    "title": "DRI: Izveštaj o reviziji pravilnosti poslovanja Javnog preduzeća „Putevi Srbije“, Beograd koja se odnosi na prihode od putarine i zarade i naknad",
+    "url": "https://www.dri.rs/izvestaj/4812",
+    "retrievedAt": "2026-10-30T15:08:11.495Z",
+    "publishedAt": "2022-08-12",
+    "official": true
+   }
+  },
+  {
+   "id": "4274",
+   "title": "Izveštaj o reviziji Odazivnog izveštaja Javnog preduzeća „Putevi Srbije“, Beograd koji se odnosi na revizorski izveštaj broj 400-245/2020-06/11 od 16. oktobra 2020. godine",
+   "year": 2021,
+   "publishedAt": "2021-12-29",
+   "kind": "revizija odazivnog izveštaja",
+   "url": "https://www.dri.rs/storage/upload/documents/revision/2021/2021-4-Izve%C5%A1taj%20o%20reviziji%20odazivnog%20izve%C5%A1taja%20JP%20Putevi%20Srbije%20.pdf",
+   "excerpts": [],
+   "source": {
+    "kind": "dri",
+    "title": "DRI: Izveštaj o reviziji Odazivnog izveštaja Javnog preduzeća „Putevi Srbije“, Beograd koji se odnosi na revizorski izveštaj broj 400-245/2020-06",
+    "url": "https://www.dri.rs/izvestaj/4274",
+    "retrievedAt": "2026-10-30T15:08:11.495Z",
+    "publishedAt": "2021-12-29",
+    "official": true
+   }
+  },
+  {
+   "id": "4275",
+   "title": "Izveštaj o otklanjanju nepravilnosti otkrivenih u reviziji (Odazivni izveštaj) pravilnosti poslovanja Javnog preduzeća „Putevi Srbije“, Beograd u delu koji se odnosi na javne nabavke za 2018. i 2019. godinu i naknade po ugovorima za rad van radnog odnosa i ostalim ugovorima sa fizičkim licima za 2019. godinu",
+   "year": 2021,
+   "publishedAt": "2021-12-29",
+   "kind": "odazivni izveštaj",
+   "url": "https://www.dri.rs/storage/upload/documents/revision/2020_OD/2020-4-OD%20JP%20Putevi%20Srbije.pdf",
+   "excerpts": [],
+   "source": {
+    "kind": "dri",
+    "title": "DRI: Izveštaj o otklanjanju nepravilnosti otkrivenih u reviziji (Odazivni izveštaj) pravilnosti poslovanja Javnog preduzeća „Putevi Srbije“, Beog",
+    "url": "https://www.dri.rs/izvestaj/4275",
+    "retrievedAt": "2026-10-30T15:08:11.495Z",
+    "publishedAt": "2021-12-29",
+    "official": true
+   }
+  },
+  {
+   "id": "4276",
+   "title": "Poslerevizioni izveštaj o merama ispravljanja Javnog preduzeća „Putevi Srbije“, Beograd po reviziji pravilnosti poslovanja u delu koji se odnosi na javne nabavke za 2018. i 2019. godinu i naknade po ugovorima za rad van radnog odnosa i ostalim ugovorima sa fizičkim licima za 2019. godinu",
+   "year": 2021,
+   "publishedAt": "2021-12-29",
+   "kind": "poslerevizioni izveštaj",
+   "url": "https://www.dri.rs/storage/upload/documents/revision/2020_PR/2020-4-PR%20JP%20Putevi%20Srbije.pdf",
+   "excerpts": [],
+   "source": {
+    "kind": "dri",
+    "title": "DRI: Poslerevizioni izveštaj o merama ispravljanja Javnog preduzeća „Putevi Srbije“, Beograd po reviziji pravilnosti poslovanja u delu koji se od",
+    "url": "https://www.dri.rs/izvestaj/4276",
+    "retrievedAt": "2026-10-30T15:08:11.495Z",
+    "publishedAt": "2021-12-29",
+    "official": true
+   }
+  },
+  {
+   "id": "3606",
+   "title": "Izveštaj o sprovođenju preporuka radi otklanjanja nesvrsishodnosti otkrivenih u reviziji (Odazivni izveštaj) „Upravljanje bezbednosnim rizicima na prelazima preko pruge“ Javnog preduzeća „Putevi Srbije“, Beograd",
+   "year": 2021,
+   "publishedAt": "2021-04-29",
+   "kind": "odazivni izveštaj",
+   "url": "https://www.dri.rs/storage/upload/documents/revision/2020_OD/2020-4-OD%20SV%20JP%20Putevi%20Srbije%20Upravljanje%20bezbednosnim%20rizicima%20na%20prelazima%20preko%20pruge.pdf",
+   "excerpts": [],
+   "source": {
+    "kind": "dri",
+    "title": "DRI: Izveštaj o sprovođenju preporuka radi otklanjanja nesvrsishodnosti otkrivenih u reviziji (Odazivni izveštaj) „Upravljanje bezbednosnim rizic",
+    "url": "https://www.dri.rs/izvestaj/3606",
+    "retrievedAt": "2026-10-30T15:08:11.495Z",
+    "publishedAt": "2021-04-29",
+    "official": true
+   }
+  },
+  {
+   "id": "3610",
+   "title": "Poslerevizioni izveštaj o merama ispravljanja Javnog preduzeća „Putevi Srbije“, Beograd po reviziji svrsishodnosti poslovanja „Upravljanje bezbednosnim rizicima na prelazima preko pruge“",
+   "year": 2021,
+   "publishedAt": "2021-04-29",
+   "kind": "poslerevizioni izveštaj",
+   "url": "https://www.dri.rs/storage/upload/documents/revision/2020_PR/2020-4-PR%20SV%20JP%20Putevi%20Srbije%20Upravljanje%20bezbednosnim%20rizicima%20na%20prelazima%20preko%20pruge.pdf",
+   "excerpts": [],
+   "source": {
+    "kind": "dri",
+    "title": "DRI: Poslerevizioni izveštaj o merama ispravljanja Javnog preduzeća „Putevi Srbije“, Beograd po reviziji svrsishodnosti poslovanja „Upravljanje b",
+    "url": "https://www.dri.rs/izvestaj/3610",
+    "retrievedAt": "2026-10-30T15:08:11.495Z",
+    "publishedAt": "2021-04-29",
+    "official": true
+   }
+  },
+  {
+   "id": "3328",
+   "title": "Izveštaj o reviziji svrsishodnosti poslovanja “Upravljanje bezbednosnim rizicima na prelazima preko pruge”",
+   "year": 2021,
+   "publishedAt": "2021-01-06",
+   "kind": "revizija svrsishodnosti",
+   "url": "https://www.dri.rs/storage/upload/documents/revision/2021/2020-4-SV%20Upravljanje%20bezbednosnim%20rizicima%20na%20prelazima%20preko%20pruge%20novo.pdf",
+   "excerpts": [],
+   "source": {
+    "kind": "dri",
+    "title": "DRI: Izveštaj o reviziji svrsishodnosti poslovanja “Upravljanje bezbednosnim rizicima na prelazima preko pruge”",
+    "url": "https://www.dri.rs/izvestaj/3328",
+    "retrievedAt": "2026-10-30T15:08:11.495Z",
+    "publishedAt": "2021-01-06",
+    "official": true
+   }
+  },
+  {
+   "id": "2950",
+   "title": "Izveštaj o reviziji pravilnosti poslovanja Javnog preduzeća „Putevi Srbije“, Beograd u delu koji se odnosi na javne nabavke za 2018. i 2019. godinu i naknade po ugovorima za rad van radnog odnosa i ostalim ugovorima sa fizičkim licima za 2019. godinu",
+   "year": 2019,
+   "publishedAt": "2020-11-04",
+   "kind": "revizija pravilnosti",
+   "url": "https://www.dri.rs/storage/upload/documents/revision/2020/2020-4-JP%20Putevi%20Srbije.pdf",
+   "excerpts": [],
+   "source": {
+    "kind": "dri",
+    "title": "DRI: Izveštaj o reviziji pravilnosti poslovanja Javnog preduzeća „Putevi Srbije“, Beograd u delu koji se odnosi na javne nabavke za 2018. i 2019.",
+    "url": "https://www.dri.rs/izvestaj/2950",
+    "retrievedAt": "2026-10-30T15:08:11.495Z",
+    "publishedAt": "2020-11-04",
+    "official": true
+   }
+  },
+  {
+   "id": "338",
+   "title": "IZVEŠTAJ O REVIZIJI FINANSIJSKIH IZVEŠTAJA I PRAVILNOSTI POSLOVANJA JP „PUTEVI SRBIJE“, BEOGRAD, ZA 2010. GODINU",
+   "year": 2010,
+   "publishedAt": "2011-12-28",
+   "kind": "finansijska revizija i revizija pravilnosti",
+   "url": "https://www.dri.rs/storage/upload/documents/revision/2010/izv-putsr2010.pdf",
+   "excerpts": [],
+   "source": {
+    "kind": "dri",
+    "title": "DRI: IZVEŠTAJ O REVIZIJI FINANSIJSKIH IZVEŠTAJA I PRAVILNOSTI POSLOVANJA JP „PUTEVI SRBIJE“, BEOGRAD, ZA 2010. GODINU",
+    "url": "https://www.dri.rs/izvestaj/338",
+    "retrievedAt": "2026-10-30T15:08:11.495Z",
+    "publishedAt": "2011-12-28",
+    "official": true
+   }
+  }
+ ]
+}

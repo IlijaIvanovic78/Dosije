@@ -370,18 +370,41 @@ interface Loaded {
 
 const memo = new Map<string, Promise<Loaded>>()
 
+const LOT_SORT = [
+	{ selector: "LotId", desc: false },
+	{ selector: "ContractNo", desc: false },
+]
+
+/** Name without legal form and city ("Друштво са ограниченом одговорношћу "Путеви Србије" Београд" -> "Путеви Србије"). */
+function coreNameCyr(cyr: string): string {
+	const word = "(?<![\\p{L}])"
+	const end = "(?![\\p{L}])"
+	return cyr
+		.replace(/[„“”"'`]/g, " ")
+		.replace(new RegExp(`${word}(друштво са ограниченом одговорношћу|акционарско друштво|јавно предузеће|јп|доо|ад|а\\.д\\.|д\\.о\\.о\\.|београд)${end}`, "giu"), " ")
+		.replace(/\s+/g, " ")
+		.trim()
+}
+
 async function fetchStore(auth: { id: string; name: string; pib?: string }): Promise<string> {
 	const cyrName = latToCyr(auth.name)
-	let lots = await gridAll<RawLotContract>("VContracts", ["OfficialName", "=", cyrName], [
-		{ selector: "LotId", desc: false },
-		{ selector: "ContractNo", desc: false },
-	])
-	if (lots.length === 0)
-		lots = await gridAll<RawLotContract>("VContracts", ["OfficialName", "contains", cyrName], [
-			{ selector: "LotId", desc: false },
-			{ selector: "ContractNo", desc: false },
-		])
+	let lots = await gridAll<RawLotContract>("VContracts", ["OfficialName", "=", cyrName], LOT_SORT)
+	if (lots.length === 0) lots = await gridAll<RawLotContract>("VContracts", ["OfficialName", "contains", cyrName], LOT_SORT)
 	const tenders = await gridAll<RawTender>("TendersAll", ["CAId", "=", Number(auth.id)], [{ selector: "Id", desc: false }])
+
+	// A renamed authority (e.g. "Javno preduzeće Putevi Srbije" -> "Društvo sa ograničenom odgovornošću Putevi Srbije") keeps
+	// its CAId, but older contracts carry the old OfficialName. Add them only when the tender belongs to THIS authority's CAId.
+	const core = coreNameCyr(cyrName)
+	if (core.length >= 8) {
+		const probe = await grid<RawLotContract>("VContracts", { filter: JSON.stringify(["OfficialName", "contains", core]), skip: "0", take: "1", requireTotalCount: "true" })
+		if ((probe.totalCount ?? 0) > lots.length) {
+			const mine = new Set(tenders.map((t) => t.Id))
+			const key = (l: RawLotContract) => `${l.TenderId}|${l.LotId}|${l.ContractNo}`
+			const have = new Set(lots.map(key))
+			const more = await gridAll<RawLotContract>("VContracts", ["OfficialName", "contains", core], LOT_SORT)
+			lots = [...lots, ...more.filter((l) => mine.has(l.TenderId) && !have.has(key(l)))]
+		}
+	}
 	return JSON.stringify(buildStore(auth, lots, tenders))
 }
 

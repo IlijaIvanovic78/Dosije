@@ -24,5 +24,57 @@
 		"acasId": "9720",
 		"jnId": "5238",
 		"municipality": "Savski Venac"
+	},
+	{
+		"slug": "zeleznice-srbije",
+		"name": "Železnice Srbije a.d.",
+		"nameCyr": "Железнице Србије а.д.",
+		"officialName": "Železnice Srbije akcionarsko društvo, Beograd",
+		"legalType": "drustvo_kapitala_drzavno",
+		"pib": "103859991",
+		"mb": "20038284",
+		"acasId": "6758",
+		"jnId": "2997",
+		"municipality": "Savski Venac",
+		"mapaOnly": true
+	},
+	{
+		"slug": "srbija-kargo",
+		"name": "Srbija Kargo a.d.",
+		"nameCyr": "Србија Карго а.д.",
+		"officialName": "Akcionarsko društvo za železnički prevoz robe Srbija Kargo Beograd-Savski Venac",
+		"legalType": "drustvo_kapitala_drzavno",
+		"pib": "109108446",
+		"mb": "21127116",
+		"acasId": "9722",
+		"jnId": "4258",
+		"municipality": "Savski Venac",
+		"mapaOnly": true
+	},
+	{
+		"slug": "putevi-srbije",
+		"name": "Putevi Srbije",
+		"nameCyr": "Путеви Србије",
+		"officialName": "Društvo s ograničenom odgovornošću Putevi Srbije Beograd (ranije Javno preduzeće Putevi Srbije)",
+		"legalType": "javno_preduzece",
+		"pib": "104260456",
+		"mb": "20132248",
+		"acasId": "5153",
+		"jnId": "5117",
+		"municipality": "Zvezdara",
+		"mapaOnly": true
+	},
+	{
+		"slug": "koridori-srbije",
+		"name": "Koridori Srbije d.o.o.",
+		"nameCyr": "Коридори Србије д.о.о.",
+		"officialName": "Koridori Srbije društvo s ograničenom odgovornošću Beograd (Stari Grad)",
+		"legalType": "drustvo_kapitala_drzavno",
+		"pib": "105940792",
+		"mb": "20498153",
+		"acasId": "8284",
+		"jnId": "7584",
+		"municipality": "Stari Grad",
+		"mapaOnly": true
 	}
 ]

@@ -18,13 +18,15 @@ export function startAgentLoop(agent: Agent, message: string, opts: LoopOptions 
 	const state = S()
 	const agentId = agent.getId()
 	const info = state.agentInfo.get(agentId)
-	if (!info || !state.caseId) return false
-	if (!opts.editor && state.status !== "running") return false
+	// a Trijaža loop belongs to the running map (its "case id" is the map id), every other loop to the open case
+	const trijaza = info?.group === "trijaza"
+	if (!info || (trijaza ? !state.mapaRunning() : !state.caseId)) return false
+	if (!opts.editor && !trijaza && state.status !== "running") return false
 	if (!opts.editor && state.budget.loops >= state.budget.maxLoops) {
 		log("loop", `budžet petlji iscrpljen (${state.budget.maxLoops}): ${info.name} se ne pokreće`)
 		return false
 	}
-	const ctx: ToolCtx = { agentId, agentName: info.name, group: info.group, caseId: state.caseId, entityId: info.entityId }
+	const ctx: ToolCtx = { agentId, agentName: info.name, group: info.group, caseId: (trijaza ? state.mapa.id : state.caseId) as string, entityId: info.entityId }
 	const context = ModelContext.create().addContextItem(DeveloperMessageItem.create(agent.getDeveloperMessage()))
 	const llm = config.mode === "llm"
 	const input: InferenceInput = {

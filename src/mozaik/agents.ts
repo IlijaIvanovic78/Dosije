@@ -65,6 +65,21 @@ Ti si Urednik. Zadatak: napiši sažetak dosijea za novinarku.
 1) dosije_pregled. 2) napisi_sazetak: lede (2-3 rečenice, neutralno), topSignals (3-5 nalaza najveće težine: findingId + kratak naslov), toVerify (konkretni koraci koje novinarka treba ručno da proveri: vlasnici firmi, koji propis važi, akti o imenovanju, otvorena pitanja). Ne dodaj nove činjenice. Pozivaj jedan alat po koraku.
 `
 
+// "Trijaža · <institucija>": spawned by the Fabrika on mapa.started, one per institution (Mapa prioriteta)
+const TRIJAZA_INSTRUCTION = (name: string) => `[[agent:trijaza]]
+Ti si ${name}, član tima koji za tranzicioni tim ili novu vladu pravi Mapu prioriteta: brzo proveravaš JEDNU instituciju da se vidi gde prvo gledati.
+Radiš ISTOVREMENO sa agentima koji proveravaju druge institucije; svaki red u mapi popunjava samo jedan agent.
+Pravila:
+- Pozivaj JEDAN alat po koraku (nikad dva poziva u istom odgovoru).
+- Brojke i ocenu računa kod iz podataka alata; ti ništa ne računaš i ne izmišljaš.
+- Ne optužuj. Piši neutralno: "signal za proveru", "prema podacima ACAS / Portala javnih nabavki / DRI". Nikad ne tvrdi da je nešto nezakonito, korupcija ili kriminal.
+- Ne pominji imena osoba ni lične kontakt podatke.
+Zadatak:
+1) trijaza_rukovodstvo. 2) trijaza_nabavke. 3) trijaza_revizija.
+4) upisi_red({summary}): 1-2 kratke neutralne rečenice šta su alati vratili (v.d. i rok, postupci bez objave, revizorski izveštaji). Ako neki izvor nije odgovorio, to napiši.
+5) Kad završiš, odgovori jednom kratkom rečenicom.
+`
+
 export interface AgentMeta {
 	group: AgentGroup
 	name: string
@@ -152,6 +167,30 @@ export function createDynamicAgent(kind: DynamicKind, entity: Entity, spawnedBy:
 		joinedAt: nowIso(),
 	}
 	return { agent, info }
+}
+
+export function createTrijazaAgent(ref: ResolvedInstitution, spawnedBy: string): { agent: Agent; info: AgentInfo } {
+	const short = ref.shortName && searchName(ref.name).length > 26 ? ref.shortName : shortName(searchName(ref.name))
+	const name = `Trijaža · ${short}`
+	const sources: SourceKind[] = ["acas", "zakon", "jnportal", "integrity_watch", "dri"]
+	const agent = createAgent({ name, capabilities: sources, instruction: TRIJAZA_INSTRUCTION(name), tools: [], handlers: [] })
+	const info: AgentInfo = {
+		id: agent.getId(),
+		name,
+		role: "agent",
+		group: "trijaza",
+		dynamic: true,
+		sources,
+		emoji: "🚦",
+		description: `Trijaža: ${ref.name}`,
+		spawnedBy,
+		joinedAt: nowIso(),
+	}
+	return { agent, info }
+}
+
+export function trijazaMessage(ref: ResolvedInstitution): string {
+	return `Institucija: ${ref.name} (ACAS ID ${ref.acasId ?? "nepoznat"}, JN ID ${ref.jnId ?? "nepoznat"}, PIB ${ref.pib ?? "nepoznat"}, pravni oblik ${LEGAL_LABELS[ref.legalType]}). Uradi trijažu za Mapu prioriteta.`
 }
 
 // ─── first messages ──────────────────────────────────────────────────────────

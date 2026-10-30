@@ -163,3 +163,16 @@ signals), CLI 4 s auto-approve, tests 0 s auto-approve (`HUMAN_AUTO_APPROVE_MS`)
 Simulated inference latency 500-1600 ms x `DEMO_SPEED` (seeded per agent so runs look alike); simulated source
 latency in cache mode 150-600 ms x `DEMO_SPEED`. Target: a full IŽS run in 45-75 s at `DEMO_SPEED=1`, with peak
 concurrency >= 8 loops.
+
+## Trijaža · <institucija> (Mapa prioriteta)
+
+Spawned by the Fabrika on `mapa.started`, one per institution, group `trijaza`, marker `[[agent:trijaza]]`. One tool per step:
+1. `trijaza_rukovodstvo` (ACAS head, v.d. check, chain of acting heads);
+2. `trijaza_nabavke` (contracts, negotiated procedures without publication, top supplier, Integrity Watch flags);
+3. `trijaza_revizija` (DRI report list and the opinions already extracted);
+4. `upisi_red({summary})`: 1-2 neutral sentences, no names of persons. The tool refuses until steps 1-3 ran. The score is
+   computed by code (`src/data/analysis/priority.ts`), never by the model;
+5. a one-sentence final answer.
+
+Scripted policy (`trijaza` in `src/mozaik/inference/policies.ts`): the same four calls in order, with the summary composed from the
+tool outputs, then one sentence. Same seeded latency as the other agents.

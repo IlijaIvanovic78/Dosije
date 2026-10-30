@@ -8,7 +8,7 @@
 // getReportFindings() downloads the PDF, extracts text with unpdf and keeps a few verbatim excerpts (cached; the PDF is not).
 
 import { extractText, getDocumentProxy } from "unpdf"
-import { cached, cacheKey } from "../cache"
+import { cached, cacheKey, readCache } from "../cache"
 import { getBuffer, getText } from "../http"
 import { asciiFold, cyrToLat, normalizeName, sameWord } from "../translit"
 import type { AuditReport } from "../types"
@@ -347,6 +347,16 @@ async function extractReportText(url: string): Promise<string> {
 	const pdf = await getDocumentProxy(new Uint8Array(buf))
 	const { text } = await extractText(pdf, { mergePages: true })
 	return text as string
+}
+
+/** Opinions that are already cached for these reports (report id -> opinion). Never downloads a PDF. */
+export async function getCachedOpinions(reports: AuditReport[]): Promise<Map<string, string>> {
+	const out = new Map<string, string>()
+	for (const r of reports) {
+		const hit = await readCache<Pick<AuditReport, "opinion">>(SOURCE, cacheKey("findings", r.id))
+		if (hit?.data?.opinion) out.set(r.id, hit.data.opinion)
+	}
+	return out
 }
 
 /** Downloads the PDF, extracts the opinion and 3-6 short verbatim excerpts (Latin script). Cached per report id. */

@@ -16,6 +16,10 @@ import type {
 	Finding,
 	HumanTask,
 	InstitutionView,
+	MapaRow,
+	MapaSignals,
+	MapaStatus,
+	MapaView,
 	RunStats,
 	RuntimeConfigView,
 	SourceRef,
@@ -78,7 +82,34 @@ export function mergeSources(a: SourceRef[], b: SourceRef[]): SourceRef[] {
 	return [...seen.values()]
 }
 
+/** What the three triage tools of one institution fetched in this loop (figures come from here, never from the model). */
+export interface TriageRecord {
+	called: Set<string>
+	ok: Set<string>
+	signals: MapaSignals
+	gaps: string[]
+}
+
+/** "Mapa prioriteta": separate from the case; one run replaces the other (the REST layer enforces mutual exclusion). */
+export class MapaState {
+	id: string | null = null
+	status: MapaStatus = "idle"
+	startedAt?: string
+	finishedAt?: string
+	rows = new Map<string, MapaRow>()
+	refs = new Map<string, ResolvedInstitution>()
+	triage = new Map<string, TriageRecord>()
+	agentSlug = new Map<string, string>()
+}
+
+/** Highest score first; finished rows before failed ones; then by name. */
+export function rankRows(rows: MapaRow[]): MapaRow[] {
+	const rank = (r: MapaRow) => (r.status === "error" ? 0 : 1)
+	return [...rows].sort((a, b) => rank(b) - rank(a) || b.score - a.score || a.name.localeCompare(b.name, "sr"))
+}
+
 export class DosijeState extends RuntimeState {
+	mapa = new MapaState()
 	caseId: string | null = null
 	generation = 0
 	status: CaseStatus = "idle"
@@ -126,6 +157,11 @@ export class DosijeState extends RuntimeState {
 		this.institution = args.institution
 		this.institutionRef = args.ref
 		this.mentioned = args.mentioned ?? []
+		this.clearRun()
+	}
+
+	/** Everything that belongs to one run (case or map): case data, budget, stats, loops, spawned agents. */
+	private clearRun(): void {
 		this.findings.clear()
 		this.mergedAway.clear()
 		this.entities.clear()
@@ -152,6 +188,37 @@ export class DosijeState extends RuntimeState {
 		for (const [id, info] of [...this.agentInfo]) {
 			if (info.dynamic) this.agentInfo.delete(id)
 		}
+	}
+
+	// ─── map lifecycle ("Mapa prioriteta") ─────────────────────────────────
+
+	/** A map replaces whatever case is on screen (the two are mutually exclusive); the previous map's rows are dropped. */
+	resetMapa(mapaId: string, institutions: { slug: string; name: string }[]): void {
+		this.generation++
+		this.caseId = null
+		this.status = "idle"
+		this.input = undefined
+		this.focus = undefined
+		this.institution = undefined
+		this.institutionRef = undefined
+		this.mentioned = []
+		this.clearRun()
+		const m = new MapaState()
+		m.id = mapaId
+		m.status = "running"
+		m.startedAt = new Date(this.startedAtMs).toISOString()
+		for (const i of institutions) m.rows.set(i.slug, { slug: i.slug, name: i.name, status: "queued", score: 0, signals: {}, reasons: [], sources: [] })
+		this.mapa = m
+	}
+
+	mapaRunning(mapaId?: string | null): boolean {
+		return this.mapa.status === "running" && (mapaId === undefined || this.mapa.id === mapaId)
+	}
+
+	mapaView(): MapaView | undefined {
+		const m = this.mapa
+		if (!m.id) return undefined
+		return { id: m.id, status: m.status, startedAt: m.startedAt, finishedAt: m.finishedAt, rows: structuredClone(rankRows([...m.rows.values()])) }
 	}
 
 	isCurrent(caseId: string | null | undefined): boolean {
@@ -279,6 +346,7 @@ export class DosijeState extends RuntimeState {
 			budget: { ...this.budget },
 			stats: { ...this.stats },
 			report: this.report,
+			mapa: this.mapaView(),
 			config: view,
 		}
 	}

@@ -239,6 +239,24 @@ from `src/mozaik/report.ts`). `dosije.zatvori` forces finalization.
 `maxFirme` 8 (top suppliers by value), `maxOsobe` 6, `maxLoops` 40, `maxToolCalls` 400, `maxToolCallsPerLoop` 24,
 `maxTokens` 1,500,000. Visible in the UI.
 
+### 5.10 Mapa prioriteta (additive)
+A list of institutions (default `data/static/mapa-preset.json`, at most 8) goes through the same runtime in parallel.
+`DosijeState.mapa` is a slice separate from the case (`{id, status, startedAt, finishedAt, rows: Map<slug, MapaRow>}`); a map
+and a case are mutually exclusive (REST answers 409) and a new run replaces the previous one.
+
+| event (producer) | who reacts | reaction |
+|---|---|---|
+| `mapa.started` (Novinar) | Fabrika | resolves every institution, then spawns one dynamic agent "Trijaža · <short name>" (group `trijaza`) per institution in the same tick; each runs its own `runLoop` (fresh context, per-loop tools, UrednikGate) |
+| `mapa.red` (Trijaža agent, Fabrika, Urednik) | SSE bridge | upsert of one row, after every triage tool |
+| loop end of a Trijaža agent | Urednik | finishes a row the agent did not write (all three tools ran) or marks it `error`; when every row is terminal and no triage loop is active: `mapa.zavrsena` with the ranking |
+
+Tools: `trijaza_rukovodstvo`, `trijaza_nabavke`, `trijaza_revizija` (wrappers over the same adapters and `src/data/analysis`
+functions; DRI opinions only from cache, no PDF download) and `upisi_red({summary})`, which is rejected until all three ran.
+Figures and the score (`src/data/analysis/priority.ts`) are computed in code from the tool results; the model only adds the
+summary. Outputs are compact JSON (<= 2,500 chars) with ready-made `sources`. A Trijaža loop uses the map id as its
+"case id", so tools and gate treat the running map like a running case. A watchdog (`MAPA_TIMEOUT_MS`, default 10 min) turns
+unfinished rows into errors. The Zapisničar writes `out/trace-<mapaId>.jsonl`.
+
 ## 6. Wire protocol
 Defined in `src/shared/types.ts` (`WireEvent`, `WirePayloads`, `DosijeSnapshot`, REST list at the bottom).
 

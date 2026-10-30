@@ -29,6 +29,9 @@
 			<div id="demoChips" class="demo-chips"></div>
 			<div class="top-right">
 				<div id="badges" class="badges"></div>
+				<button id="btnMapa" class="btn mapa-btn" type="button" aria-pressed="false" title="Lista institucija prolazi kroz isti tim agenata paralelno: gde prvo gledati">
+					<span class="ico">🧭</span><span class="lbl">Mapa prioriteta</span>
+				</button>
 				<button id="btnInbox" class="btn inbox-btn" type="button" aria-haspopup="dialog">
 					<span class="ico">📥</span><span class="lbl">Sanduče</span><span id="inboxCount" class="count" hidden>0</span>
 				</button>
@@ -97,7 +100,34 @@
 					</div>
 				</section>
 
-				<section class="panel dosije" aria-label="Dosije">
+				<section id="mapaPanel" class="panel mapa" aria-label="Mapa prioriteta" hidden>
+					<header class="panel-head">
+						<h2>Mapa prioriteta</h2>
+						<div class="panel-actions">
+							<span id="mapaStatus" class="status-pill idle"><i></i>čeka</span>
+							<button id="btnMapaBack" class="btn small ghost" type="button">← Nazad</button>
+						</div>
+					</header>
+					<div id="mapaScroll" class="dosije-scroll mapa-scroll">
+						<p class="mapa-lede">Lista institucija prolazi kroz isti tim agenata <b>istovremeno</b>: po jedan agent „Trijaža“ za svaku instituciju proverava rukovodstvo (ACAS, v.d. i zakonski rok), javne nabavke i izveštaje DRI. Ocena je kod, ne mišljenje: <b>gde prvo gledati</b>, ne ko je kriv.</p>
+						<form id="mapaForm" class="mapa-form" autocomplete="off">
+							<label for="mapaInput">Institucije (jedna po redu, najviše 8)</label>
+							<textarea id="mapaInput" rows="6" spellcheck="false" aria-label="Spisak institucija"></textarea>
+							<div class="mapa-form-row">
+								<button id="btnMapaRun" class="btn primary" type="submit">Pokreni mapu</button>
+								<button id="btnMapaPreset" class="link-btn" type="button">vrati preset: transportni sektor</button>
+								<span id="mapaProgress" class="mapa-progress"></span>
+							</div>
+						</form>
+						<div id="mapaTable" class="mapa-table" role="table" aria-label="Rang lista institucija">
+							<div class="mhead" role="row"><span>#</span><span>Institucija</span><span>Ocena</span><span>Signali</span><span>Status</span><span></span></div>
+							<div id="mapaRows" class="mrows"></div>
+						</div>
+						<p class="disclaimer">Ocena sabira signale po fiksnim pravilima (v.d. preko roka, lanac v.d., postupci bez objave, Integrity Watch, DRI). To su signali za proveru, ne zaključak.</p>
+					</div>
+				</section>
+
+				<section id="dosijePanel" class="panel dosije" aria-label="Dosije">
 					<header class="panel-head">
 						<h2>Dosije</h2>
 						<div class="panel-actions">

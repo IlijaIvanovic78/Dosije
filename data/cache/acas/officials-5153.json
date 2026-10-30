@@ -1,0 +1,239 @@
+{
+ "source": "acas",
+ "key": "officials-5153",
+ "retrievedAt": "2026-10-30T15:07:45.090Z",
+ "data": [
+  {
+   "id": "5039111",
+   "fullName": "Ivan Đorđević",
+   "fullNameCyr": "Иван Ђорђевић",
+   "position": "Član nadzornog odbora",
+   "positionCyr": "Члан надзорног одбора",
+   "isActing": false,
+   "institutionName": "JP Putevi Srbije",
+   "from": "2025-11-20",
+   "appointedBy": "Vlada Republike Srbije",
+   "source": {
+    "kind": "acas",
+    "title": "ACAS – Registar funkcionera: JP Putevi Srbije",
+    "url": "https://publicacas.acas.rs/#/acas/funkcioner",
+    "retrievedAt": "2026-10-30T15:07:45.089Z",
+    "publishedAt": "2025-11-20",
+    "official": true
+   }
+  },
+  {
+   "id": "3856",
+   "fullName": "Veselin Osmajlić",
+   "fullNameCyr": "Веселин Осмајлић",
+   "position": "Član nadzornog odbora",
+   "positionCyr": "Члан надзорног одбора",
+   "isActing": false,
+   "institutionName": "JP Putevi Srbije",
+   "to": "2025-11-20",
+   "appointedBy": "Vlada Republike Srbije",
+   "source": {
+    "kind": "acas",
+    "title": "ACAS – Registar funkcionera: JP Putevi Srbije",
+    "url": "https://publicacas.acas.rs/#/acas/funkcioner",
+    "retrievedAt": "2026-10-30T15:07:45.089Z",
+    "official": true
+   }
+  },
+  {
+   "id": "52183",
+   "fullName": "Predrag Rajić",
+   "fullNameCyr": "Предраг Рајић",
+   "position": "Član nadzornog odbora",
+   "positionCyr": "Члан надзорног одбора",
+   "isActing": false,
+   "institutionName": "JP Putevi Srbije",
+   "from": "2025-06-18",
+   "appointedBy": "Vlada Republike Srbije",
+   "source": {
+    "kind": "acas",
+    "title": "ACAS – Registar funkcionera: JP Putevi Srbije",
+    "url": "https://publicacas.acas.rs/#/acas/funkcioner",
+    "retrievedAt": "2026-10-30T15:07:45.089Z",
+    "publishedAt": "2025-06-18",
+    "official": true
+   }
+  },
+  {
+   "id": "40969",
+   "fullName": "Miloš Adamović",
+   "fullNameCyr": "Милош Адамовић",
+   "position": "Predsednik nadzornog odbora",
+   "positionCyr": "Председник надзорног одбора",
+   "isActing": false,
+   "institutionName": "JP Putevi Srbije",
+   "from": "2025-06-18",
+   "appointedBy": "Vlada Republike Srbije",
+   "source": {
+    "kind": "acas",
+    "title": "ACAS – Registar funkcionera: JP Putevi Srbije",
+    "url": "https://publicacas.acas.rs/#/acas/funkcioner",
+    "retrievedAt": "2026-10-30T15:07:45.089Z",
+    "publishedAt": "2025-06-18",
+    "official": true
+   }
+  },
+  {
+   "id": "52183",
+   "fullName": "Predrag Rajić",
+   "fullNameCyr": "Предраг Рајић",
+   "position": "v.d. člana nadzornog odbora",
+   "positionCyr": "в.д. члана надзорног одбора",
+   "isActing": true,
+   "institutionName": "JP Putevi Srbije",
+   "from": "2025-03-27",
+   "to": "2025-06-18",
+   "appointedBy": "Vlada Republike Srbije",
+   "source": {
+    "kind": "acas",
+    "title": "ACAS – Registar funkcionera: JP Putevi Srbije",
+    "url": "https://publicacas.acas.rs/#/acas/funkcioner",
+    "retrievedAt": "2026-10-30T15:07:45.089Z",
+    "publishedAt": "2025-03-27",
+    "official": true
+   }
+  },
+  {
+   "id": "40969",
+   "fullName": "Miloš Adamović",
+   "fullNameCyr": "Милош Адамовић",
+   "position": "v.d. predsednika nadzornog odbora",
+   "positionCyr": "в.д. председника надзорног одбора",
+   "isActing": true,
+   "institutionName": "JP Putevi Srbije",
+   "from": "2025-04-03",
+   "to": "2025-06-18",
+   "appointedBy": "Vlada Republike Srbije",
+   "source": {
+    "kind": "acas",
+    "title": "ACAS – Registar funkcionera: JP Putevi Srbije",
+    "url": "https://publicacas.acas.rs/#/acas/funkcioner",
+    "retrievedAt": "2026-10-30T15:07:45.090Z",
+    "publishedAt": "2025-04-03",
+    "official": true
+   }
+  },
+  {
+   "id": "96",
+   "fullName": "Bajram Omeragić",
+   "fullNameCyr": "Бајрам Омерагић",
+   "position": "Član nadzornog odbora",
+   "positionCyr": "Члан надзорног одбора",
+   "isActing": false,
+   "institutionName": "JP Putevi Srbije",
+   "from": "2021-06-03",
+   "appointedBy": "Vlada Republike Srbije",
+   "source": {
+    "kind": "acas",
+    "title": "ACAS – Registar funkcionera: JP Putevi Srbije",
+    "url": "https://publicacas.acas.rs/#/acas/funkcioner",
+    "retrievedAt": "2026-10-30T15:07:45.090Z",
+    "publishedAt": "2021-06-03",
+    "official": true
+   }
+  },
+  {
+   "id": "5002089",
+   "fullName": "Anita Dimoski",
+   "fullNameCyr": "Анита Димоски",
+   "position": "Član nadzornog odbora",
+   "positionCyr": "Члан надзорног одбора",
+   "isActing": false,
+   "institutionName": "JP Putevi Srbije",
+   "from": "2021-06-03",
+   "to": "2024-12-20",
+   "appointedBy": "Vlada Republike Srbije",
+   "source": {
+    "kind": "acas",
+    "title": "ACAS – Registar funkcionera: JP Putevi Srbije",
+    "url": "https://publicacas.acas.rs/#/acas/funkcioner",
+    "retrievedAt": "2026-10-30T15:07:45.090Z",
+    "publishedAt": "2021-06-03",
+    "official": true
+   }
+  },
+  {
+   "id": "40969",
+   "fullName": "Miloš Adamović",
+   "fullNameCyr": "Милош Адамовић",
+   "position": "Predsednik nadzornog odbora",
+   "positionCyr": "Председник надзорног одбора",
+   "isActing": false,
+   "institutionName": "JP Putevi Srbije",
+   "from": "2020-11-26",
+   "to": "2025-04-03",
+   "appointedBy": "Vlada Republike Srbije",
+   "source": {
+    "kind": "acas",
+    "title": "ACAS – Registar funkcionera: JP Putevi Srbije",
+    "url": "https://publicacas.acas.rs/#/acas/funkcioner",
+    "retrievedAt": "2026-10-30T15:07:45.090Z",
+    "publishedAt": "2020-11-26",
+    "official": true
+   }
+  },
+  {
+   "id": "26382",
+   "fullName": "Velimir Kopanja",
+   "fullNameCyr": "Велимир Копања",
+   "position": "Član nadzornog odbora",
+   "positionCyr": "Члан надзорног одбора",
+   "isActing": false,
+   "institutionName": "JP Putevi Srbije",
+   "from": "2017-09-28",
+   "appointedBy": "Vlada Republike Srbije",
+   "source": {
+    "kind": "acas",
+    "title": "ACAS – Registar funkcionera: JP Putevi Srbije",
+    "url": "https://publicacas.acas.rs/#/acas/funkcioner",
+    "retrievedAt": "2026-10-30T15:07:45.090Z",
+    "publishedAt": "2017-09-28",
+    "official": true
+   }
+  },
+  {
+   "id": "3856",
+   "fullName": "Veselin Osmajlić",
+   "fullNameCyr": "Веселин Осмајлић",
+   "position": "Član nadzornog odbora",
+   "positionCyr": "Члан надзорног одбора",
+   "isActing": false,
+   "institutionName": "JP Putevi Srbije",
+   "from": "2017-09-28",
+   "to": "2025-11-20",
+   "appointedBy": "Vlada Republike Srbije",
+   "source": {
+    "kind": "acas",
+    "title": "ACAS – Registar funkcionera: JP Putevi Srbije",
+    "url": "https://publicacas.acas.rs/#/acas/funkcioner",
+    "retrievedAt": "2026-10-30T15:07:45.090Z",
+    "publishedAt": "2017-09-28",
+    "official": true
+   }
+  },
+  {
+   "id": "786",
+   "fullName": "Zoran Drobnjak",
+   "fullNameCyr": "Зоран Дробњак",
+   "position": "v.d. direktora",
+   "positionCyr": "В.Д. Директора",
+   "isActing": true,
+   "institutionName": "JP Putevi Srbije",
+   "from": "2013-11-29",
+   "appointedBy": "Vlada Republike Srbije",
+   "source": {
+    "kind": "acas",
+    "title": "ACAS – Registar funkcionera: JP Putevi Srbije",
+    "url": "https://publicacas.acas.rs/#/acas/funkcioner",
+    "retrievedAt": "2026-10-30T15:07:45.090Z",
+    "publishedAt": "2013-11-29",
+    "official": true
+   }
+  }
+ ]
+}

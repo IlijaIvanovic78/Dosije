@@ -103,6 +103,8 @@ export interface ToolSpec {
 	required?: string[]
 	/** pure bookkeeping tools (no external source) skip the simulated source latency */
 	local?: boolean
+	/** output limit in characters (default MAX_OUTPUT) */
+	max?: number
 	handler: (args: Record<string, unknown>) => Promise<unknown> | unknown
 }
 
@@ -116,10 +118,11 @@ export function buildTool(ctx: ToolCtx, spec: ToolSpec): Tool {
 		invoke: async (args: unknown) => {
 			try {
 				const state = S()
-				if (!state.isCurrent(ctx.caseId)) return fit({ ok: false, error: "Slučaj je zatvoren ili zamenjen novim." })
+				const alive = ctx.group === "trijaza" ? state.mapaRunning(ctx.caseId) : state.isCurrent(ctx.caseId)
+				if (!alive) return fit({ ok: false, error: ctx.group === "trijaza" ? "Mapa je zatvorena ili zamenjena novom." : "Slučaj je zatvoren ili zamenjen novim." })
 				if (!spec.local) await sourceLatency(ctx.agentId)
 				const out = await spec.handler(args && typeof args === "object" ? (args as Record<string, unknown>) : {})
-				return fit(out)
+				return fit(out, spec.max)
 			} catch (err) {
 				return fit({ ok: false, error: friendlyError(err) })
 			}

@@ -6,13 +6,14 @@ import { type Agent } from "@mozaik-ai/core"
 import { config, editorModelLabel, modelLabel } from "../config"
 import * as data from "../data"
 import { LEGAL_LABELS, listStaticInstitutions, type ResolvedInstitution } from "../data/resolver"
-import type { AgentInfo, DosijeReport, DosijeSnapshot, InstitutionView, RuntimeConfigView } from "../shared/types"
+import type { AgentInfo, DosijeReport, DosijeSnapshot, InstitutionView, MapaView, RuntimeConfigView } from "../shared/types"
 import { CORE_AGENTS, OBSERVERS, createCoreAgent } from "./agents"
 import { bus } from "./bus"
 import * as domain from "./domain"
 import { ids, S } from "./domain"
 import { ResilientInferenceRunner } from "./inference/resilient"
 import { ScriptedInferenceRunner } from "./inference/scripted"
+import { loadMapaPreset, normalizeInstitutions, startMapaWatch } from "./mapa"
 import { coreAgentHandlers, createFabrika, createNovinar, createSseMost, createZapisnicar, trace } from "./participants"
 import { initializeRuntime, join, sendMessage } from "./runtime"
 import { DosijeState } from "./state"
@@ -58,6 +59,7 @@ export function configView(): RuntimeConfigView {
 		dataMode: config.dataMode,
 		searchProviders: providers,
 		demoInstitutions: listStaticInstitutions(),
+		mapaPreset: loadMapaPreset(),
 	}
 }
 
@@ -136,10 +138,15 @@ function teardownCase(): void {
 	leaveAllDynamic(true)
 }
 
+const MAPA_RUNNING = "Mapa prioriteta je u toku: sačekaj da se završi pre nego što napraviš dosije."
+const CASE_RUNNING = "Dosije je u toku: sačekaj da se završi (ili ga zatvori) pre nego što pokreneš Mapu prioriteta."
+
 export async function startCase(input: string, focus?: string): Promise<{ caseId: string; institution: InstitutionView }> {
 	await boot()
 	const state = S()
+	if (state.mapaRunning()) throw new ApiError(409, MAPA_RUNNING)
 	const ref = await data.resolveInstitution(input)
+	if (state.mapaRunning()) throw new ApiError(409, MAPA_RUNNING)
 	teardownCase()
 	const caseId = `dos-${Date.now().toString(36)}${Math.random().toString(36).slice(2, 5)}`
 	const view = institutionView(ref)
@@ -163,6 +170,42 @@ export async function startCase(input: string, focus?: string): Promise<{ caseId
 	startCompletionWatch()
 	log("dosije", `slučaj ${caseId}: ${ref.name} (${view.legalType})${focus ? `, fokus: ${focus}` : ""}`)
 	return { caseId, institution: view }
+}
+
+/**
+ * "Mapa prioriteta": the Novinar publishes mapa.started; the Fabrika reacts by resolving every institution and spawning one
+ * Trijaža agent each (see participants.ts). There is no orchestrator here: this function only opens the run.
+ */
+export async function startMapa(input?: unknown): Promise<{ mapaId: string; institutions: { slug: string; name: string }[] }> {
+	await boot()
+	const state = S()
+	if (state.status === "running" || state.status === "finalizing") throw new ApiError(409, CASE_RUNNING)
+	if (state.mapaRunning()) throw new ApiError(409, "Mapa prioriteta je već u toku.")
+	let institutions: { slug: string; name: string }[]
+	try {
+		institutions = normalizeInstitutions(input)
+	} catch (err) {
+		throw new ApiError(400, (err as Error).message)
+	}
+	teardownCase()
+	const mapaId = `map-${Date.now().toString(36)}${Math.random().toString(36).slice(2, 5)}`
+	state.resetMapa(mapaId, institutions)
+	bus.emitSnapshot(state.snapshot(configView()))
+	domain.emit("mapa.started", ids.novinar, { mapaId, institutions })
+	startMapaWatch()
+	log("mapa", `${mapaId}: ${institutions.map((i) => i.name).join(", ")}`)
+	return { mapaId, institutions }
+}
+
+export function getMapa(): MapaView {
+	return S().mapaView() ?? { id: null, status: "idle", rows: [] }
+}
+
+export async function waitForMapa(timeoutMs = 300_000): Promise<MapaView> {
+	const state = S()
+	const deadline = Date.now() + timeoutMs
+	while (state.mapa.status === "running" && Date.now() < deadline) await new Promise((r) => setTimeout(r, 100))
+	return getMapa()
 }
 
 // ─── REST helpers (the journalist's actions, published on her behalf) ───────────────────────────────

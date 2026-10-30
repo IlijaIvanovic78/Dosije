@@ -1,0 +1,19 @@
+{
+ "source": "acas",
+ "key": "institution-srbija-kargo",
+ "retrievedAt": "2026-10-30T14:57:12.082Z",
+ "data": [
+  {
+   "id": "9722",
+   "name": "Srbija Kargo a.d. Beograd",
+   "nameCyr": "Србија Карго а.д. Београд",
+   "source": {
+    "kind": "acas",
+    "title": "ACAS – Registar funkcionera: Srbija Kargo a.d. Beograd",
+    "url": "https://publicacas.acas.rs/#/acas/funkcioner",
+    "retrievedAt": "2026-10-30T14:57:12.082Z",
+    "official": true
+   }
+  }
+ ]
+}

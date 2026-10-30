@@ -1,0 +1,43 @@
+{
+ "source": "acas",
+ "key": "institution-putevi-srbije",
+ "retrievedAt": "2026-10-30T14:57:13.661Z",
+ "data": [
+  {
+   "id": "5153",
+   "name": "JP Putevi Srbije",
+   "nameCyr": "ЈП Путеви Србије",
+   "source": {
+    "kind": "acas",
+    "title": "ACAS – Registar funkcionera: JP Putevi Srbije",
+    "url": "https://publicacas.acas.rs/#/acas/funkcioner",
+    "retrievedAt": "2026-10-30T14:57:13.661Z",
+    "official": true
+   }
+  },
+  {
+   "id": "5000151",
+   "name": "Javno preduzeće Putevi Srbije",
+   "nameCyr": "Јавно предузеће Путеви Србије",
+   "source": {
+    "kind": "acas",
+    "title": "ACAS – Registar funkcionera: Javno preduzeće Putevi Srbije",
+    "url": "https://publicacas.acas.rs/#/acas/funkcioner",
+    "retrievedAt": "2026-10-30T14:57:13.661Z",
+    "official": true
+   }
+  },
+  {
+   "id": "5011654",
+   "name": "Putevi Srbije d.o.o.",
+   "nameCyr": "Путеви Србије д.о.о.",
+   "source": {
+    "kind": "acas",
+    "title": "ACAS – Registar funkcionera: Putevi Srbije d.o.o.",
+    "url": "https://publicacas.acas.rs/#/acas/funkcioner",
+    "retrievedAt": "2026-10-30T14:57:13.661Z",
+    "official": true
+   }
+  }
+ ]
+}

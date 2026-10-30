@@ -3,22 +3,27 @@
 import { h, fmtElapsed, fmtNum } from "./format.js"
 import { state, on, activeCount, peakCount, openTasks, elapsedMs } from "./store.js"
 
+const isMapa = () => state.runKind === "mapa"
+const mapaRows = () => [...state.mapa.rows.values()]
+
 const items = []
 let heroValue, heroDots, heroLabel, budgetEl
 const bars = new Map()
 
 function stat(id, label, get, opts = {}) {
 	const v = h("div", { class: "m-val" }, "0")
-	const el = h("div", { class: `m-stat ${opts.cls || ""}`, title: opts.title || "" }, v, h("div", { class: "m-lab" }, label))
-	items.push({ id, el, v, get, cur: 0, text: opts.text })
+	const lab = h("div", { class: "m-lab" }, typeof label === "function" ? label() : label)
+	const el = h("div", { class: `m-stat ${opts.cls || ""}`, title: opts.title || "" }, v, lab)
+	items.push({ id, el, v, get, cur: 0, text: opts.text, lab, labFn: typeof label === "function" ? label : null })
 	return el
 }
 
 function budgetBar(label, get) {
 	const fill = h("i")
 	const num = h("b", null, "0/0")
-	const el = h("div", { class: "bud" }, h("span", { class: "b-lab" }, label), h("div", { class: "b-track" }, fill), num)
-	bars.set(label, { fill, num, get, sig: "" })
+	const lab = h("span", { class: "b-lab" }, typeof label === "function" ? label() : label)
+	const el = h("div", { class: "bud" }, lab, h("div", { class: "b-track" }, fill), num)
+	bars.set(el, { fill, num, get, sig: "", lab, labFn: typeof label === "function" ? label : null })
 	return el
 }
 
@@ -49,7 +54,13 @@ let heroCur = 0
 let dotsSig = ""
 
 function update() {
-	for (const it of items) tweened(it)
+	for (const it of items) {
+		if (it.labFn) {
+			const txt = it.labFn()
+			if (it.lab.textContent !== txt) it.lab.textContent = txt
+		}
+		tweened(it)
+	}
 	const active = activeCount()
 	if (heroCur !== active) {
 		heroCur = active
@@ -70,6 +81,10 @@ function update() {
 
 	const b = state.budget
 	for (const [, bar] of bars) {
+		if (bar.labFn) {
+			const txt = bar.labFn()
+			if (bar.lab.textContent !== txt) bar.lab.textContent = txt
+		}
 		const [val, max] = bar.get(b)
 		const sig2 = `${val}/${max}`
 		if (sig2 !== bar.sig) {
@@ -93,9 +108,9 @@ export function initMetrics() {
 		"div",
 		{ class: "m-grid" },
 		stat("peak", "vrhunac paralelnosti", () => peakCount(), { title: "Najviše agenata sa otvorenom petljom u isto vreme" }),
-		stat("findings", "nalaza", () => state.findings.size),
-		stat("signals", "signala", () => [...state.findings.values()].filter((f) => f.severity === "signal").length, { cls: "red" }),
-		stat("open", "otvorenih pitanja", () => openTasks().length, { cls: "amber" }),
+		stat("findings", () => (isMapa() ? "institucija gotovo" : "nalaza"), () => (isMapa() ? mapaRows().filter((r) => r.status === "done").length : state.findings.size)),
+		stat("signals", () => (isMapa() ? "sa v.d. preko roka" : "signala"), () => (isMapa() ? mapaRows().filter((r) => r.signals?.vdOver).length : [...state.findings.values()].filter((f) => f.severity === "signal").length), { cls: "red" }),
+		stat("open", () => (isMapa() ? "u radu" : "otvorenih pitanja"), () => (isMapa() ? mapaRows().filter((r) => r.status === "running").length : openTasks().length), { cls: "amber" }),
 		stat("tools", "poziva alata", () => state.stats?.toolCalls ?? 0),
 		stat("events", "Mozaik događaja", () => Math.max(state.stats?.events ?? 0, state.eventCount)),
 		stat("time", "proteklo vreme", () => elapsedMs(), { text: (ms) => fmtElapsed(ms) }),
@@ -103,13 +118,13 @@ export function initMetrics() {
 	budgetEl = h(
 		"div",
 		{ class: "m-budget" },
-		budgetBar("Firme", (b) => [b?.firme ?? 0, b?.maxFirme ?? 0]),
-		budgetBar("Osobe", (b) => [b?.osobe ?? 0, b?.maxOsobe ?? 0]),
+		budgetBar(() => (isMapa() ? "Petlje" : "Firme"), (b) => (isMapa() ? [b?.loops ?? 0, b?.maxLoops ?? 0] : [b?.firme ?? 0, b?.maxFirme ?? 0])),
+		budgetBar(() => (isMapa() ? "Redovi" : "Osobe"), (b) => (isMapa() ? [mapaRows().filter((r) => r.status === "done" || r.status === "error").length, state.mapa.rows.size] : [b?.osobe ?? 0, b?.maxOsobe ?? 0])),
 		budgetBar("Alati", (b) => [b?.toolCalls ?? 0, b?.maxToolCalls ?? 0]),
 	)
 	root.append(hero, grid, budgetEl)
 
 	setInterval(update, 150)
-	for (const t of ["meta", "snapshot", "finding", "tasks"]) on(t, update)
+	for (const t of ["meta", "snapshot", "finding", "tasks", "mapa"]) on(t, update)
 	update()
 }
