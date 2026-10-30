@@ -1,0 +1,85 @@
+{
+ "source": "acas",
+ "key": "assets-43509",
+ "retrievedAt": "2026-10-30T20:49:19.868Z",
+ "data": [
+  {
+   "personId": "43509",
+   "fullName": "Vuk Raonić",
+   "reportDate": "2025-12-22",
+   "reason": "stupanje na javnu funkciju",
+   "source": {
+    "kind": "acas",
+    "title": "ACAS – Izveštaj o imovini i prihodima funkcionera (22.12.2025.)",
+    "url": "https://publicacas.acas.rs/#/acas/funkcionerIzvestajDetails/5036527",
+    "retrievedAt": "2026-10-30T20:49:17.278Z",
+    "publishedAt": "2025-12-22",
+    "official": true
+   },
+   "summary": [
+    "Prihod od javne funkcije (Pomoćnik gradonačelnika, Skupština grada Novog Sada): 170.000 RSD mesečno, od 28.11.2025.",
+    "Prihod od javne funkcije (Član nadzornog odbora, JP Skijalište Srbije): 90.000 RSD mesečno, od 11.05.2017.",
+    "Prihod od javne funkcije (JP Skijalište Srbije): 75.000 RSD mesečno, od 11.05.2017.",
+    "Nepokretna imovina: 4 stavke (kuća ×2, stan ×2)",
+    "Objekti: kuća 300 m2; stan 58 m2; stan 18 m2; kuća 100 m2",
+    "Pokretna imovina (registrovana): 2 (automobil Jeep Wrangler 2017; automobil Range Rover Discovery Sport 2015)"
+   ],
+   "incomes": [
+    {
+     "source": "Pomoćnik gradonačelnika, Skupština grada Novog Sada",
+     "amountRsd": 170000,
+     "period": "mesečno, od 28.11.2025."
+    },
+    {
+     "source": "Član nadzornog odbora, JP Skijalište Srbije",
+     "amountRsd": 90000,
+     "period": "mesečno, od 11.05.2017."
+    },
+    {
+     "source": "JP Skijalište Srbije",
+     "amountRsd": 75000,
+     "period": "mesečno, od 11.05.2017."
+    }
+   ]
+  },
+  {
+   "personId": "43509",
+   "fullName": "Vuk Raonić",
+   "reportDate": "2018-10-30",
+   "reason": "stupanje na javnu funkciju",
+   "source": {
+    "kind": "acas",
+    "title": "ACAS – Izveštaj o imovini i prihodima funkcionera (30.10.2018.)",
+    "url": "https://publicacas.acas.rs/#/acas/funkcionerIzvestajDetails/5036524",
+    "retrievedAt": "2026-10-30T20:49:18.168Z",
+    "publishedAt": "2018-10-30",
+    "official": true
+   },
+   "summary": [
+    "Prihod od javne funkcije (Član nadzornog odbora, JP Skijališta Srbije Beograd): 45.000 RSD mesečno, od 11.05.2017.",
+    "Prihod od javne funkcije (JP Skijališta Srbije Beograd): 52.000 RSD mesečno, od 11.05.2017.",
+    "Prihod od javne funkcije (JP \"Urbanizam\" Zavod za urbanizam Novi Sad): 85.000 RSD mesečno, od 01.09.2014.",
+    "Nepokretna imovina: 7 stavki (kuća, stan ×3, građevinsko zemljište, šuma, ostalo)",
+    "Objekti: kuća 300 m2; stan 60 m2; stan 27 m2; stan 18 m2; ostalo 200 m2",
+    "Pokretna imovina (registrovana): 2 (automobil Volkswagen Golf 7 2013; automobil Renault Modus 2019)"
+   ],
+   "incomes": [
+    {
+     "source": "Član nadzornog odbora, JP Skijališta Srbije Beograd",
+     "amountRsd": 45000,
+     "period": "mesečno, od 11.05.2017."
+    },
+    {
+     "source": "JP Skijališta Srbije Beograd",
+     "amountRsd": 52000,
+     "period": "mesečno, od 11.05.2017."
+    },
+    {
+     "source": "JP \"Urbanizam\" Zavod za urbanizam Novi Sad",
+     "amountRsd": 85000,
+     "period": "mesečno, od 01.09.2014."
+    }
+   ]
+  }
+ ]
+}

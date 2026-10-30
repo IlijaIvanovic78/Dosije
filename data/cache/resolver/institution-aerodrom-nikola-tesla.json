@@ -1,0 +1,47 @@
+{
+ "source": "resolver",
+ "key": "institution-aerodrom-nikola-tesla",
+ "retrievedAt": "2026-10-30T21:07:46.955Z",
+ "data": {
+  "query": "Aerodrom Nikola Tesla",
+  "slug": "jp-aerodrom-nikola-tesla",
+  "name": "JP Aerodrom Nikola Tesla",
+  "nameCyr": "ЈП Аеродром Никола Тесла",
+  "legalType": "javno_preduzece",
+  "pib": "100000539",
+  "mb": "07036540",
+  "acasId": "4675",
+  "acasAltIds": [
+   "8726"
+  ],
+  "aliases": [
+   "JP Aerodrom Nikola Tesla"
+  ],
+  "jnId": "2933",
+  "municipality": "Surčin",
+  "sources": [
+   {
+    "kind": "acas",
+    "title": "ACAS registar – pretraga: JP Aerodrom Nikola Tesla",
+    "url": "https://publicacas.acas.rs/#/acas/funkcioner",
+    "retrievedAt": "2026-10-30T20:57:43.038Z",
+    "official": true
+   },
+   {
+    "kind": "jnportal",
+    "title": "Portal javnih nabavki – ugovori naručioca: AD AERODROM NIKOLA TESLA BEOGRAD",
+    "url": "https://jnportal.ujn.gov.rs/ugovori?initFilter=%5B%22OfficialName%22%2C%22%3D%22%2C%22%D0%90%D0%94%20%D0%90%D0%95%D0%A0%D0%9E%D0%94%D0%A0%D0%9E%D0%9C%20%D0%9D%D0%98%D0%9A%D0%9E%D0%9B%D0%90%20%D0%A2%D0%95%D0%A1%D0%9B%D0%90%20%D0%91%D0%95%D0%9E%D0%93%D0%A0%D0%90%D0%94%22%5D",
+    "retrievedAt": "2026-10-30T20:57:46.029Z",
+    "official": true
+   },
+   {
+    "kind": "apr",
+    "title": "APR – otvoreni podaci: AKCIONARSKO DRUŠTVO AERODROM NIKOLA TESLA BEOGRAD (MB 07036540, presek 2026-09-30)",
+    "url": "https://data.gov.rs/sr/datasets/api-za-registar-finansijskikh-izveshtaja-baza-fi-za-privredna-drushtva/",
+    "retrievedAt": "2026-09-30T00:00:00.000Z",
+    "publishedAt": "2026-09-30",
+    "official": true
+   }
+  ]
+ }
+}

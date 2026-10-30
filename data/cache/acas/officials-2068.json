@@ -1,0 +1,340 @@
+{
+ "source": "acas",
+ "key": "officials-2068",
+ "retrievedAt": "2026-10-30T20:49:52.022Z",
+ "data": [
+  {
+   "id": "38497",
+   "fullName": "Sanja Bošković",
+   "fullNameCyr": "Сања Бошковић",
+   "position": "Član nadzornog odbora",
+   "positionCyr": "Члан надзорног одбора",
+   "isActing": false,
+   "institutionName": "Dom zdravlja Novi Sad",
+   "from": "2026-08-25",
+   "appointedBy": "Pokrajinska Vlada AP Vojvodine",
+   "source": {
+    "kind": "acas",
+    "title": "ACAS registar – pretraga: Dom zdravlja Novi Sad",
+    "url": "https://publicacas.acas.rs/#/acas/funkcioner",
+    "retrievedAt": "2026-10-30T20:49:52.020Z",
+    "publishedAt": "2026-08-25",
+    "official": true
+   }
+  },
+  {
+   "id": "38799",
+   "fullName": "Goran Stojanović",
+   "fullNameCyr": "Горан Стојановић",
+   "position": "Član nadzornog odbora",
+   "positionCyr": "Члан надзорног одбора",
+   "isActing": false,
+   "institutionName": "Dom zdravlja Novi Sad",
+   "from": "2026-08-25",
+   "appointedBy": "Pokrajinska Vlada AP Vojvodine",
+   "source": {
+    "kind": "acas",
+    "title": "ACAS registar – pretraga: Dom zdravlja Novi Sad",
+    "url": "https://publicacas.acas.rs/#/acas/funkcioner",
+    "retrievedAt": "2026-10-30T20:49:52.021Z",
+    "publishedAt": "2026-08-25",
+    "official": true
+   }
+  },
+  {
+   "id": "5043001",
+   "fullName": "Bojan Smrzlić",
+   "fullNameCyr": "Бојан Смрзлић",
+   "position": "Predsednik nadzornog odbora",
+   "positionCyr": "Председник надзорног одбора",
+   "isActing": false,
+   "institutionName": "Dom zdravlja Novi Sad",
+   "from": "2026-08-25",
+   "appointedBy": "Pokrajinska Vlada AP Vojvodine",
+   "source": {
+    "kind": "acas",
+    "title": "ACAS registar – pretraga: Dom zdravlja Novi Sad",
+    "url": "https://publicacas.acas.rs/#/acas/funkcioner",
+    "retrievedAt": "2026-10-30T20:49:52.021Z",
+    "publishedAt": "2026-08-25",
+    "official": true
+   }
+  },
+  {
+   "id": "54031",
+   "fullName": "Tatjana Pokuševski",
+   "fullNameCyr": "Татјана Покушевски",
+   "position": "v.d. direktora",
+   "positionCyr": "В.Д. Директора",
+   "isActing": true,
+   "institutionName": "Dom zdravlja Novi Sad",
+   "from": "2026-06-10",
+   "appointedBy": "Pokrajinska Vlada AP Vojvodine",
+   "source": {
+    "kind": "acas",
+    "title": "ACAS registar – pretraga: Dom zdravlja Novi Sad",
+    "url": "https://publicacas.acas.rs/#/acas/funkcioner",
+    "retrievedAt": "2026-10-30T20:49:52.021Z",
+    "publishedAt": "2026-06-10",
+    "official": true
+   }
+  },
+  {
+   "id": "54031",
+   "fullName": "Tatjana Pokuševski",
+   "fullNameCyr": "Татјана Покушевски",
+   "position": "v.d. direktora",
+   "positionCyr": "В.Д. Директора",
+   "isActing": true,
+   "institutionName": "Dom zdravlja Novi Sad",
+   "from": "2025-12-10",
+   "to": "2026-06-10",
+   "appointedBy": "Pokrajinska Vlada AP Vojvodine",
+   "source": {
+    "kind": "acas",
+    "title": "ACAS registar – pretraga: Dom zdravlja Novi Sad",
+    "url": "https://publicacas.acas.rs/#/acas/funkcioner",
+    "retrievedAt": "2026-10-30T20:49:52.021Z",
+    "publishedAt": "2025-12-10",
+    "official": true
+   }
+  },
+  {
+   "id": "54031",
+   "fullName": "Tatjana Pokuševski",
+   "fullNameCyr": "Татјана Покушевски",
+   "position": "v.d. direktora",
+   "positionCyr": "В.Д. Директора",
+   "isActing": true,
+   "institutionName": "Dom zdravlja Novi Sad",
+   "from": "2025-05-28",
+   "to": "2025-12-10",
+   "appointedBy": "Pokrajinska Vlada AP Vojvodine",
+   "source": {
+    "kind": "acas",
+    "title": "ACAS registar – pretraga: Dom zdravlja Novi Sad",
+    "url": "https://publicacas.acas.rs/#/acas/funkcioner",
+    "retrievedAt": "2026-10-30T20:49:52.021Z",
+    "publishedAt": "2025-05-28",
+    "official": true
+   }
+  },
+  {
+   "id": "5035243",
+   "fullName": "Slađana Zagorac",
+   "fullNameCyr": "Слађана Загорац",
+   "position": "Član upravnog odbora",
+   "positionCyr": "Члан управног одбора",
+   "isActing": false,
+   "institutionName": "Dom zdravlja Novi Sad",
+   "from": "2025-03-12",
+   "appointedBy": "Vlada AP Vojvodine",
+   "source": {
+    "kind": "acas",
+    "title": "ACAS registar – pretraga: Dom zdravlja Novi Sad",
+    "url": "https://publicacas.acas.rs/#/acas/funkcioner",
+    "retrievedAt": "2026-10-30T20:49:52.021Z",
+    "publishedAt": "2025-03-12",
+    "official": true
+   }
+  },
+  {
+   "id": "41555",
+   "fullName": "Jelena Đokić",
+   "fullNameCyr": "Јелена Ђокић",
+   "position": "Član upravnog odbora",
+   "positionCyr": "Члан управног одбора",
+   "isActing": false,
+   "institutionName": "Dom zdravlja Novi Sad",
+   "from": "2025-03-12",
+   "appointedBy": "Vlada AP Vojvodine",
+   "source": {
+    "kind": "acas",
+    "title": "ACAS registar – pretraga: Dom zdravlja Novi Sad",
+    "url": "https://publicacas.acas.rs/#/acas/funkcioner",
+    "retrievedAt": "2026-10-30T20:49:52.021Z",
+    "publishedAt": "2025-03-12",
+    "official": true
+   }
+  },
+  {
+   "id": "35411",
+   "fullName": "Aleksandra Obrenović",
+   "fullNameCyr": "Александра Обреновић",
+   "position": "Predsednik upravnog odbora",
+   "positionCyr": "Председник управног одбора",
+   "isActing": false,
+   "institutionName": "Dom zdravlja Novi Sad",
+   "from": "2025-03-12",
+   "appointedBy": "Vlada AP Vojvodine",
+   "source": {
+    "kind": "acas",
+    "title": "ACAS registar – pretraga: Dom zdravlja Novi Sad",
+    "url": "https://publicacas.acas.rs/#/acas/funkcioner",
+    "retrievedAt": "2026-10-30T20:49:52.021Z",
+    "publishedAt": "2025-03-12",
+    "official": true
+   }
+  },
+  {
+   "id": "54031",
+   "fullName": "Tatjana Pokuševski",
+   "fullNameCyr": "Татјана Покушевски",
+   "position": "v.d. direktora",
+   "positionCyr": "В.Д. Директора",
+   "isActing": true,
+   "institutionName": "Dom zdravlja Novi Sad",
+   "from": "2024-12-11",
+   "to": "2025-05-28",
+   "appointedBy": "Vlada AP Vojvodine",
+   "source": {
+    "kind": "acas",
+    "title": "ACAS registar – pretraga: Dom zdravlja Novi Sad",
+    "url": "https://publicacas.acas.rs/#/acas/funkcioner",
+    "retrievedAt": "2026-10-30T20:49:52.021Z",
+    "publishedAt": "2024-12-11",
+    "official": true
+   }
+  },
+  {
+   "id": "36881",
+   "fullName": "Veselin Bojat",
+   "fullNameCyr": "Веселин Бојат",
+   "position": "Direktor",
+   "positionCyr": "Директор",
+   "isActing": false,
+   "institutionName": "Dom zdravlja Novi Sad",
+   "from": "2019-07-15",
+   "to": "2024-12-11",
+   "appointedBy": "Skupština grada Novog Sada",
+   "source": {
+    "kind": "acas",
+    "title": "ACAS registar – pretraga: Dom zdravlja Novi Sad",
+    "url": "https://publicacas.acas.rs/#/acas/funkcioner",
+    "retrievedAt": "2026-10-30T20:49:52.021Z",
+    "publishedAt": "2019-07-15",
+    "official": true
+   }
+  },
+  {
+   "id": "38497",
+   "fullName": "Sanja Bošković",
+   "fullNameCyr": "Сања Бошковић",
+   "position": "Član nadzornog odbora",
+   "positionCyr": "Члан надзорног одбора",
+   "isActing": false,
+   "institutionName": "Dom zdravlja Novi Sad",
+   "from": "2022-06-23",
+   "to": "2026-08-25",
+   "appointedBy": "Pokrajinska Vlada AP Vojvodine",
+   "source": {
+    "kind": "acas",
+    "title": "ACAS registar – pretraga: Dom zdravlja Novi Sad",
+    "url": "https://publicacas.acas.rs/#/acas/funkcioner",
+    "retrievedAt": "2026-10-30T20:49:52.021Z",
+    "publishedAt": "2022-06-23",
+    "official": true
+   }
+  },
+  {
+   "id": "5006127",
+   "fullName": "Ivana Ramović",
+   "fullNameCyr": "Ивана Рамовић",
+   "position": "Član nadzornog odbora",
+   "positionCyr": "Члан надзорног одбора",
+   "isActing": false,
+   "institutionName": "Dom zdravlja Novi Sad",
+   "from": "2022-06-23",
+   "to": "2026-08-25",
+   "appointedBy": "Pokrajinska Vlada AP Vojvodine",
+   "source": {
+    "kind": "acas",
+    "title": "ACAS registar – pretraga: Dom zdravlja Novi Sad",
+    "url": "https://publicacas.acas.rs/#/acas/funkcioner",
+    "retrievedAt": "2026-10-30T20:49:52.022Z",
+    "publishedAt": "2022-06-23",
+    "official": true
+   }
+  },
+  {
+   "id": "38799",
+   "fullName": "Goran Stojanović",
+   "fullNameCyr": "Горан Стојановић",
+   "position": "Predsednik nadzornog odbora",
+   "positionCyr": "Председник надзорног одбора",
+   "isActing": false,
+   "institutionName": "Dom zdravlja Novi Sad",
+   "from": "2022-06-23",
+   "to": "2026-08-25",
+   "appointedBy": "Pokrajinska Vlada AP Vojvodine",
+   "source": {
+    "kind": "acas",
+    "title": "ACAS registar – pretraga: Dom zdravlja Novi Sad",
+    "url": "https://publicacas.acas.rs/#/acas/funkcioner",
+    "retrievedAt": "2026-10-30T20:49:52.022Z",
+    "publishedAt": "2022-06-23",
+    "official": true
+   }
+  },
+  {
+   "id": "5008697",
+   "fullName": "Aleksandra Dančilović Milojević",
+   "fullNameCyr": "Александра Данчиловић Милојевић",
+   "position": "Član upravnog odbora",
+   "positionCyr": "Члан управног одбора",
+   "isActing": false,
+   "institutionName": "Dom zdravlja Novi Sad",
+   "from": "2020-12-28",
+   "to": "2025-03-12",
+   "appointedBy": "Vlada AP Vojvodine",
+   "source": {
+    "kind": "acas",
+    "title": "ACAS registar – pretraga: Dom zdravlja Novi Sad",
+    "url": "https://publicacas.acas.rs/#/acas/funkcioner",
+    "retrievedAt": "2026-10-30T20:49:52.022Z",
+    "publishedAt": "2020-12-28",
+    "official": true
+   }
+  },
+  {
+   "id": "41033",
+   "fullName": "Neda Terzić",
+   "fullNameCyr": "Неда Терзић",
+   "position": "Član upravnog odbora",
+   "positionCyr": "Члан управног одбора",
+   "isActing": false,
+   "institutionName": "Dom zdravlja Novi Sad",
+   "from": "2020-12-28",
+   "to": "2025-03-12",
+   "appointedBy": "Vlada AP Vojvodine",
+   "source": {
+    "kind": "acas",
+    "title": "ACAS registar – pretraga: Dom zdravlja Novi Sad",
+    "url": "https://publicacas.acas.rs/#/acas/funkcioner",
+    "retrievedAt": "2026-10-30T20:49:52.022Z",
+    "publishedAt": "2020-12-28",
+    "official": true
+   }
+  },
+  {
+   "id": "41555",
+   "fullName": "Jelena Đokić",
+   "fullNameCyr": "Јелена Ђокић",
+   "position": "Predsednik upravnog odbora",
+   "positionCyr": "Председник управног одбора",
+   "isActing": false,
+   "institutionName": "Dom zdravlja Novi Sad",
+   "from": "2020-12-28",
+   "to": "2025-03-12",
+   "appointedBy": "Vlada AP Vojvodine",
+   "source": {
+    "kind": "acas",
+    "title": "ACAS registar – pretraga: Dom zdravlja Novi Sad",
+    "url": "https://publicacas.acas.rs/#/acas/funkcioner",
+    "retrievedAt": "2026-10-30T20:49:52.022Z",
+    "publishedAt": "2020-12-28",
+    "official": true
+   }
+  }
+ ]
+}

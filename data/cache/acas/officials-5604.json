@@ -1,0 +1,64 @@
+{
+ "source": "acas",
+ "key": "officials-5604",
+ "retrievedAt": "2026-10-30T20:51:33.017Z",
+ "data": [
+  {
+   "id": "35131",
+   "fullName": "Branislav Marković",
+   "fullNameCyr": "Бранислав Марковић",
+   "position": "Član nadzornog odbora",
+   "positionCyr": "Члан надзорног одбора",
+   "isActing": false,
+   "institutionName": "JP Elektroprivreda Srbije Beograd",
+   "from": "2014-11-20",
+   "appointedBy": "Vlada Republike Srbije",
+   "source": {
+    "kind": "acas",
+    "title": "ACAS registar – pretraga: JP Elektroprivreda Srbije Beograd",
+    "url": "https://publicacas.acas.rs/#/acas/funkcioner",
+    "retrievedAt": "2026-10-30T20:51:33.017Z",
+    "publishedAt": "2014-11-20",
+    "official": true
+   }
+  },
+  {
+   "id": "1083",
+   "fullName": "Aleksandar Gajić",
+   "fullNameCyr": "Александар Гајић",
+   "position": "Član nadzornog odbora",
+   "positionCyr": "Члан надзорног одбора",
+   "isActing": false,
+   "institutionName": "JP Elektroprivreda Srbije Beograd",
+   "from": "2014-11-20",
+   "appointedBy": "Vlada Republike Srbije",
+   "source": {
+    "kind": "acas",
+    "title": "ACAS registar – pretraga: JP Elektroprivreda Srbije Beograd",
+    "url": "https://publicacas.acas.rs/#/acas/funkcioner",
+    "retrievedAt": "2026-10-30T20:51:33.017Z",
+    "publishedAt": "2014-11-20",
+    "official": true
+   }
+  },
+  {
+   "id": "642",
+   "fullName": "Branko Kovačević",
+   "fullNameCyr": "Бранко Ковачевић",
+   "position": "Predsednik nadzornog odbora",
+   "positionCyr": "Председник надзорног одбора",
+   "isActing": false,
+   "institutionName": "JP Elektroprivreda Srbije Beograd",
+   "from": "2014-11-20",
+   "appointedBy": "Vlada Republike Srbije",
+   "source": {
+    "kind": "acas",
+    "title": "ACAS registar – pretraga: JP Elektroprivreda Srbije Beograd",
+    "url": "https://publicacas.acas.rs/#/acas/funkcioner",
+    "retrievedAt": "2026-10-30T20:51:33.017Z",
+    "publishedAt": "2014-11-20",
+    "official": true
+   }
+  }
+ ]
+}

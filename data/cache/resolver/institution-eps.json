@@ -1,0 +1,49 @@
+{
+ "source": "resolver",
+ "key": "institution-eps",
+ "retrievedAt": "2026-10-30T21:07:46.947Z",
+ "data": {
+  "query": "EPS",
+  "slug": "jp-elektroprivreda-srbije-beograd",
+  "name": "JP Elektroprivreda Srbije Beograd",
+  "nameCyr": "ЈП Електропривреда Србије Београд",
+  "legalType": "javno_preduzece",
+  "pib": "103920327",
+  "mb": "20053658",
+  "acasId": "5057",
+  "acasAltIds": [
+   "5604",
+   "5008808"
+  ],
+  "aliases": [
+   "EPS",
+   "JP Elektroprivreda Srbije Beograd"
+  ],
+  "jnId": "1853",
+  "municipality": "Stari Grad",
+  "sources": [
+   {
+    "kind": "acas",
+    "title": "ACAS registar – pretraga: JP Elektroprivreda Srbije Beograd",
+    "url": "https://publicacas.acas.rs/#/acas/funkcioner",
+    "retrievedAt": "2026-10-30T20:51:32.857Z",
+    "official": true
+   },
+   {
+    "kind": "jnportal",
+    "title": "Portal javnih nabavki – ugovori naručioca: Akcionarsko društvo Elektroprivreda Srbije, Beograd",
+    "url": "https://jnportal.ujn.gov.rs/ugovori?initFilter=%5B%22OfficialName%22%2C%22%3D%22%2C%22%D0%90%D0%BA%D1%86%D0%B8%D0%BE%D0%BD%D0%B0%D1%80%D1%81%D0%BA%D0%BE%20%D0%B4%D1%80%D1%83%D1%88%D1%82%D0%B2%D0%BE%20%D0%95%D0%BB%D0%B5%D0%BA%D1%82%D1%80%D0%BE%D0%BF%D1%80%D0%B8%D0%B2%D1%80%D0%B5%D0%B4%D0%B0%20%D0%A1%D1%80%D0%B1%D0%B8%D1%98%D0%B5%2C%20%D0%91%D0%B5%D0%BE%D0%B3%D1%80%D0%B0%D0%B4%22%5D",
+    "retrievedAt": "2026-10-30T20:51:37.822Z",
+    "official": true
+   },
+   {
+    "kind": "apr",
+    "title": "APR – otvoreni podaci: Akcionarsko društvo Elektroprivreda Srbije, Beograd (MB 20053658, presek 2026-09-30)",
+    "url": "https://data.gov.rs/sr/datasets/api-za-registar-finansijskikh-izveshtaja-baza-fi-za-privredna-drushtva/",
+    "retrievedAt": "2026-09-30T00:00:00.000Z",
+    "publishedAt": "2026-09-30",
+    "official": true
+   }
+  ]
+ }
+}

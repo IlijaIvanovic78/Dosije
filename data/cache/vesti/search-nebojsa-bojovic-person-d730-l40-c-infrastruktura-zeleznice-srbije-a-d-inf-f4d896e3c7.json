@@ -1,0 +1,84 @@
+{
+ "source": "vesti",
+ "key": "search-nebojsa-bojovic-person-d730-l40-c-infrastruktura-zeleznice-srbije-a-d-inf-f4d896e3c7",
+ "retrievedAt": "2026-10-30T21:37:56.729Z",
+ "meta": {
+  "query": "Nebojša Bojović",
+  "kind": "person",
+  "days": 730,
+  "limit": 40,
+  "aliases": [],
+  "context": [
+   "Infrastruktura železnice Srbije a.d.",
+   "Infrastruktura železnice Srbije",
+   "IŽS"
+  ],
+  "exclude": []
+ },
+ "data": [
+  {
+   "id": "19ee1ca41611",
+   "title": "️ Небојша Бојовић, садашњи проректор Универзитета у Београду и бивши председник Скупштине акционара “Инфраструктура железнице Србије” морао је да буде један од актера истраге у случају пада надстрешнице, макар и као сведок - Pravda Србија",
+   "url": "https://serbia.news-pravda.com/serbia/2025/10/27/374995.html",
+   "outlet": "serbia.news-pravda.com",
+   "publishedAt": "2025-10-27T15:24:56.000Z",
+   "snippet": "Уместо тога, овај маг институционалне манипулације данас се појављује као један од протагониста покушаја спровођења обојене револуције у Србији.Паралелно са ...",
+   "matched": [
+    "Nebojša Bojović"
+   ],
+   "provider": "brave",
+   "verified": "naslov",
+   "score": 36,
+   "source": {
+    "kind": "vesti",
+    "title": "serbia.news-pravda.com: ️ Небојша Бојовић, садашњи проректор Универзитета у Београду и бивши председник Скупштине акционара “Инфраструктура железнице Србије” морао је да буде један од актера истраге…",
+    "url": "https://serbia.news-pravda.com/serbia/2025/10/27/374995.html",
+    "retrievedAt": "2026-10-30T21:37:41.376Z",
+    "publishedAt": "2025-10-27T15:24:56.000Z",
+    "official": false
+   }
+  },
+  {
+   "id": "fa8a65566a08",
+   "title": "KAKO JE OD ODGOVORNOSTI ZAŠTIĆEN IZVRŠNI DIREKTOR ŽELEZNICE MILUTIN MILOŠEVIĆ, DRUG SA SLIKE TUŽIOCA NENADIĆA!",
+   "url": "https://www.google.com/goto?url=CAESyQEB6zswFfkYs6lGPdR47QeyssZOAJkjqWUMmr_ZUOruB-S-rXK2PzL9Z9x57IpnBz27kMtQxio0qhJ50TsYRKyjgR2WWC8rMSyfYRA_yqEcjF4mRuE0ZWUKkDxn-YC3_obyHGLoa8QmVGZQkWihmuBKuyDkY51fM2dM8ARgRY8VBQNKSeEV89ycK1oj7f3noLigdQBN1TWSw6xPsk5ypDO6ZPJUcRkfQD5ZcH4I4gfReWeShnkeeVK_-gfCcQnIrsizZ4CbNC355FI",
+   "outlet": "RTV Pančevo",
+   "snippet": "Nebojša Bojović, Đokićev prorektor i predsednik Skupštine akcionara kompanije Infrastruktura Železnica Srbije potpisao je 29. juna 2017. godine Odluku broj...",
+   "matched": [
+    "Nebojša Bojović"
+   ],
+   "provider": "serper",
+   "verified": "opis",
+   "score": 20,
+   "source": {
+    "kind": "vesti",
+    "title": "RTV Pančevo: KAKO JE OD ODGOVORNOSTI ZAŠTIĆEN IZVRŠNI DIREKTOR ŽELEZNICE MILUTIN MILOŠEVIĆ, DRUG SA SLIKE TUŽIOCA NENADIĆA!",
+    "url": "https://www.google.com/goto?url=CAESyQEB6zswFfkYs6lGPdR47QeyssZOAJkjqWUMmr_ZUOruB-S-rXK2PzL9Z9x57IpnBz27kMtQxio0qhJ50TsYRKyjgR2WWC8rMSyfYRA_yqEcjF4mRuE0ZWUKkDxn-YC3_obyHGLoa8QmVGZQkWihmuBKuyDkY51fM2dM8ARgRY8VBQNKSeEV89ycK1oj7f3noLigdQBN1TWSw6xPsk5ypDO6ZPJUcRkfQD5ZcH4I4gfReWeShnkeeVK_-gfCcQnIrsizZ4CbNC355FI",
+    "retrievedAt": "2026-10-30T21:37:41.376Z",
+    "official": false
+   }
+  },
+  {
+   "id": "b6142f4828bc",
+   "title": "ALAVOST: Đokić i Bojović ruše državu, a ne gade se da od nje uzimaju milione! TAČNO 4.830.985!",
+   "url": "https://www.kurir.rs/vesti/politika/10079021/alavost-vladana-djokica-i-nebojse-bojovica",
+   "outlet": "Kurir",
+   "publishedAt": "2026-08-18T07:00:00.000Z",
+   "snippet": "Protivnici aktuelne vlasti - rektor Univerziteta u Beogradu Vladan Đokić i prorektor Nebojša Bojović - za dve i po godine, koliko su bili član i predsednik Upravnog odbora (UO) Instituta za arhitekturu i urbanizam Srbije (IAUS) - primili…",
+   "matched": [
+    "Nebojša Bojović"
+   ],
+   "provider": "google-news-rss",
+   "verified": "tekst",
+   "score": 11,
+   "source": {
+    "kind": "vesti",
+    "title": "Kurir: ALAVOST: Đokić i Bojović ruše državu, a ne gade se da od nje uzimaju milione! TAČNO 4.830.985!",
+    "url": "https://www.kurir.rs/vesti/politika/10079021/alavost-vladana-djokica-i-nebojse-bojovica",
+    "retrievedAt": "2026-10-30T21:37:41.376Z",
+    "publishedAt": "2026-08-18T07:00:00.000Z",
+    "official": false
+   }
+  }
+ ]
+}

@@ -1,0 +1,254 @@
+{
+ "source": "integrity_watch",
+ "key": "supplier-103079096",
+ "retrievedAt": "2026-10-30T20:55:48.034Z",
+ "data": [
+  {
+   "supplierName": "MILLENNIUM TEAM DOO BEOGRAD",
+   "supplierPib": "103079096",
+   "supplierMb": "17511068",
+   "contractingAuthority": "Akcionarsko društvo Elektroprivreda Srbije, Beograd",
+   "linkType": "povezanost sa političkim subjektom",
+   "detail": "Integrity Watch označava ponuđača kao kompaniju povezanu sa političkim subjektom; izvor povezivanja: https://nova.rs/vesti/politika/sta-je-milenijum-tim-sns-fabrika-za-izvlacenje-para/; označenih ugovora kod naručioca: 1; od toga u zajedničkoj ponudi: 1 (vrednost cele ponude 18,764,160,000 RSD, nije pripisana firmi); period: 2023-08-15 do 2023-08-15; najveći: 12.01.326338/25-2023 (2023-08-15, 18,764,160,000 RSD)",
+   "contracts": 1,
+   "source": {
+    "kind": "integrity_watch",
+    "title": "Integrity Watch Srbija – pretraga: MILLENNIUM TEAM DOO BEOGRAD",
+    "url": "https://integritywatchserbia.org.rs/companies.php?l=sr",
+    "retrievedAt": "2026-10-30T13:47:26.488Z",
+    "official": false
+   }
+  },
+  {
+   "supplierName": "MILLENNIUM TEAM DOO BEOGRAD",
+   "supplierPib": "103079096",
+   "supplierMb": "17511068",
+   "contractingAuthority": "KANCELARIJA ZA UPRAVLJANJE JAVNIM ULAGANJIMA",
+   "linkType": "povezanost sa političkim subjektom",
+   "detail": "Integrity Watch označava ponuđača kao kompaniju povezanu sa političkim subjektom; izvor povezivanja: https://nova.rs/vesti/politika/sta-je-milenijum-tim-sns-fabrika-za-izvlacenje-para/; označenih ugovora kod naručioca: 2; od toga u zajedničkoj ponudi: 1 (vrednost cele ponude 4,432,933,986 RSD, nije pripisana firmi); period: 2021-11-10 do 2022-11-09; najveći: 404-02-41/5/2022-01 (2022-11-09, 4,432,933,986 RSD)",
+   "contracts": 2,
+   "valueRsd": 51200104,
+   "source": {
+    "kind": "integrity_watch",
+    "title": "Integrity Watch Srbija – pretraga: MILLENNIUM TEAM DOO BEOGRAD",
+    "url": "https://integritywatchserbia.org.rs/companies.php?l=sr",
+    "retrievedAt": "2026-10-30T13:47:26.488Z",
+    "official": false
+   }
+  },
+  {
+   "supplierName": "MILLENNIUM TEAM DOO BEOGRAD",
+   "supplierPib": "103079096",
+   "supplierMb": "17511068",
+   "contractingAuthority": "Ministarstvo rudarstva i energetike",
+   "linkType": "povezanost sa političkim subjektom",
+   "detail": "Integrity Watch označava ponuđača kao kompaniju povezanu sa političkim subjektom; izvor povezivanja: https://nova.rs/vesti/politika/sta-je-milenijum-tim-sns-fabrika-za-izvlacenje-para/; označenih ugovora kod naručioca: 2; period: 2025-10-03 do 2025-10-03; najveći: 325501/2025/5 (2025-10-03, 633,850,000 RSD)",
+   "contracts": 2,
+   "valueRsd": 981750000,
+   "source": {
+    "kind": "integrity_watch",
+    "title": "Integrity Watch Srbija – pretraga: MILLENNIUM TEAM DOO BEOGRAD",
+    "url": "https://integritywatchserbia.org.rs/companies.php?l=sr",
+    "retrievedAt": "2026-10-30T13:47:26.488Z",
+    "official": false
+   }
+  },
+  {
+   "supplierName": "MILLENNIUM TEAM DOO BEOGRAD",
+   "supplierPib": "103079096",
+   "supplierMb": "17511068",
+   "contractingAuthority": "JAVNO KOMUNALNO PREDUZEĆE \"BEOGRADSKI VODOVOD I KANALIZACIJA\"",
+   "linkType": "povezanost sa političkim subjektom",
+   "detail": "Integrity Watch označava ponuđača kao kompaniju povezanu sa političkim subjektom; izvor povezivanja: https://nova.rs/vesti/politika/sta-je-milenijum-tim-sns-fabrika-za-izvlacenje-para/; označenih ugovora kod naručioca: 1; od toga u zajedničkoj ponudi: 1 (vrednost cele ponude 598,575,396 RSD, nije pripisana firmi); period: 2021-08-19 do 2021-08-19; najveći: 52094 (2021-08-19, 598,575,396 RSD)",
+   "contracts": 1,
+   "source": {
+    "kind": "integrity_watch",
+    "title": "Integrity Watch Srbija – pretraga: MILLENNIUM TEAM DOO BEOGRAD",
+    "url": "https://integritywatchserbia.org.rs/companies.php?l=sr",
+    "retrievedAt": "2026-10-30T13:47:26.488Z",
+    "official": false
+   }
+  },
+  {
+   "supplierName": "MILLENNIUM TEAM DOO BEOGRAD",
+   "supplierPib": "103079096",
+   "supplierMb": "17511068",
+   "contractingAuthority": "MINISTARSTVO ZA JAVNA ULAGANjA",
+   "linkType": "povezanost sa političkim subjektom",
+   "detail": "Integrity Watch označava ponuđača kao kompaniju povezanu sa političkim subjektom; izvor povezivanja: https://nova.rs/vesti/politika/sta-je-milenijum-tim-sns-fabrika-za-izvlacenje-para/; označenih ugovora kod naručioca: 1; od toga u zajedničkoj ponudi: 1 (vrednost cele ponude 548,773,584 RSD, nije pripisana firmi); period: 2025-09-30 do 2025-09-30; najveći: 404-02-14/5/205-01 (2025-09-30, 548,773,584 RSD)",
+   "contracts": 1,
+   "source": {
+    "kind": "integrity_watch",
+    "title": "Integrity Watch Srbija – pretraga: MILLENNIUM TEAM DOO BEOGRAD",
+    "url": "https://integritywatchserbia.org.rs/companies.php?l=sr",
+    "retrievedAt": "2026-10-30T13:47:26.488Z",
+    "official": false
+   }
+  },
+  {
+   "supplierName": "MILLENNIUM TEAM DOO BEOGRAD",
+   "supplierPib": "103079096",
+   "supplierMb": "17511068",
+   "contractingAuthority": "SPV NIŠAVA D.O.O. NIŠ",
+   "linkType": "povezanost sa političkim subjektom",
+   "detail": "Integrity Watch označava ponuđača kao kompaniju povezanu sa političkim subjektom; izvor povezivanja: https://nova.rs/vesti/politika/sta-je-milenijum-tim-sns-fabrika-za-izvlacenje-para/; označenih ugovora kod naručioca: 1; period: 2021-06-25 do 2021-06-25; najveći: ISPV 663/21 (2021-06-25, 175,999,702 RSD)",
+   "contracts": 1,
+   "valueRsd": 175999702.32,
+   "source": {
+    "kind": "integrity_watch",
+    "title": "Integrity Watch Srbija – pretraga: MILLENNIUM TEAM DOO BEOGRAD",
+    "url": "https://integritywatchserbia.org.rs/companies.php?l=sr",
+    "retrievedAt": "2026-10-30T13:47:26.488Z",
+    "official": false
+   }
+  },
+  {
+   "supplierName": "MILLENNIUM TEAM DOO BEOGRAD",
+   "supplierPib": "103079096",
+   "supplierMb": "17511068",
+   "contractingAuthority": "DIREKCIJA ZA GRAĐEVINSKO ZEMLJIŠTE I IZGRADNJU BEOGRADA JP BEOGRAD (VRAČAR)",
+   "linkType": "povezanost sa političkim subjektom",
+   "detail": "Integrity Watch označava ponuđača kao kompaniju povezanu sa političkim subjektom; izvor povezivanja: https://nova.rs/vesti/politika/sta-je-milenijum-tim-sns-fabrika-za-izvlacenje-para/; označenih ugovora kod naručioca: 1; od toga u zajedničkoj ponudi: 1 (vrednost cele ponude 130,318,682 RSD, nije pripisana firmi); period: 2021-01-21 do 2021-01-21; najveći: 3016/2-04 (2021-01-21, 130,318,682 RSD)",
+   "contracts": 1,
+   "source": {
+    "kind": "integrity_watch",
+    "title": "Integrity Watch Srbija – pretraga: MILLENNIUM TEAM DOO BEOGRAD",
+    "url": "https://integritywatchserbia.org.rs/companies.php?l=sr",
+    "retrievedAt": "2026-10-30T13:47:26.488Z",
+    "official": false
+   }
+  },
+  {
+   "supplierName": "MILLENNIUM TEAM DOO BEOGRAD",
+   "supplierPib": "103079096",
+   "supplierMb": "17511068",
+   "contractingAuthority": "REPUBLIČKI ZAVOD ZA ZAŠTITU SPOMENIKA KULTURE",
+   "linkType": "povezanost sa političkim subjektom",
+   "detail": "Integrity Watch označava ponuđača kao kompaniju povezanu sa političkim subjektom; izvor povezivanja: https://nova.rs/vesti/politika/sta-je-milenijum-tim-sns-fabrika-za-izvlacenje-para/; označenih ugovora kod naručioca: 1; od toga u zajedničkoj ponudi: 1 (vrednost cele ponude 117,952,244 RSD, nije pripisana firmi); period: 2022-11-16 do 2022-11-16; najveći: 30-35/2022-4 (2022-11-16, 117,952,244 RSD)",
+   "contracts": 1,
+   "source": {
+    "kind": "integrity_watch",
+    "title": "Integrity Watch Srbija – pretraga: MILLENNIUM TEAM DOO BEOGRAD",
+    "url": "https://integritywatchserbia.org.rs/companies.php?l=sr",
+    "retrievedAt": "2026-10-30T13:47:26.488Z",
+    "official": false
+   }
+  },
+  {
+   "supplierName": "MILLENNIUM TEAM DOO BEOGRAD",
+   "supplierPib": "103079096",
+   "supplierMb": "17511068",
+   "contractingAuthority": "Ministarstvo prosvete",
+   "linkType": "povezanost sa političkim subjektom",
+   "detail": "Integrity Watch označava ponuđača kao kompaniju povezanu sa političkim subjektom; izvor povezivanja: https://nova.rs/vesti/politika/sta-je-milenijum-tim-sns-fabrika-za-izvlacenje-para/; označenih ugovora kod naručioca: 1; od toga u zajedničkoj ponudi: 1 (vrednost cele ponude 68,254,525 RSD, nije pripisana firmi); period: 2021-11-25 do 2021-11-25; najveći: 404-02-109/2021-17 (2021-11-25, 68,254,525 RSD)",
+   "contracts": 1,
+   "source": {
+    "kind": "integrity_watch",
+    "title": "Integrity Watch Srbija – pretraga: MILLENNIUM TEAM DOO BEOGRAD",
+    "url": "https://integritywatchserbia.org.rs/companies.php?l=sr",
+    "retrievedAt": "2026-10-30T13:47:26.488Z",
+    "official": false
+   }
+  },
+  {
+   "supplierName": "MILLENNIUM TEAM DOO BEOGRAD",
+   "supplierPib": "103079096",
+   "supplierMb": "17511068",
+   "contractingAuthority": "MINISTARSTVO GRAĐEVINARSTVA, SAOBRAĆAJA I INFRASTRUKTURE",
+   "linkType": "povezanost sa političkim subjektom",
+   "detail": "Integrity Watch označava ponuđača kao kompaniju povezanu sa političkim subjektom; izvor povezivanja: https://nova.rs/vesti/politika/sta-je-milenijum-tim-sns-fabrika-za-izvlacenje-para/; označenih ugovora kod naručioca: 2; od toga u zajedničkoj ponudi: 2 (vrednost cele ponude 47,800,000 RSD, nije pripisana firmi); period: 2022-04-05 do 2022-09-22; najveći: 404-02-146/4/2022-02 (2022-09-22, 23,900,000 RSD)",
+   "contracts": 2,
+   "source": {
+    "kind": "integrity_watch",
+    "title": "Integrity Watch Srbija – pretraga: MILLENNIUM TEAM DOO BEOGRAD",
+    "url": "https://integritywatchserbia.org.rs/companies.php?l=sr",
+    "retrievedAt": "2026-10-30T13:47:26.488Z",
+    "official": false
+   }
+  },
+  {
+   "supplierName": "MILLENNIUM TEAM DOO BEOGRAD",
+   "supplierPib": "103079096",
+   "supplierMb": "17511068",
+   "contractingAuthority": "JAVNO PREDUZEĆE ZA GAZDOVANJE ŠUMAMA \"SRBIJAŠUME\" PO",
+   "linkType": "povezanost sa političkim subjektom",
+   "detail": "Integrity Watch označava ponuđača kao kompaniju povezanu sa političkim subjektom; izvor povezivanja: https://nova.rs/vesti/politika/sta-je-milenijum-tim-sns-fabrika-za-izvlacenje-para/; označenih ugovora kod naručioca: 3; od toga u zajedničkoj ponudi: 3 (vrednost cele ponude 41,821,451 RSD, nije pripisana firmi); period: 2021-06-18 do 2022-06-21; najveći: 01/4319 (2022-06-21, 18,297,356 RSD)",
+   "contracts": 3,
+   "source": {
+    "kind": "integrity_watch",
+    "title": "Integrity Watch Srbija – pretraga: MILLENNIUM TEAM DOO BEOGRAD",
+    "url": "https://integritywatchserbia.org.rs/companies.php?l=sr",
+    "retrievedAt": "2026-10-30T13:47:26.488Z",
+    "official": false
+   }
+  },
+  {
+   "supplierName": "MILLENNIUM TEAM DOO BEOGRAD",
+   "supplierPib": "103079096",
+   "supplierMb": "17511068",
+   "contractingAuthority": "Gradska uprava za opšte i zajedničke poslove i imovinu",
+   "linkType": "povezanost sa političkim subjektom",
+   "detail": "Integrity Watch označava ponuđača kao kompaniju povezanu sa političkim subjektom; izvor povezivanja: https://nova.rs/vesti/politika/sta-je-milenijum-tim-sns-fabrika-za-izvlacenje-para/; označenih ugovora kod naručioca: 1; period: 2022-07-13 do 2022-07-13; najveći: 404-49/2022-V-1 (2022-07-13, 35,246,020 RSD)",
+   "contracts": 1,
+   "valueRsd": 35246020,
+   "source": {
+    "kind": "integrity_watch",
+    "title": "Integrity Watch Srbija – pretraga: MILLENNIUM TEAM DOO BEOGRAD",
+    "url": "https://integritywatchserbia.org.rs/companies.php?l=sr",
+    "retrievedAt": "2026-10-30T13:47:26.488Z",
+    "official": false
+   }
+  },
+  {
+   "supplierName": "MILLENNIUM TEAM DOO BEOGRAD",
+   "supplierPib": "103079096",
+   "supplierMb": "17511068",
+   "contractingAuthority": "Gradska uprava za lokalni ekonomski razvoj i investicije",
+   "linkType": "povezanost sa političkim subjektom",
+   "detail": "Integrity Watch označava ponuđača kao kompaniju povezanu sa političkim subjektom; izvor povezivanja: https://nova.rs/vesti/politika/sta-je-milenijum-tim-sns-fabrika-za-izvlacenje-para/; označenih ugovora kod naručioca: 1; period: 2025-05-27 do 2025-05-27; najveći: 1527/2025-10 (2025-05-27, 19,050,000 RSD)",
+   "contracts": 1,
+   "valueRsd": 19050000,
+   "source": {
+    "kind": "integrity_watch",
+    "title": "Integrity Watch Srbija – pretraga: MILLENNIUM TEAM DOO BEOGRAD",
+    "url": "https://integritywatchserbia.org.rs/companies.php?l=sr",
+    "retrievedAt": "2026-10-30T13:47:26.488Z",
+    "official": false
+   }
+  },
+  {
+   "supplierName": "MILLENNIUM TEAM DOO BEOGRAD",
+   "supplierPib": "103079096",
+   "supplierMb": "17511068",
+   "contractingAuthority": "BEOGRADSKO DRAMSKO POZORIŠTE",
+   "linkType": "povezanost sa političkim subjektom",
+   "detail": "Integrity Watch označava ponuđača kao kompaniju povezanu sa političkim subjektom; izvor povezivanja: https://nova.rs/vesti/politika/sta-je-milenijum-tim-sns-fabrika-za-izvlacenje-para/; označenih ugovora kod naručioca: 1; period: 2021-12-30 do 2021-12-30; najveći: 4012-538/21 (2021-12-30, 10,490,833 RSD)",
+   "contracts": 1,
+   "valueRsd": 10490833.33,
+   "source": {
+    "kind": "integrity_watch",
+    "title": "Integrity Watch Srbija – pretraga: MILLENNIUM TEAM DOO BEOGRAD",
+    "url": "https://integritywatchserbia.org.rs/companies.php?l=sr",
+    "retrievedAt": "2026-10-30T13:47:26.488Z",
+    "official": false
+   }
+  },
+  {
+   "supplierName": "MILLENNIUM TEAM DOO BEOGRAD",
+   "supplierPib": "103079096",
+   "supplierMb": "17511068",
+   "contractingAuthority": "KANCELARIJA ZA INFORMACIONE TEHNOLOGIJE I ELEKTRONSKU UPRAVU",
+   "linkType": "povezanost sa političkim subjektom",
+   "detail": "Integrity Watch označava ponuđača kao kompaniju povezanu sa političkim subjektom; izvor povezivanja: https://nova.rs/vesti/politika/sta-je-milenijum-tim-sns-fabrika-za-izvlacenje-para/; označenih ugovora kod naručioca: 1; period: 2021-10-08 do 2021-10-08; najveći: 404-02-87/2021-01/7 (2021-10-08, 9,980,058 RSD)",
+   "contracts": 1,
+   "valueRsd": 9980058,
+   "source": {
+    "kind": "integrity_watch",
+    "title": "Integrity Watch Srbija – pretraga: MILLENNIUM TEAM DOO BEOGRAD",
+    "url": "https://integritywatchserbia.org.rs/companies.php?l=sr",
+    "retrievedAt": "2026-10-30T13:47:26.488Z",
+    "official": false
+   }
+  }
+ ]
+}

@@ -1,0 +1,103 @@
+{
+ "source": "acas",
+ "key": "institution-posta",
+ "retrievedAt": "2026-10-30T20:52:54.792Z",
+ "data": [
+  {
+   "id": "4222",
+   "name": "Saobraćajna policijska ispostava Beograd",
+   "nameCyr": "Саобраћајна полицијска испостава Београд",
+   "source": {
+    "kind": "acas",
+    "title": "ACAS registar – pretraga: Saobraćajna policijska ispostava Beograd",
+    "url": "https://publicacas.acas.rs/#/acas/funkcioner",
+    "retrievedAt": "2026-10-30T20:52:54.792Z",
+    "official": true
+   }
+  },
+  {
+   "id": "4223",
+   "name": "Saobraćajna policijska ispostava Novi Sad",
+   "nameCyr": "Саобраћајна полицијска испостава Нови Сад",
+   "source": {
+    "kind": "acas",
+    "title": "ACAS registar – pretraga: Saobraćajna policijska ispostava Novi Sad",
+    "url": "https://publicacas.acas.rs/#/acas/funkcioner",
+    "retrievedAt": "2026-10-30T20:52:54.792Z",
+    "official": true
+   }
+  },
+  {
+   "id": "4224",
+   "name": "Saobraćajna policijska ispostava Niš",
+   "nameCyr": "Саобраћајна полицијска испостава Ниш",
+   "source": {
+    "kind": "acas",
+    "title": "ACAS registar – pretraga: Saobraćajna policijska ispostava Niš",
+    "url": "https://publicacas.acas.rs/#/acas/funkcioner",
+    "retrievedAt": "2026-10-30T20:52:54.792Z",
+    "official": true
+   }
+  },
+  {
+   "id": "4225",
+   "name": "Saobraćajna policijska ispostava Subotica",
+   "nameCyr": "Саобраћајна полицијска испостава Суботица",
+   "source": {
+    "kind": "acas",
+    "title": "ACAS registar – pretraga: Saobraćajna policijska ispostava Subotica",
+    "url": "https://publicacas.acas.rs/#/acas/funkcioner",
+    "retrievedAt": "2026-10-30T20:52:54.792Z",
+    "official": true
+   }
+  },
+  {
+   "id": "4226",
+   "name": "Saobraćajna policijska ispostava Jagodina",
+   "nameCyr": "Саобраћајна полицијска испостава Јагодина",
+   "source": {
+    "kind": "acas",
+    "title": "ACAS registar – pretraga: Saobraćajna policijska ispostava Jagodina",
+    "url": "https://publicacas.acas.rs/#/acas/funkcioner",
+    "retrievedAt": "2026-10-30T20:52:54.792Z",
+    "official": true
+   }
+  },
+  {
+   "id": "4227",
+   "name": "Saobraćajna policijska ispostava Sremska Mitrovica",
+   "nameCyr": "Саобраћајна полицијска испостава Сремска Митровица",
+   "source": {
+    "kind": "acas",
+    "title": "ACAS registar – pretraga: Saobraćajna policijska ispostava Sremska Mitrovica",
+    "url": "https://publicacas.acas.rs/#/acas/funkcioner",
+    "retrievedAt": "2026-10-30T20:52:54.792Z",
+    "official": true
+   }
+  },
+  {
+   "id": "4228",
+   "name": "Saobraćajna policijska ispostava Vranje",
+   "nameCyr": "Саобраћајна полицијска испостава Врање",
+   "source": {
+    "kind": "acas",
+    "title": "ACAS registar – pretraga: Saobraćajna policijska ispostava Vranje",
+    "url": "https://publicacas.acas.rs/#/acas/funkcioner",
+    "retrievedAt": "2026-10-30T20:52:54.792Z",
+    "official": true
+   }
+  },
+  {
+   "id": "8756",
+   "name": "RFZO Filijala za Rasinski okrug Kruševac Ispostava Varvarin",
+   "nameCyr": "РФЗО Филијала за Расински округ Крушевац Испостава Варварин",
+   "source": {
+    "kind": "acas",
+    "title": "ACAS registar – pretraga: RFZO Filijala za Rasinski okrug Kruševac Ispostava Varvarin",
+    "url": "https://publicacas.acas.rs/#/acas/funkcioner",
+    "retrievedAt": "2026-10-30T20:52:54.792Z",
+    "official": true
+   }
+  }
+ ]
+}

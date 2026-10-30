@@ -323,7 +323,8 @@ async function resolveDynamic(query: string): Promise<ResolvedInstitution> {
 		const own = new Set([key(normalizeName(name)), key(normalizeName(searchName(name)))])
 		const aliasSet = new Map<string, string>()
 		for (const n of names) {
-			const nm = n && searchName(n).replace(/^(jp|jkp|ad|doo|j\.p\.)\s+/i, "").replace(/\s+(beograd|novi sad|niš|nis)$/i, "").replace(/^["„]|["“”]$/g, "").trim()
+			// the media name: no JP/JKP prefix, and no seat city unless the city is part of the name ("Dom zdravlja Novi Sad")
+			const nm = n ? mediaName(n) : ""
 			const k = nm ? key(normalizeName(nm)) : ""
 			// the same name in another spelling or legal form is not an alias ("J.P.Srbijagas", "Javno komunalno preduzece ...")
 			const LEGAL_FORM = new Set(["jkp", "jp", "ad", "doo", "javno", "komunalno", "preduzece", "drustvo", "akcionarsko", "d", "o"])

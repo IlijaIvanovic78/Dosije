@@ -1,0 +1,226 @@
+{
+ "source": "acas",
+ "key": "assets-5013109",
+ "retrievedAt": "2026-10-30T20:47:49.760Z",
+ "data": [
+  {
+   "personId": "5013109",
+   "fullName": "Vesna Turkulov",
+   "reportDate": "2026-01-21",
+   "reason": "promene u toku vršenja funkcije",
+   "source": {
+    "kind": "acas",
+    "title": "ACAS – Izveštaj o imovini i prihodima funkcionera (21.01.2026.)",
+    "url": "https://publicacas.acas.rs/#/acas/funkcionerIzvestajDetails/5036718",
+    "retrievedAt": "2026-10-30T20:47:43.226Z",
+    "publishedAt": "2026-01-21",
+    "official": true
+   },
+   "summary": [
+    "Prihod od javne funkcije (Odbornik, Skupština grada Novog Sada): 747.009 RSD godišnje, od 07.08.2024.",
+    "Prihod od javne funkcije (Direktor, Univerzitetski klinički centar Vojvodine): 325.880,36 RSD mesečno, od 09.12.2024.",
+    "Prihod od javne funkcije (Direktor, Univerzitetski klinički centar Vojvodine): 9.131,9 RSD godišnje, od 09.12.2024.",
+    "Prihod od javne funkcije (Medicinski fakultet u Novom Sadu): 1.959.497,07 RSD godišnje, od 05.09.2024.",
+    "Prihod od javne funkcije (Ministarstvo zdravlja): 25.000 RSD godišnje, od 01.01.2025.",
+    "Nepokretna imovina: 2 stavke (stan, ostalo)",
+    "Objekti: stan 126 m2; ostalo 11,56 m2",
+    "Pokretna imovina (registrovana): 1 (automobil Hyundai Tucson 2016)"
+   ],
+   "incomes": [
+    {
+     "source": "Odbornik, Skupština grada Novog Sada",
+     "amountRsd": 747009,
+     "period": "godišnje, od 07.08.2024."
+    },
+    {
+     "source": "Direktor, Univerzitetski klinički centar Vojvodine",
+     "amountRsd": 325880.36,
+     "period": "mesečno, od 09.12.2024."
+    },
+    {
+     "source": "Direktor, Univerzitetski klinički centar Vojvodine",
+     "amountRsd": 9131.9,
+     "period": "godišnje, od 09.12.2024."
+    },
+    {
+     "source": "Medicinski fakultet u Novom Sadu",
+     "amountRsd": 1959497.07,
+     "period": "godišnje, od 05.09.2024."
+    },
+    {
+     "source": "Ministarstvo zdravlja",
+     "amountRsd": 25000,
+     "period": "godišnje, od 01.01.2025."
+    }
+   ]
+  },
+  {
+   "personId": "5013109",
+   "fullName": "Vesna Turkulov",
+   "reportDate": "2024-12-15",
+   "reason": "stupanje na javnu funkciju",
+   "source": {
+    "kind": "acas",
+    "title": "ACAS – Izveštaj o imovini i prihodima funkcionera (15.12.2024.)",
+    "url": "https://publicacas.acas.rs/#/acas/funkcionerIzvestajDetails/5029879",
+    "retrievedAt": "2026-10-30T20:47:44.084Z",
+    "publishedAt": "2024-12-15",
+    "official": true
+   },
+   "summary": [
+    "Prihod od javne funkcije (Odbornik, Skupština grada Novog Sada): 20.931,14 RSD jednokratno, od 07.08.2024.",
+    "Prihod od javne funkcije (Odbornik, Skupština grada Novog Sada): 28.140,75 RSD mesečno, od 07.08.2024.",
+    "Prihod od javne funkcije (Odbornik, Skupština grada Novog Sada): 5.116,5 RSD jednokratno, od 07.08.2024.",
+    "Prihod od javne funkcije (Odbornik, Skupština grada Novog Sada): 25.582,5 RSD jednokratno, od 07.08.2024.",
+    "Prihod od javne funkcije (Odbornik, Skupština grada Novog Sada): 5.116,5 RSD jednokratno, od 07.08.2024.",
+    "Prihod od javne funkcije (Odbornik, Skupština grada Novog Sada): 2.558,25 RSD jednokratno, od 07.08.2024.",
+    "Prihod od javne funkcije (Odbornik, Skupština grada Novog Sada): 2.558,25 RSD jednokratno, od 07.08.2024.",
+    "Prihod od javne funkcije (Odbornik, Skupština grada Novog Sada): 25.582,5 RSD jednokratno, od 07.08.2024.",
+    "Prihod od javne funkcije (v.d. direktora, Univerzitetski klinički centar Vojvodine): 259.000 RSD mesečno, 29.08.2024. - 09.12.2024.",
+    "Prihod od javne funkcije (v.d. direktora, Univerzitetski klinički centar Vojvodine): 19.528,64 RSD jednokratno, 29.08.2024. - 09.12.2024.",
+    "Prihod od javne funkcije (Direktor, Univerzitetski klinički centar Vojvodine): 259.000 RSD mesečno, od 09.12.2024.",
+    "Prihod od javne funkcije (Univerzitetski klinički centar Vojvodine): 189.000 RSD mesečno, 09.12.2021. - 29.08.2024.",
+    "Prihod od javne funkcije (Medicinski fakultet u Novom Sadu): 110.000 RSD mesečno, 04.09.2018. - 05.09.2024.",
+    "Prihod od javne funkcije (Medicinski fakultet u Novom Sadu): 110.000 RSD mesečno, od 05.09.2024.",
+    "Prihod od javne funkcije (Medicinski fakultet u Novom Sadu): 23.000 RSD jednokratno, od 05.09.2024.",
+    "Prihod od javne funkcije (Agencija za kvalifikacije): 25.000 RSD jednokratno, od 29.11.2024.",
+    "Prihod od javne funkcije (Ministarstvo zdravlja): 5.000 RSD jednokratno, od 03.10.2024.",
+    "Prihod od javne funkcije (Kabinet predsednika Vlade Republike Srbije): 150.000 RSD mesečno, od 03.05.2024.",
+    "Nepokretna imovina: 2 stavke (stan, ostalo)",
+    "Objekti: stan 126 m2; ostalo 11,56 m2",
+    "Pokretna imovina (registrovana): 1 (automobil Hyundai Tucson 2016)"
+   ],
+   "incomes": [
+    {
+     "source": "Odbornik, Skupština grada Novog Sada",
+     "amountRsd": 20931.14,
+     "period": "jednokratno, od 07.08.2024."
+    },
+    {
+     "source": "Odbornik, Skupština grada Novog Sada",
+     "amountRsd": 28140.75,
+     "period": "mesečno, od 07.08.2024."
+    },
+    {
+     "source": "Odbornik, Skupština grada Novog Sada",
+     "amountRsd": 5116.5,
+     "period": "jednokratno, od 07.08.2024."
+    },
+    {
+     "source": "Odbornik, Skupština grada Novog Sada",
+     "amountRsd": 25582.5,
+     "period": "jednokratno, od 07.08.2024."
+    },
+    {
+     "source": "Odbornik, Skupština grada Novog Sada",
+     "amountRsd": 5116.5,
+     "period": "jednokratno, od 07.08.2024."
+    },
+    {
+     "source": "Odbornik, Skupština grada Novog Sada",
+     "amountRsd": 2558.25,
+     "period": "jednokratno, od 07.08.2024."
+    },
+    {
+     "source": "Odbornik, Skupština grada Novog Sada",
+     "amountRsd": 2558.25,
+     "period": "jednokratno, od 07.08.2024."
+    },
+    {
+     "source": "Odbornik, Skupština grada Novog Sada",
+     "amountRsd": 25582.5,
+     "period": "jednokratno, od 07.08.2024."
+    },
+    {
+     "source": "v.d. direktora, Univerzitetski klinički centar Vojvodine",
+     "amountRsd": 259000,
+     "period": "mesečno, 29.08.2024. - 09.12.2024."
+    },
+    {
+     "source": "v.d. direktora, Univerzitetski klinički centar Vojvodine",
+     "amountRsd": 19528.64,
+     "period": "jednokratno, 29.08.2024. - 09.12.2024."
+    },
+    {
+     "source": "Direktor, Univerzitetski klinički centar Vojvodine",
+     "amountRsd": 259000,
+     "period": "mesečno, od 09.12.2024."
+    },
+    {
+     "source": "Univerzitetski klinički centar Vojvodine",
+     "amountRsd": 189000,
+     "period": "mesečno, 09.12.2021. - 29.08.2024."
+    },
+    {
+     "source": "Medicinski fakultet u Novom Sadu",
+     "amountRsd": 110000,
+     "period": "mesečno, 04.09.2018. - 05.09.2024."
+    },
+    {
+     "source": "Medicinski fakultet u Novom Sadu",
+     "amountRsd": 110000,
+     "period": "mesečno, od 05.09.2024."
+    },
+    {
+     "source": "Medicinski fakultet u Novom Sadu",
+     "amountRsd": 23000,
+     "period": "jednokratno, od 05.09.2024."
+    },
+    {
+     "source": "Agencija za kvalifikacije",
+     "amountRsd": 25000,
+     "period": "jednokratno, od 29.11.2024."
+    },
+    {
+     "source": "Ministarstvo zdravlja",
+     "amountRsd": 5000,
+     "period": "jednokratno, od 03.10.2024."
+    },
+    {
+     "source": "Kabinet predsednika Vlade Republike Srbije",
+     "amountRsd": 150000,
+     "period": "mesečno, od 03.05.2024."
+    }
+   ]
+  },
+  {
+   "personId": "5013109",
+   "fullName": "Vesna Turkulov",
+   "reportDate": "2024-09-02",
+   "reason": "prestanak javne funkcije",
+   "source": {
+    "kind": "acas",
+    "title": "ACAS – Izveštaj o imovini i prihodima funkcionera (02.09.2024.)",
+    "url": "https://publicacas.acas.rs/#/acas/funkcionerIzvestajDetails/5028433",
+    "retrievedAt": "2026-10-30T20:47:48.074Z",
+    "publishedAt": "2024-09-02",
+    "official": true
+   },
+   "summary": [
+    "Prihod od javne funkcije (Predsednik upravnog odbora, Klinički centar Vojvodine): 15.000 RSD mesečno, 16.12.2021. - 29.08.2024.",
+    "Prihod od javne funkcije (Državni sekretar, Ministarstvo zdravlja): 0 RSD mesečno, 18.05.2023. - 02.05.2024.",
+    "Prihod od javne funkcije (Kabinet predsednika Vlade Republike Srbije): 150.000 RSD mesečno, od 03.05.2024.",
+    "Nepokretna imovina: 2 stavke (stan, ostalo)",
+    "Objekti: stan 126 m2; ostalo 11,56 m2",
+    "Pokretna imovina (registrovana): 1 (automobil Hyundai Tucson 2016)"
+   ],
+   "incomes": [
+    {
+     "source": "Predsednik upravnog odbora, Klinički centar Vojvodine",
+     "amountRsd": 15000,
+     "period": "mesečno, 16.12.2021. - 29.08.2024."
+    },
+    {
+     "source": "Državni sekretar, Ministarstvo zdravlja",
+     "amountRsd": 0,
+     "period": "mesečno, 18.05.2023. - 02.05.2024."
+    },
+    {
+     "source": "Kabinet predsednika Vlade Republike Srbije",
+     "amountRsd": 150000,
+     "period": "mesečno, od 03.05.2024."
+    }
+   ]
+  }
+ ]
+}

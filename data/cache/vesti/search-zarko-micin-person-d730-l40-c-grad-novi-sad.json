@@ -1,0 +1,84 @@
+{
+ "source": "vesti",
+ "key": "search-zarko-micin-person-d730-l40-c-grad-novi-sad",
+ "retrievedAt": "2026-10-30T20:49:26.025Z",
+ "meta": {
+  "query": "Žarko Mićin",
+  "kind": "person",
+  "days": 730,
+  "limit": 40,
+  "aliases": [],
+  "context": [
+   "Grad Novi Sad"
+  ],
+  "exclude": []
+ },
+ "data": [
+  {
+   "id": "f476dd1b14c8",
+   "title": "Žarko Mićin: Grad Novi Sad nastaviće da pruža podršku penzionerima",
+   "url": "https://www.tanjug.rs/ekonomija/srbija/292766/zarko-micin-grad-novi-sad-nastavice-da-pruza-podrsku-penzionerima/vest",
+   "outlet": "tanjug.rs",
+   "publishedAt": "2026-10-26T14:29:00.000Z",
+   "snippet": "NOVI SAD - Udruženje penzionera grada Novog Sada obeležilo je danas 80 godina postojanja i rada, a gradonačelnik Novog Sada Žarko Mićin poručio je na svečanosti u prostorijama Udruženja u Poštanskoj ulici da će Grad nastaviti da pruža podršku najstarijim sugrađanima i unapređuje ...",
+   "matched": [
+    "Žarko Mićin"
+   ],
+   "provider": "brave",
+   "verified": "naslov",
+   "score": 36,
+   "source": {
+    "kind": "vesti",
+    "title": "tanjug.rs: Žarko Mićin: Grad Novi Sad nastaviće da pruža podršku penzionerima",
+    "url": "https://www.tanjug.rs/ekonomija/srbija/292766/zarko-micin-grad-novi-sad-nastavice-da-pruza-podrsku-penzionerima/vest",
+    "retrievedAt": "2026-10-30T20:49:14.590Z",
+    "publishedAt": "2026-10-26T14:29:00.000Z",
+    "official": false
+   }
+  },
+  {
+   "id": "3a160c19c9c9",
+   "title": "\"Grad Novi Sad nastaviće da pruža podršku penzionerima!\" Žarko Mićin otkrio šta najstariji Novosađani mogu očekivati u narednom periodu! (VIDEO)",
+   "url": "https://news.google.com/rss/articles/CBMijAFBVV95cUxNT0hnbEFhTU1LUEs1WEdacl9tY2hFMkxRRVdvWVRWX09Db3pWdXVNbDJHaHNVcFVOZmVjSm50Um9pc1IzSWxsd1g4bFpzX2hLZHpyRzdLemJqdFhYSjhpVDBKRmtMOXhYZEZQemNOTXl0M3Y2TF9lMmxxYUV2NnNWWXRYczNNYXhRZF9ZYQ?oc=5",
+   "outlet": "Republika | Portal Srpskog telegrafa",
+   "publishedAt": "2026-10-26T15:11:00.000Z",
+   "matched": [
+    "Žarko Mićin"
+   ],
+   "provider": "google-news-rss",
+   "verified": "naslov",
+   "score": 33,
+   "unresolved": true,
+   "source": {
+    "kind": "vesti",
+    "title": "Republika | Portal Srpskog telegrafa: \"Grad Novi Sad nastaviće da pruža podršku penzionerima!\" Žarko Mićin otkrio šta najstariji Novosađani mogu očekivati u narednom periodu! (VIDEO)",
+    "url": "https://news.google.com/rss/articles/CBMijAFBVV95cUxNT0hnbEFhTU1LUEs1WEdacl9tY2hFMkxRRVdvWVRWX09Db3pWdXVNbDJHaHNVcFVOZmVjSm50Um9pc1IzSWxsd1g4bFpzX2hLZHpyRzdLemJqdFhYSjhpVDBKRmtMOXhYZEZQemNOTXl0M3Y2TF9lMmxxYUV2NnNWWXRYczNNYXhRZF9ZYQ?oc=5",
+    "retrievedAt": "2026-10-30T20:49:14.590Z",
+    "publishedAt": "2026-10-26T15:11:00.000Z",
+    "official": false
+   }
+  },
+  {
+   "id": "23151916cdf1",
+   "title": "ЗИМСКА СЛУЖБА КРЕЋЕ СА ДЕЖУРСТВИМА: Нови Сад спреман за снег, ево шта поручују надлежни",
+   "url": "https://dnevnik.rs/novi-sad/zimska-sluzba-krece-sa-dezurstvima-novi-sad-spreman-za-sneg-evo-sta-porucuju-nadlezni-2026-10-30",
+   "outlet": "dnevnik.rs",
+   "publishedAt": "2026-10-30T09:52:47.000Z",
+   "snippet": "Први пут је присуствовао градоначелник Жарко Мићин, дао нека своја запажања и планове и предлоге за ову сезону.",
+   "matched": [
+    "Žarko Mićin"
+   ],
+   "provider": "brave",
+   "verified": "tekst",
+   "score": 10,
+   "source": {
+    "kind": "vesti",
+    "title": "dnevnik.rs: ЗИМСКА СЛУЖБА КРЕЋЕ СА ДЕЖУРСТВИМА: Нови Сад спреман за снег, ево шта поручују надлежни",
+    "url": "https://dnevnik.rs/novi-sad/zimska-sluzba-krece-sa-dezurstvima-novi-sad-spreman-za-sneg-evo-sta-porucuju-nadlezni-2026-10-30",
+    "retrievedAt": "2026-10-30T20:49:14.590Z",
+    "publishedAt": "2026-10-30T09:52:47.000Z",
+    "official": false
+   }
+  }
+ ]
+}

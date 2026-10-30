@@ -1,0 +1,219 @@
+{
+ "source": "acas",
+ "key": "assets-85",
+ "retrievedAt": "2026-10-30T21:04:43.740Z",
+ "data": [
+  {
+   "personId": "85",
+   "fullName": "Dušan Bajatović",
+   "reportDate": "2026-05-12",
+   "reason": "promene u toku vršenja funkcije",
+   "source": {
+    "kind": "acas",
+    "title": "ACAS – Izveštaj o imovini i prihodima funkcionera (12.05.2026.)",
+    "url": "https://publicacas.acas.rs/#/acas/funkcionerIzvestajDetails/5038944",
+    "retrievedAt": "2026-10-30T21:04:37.601Z",
+    "publishedAt": "2026-05-12",
+    "official": true
+   },
+   "summary": [
+    "Prihod od javne funkcije (Generalni direktor, JP Srbijagas Novi Sad): 258.252,78 RSD mesečno, od 23.10.2008.",
+    "Prihod od javne funkcije (AD Jugorosgaz): 1.465.105 RSD mesečno, od 18.03.2009.",
+    "Prihod od javne funkcije (Podzemno skladište gasa Banatski Dvor): 586.065,13 RSD mesečno, od 30.01.2015.",
+    "Prihod od javne funkcije (South Stream Serbia a.g.): 0 RSD mesečno, od 01.02.2012.",
+    "Prihod od javne funkcije (SOGAZ a.d.o. Novi Sad): 0 RSD godišnje, od 22.06.2012.",
+    "Prihod od javne funkcije (GASTRANS d.o.o. Novi Sad): 1.702.219,61 RSD mesečno, od 26.01.2018.",
+    "Prihod od javne funkcije (Narodni poslanik, Narodna skupština Republike Srbije): 49.774,32 RSD mesečno, od 03.08.2020.",
+    "Nepokretna imovina: 100 stavki (njiva ×4, voćnjak ×2, vikendica ×2, ostalo ×92)",
+    "Objekti: vikendica 23a i 40m2; vikendica 25m2; ostalo 11a i 45m2; ostalo 25a i 40m2; ostalo 63a i 71m2; ostalo 70a i 37m2; …(+88)",
+    "Pokretna imovina (registrovana): 10 (automobil Volkswagen Tuareg W10 2006; ostalo RENGER S19VX 2002; ostalo STEMA STLP 2000 02-15.2 2018; kamion TAM 110-bv 1980; automobil Audi S8 PLUS 2017; traktor JOHN DEERE tip 6630 2012; …(+4))"
+   ],
+   "incomes": [
+    {
+     "source": "Generalni direktor, JP Srbijagas Novi Sad",
+     "amountRsd": 258252.78,
+     "period": "mesečno, od 23.10.2008."
+    },
+    {
+     "source": "AD Jugorosgaz",
+     "amountRsd": 1465105,
+     "period": "mesečno, od 18.03.2009."
+    },
+    {
+     "source": "Podzemno skladište gasa Banatski Dvor",
+     "amountRsd": 586065.13,
+     "period": "mesečno, od 30.01.2015."
+    },
+    {
+     "source": "South Stream Serbia a.g.",
+     "amountRsd": 0,
+     "period": "mesečno, od 01.02.2012."
+    },
+    {
+     "source": "SOGAZ a.d.o. Novi Sad",
+     "amountRsd": 0,
+     "period": "godišnje, od 22.06.2012."
+    },
+    {
+     "source": "GASTRANS d.o.o. Novi Sad",
+     "amountRsd": 1702219.61,
+     "period": "mesečno, od 26.01.2018."
+    },
+    {
+     "source": "Narodni poslanik, Narodna skupština Republike Srbije",
+     "amountRsd": 49774.32,
+     "period": "mesečno, od 03.08.2020."
+    }
+   ]
+  },
+  {
+   "personId": "85",
+   "fullName": "Dušan Bajatović",
+   "reportDate": "2025-06-24",
+   "reason": "promene u toku vršenja funkcije",
+   "source": {
+    "kind": "acas",
+    "title": "ACAS – Izveštaj o imovini i prihodima funkcionera (24.06.2025.)",
+    "url": "https://publicacas.acas.rs/#/acas/funkcionerIzvestajDetails/5033124",
+    "retrievedAt": "2026-10-30T21:04:39.148Z",
+    "publishedAt": "2025-06-24",
+    "official": true
+   },
+   "summary": [
+    "Prihod od javne funkcije (Generalni direktor, JP Srbijagas Novi Sad): 239.503 RSD mesečno, od 23.10.2008.",
+    "Prihod od javne funkcije (AD Jugorosgaz): 1.463.483,96 RSD mesečno, od 18.03.2009.",
+    "Prihod od javne funkcije (Podzemno skladište gasa Banatski Dvor): 585.074,5 RSD mesečno, od 30.01.2015.",
+    "Prihod od javne funkcije (South Stream Serbia a.g.): 0 RSD mesečno, od 01.02.2012.",
+    "Prihod od javne funkcije (SOGAZ a.d.o. Novi Sad): 0 RSD godišnje, od 22.06.2012.",
+    "Prihod od javne funkcije (GASTRANS d.o.o. Novi Sad): 1.702.219,61 RSD mesečno, od 26.01.2018.",
+    "Prihod od javne funkcije (Narodni poslanik, Narodna skupština Republike Srbije): 49.774,32 RSD mesečno, od 03.08.2020.",
+    "Nepokretna imovina: 100 stavki (njiva ×4, voćnjak ×2, vikendica ×2, ostalo ×92)",
+    "Objekti: vikendica 23a i 40m2; vikendica 25m2; ostalo 11a i 45m2; ostalo 25a i 40m2; ostalo 63a i 71m2; ostalo 70a i 37m2; …(+88)",
+    "Pokretna imovina (registrovana): 10 (automobil Volkswagen Tuareg W10 2006; ostalo RENGER S19VX 2002; ostalo STEMA STLP 2000 02-15.2 2018; kamion TAM 110-bv 1980; automobil Audi S8 PLUS 2017; traktor JOHN DEERE tip 6630 2012; …(+4))"
+   ],
+   "incomes": [
+    {
+     "source": "Generalni direktor, JP Srbijagas Novi Sad",
+     "amountRsd": 239503,
+     "period": "mesečno, od 23.10.2008."
+    },
+    {
+     "source": "AD Jugorosgaz",
+     "amountRsd": 1463483.96,
+     "period": "mesečno, od 18.03.2009."
+    },
+    {
+     "source": "Podzemno skladište gasa Banatski Dvor",
+     "amountRsd": 585074.5,
+     "period": "mesečno, od 30.01.2015."
+    },
+    {
+     "source": "South Stream Serbia a.g.",
+     "amountRsd": 0,
+     "period": "mesečno, od 01.02.2012."
+    },
+    {
+     "source": "SOGAZ a.d.o. Novi Sad",
+     "amountRsd": 0,
+     "period": "godišnje, od 22.06.2012."
+    },
+    {
+     "source": "GASTRANS d.o.o. Novi Sad",
+     "amountRsd": 1702219.61,
+     "period": "mesečno, od 26.01.2018."
+    },
+    {
+     "source": "Narodni poslanik, Narodna skupština Republike Srbije",
+     "amountRsd": 49774.32,
+     "period": "mesečno, od 03.08.2020."
+    }
+   ]
+  },
+  {
+   "personId": "85",
+   "fullName": "Dušan Bajatović",
+   "reportDate": "2025-05-12",
+   "reason": "stupanje na javnu funkciju",
+   "source": {
+    "kind": "acas",
+    "title": "ACAS – Izveštaj o imovini i prihodima funkcionera (12.05.2025.)",
+    "url": "https://publicacas.acas.rs/#/acas/funkcionerIzvestajDetails/5033122",
+    "retrievedAt": "2026-10-30T21:04:42.041Z",
+    "publishedAt": "2025-05-12",
+    "official": true
+   },
+   "summary": [
+    "Prihod od javne funkcije (Generalni direktor, JP Srbijagas Novi Sad): 239.503 RSD mesečno, od 23.10.2008.",
+    "Prihod od javne funkcije (AD Jugorosgaz): 1.463.483,96 RSD mesečno, od 18.03.2009.",
+    "Prihod od javne funkcije (Podzemno skladište gasa Banatski Dvor): 585.074,5 RSD mesečno, od 30.01.2015.",
+    "Prihod od javne funkcije (South Stream Serbia a.g.): 0 RSD mesečno, od 01.02.2012.",
+    "Prihod od javne funkcije (SOGAZ a.d.o. Novi Sad): 0 RSD godišnje, od 22.06.2012.",
+    "Prihod od javne funkcije (GASTRANS d.o.o. Novi Sad): 1.702.219,61 RSD mesečno, od 26.01.2018.",
+    "Prihod od javne funkcije (Narodni poslanik, Narodna skupština Republike Srbije): 49.774,32 RSD mesečno, od 03.08.2020.",
+    "Prihod od javne funkcije (Poslanik, Skupština AP Vojvodine): 64.825 RSD mesečno, 09.02.2024. - 24.04.2024.",
+    "Prihod od javne funkcije (AD Jugorosgaz): 1.462.963,75 RSD jednokratno, 01.07.2024. - 01.07.2024.",
+    "Prihod od javne funkcije (South Stream Serbia a.g.): 60.000 EUR jednokratno, 03.01.2024. - 31.12.2024.",
+    "Prihod od javne funkcije (Podzemno skladište gasa Banatski Dvor): 7.021.452 RSD jednokratno, 15.08.2024. - 15.08.2024.",
+    "Nepokretna imovina: 100 stavki (njiva ×4, voćnjak ×2, vikendica ×2, ostalo ×92)",
+    "Objekti: vikendica 23a i 40m2; vikendica 25m2; ostalo 11a i 45m2; ostalo 25a i 40m2; ostalo 63a i 71m2; ostalo 70a i 37m2; …(+88)",
+    "Pokretna imovina (registrovana): 9 (automobil Volkswagen Tuareg W10 2006; ostalo RENGER S19VX 2002; ostalo STEMA STLP 2000 02-15.2 2018; kamion TAM 110-bv 1980; automobil Audi S8 PLUS 2017; traktor JOHN DEERE tip 6630 2012; …(+3))"
+   ],
+   "incomes": [
+    {
+     "source": "Generalni direktor, JP Srbijagas Novi Sad",
+     "amountRsd": 239503,
+     "period": "mesečno, od 23.10.2008."
+    },
+    {
+     "source": "AD Jugorosgaz",
+     "amountRsd": 1463483.96,
+     "period": "mesečno, od 18.03.2009."
+    },
+    {
+     "source": "Podzemno skladište gasa Banatski Dvor",
+     "amountRsd": 585074.5,
+     "period": "mesečno, od 30.01.2015."
+    },
+    {
+     "source": "South Stream Serbia a.g.",
+     "amountRsd": 0,
+     "period": "mesečno, od 01.02.2012."
+    },
+    {
+     "source": "SOGAZ a.d.o. Novi Sad",
+     "amountRsd": 0,
+     "period": "godišnje, od 22.06.2012."
+    },
+    {
+     "source": "GASTRANS d.o.o. Novi Sad",
+     "amountRsd": 1702219.61,
+     "period": "mesečno, od 26.01.2018."
+    },
+    {
+     "source": "Narodni poslanik, Narodna skupština Republike Srbije",
+     "amountRsd": 49774.32,
+     "period": "mesečno, od 03.08.2020."
+    },
+    {
+     "source": "Poslanik, Skupština AP Vojvodine",
+     "amountRsd": 64825,
+     "period": "mesečno, 09.02.2024. - 24.04.2024."
+    },
+    {
+     "source": "AD Jugorosgaz",
+     "amountRsd": 1462963.75,
+     "period": "jednokratno, 01.07.2024. - 01.07.2024."
+    },
+    {
+     "source": "South Stream Serbia a.g.",
+     "period": "jednokratno, 03.01.2024. - 31.12.2024."
+    },
+    {
+     "source": "Podzemno skladište gasa Banatski Dvor",
+     "amountRsd": 7021452,
+     "period": "jednokratno, 15.08.2024. - 15.08.2024."
+    }
+   ]
+  }
+ ]
+}

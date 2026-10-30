@@ -1,0 +1,109 @@
+{
+ "source": "acas",
+ "key": "assets-22576",
+ "retrievedAt": "2026-10-30T21:05:37.063Z",
+ "data": [
+  {
+   "personId": "22576",
+   "fullName": "Miodrag Jocić",
+   "reportDate": "2026-05-13",
+   "reason": "stupanje na javnu funkciju",
+   "source": {
+    "kind": "acas",
+    "title": "ACAS – Izveštaj o imovini i prihodima funkcionera (13.05.2026.)",
+    "url": "https://publicacas.acas.rs/#/acas/funkcionerIzvestajDetails/5039167",
+    "retrievedAt": "2026-10-30T21:05:33.523Z",
+    "publishedAt": "2026-05-13",
+    "official": true
+   },
+   "summary": [
+    "Prihod od javne funkcije (v.d. pomoćnika ministra, Ministarstvo saobraćaja, građevinarstva i infrastrukture): 232.830 RSD mesečno, od 16.04.2026.",
+    "Nepokretna imovina: 6 stavki (stan ×2, njiva ×2, ostalo, šuma)",
+    "Objekti: stan 66.4 m2; stan 86.1 m2; ostalo 11 ari 77 m2"
+   ],
+   "incomes": [
+    {
+     "source": "v.d. pomoćnika ministra, Ministarstvo saobraćaja, građevinarstva i infrastrukture",
+     "amountRsd": 232830,
+     "period": "mesečno, od 16.04.2026."
+    }
+   ]
+  },
+  {
+   "personId": "22576",
+   "fullName": "Miodrag Jocić",
+   "reportDate": "2015-03-23",
+   "reason": "prestanak javne funkcije",
+   "source": {
+    "kind": "acas",
+    "title": "ACAS – Izveštaj o imovini i prihodima funkcionera (23.03.2015.)",
+    "url": "https://publicacas.acas.rs/#/acas/funkcionerIzvestajDetails/27704",
+    "retrievedAt": "2026-10-30T21:05:35.314Z",
+    "publishedAt": "2015-03-23",
+    "official": true
+   },
+   "summary": [
+    "Prihod od javne funkcije (Pomoćnik ministra, Ministarstvo građevinarstva, saobraćaja i infrastrukture): 149.691 RSD, 15.05.2014. - 24.02.2015.",
+    "Prihod od javne funkcije (Član, Komisija za javno-privatno partnerstvo): 39.000 RSD, 01.02.2013. - 01.02.2015.",
+    "Prihod od javne funkcije (Kontrola letenja Srbije i Crne Gore SMATSA doo): 150.000 RSD, 03.02.2014. - 31.12.2014.",
+    "Nepokretna imovina: 7 stavki (ostalo ×7)",
+    "Objekti: ostalo 27.6 m2; ostalo 66.4 m2; ostalo 86.1 m2; ostalo 1 ha 33 ara; ostalo 11 ari i 77 m2; ostalo 36 ari 70 m2; …(+1)"
+   ],
+   "incomes": [
+    {
+     "source": "Pomoćnik ministra, Ministarstvo građevinarstva, saobraćaja i infrastrukture",
+     "amountRsd": 149691,
+     "period": "15.05.2014. - 24.02.2015."
+    },
+    {
+     "source": "Član, Komisija za javno-privatno partnerstvo",
+     "amountRsd": 39000,
+     "period": "01.02.2013. - 01.02.2015."
+    },
+    {
+     "source": "Kontrola letenja Srbije i Crne Gore SMATSA doo",
+     "amountRsd": 150000,
+     "period": "03.02.2014. - 31.12.2014."
+    }
+   ]
+  },
+  {
+   "personId": "22576",
+   "fullName": "Miodrag Jocić",
+   "reportDate": "2014-06-09",
+   "reason": "stupanje na javnu funkciju",
+   "source": {
+    "kind": "acas",
+    "title": "ACAS – Izveštaj o imovini i prihodima funkcionera (09.06.2014.)",
+    "url": "https://publicacas.acas.rs/#/acas/funkcionerIzvestajDetails/22613",
+    "retrievedAt": "2026-10-30T21:05:36.047Z",
+    "publishedAt": "2014-06-09",
+    "official": true
+   },
+   "summary": [
+    "Prihod od javne funkcije (Pomoćnik ministra, Ministarstvo građevinarstva, saobraćaja i infrastrukture): 149.691 RSD, od 15.05.2014.",
+    "Prihod od javne funkcije (Državni sekretar, Ministarstvo građevinarstva i urbanizma): 0 RSD, 04.08.2012. - 27.04.2014.",
+    "Prihod od javne funkcije (Član komisije, Komisija za javno-privatno partnerstvo): 39.000 RSD, od 01.02.2013.",
+    "Nepokretna imovina: 7 stavki (ostalo ×7)",
+    "Objekti: ostalo 27,6 m2; ostalo 66.4 m2; ostalo 86,1 m2; ostalo 1 ha 33 ara; ostalo 11 ari 77 m2; ostalo 36 ari 70 m2; …(+1)"
+   ],
+   "incomes": [
+    {
+     "source": "Pomoćnik ministra, Ministarstvo građevinarstva, saobraćaja i infrastrukture",
+     "amountRsd": 149691,
+     "period": "od 15.05.2014."
+    },
+    {
+     "source": "Državni sekretar, Ministarstvo građevinarstva i urbanizma",
+     "amountRsd": 0,
+     "period": "04.08.2012. - 27.04.2014."
+    },
+    {
+     "source": "Član komisije, Komisija za javno-privatno partnerstvo",
+     "amountRsd": 39000,
+     "period": "od 01.02.2013."
+    }
+   ]
+  }
+ ]
+}

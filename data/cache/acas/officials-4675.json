@@ -1,0 +1,64 @@
+{
+ "source": "acas",
+ "key": "officials-4675",
+ "retrievedAt": "2026-10-30T20:57:43.106Z",
+ "data": [
+  {
+   "id": "1009",
+   "fullName": "Ksenija Kavedžić",
+   "fullNameCyr": "Ксенија Кавеџић",
+   "position": "Član upravnog odbora",
+   "positionCyr": "Члан управног одбора",
+   "isActing": false,
+   "institutionName": "JP Aerodrom Nikola Tesla",
+   "from": "2007-11-29",
+   "appointedBy": "Agencija za borbu protiv korupcije",
+   "source": {
+    "kind": "acas",
+    "title": "ACAS registar – pretraga: JP Aerodrom Nikola Tesla",
+    "url": "https://publicacas.acas.rs/#/acas/funkcioner",
+    "retrievedAt": "2026-10-30T20:57:43.106Z",
+    "publishedAt": "2007-11-29",
+    "official": true
+   }
+  },
+  {
+   "id": "12870",
+   "fullName": "Kasim Zoranić",
+   "fullNameCyr": "Касим Зоранић",
+   "position": "Član nadzornog odbora",
+   "positionCyr": "Члан надзорног одбора",
+   "isActing": false,
+   "institutionName": "JP Aerodrom Nikola Tesla",
+   "from": "2009-02-26",
+   "appointedBy": "Agencija za borbu protiv korupcije",
+   "source": {
+    "kind": "acas",
+    "title": "ACAS registar – pretraga: JP Aerodrom Nikola Tesla",
+    "url": "https://publicacas.acas.rs/#/acas/funkcioner",
+    "retrievedAt": "2026-10-30T20:57:43.106Z",
+    "publishedAt": "2009-02-26",
+    "official": true
+   }
+  },
+  {
+   "id": "6063",
+   "fullName": "Branko Popović",
+   "fullNameCyr": "Бранко Поповић",
+   "position": "Predsednik nadzornog odbora",
+   "positionCyr": "Председник надзорног одбора",
+   "isActing": false,
+   "institutionName": "JP Aerodrom Nikola Tesla",
+   "from": "2009-02-26",
+   "appointedBy": "Agencija za borbu protiv korupcije",
+   "source": {
+    "kind": "acas",
+    "title": "ACAS registar – pretraga: JP Aerodrom Nikola Tesla",
+    "url": "https://publicacas.acas.rs/#/acas/funkcioner",
+    "retrievedAt": "2026-10-30T20:57:43.106Z",
+    "publishedAt": "2009-02-26",
+    "official": true
+   }
+  }
+ ]
+}

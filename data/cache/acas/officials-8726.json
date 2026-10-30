@@ -1,0 +1,121 @@
+{
+ "source": "acas",
+ "key": "officials-8726",
+ "retrievedAt": "2026-10-30T20:57:43.203Z",
+ "data": [
+  {
+   "id": "5043426",
+   "fullName": "Marko Marković",
+   "fullNameCyr": "Марко Марковић",
+   "position": "Izvršni direktor",
+   "positionCyr": "Извршни директор",
+   "isActing": false,
+   "institutionName": "Aerodrom Nikola Tesla a.d. Beograd",
+   "from": "2025-06-20",
+   "appointedBy": "Aerodrom Nikola Tesla a.d. Beograd",
+   "source": {
+    "kind": "acas",
+    "title": "ACAS registar – pretraga: Aerodrom Nikola Tesla a.d. Beograd",
+    "url": "https://publicacas.acas.rs/#/acas/funkcioner",
+    "retrievedAt": "2026-10-30T20:57:43.203Z",
+    "publishedAt": "2025-06-20",
+    "official": true
+   }
+  },
+  {
+   "id": "45157",
+   "fullName": "Daša Belić",
+   "fullNameCyr": "Даша Белић",
+   "position": "Izvršni direktor",
+   "positionCyr": "Извршни директор",
+   "isActing": false,
+   "institutionName": "Aerodrom Nikola Tesla a.d. Beograd",
+   "from": "2025-05-13",
+   "appointedBy": "Aerodrom Nikola Tesla a.d. Beograd",
+   "source": {
+    "kind": "acas",
+    "title": "ACAS registar – pretraga: Aerodrom Nikola Tesla a.d. Beograd",
+    "url": "https://publicacas.acas.rs/#/acas/funkcioner",
+    "retrievedAt": "2026-10-30T20:57:43.203Z",
+    "publishedAt": "2025-05-13",
+    "official": true
+   }
+  },
+  {
+   "id": "27259",
+   "fullName": "Petar Jarić",
+   "fullNameCyr": "Петар Јарић",
+   "position": "Član nadzornog odbora",
+   "positionCyr": "Члан надзорног одбора",
+   "isActing": false,
+   "institutionName": "Aerodrom Nikola Tesla a.d. Beograd",
+   "from": "2014-06-30",
+   "appointedBy": "Aerodrom Nikola Tesla a.d. Beograd",
+   "source": {
+    "kind": "acas",
+    "title": "ACAS registar – pretraga: Aerodrom Nikola Tesla a.d. Beograd",
+    "url": "https://publicacas.acas.rs/#/acas/funkcioner",
+    "retrievedAt": "2026-10-30T20:57:43.203Z",
+    "publishedAt": "2014-06-30",
+    "official": true
+   }
+  },
+  {
+   "id": "20511",
+   "fullName": "Dragoslav Stanković",
+   "fullNameCyr": "Драгослав Станковић",
+   "position": "Član nadzornog odbora",
+   "positionCyr": "Члан надзорног одбора",
+   "isActing": false,
+   "institutionName": "Aerodrom Nikola Tesla a.d. Beograd",
+   "from": "2013-06-27",
+   "appointedBy": "Aerodrom Nikola Tesla a.d. Beograd",
+   "source": {
+    "kind": "acas",
+    "title": "ACAS registar – pretraga: Aerodrom Nikola Tesla a.d. Beograd",
+    "url": "https://publicacas.acas.rs/#/acas/funkcioner",
+    "retrievedAt": "2026-10-30T20:57:43.203Z",
+    "publishedAt": "2013-06-27",
+    "official": true
+   }
+  },
+  {
+   "id": "22285",
+   "fullName": "Vladimir Dimitrijević",
+   "fullNameCyr": "Владимир Димитријевић",
+   "position": "Član nadzornog odbora",
+   "positionCyr": "Члан надзорног одбора",
+   "isActing": false,
+   "institutionName": "Aerodrom Nikola Tesla a.d. Beograd",
+   "from": "2013-03-07",
+   "appointedBy": "Vlada Republike Srbije",
+   "source": {
+    "kind": "acas",
+    "title": "ACAS registar – pretraga: Aerodrom Nikola Tesla a.d. Beograd",
+    "url": "https://publicacas.acas.rs/#/acas/funkcioner",
+    "retrievedAt": "2026-10-30T20:57:43.203Z",
+    "publishedAt": "2013-03-07",
+    "official": true
+   }
+  },
+  {
+   "id": "35581",
+   "fullName": "Ivana Nikolić",
+   "fullNameCyr": "Ивана Николић",
+   "position": "Član nadzornog odbora",
+   "positionCyr": "Члан надзорног одбора",
+   "isActing": false,
+   "institutionName": "Aerodrom Nikola Tesla a.d. Beograd",
+   "from": "2022-07-19",
+   "appointedBy": "Aerodrom Nikola Tesla a.d. Beograd",
+   "source": {
+    "kind": "acas",
+    "title": "ACAS registar – pretraga: Aerodrom Nikola Tesla a.d. Beograd",
+    "url": "https://publicacas.acas.rs/#/acas/funkcioner",
+    "retrievedAt": "2026-10-30T20:57:43.203Z",
+    "publishedAt": "2022-07-19",
+    "official": true
+   }
+  }
+ ]
+}

@@ -1,0 +1,88 @@
+{
+ "source": "integrity_watch",
+ "key": "authority-republicki-fond-za-zdravstveno-osiguranje-a1",
+ "retrievedAt": "2026-10-30T20:58:33.774Z",
+ "data": [
+  {
+   "supplierName": "T&M GROUP SOLUTIONS doo",
+   "supplierPib": "113080389",
+   "supplierMb": "21798029",
+   "contractingAuthority": "Republički fond za zdravstveno osiguranje",
+   "linkType": "povezanost sa političkim subjektom",
+   "detail": "Integrity Watch označava ponuđača kao kompaniju povezanu sa političkim subjektom; izvor povezivanja: https://nova.rs/vesti/biznis/dve-ponude-za-posao-ocitavanja-brojila-od-20-miliona-evra/; označenih ugovora kod naručioca: 13; od toga u zajedničkoj ponudi: 13 (vrednost cele ponude 929,470,397 RSD, nije pripisana firmi); period: 2023-07-21 do 2026-02-24; najveći: 405-655/2025-14 (2026-01-13, 219,992,169 RSD)",
+   "contracts": 13,
+   "source": {
+    "kind": "integrity_watch",
+    "title": "Integrity Watch Srbija – pretraga: T&M GROUP SOLUTIONS doo",
+    "url": "https://integritywatchserbia.org.rs/companies.php?l=sr",
+    "retrievedAt": "2026-10-30T13:47:26.488Z",
+    "official": false
+   }
+  },
+  {
+   "supplierName": "TIME PARTNER DOO",
+   "supplierPib": "108595728",
+   "supplierMb": "21031054",
+   "contractingAuthority": "Republički fond za zdravstveno osiguranje",
+   "linkType": "povezanost sa političkim subjektom",
+   "detail": "Integrity Watch označava ponuđača kao kompaniju povezanu sa političkim subjektom; izvor povezivanja: https://www.danas.rs/vesti/ekonomija/da-li-je-klinicki-centar-namestio-tender-za-firmu-pod-istragom-za-organizovani-kriminal/, https://nova.rs/vesti/politika/ugovor-koliko-nas-kosta-pranje-vesa-u-bolnici-u-batajnici/; označenih ugovora kod naručioca: 4; od toga u zajedničkoj ponudi: 4 (vrednost cele ponude 689,374,821 RSD, nije pripisana firmi); period: 2022-01-24 do 2026-01-13; najveći: 405-655/2025-14 (2026-01-13, 219,992,169 RSD)",
+   "contracts": 4,
+   "source": {
+    "kind": "integrity_watch",
+    "title": "Integrity Watch Srbija – pretraga: TIME PARTNER DOO",
+    "url": "https://integritywatchserbia.org.rs/companies.php?l=sr",
+    "retrievedAt": "2026-10-30T13:47:26.488Z",
+    "official": false
+   }
+  },
+  {
+   "supplierName": "DOBERGARD DOO",
+   "supplierPib": "103509048",
+   "supplierMb": "17569775",
+   "contractingAuthority": "Republički fond za zdravstveno osiguranje",
+   "linkType": "povezanost sa političkim subjektom",
+   "detail": "Integrity Watch označava ponuđača kao kompaniju povezanu sa političkim subjektom; izvor povezivanja: https://inmedija.rs/vlasnik-firmi-za-obezbedjenje-blizak-sns-a-pokrenuo-medij/; označenih ugovora kod naručioca: 3; od toga u zajedničkoj ponudi: 3 (vrednost cele ponude 215,000,933 RSD, nije pripisana firmi); period: 2021-07-20 do 2025-07-18; najveći: 405-380/2025-11 (2025-07-18, 215,000,000 RSD)",
+   "contracts": 3,
+   "source": {
+    "kind": "integrity_watch",
+    "title": "Integrity Watch Srbija – pretraga: DOBERGARD DOO",
+    "url": "https://integritywatchserbia.org.rs/companies.php?l=sr",
+    "retrievedAt": "2026-10-30T13:47:26.488Z",
+    "official": false
+   }
+  },
+  {
+   "supplierName": "ASEE Solutions d.o.o. Beograd",
+   "supplierPib": "100389094",
+   "supplierMb": "07432461",
+   "contractingAuthority": "Republički fond za zdravstveno osiguranje",
+   "linkType": "povezanost sa političkim subjektom",
+   "detail": "Integrity Watch označava ponuđača kao kompaniju povezanu sa političkim subjektom; izvor povezivanja: https://birn.rs/poslovi-porodice-kisic/; označenih ugovora kod naručioca: 6; od toga u zajedničkoj ponudi: 1 (vrednost cele ponude 20,738,060 RSD, nije pripisana firmi); period: 2021-01-23 do 2026-02-18; najveći: 141-1/20 (2021-01-23, 39,937,020 RSD)",
+   "contracts": 6,
+   "valueRsd": 148759092,
+   "source": {
+    "kind": "integrity_watch",
+    "title": "Integrity Watch Srbija – pretraga: ASEE Solutions d.o.o. Beograd",
+    "url": "https://integritywatchserbia.org.rs/companies.php?l=sr",
+    "retrievedAt": "2026-10-30T13:47:26.488Z",
+    "official": false
+   }
+  },
+  {
+   "supplierName": "NITES DOO BEOGRAD",
+   "supplierPib": "103133748",
+   "supplierMb": "17516582",
+   "contractingAuthority": "Republički fond za zdravstveno osiguranje",
+   "linkType": "povezanost sa političkim subjektom",
+   "detail": "Integrity Watch označava ponuđača kao kompaniju povezanu sa političkim subjektom; izvor povezivanja: https://nova.rs/vesti/politika/firma-brata-darije-kisic-dobila-od-poste-posao-vredan-vise-od-pola-miliona-evra/; označenih ugovora kod naručioca: 3; od toga u zajedničkoj ponudi: 3 (vrednost cele ponude 76,500,000 RSD, nije pripisana firmi); period: 2023-12-20 do 2026-02-12; najveći: 405-766/2025-10 (2026-02-12, 25,500,000 RSD)",
+   "contracts": 3,
+   "source": {
+    "kind": "integrity_watch",
+    "title": "Integrity Watch Srbija – pretraga: NITES DOO BEOGRAD",
+    "url": "https://integritywatchserbia.org.rs/companies.php?l=sr",
+    "retrievedAt": "2026-10-30T13:47:26.488Z",
+    "official": false
+   }
+  }
+ ]
+}

@@ -1,0 +1,47 @@
+{
+ "source": "resolver",
+ "key": "institution-srbijagas",
+ "retrievedAt": "2026-10-30T21:07:46.693Z",
+ "data": {
+  "query": "Srbijagas",
+  "slug": "jp-srbijagas-novi-sad",
+  "name": "JP Srbijagas Novi Sad",
+  "nameCyr": "ЈП Србијагас Нови Сад",
+  "legalType": "javno_preduzece",
+  "pib": "104056656",
+  "mb": "20084600",
+  "acasId": "5066",
+  "acasAltIds": [
+   "8135"
+  ],
+  "aliases": [
+   "JP Srbijagas Novi Sad"
+  ],
+  "jnId": "811",
+  "municipality": "Novi Sad",
+  "sources": [
+   {
+    "kind": "acas",
+    "title": "ACAS registar – pretraga: JP Srbijagas Novi Sad",
+    "url": "https://publicacas.acas.rs/#/acas/funkcioner",
+    "retrievedAt": "2026-10-30T20:52:05.346Z",
+    "official": true
+   },
+   {
+    "kind": "jnportal",
+    "title": "Portal javnih nabavki – ugovori naručioca: JP SRBIJAGAS NOVI SAD",
+    "url": "https://jnportal.ujn.gov.rs/ugovori?initFilter=%5B%22OfficialName%22%2C%22%3D%22%2C%22%D0%88%D0%9F%20%D0%A1%D0%A0%D0%91%D0%98%D0%88%D0%90%D0%93%D0%90%D0%A1%20%D0%9D%D0%9E%D0%92%D0%98%20%D0%A1%D0%90%D0%94%22%5D",
+    "retrievedAt": "2026-10-30T20:52:09.526Z",
+    "official": true
+   },
+   {
+    "kind": "apr",
+    "title": "APR – otvoreni podaci: JAVNO PREDUZEĆE SRBIJAGAS NOVI SAD (MB 20084600, presek 2026-09-30)",
+    "url": "https://data.gov.rs/sr/datasets/api-za-registar-finansijskikh-izveshtaja-baza-fi-za-privredna-drushtva/",
+    "retrievedAt": "2026-09-30T00:00:00.000Z",
+    "publishedAt": "2026-09-30",
+    "official": true
+   }
+  ]
+ }
+}

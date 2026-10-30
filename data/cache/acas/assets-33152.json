@@ -1,0 +1,94 @@
+{
+ "source": "acas",
+ "key": "assets-33152",
+ "retrievedAt": "2026-10-30T21:37:39.312Z",
+ "data": [
+  {
+   "personId": "33152",
+   "fullName": "Nebojša Šurlan",
+   "reportDate": "2024-04-07",
+   "reason": "prestanak javne funkcije",
+   "source": {
+    "kind": "acas",
+    "title": "ACAS – Izveštaj o imovini i prihodima funkcionera (07.04.2024.)",
+    "url": "https://publicacas.acas.rs/#/acas/funkcionerIzvestajDetails/5026064",
+    "retrievedAt": "2026-10-30T21:37:38.223Z",
+    "publishedAt": "2024-04-07",
+    "official": true
+   },
+   "summary": [
+    "Prihod od javne funkcije (v.d. generalnog direktora, Infrastruktura železnice Srbije a.d. Beograd): 196.000 RSD mesečno, 28.05.2020. - 01.04.2024.",
+    "Nepokretna imovina: 1 stavka (stan)",
+    "Objekti: stan 79.95 m2",
+    "Pokretna imovina (registrovana): 1 (automobil Tojota RAV 4 2021)"
+   ],
+   "incomes": [
+    {
+     "source": "v.d. generalnog direktora, Infrastruktura železnice Srbije a.d. Beograd",
+     "amountRsd": 196000,
+     "period": "mesečno, 28.05.2020. - 01.04.2024."
+    }
+   ]
+  },
+  {
+   "personId": "33152",
+   "fullName": "Nebojša Šurlan",
+   "reportDate": "2023-03-06",
+   "reason": "promene u toku vršenja funkcije",
+   "source": {
+    "kind": "acas",
+    "title": "ACAS – Izveštaj o imovini i prihodima funkcionera (06.03.2023.)",
+    "url": "https://publicacas.acas.rs/#/acas/funkcionerIzvestajDetails/5017803",
+    "retrievedAt": "2026-10-30T21:37:38.559Z",
+    "publishedAt": "2023-03-06",
+    "official": true
+   },
+   "summary": [
+    "Prihod od javne funkcije (v.d. generalnog direktora, Infrastruktura železnice Srbije a.d. Beograd): 196.000 RSD mesečno, od 28.05.2020.",
+    "Nepokretna imovina: 1 stavka (stan)",
+    "Objekti: stan 79.95 m2",
+    "Pokretna imovina (registrovana): 1 (automobil Tojota RAV 4 2021)"
+   ],
+   "incomes": [
+    {
+     "source": "v.d. generalnog direktora, Infrastruktura železnice Srbije a.d. Beograd",
+     "amountRsd": 196000,
+     "period": "mesečno, od 28.05.2020."
+    }
+   ]
+  },
+  {
+   "personId": "33152",
+   "fullName": "Nebojša Šurlan",
+   "reportDate": "2020-06-09",
+   "reason": "prestanak javne funkcije",
+   "source": {
+    "kind": "acas",
+    "title": "ACAS – Izveštaj o imovini i prihodima funkcionera (09.06.2020.)",
+    "url": "https://publicacas.acas.rs/#/acas/funkcionerIzvestajDetails/5010936",
+    "retrievedAt": "2026-10-30T21:37:38.924Z",
+    "publishedAt": "2020-06-09",
+    "official": true
+   },
+   "summary": [
+    "Prihod od javne funkcije (Direktor, Građevinska direkcija Srbije): 280.000 RSD mesečno, 20.10.2012. - 28.05.2020.",
+    "Prihod od javne funkcije (v.d. generalnog direktora, Infrastruktura železnice Srbije a.d. Beograd): 187.000 RSD mesečno, od 28.05.2020.",
+    "Nepokretna imovina: 1 stavka (stan)",
+    "Objekti: stan 79.95 m2",
+    "Pokretna imovina (registrovana): 1 (automobil Škoda suberb 2014)"
+   ],
+   "incomes": [
+    {
+     "source": "Direktor, Građevinska direkcija Srbije",
+     "amountRsd": 280000,
+     "period": "mesečno, 20.10.2012. - 28.05.2020."
+    },
+    {
+     "source": "v.d. generalnog direktora, Infrastruktura železnice Srbije a.d. Beograd",
+     "amountRsd": 187000,
+     "period": "mesečno, od 28.05.2020."
+    }
+   ]
+  }
+ ]
+}

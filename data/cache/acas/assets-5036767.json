@@ -1,0 +1,45 @@
+{
+ "source": "acas",
+ "key": "assets-5036767",
+ "retrievedAt": "2026-10-30T20:47:47.417Z",
+ "data": [
+  {
+   "personId": "5036767",
+   "fullName": "Vedrana Petrić",
+   "reportDate": "2025-07-23",
+   "reason": "stupanje na javnu funkciju",
+   "source": {
+    "kind": "acas",
+    "title": "ACAS – Izveštaj o imovini i prihodima funkcionera (23.07.2025.)",
+    "url": "https://publicacas.acas.rs/#/acas/funkcionerIzvestajDetails/5034789",
+    "retrievedAt": "2026-10-30T20:47:44.012Z",
+    "publishedAt": "2025-07-23",
+    "official": true
+   },
+   "summary": [
+    "Prihod od javne funkcije (Član nadzornog odbora, Univerzitetski klinički centar Vojvodine): 15.000 RSD mesečno, od 25.06.2025.",
+    "Prihod od javne funkcije (Univerzitetski klinički centar Vojvodine): 249.254 RSD mesečno, od 06.09.2024.",
+    "Prihod od javne funkcije (Medicinski fakultet u Novom Sadu): 100.258 RSD mesečno, od 24.03.2022.",
+    "Nepokretna imovina: 2 stavke (stan ×2)",
+    "Objekti: stan 47 m2; stan 24 m2"
+   ],
+   "incomes": [
+    {
+     "source": "Član nadzornog odbora, Univerzitetski klinički centar Vojvodine",
+     "amountRsd": 15000,
+     "period": "mesečno, od 25.06.2025."
+    },
+    {
+     "source": "Univerzitetski klinički centar Vojvodine",
+     "amountRsd": 249254,
+     "period": "mesečno, od 06.09.2024."
+    },
+    {
+     "source": "Medicinski fakultet u Novom Sadu",
+     "amountRsd": 100258,
+     "period": "mesečno, od 24.03.2022."
+    }
+   ]
+  }
+ ]
+}

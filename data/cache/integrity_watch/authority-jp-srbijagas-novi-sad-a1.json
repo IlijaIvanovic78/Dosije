@@ -1,0 +1,40 @@
+{
+ "source": "integrity_watch",
+ "key": "authority-jp-srbijagas-novi-sad-a1",
+ "retrievedAt": "2026-10-30T20:52:10.698Z",
+ "data": [
+  {
+   "supplierName": "ANDING TRADE DOO BEOGRAD",
+   "supplierPib": "101031730",
+   "contractingAuthority": "JP SRBIJAGAS NOVI SAD",
+   "linkType": "povezanost sa javnim funkcionerom",
+   "detail": "Integrity Watch označava ponuđača kao firmu povezanu sa javnim funkcionerom (ime funkcionera nije deo otvorenih podataka); označenih ugovora kod naručioca: 2; period: 2023-10-16 do 2024-10-15; najveći: 01-01-20/326 (2024-10-15, 576,038 RSD)",
+   "contracts": 2,
+   "valueRsd": 1075530.1,
+   "source": {
+    "kind": "integrity_watch",
+    "title": "Integrity Watch Srbija – pretraga: ANDING TRADE DOO BEOGRAD",
+    "url": "https://integritywatchserbia.org.rs/?l=sr",
+    "retrievedAt": "2026-10-30T13:47:26.488Z",
+    "official": false
+   }
+  },
+  {
+   "supplierName": "EUROSALON FABRIKA DOO",
+   "supplierPib": "106109912",
+   "supplierMb": "20532360",
+   "contractingAuthority": "JP SRBIJAGAS NOVI SAD",
+   "linkType": "povezanost sa političkim subjektom",
+   "detail": "Integrity Watch označava ponuđača kao kompaniju povezanu sa političkim subjektom; izvor povezivanja: https://thegeopost.com/sr/vesti/biznismeni-i-tajkuni-koji-su-se-obogatili-za-10-godina-vlasti-sns/; označenih ugovora kod naručioca: 1; period: 2022-02-17 do 2022-02-17; najveći: 01-01-20/149 (2022-02-17, 727,540 RSD)",
+   "contracts": 1,
+   "valueRsd": 727540,
+   "source": {
+    "kind": "integrity_watch",
+    "title": "Integrity Watch Srbija – pretraga: EUROSALON FABRIKA DOO",
+    "url": "https://integritywatchserbia.org.rs/companies.php?l=sr",
+    "retrievedAt": "2026-10-30T13:47:26.488Z",
+    "official": false
+   }
+  }
+ ]
+}

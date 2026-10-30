@@ -1,0 +1,140 @@
+{
+ "source": "acas",
+ "key": "officials-5011662",
+ "retrievedAt": "2026-10-30T20:52:55.461Z",
+ "data": [
+  {
+   "id": "5026117",
+   "fullName": "Žarko Radišić",
+   "fullNameCyr": "Жарко Радишић",
+   "position": "Član nadzornog odbora",
+   "positionCyr": "Члан надзорног одбора",
+   "isActing": false,
+   "institutionName": "Pošta Srbije d.o.o.",
+   "from": "2025-01-10",
+   "appointedBy": "Vlada Republike Srbije",
+   "source": {
+    "kind": "acas",
+    "title": "ACAS registar – pretraga: Pošta Srbije d.o.o.",
+    "url": "https://publicacas.acas.rs/#/acas/funkcioner",
+    "retrievedAt": "2026-10-30T20:52:55.461Z",
+    "publishedAt": "2025-01-10",
+    "official": true
+   }
+  },
+  {
+   "id": "22800",
+   "fullName": "Miodrag Grdinić",
+   "fullNameCyr": "Миодраг Грдинић",
+   "position": "Član nadzornog odbora",
+   "positionCyr": "Члан надзорног одбора",
+   "isActing": false,
+   "institutionName": "Pošta Srbije d.o.o.",
+   "from": "2021-04-01",
+   "appointedBy": "Vlada Republike Srbije",
+   "source": {
+    "kind": "acas",
+    "title": "ACAS registar – pretraga: Pošta Srbije d.o.o.",
+    "url": "https://publicacas.acas.rs/#/acas/funkcioner",
+    "retrievedAt": "2026-10-30T20:52:55.461Z",
+    "publishedAt": "2021-04-01",
+    "official": true
+   }
+  },
+  {
+   "id": "5020585",
+   "fullName": "Biljana Ćeranić",
+   "fullNameCyr": "Биљана Ћеранић",
+   "position": "Član nadzornog odbora",
+   "positionCyr": "Члан надзорног одбора",
+   "isActing": false,
+   "institutionName": "Pošta Srbije d.o.o.",
+   "from": "2022-11-03",
+   "appointedBy": "Vlada Republike Srbije",
+   "source": {
+    "kind": "acas",
+    "title": "ACAS registar – pretraga: Pošta Srbije d.o.o.",
+    "url": "https://publicacas.acas.rs/#/acas/funkcioner",
+    "retrievedAt": "2026-10-30T20:52:55.461Z",
+    "publishedAt": "2022-11-03",
+    "official": true
+   }
+  },
+  {
+   "id": "13001",
+   "fullName": "Katarina Šušić",
+   "fullNameCyr": "Катарина Шушић",
+   "position": "Član nadzornog odbora",
+   "positionCyr": "Члан надзорног одбора",
+   "isActing": false,
+   "institutionName": "Pošta Srbije d.o.o.",
+   "from": "2025-06-18",
+   "appointedBy": "Vlada Republike Srbije",
+   "source": {
+    "kind": "acas",
+    "title": "ACAS registar – pretraga: Pošta Srbije d.o.o.",
+    "url": "https://publicacas.acas.rs/#/acas/funkcioner",
+    "retrievedAt": "2026-10-30T20:52:55.461Z",
+    "publishedAt": "2025-06-18",
+    "official": true
+   }
+  },
+  {
+   "id": "41119",
+   "fullName": "Boriša Šarenac",
+   "fullNameCyr": "Бориша Шаренац",
+   "position": "Predsednik nadzornog odbora",
+   "positionCyr": "Председник надзорног одбора",
+   "isActing": false,
+   "institutionName": "Pošta Srbije d.o.o.",
+   "from": "2021-07-23",
+   "appointedBy": "Vlada Republike Srbije",
+   "source": {
+    "kind": "acas",
+    "title": "ACAS registar – pretraga: Pošta Srbije d.o.o.",
+    "url": "https://publicacas.acas.rs/#/acas/funkcioner",
+    "retrievedAt": "2026-10-30T20:52:55.461Z",
+    "publishedAt": "2021-07-23",
+    "official": true
+   }
+  },
+  {
+   "id": "9535",
+   "fullName": "Zoran Anđelković",
+   "fullNameCyr": "Зоран Анђелковић",
+   "position": "v.d. direktora",
+   "positionCyr": "В.Д. Директора",
+   "isActing": true,
+   "institutionName": "Pošta Srbije d.o.o.",
+   "from": "2024-05-16",
+   "appointedBy": "Vlada Republike Srbije",
+   "source": {
+    "kind": "acas",
+    "title": "ACAS registar – pretraga: Pošta Srbije d.o.o.",
+    "url": "https://publicacas.acas.rs/#/acas/funkcioner",
+    "retrievedAt": "2026-10-30T20:52:55.461Z",
+    "publishedAt": "2024-05-16",
+    "official": true
+   }
+  },
+  {
+   "id": "5000901",
+   "fullName": "Boris Bursać",
+   "fullNameCyr": "Борис Бурсаћ",
+   "position": "Član skupštine",
+   "positionCyr": "Члан Скупштине",
+   "isActing": false,
+   "institutionName": "Pošta Srbije d.o.o.",
+   "from": "2026-02-06",
+   "appointedBy": "Ministarstvo privrede",
+   "source": {
+    "kind": "acas",
+    "title": "ACAS registar – pretraga: Pošta Srbije d.o.o.",
+    "url": "https://publicacas.acas.rs/#/acas/funkcioner",
+    "retrievedAt": "2026-10-30T20:52:55.461Z",
+    "publishedAt": "2026-02-06",
+    "official": true
+   }
+  }
+ ]
+}

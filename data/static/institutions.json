@@ -76,5 +76,32 @@
 		"jnId": "7584",
 		"municipality": "Stari Grad",
 		"mapaOnly": true
+	},
+	{
+		"slug": "univerzitetski-klinicki-centar-vojvodine",
+		"name": "Univerzitetski klinički centar Vojvodine",
+		"nameCyr": "Универзитетски клинички центар Војводине",
+		"shortName": "KCV",
+		"aliases": [
+			"Klinički centar Vojvodine"
+		],
+		"legalType": "zdravstvena_ustanova",
+		"pib": "101696893",
+		"acasId": "5004201",
+		"acasAltIds": [
+			"2163"
+		],
+		"jnId": "2732",
+		"municipality": "Novi Sad"
+	},
+	{
+		"slug": "grad-novi-sad",
+		"name": "Grad Novi Sad",
+		"nameCyr": "Град Нови Сад",
+		"legalType": "lokalna_samouprava",
+		"pib": "109924914",
+		"acasId": "4482",
+		"jnId": "33995",
+		"municipality": "Novi Sad"
 	}
 ]

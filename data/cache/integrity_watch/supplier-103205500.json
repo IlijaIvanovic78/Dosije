@@ -1,0 +1,91 @@
+{
+ "source": "integrity_watch",
+ "key": "supplier-103205500",
+ "retrievedAt": "2026-10-30T21:00:37.752Z",
+ "data": [
+  {
+   "supplierName": "PRO TENT D.O.O Obrenovac",
+   "supplierPib": "103205500",
+   "supplierMb": "17522124",
+   "contractingAuthority": "Akcionarsko društvo Elektroprivreda Srbije, Beograd",
+   "linkType": "povezanost sa političkim subjektom",
+   "detail": "Integrity Watch označava ponuđača kao kompaniju povezanu sa političkim subjektom; izvor povezivanja: https://nova.rs/vesti/biznis/dve-ponude-za-posao-ocitavanja-brojila-od-20-miliona-evra/; označenih ugovora kod naručioca: 100; od toga u zajedničkoj ponudi: 76 (vrednost cele ponude 19,589,088,171 RSD, nije pripisana firmi); period: 2021-12-31 do 2026-03-18; najveći: 12.01.476791/40-2023 (2023-07-28, 13,890,000,000 RSD)",
+   "contracts": 100,
+   "valueRsd": 14383485257,
+   "source": {
+    "kind": "integrity_watch",
+    "title": "Integrity Watch Srbija – pretraga: PRO TENT D.O.O Obrenovac",
+    "url": "https://integritywatchserbia.org.rs/companies.php?l=sr",
+    "retrievedAt": "2026-10-30T13:47:26.488Z",
+    "official": false
+   }
+  },
+  {
+   "supplierName": "PRO TENT D.O.O Obrenovac",
+   "supplierPib": "103205500",
+   "supplierMb": "17522124",
+   "contractingAuthority": "Javno preduzeće „Elektroprivreda Srbije”",
+   "linkType": "povezanost sa političkim subjektom",
+   "detail": "Integrity Watch označava ponuđača kao kompaniju povezanu sa političkim subjektom; izvor povezivanja: https://nova.rs/vesti/biznis/dve-ponude-za-posao-ocitavanja-brojila-od-20-miliona-evra/; označenih ugovora kod naručioca: 71; od toga u zajedničkoj ponudi: 65 (vrednost cele ponude 9,138,396,787 RSD, nije pripisana firmi); period: 2021-02-03 do 2023-03-22; najveći: 12.01.3462/46-2021 (2021-03-29, 3,479,754,923 RSD)",
+   "contracts": 71,
+   "valueRsd": 167985746,
+   "source": {
+    "kind": "integrity_watch",
+    "title": "Integrity Watch Srbija – pretraga: PRO TENT D.O.O Obrenovac",
+    "url": "https://integritywatchserbia.org.rs/companies.php?l=sr",
+    "retrievedAt": "2026-10-30T13:47:26.488Z",
+    "official": false
+   }
+  },
+  {
+   "supplierName": "PRO TENT D.O.O Obrenovac",
+   "supplierPib": "103205500",
+   "supplierMb": "17522124",
+   "contractingAuthority": "JAVNO KOMUNALNO PREDUZEĆE TOPLOVOD OBRENOVAC",
+   "linkType": "povezanost sa političkim subjektom",
+   "detail": "Integrity Watch označava ponuđača kao kompaniju povezanu sa političkim subjektom; izvor povezivanja: https://nova.rs/vesti/biznis/dve-ponude-za-posao-ocitavanja-brojila-od-20-miliona-evra/; označenih ugovora kod naručioca: 2; od toga u zajedničkoj ponudi: 2 (vrednost cele ponude 1,325,868,974 RSD, nije pripisana firmi); period: 2021-06-22 do 2022-06-09; najveći: 2020-7573/77 (2021-06-22, 1,289,873,467 RSD)",
+   "contracts": 2,
+   "source": {
+    "kind": "integrity_watch",
+    "title": "Integrity Watch Srbija – pretraga: PRO TENT D.O.O Obrenovac",
+    "url": "https://integritywatchserbia.org.rs/companies.php?l=sr",
+    "retrievedAt": "2026-10-30T13:47:26.488Z",
+    "official": false
+   }
+  },
+  {
+   "supplierName": "PRO TENT D.O.O Obrenovac",
+   "supplierPib": "103205500",
+   "supplierMb": "17522124",
+   "contractingAuthority": "JAVNO PREDUZEĆE ZA IZGRADNjU OBRENOVCA, OBRENOVAC",
+   "linkType": "povezanost sa političkim subjektom",
+   "detail": "Integrity Watch označava ponuđača kao kompaniju povezanu sa političkim subjektom; izvor povezivanja: https://nova.rs/vesti/biznis/dve-ponude-za-posao-ocitavanja-brojila-od-20-miliona-evra/; označenih ugovora kod naručioca: 4; od toga u zajedničkoj ponudi: 2 (vrednost cele ponude 50,227,434 RSD, nije pripisana firmi); period: 2024-04-25 do 2025-04-28; najveći: 887 (2025-03-24, 31,360,990 RSD)",
+   "contracts": 4,
+   "valueRsd": 11670849.4,
+   "source": {
+    "kind": "integrity_watch",
+    "title": "Integrity Watch Srbija – pretraga: PRO TENT D.O.O Obrenovac",
+    "url": "https://integritywatchserbia.org.rs/companies.php?l=sr",
+    "retrievedAt": "2026-10-30T13:47:26.488Z",
+    "official": false
+   }
+  },
+  {
+   "supplierName": "PRO TENT D.O.O Obrenovac",
+   "supplierPib": "103205500",
+   "supplierMb": "17522124",
+   "contractingAuthority": "GRADSKA OPŠTINA OBRENOVAC",
+   "linkType": "povezanost sa političkim subjektom",
+   "detail": "Integrity Watch označava ponuđača kao kompaniju povezanu sa političkim subjektom; izvor povezivanja: https://nova.rs/vesti/biznis/dve-ponude-za-posao-ocitavanja-brojila-od-20-miliona-evra/; označenih ugovora kod naručioca: 6; period: 2021-10-12 do 2025-07-14; najveći: 002486522 2025 04282 004 021 405 029 (2025-07-14, 8,099,928 RSD)",
+   "contracts": 6,
+   "valueRsd": 36781207,
+   "source": {
+    "kind": "integrity_watch",
+    "title": "Integrity Watch Srbija – pretraga: PRO TENT D.O.O Obrenovac",
+    "url": "https://integritywatchserbia.org.rs/companies.php?l=sr",
+    "retrievedAt": "2026-10-30T13:47:26.488Z",
+    "official": false
+   }
+  }
+ ]
+}

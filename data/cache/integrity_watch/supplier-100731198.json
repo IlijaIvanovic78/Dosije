@@ -1,0 +1,575 @@
+{
+ "source": "integrity_watch",
+ "key": "supplier-100731198",
+ "retrievedAt": "2026-10-30T21:01:42.720Z",
+ "data": [
+  {
+   "supplierName": "RADUN AVIA DOO NOVI SAD",
+   "supplierPib": "100731198",
+   "contractingAuthority": "JAVNO KOMUNALNO PREDUZEĆE VODOVOD I KANALIZACIJA NOVI SAD",
+   "linkType": "povezanost sa javnim funkcionerom",
+   "detail": "Integrity Watch označava ponuđača kao firmu povezanu sa javnim funkcionerom (ime funkcionera nije deo otvorenih podataka); označenih ugovora kod naručioca: 8; period: 2021-03-01 do 2026-02-24; najveći: 5.2-4214 (2026-02-24, 50,000,000 RSD)",
+   "contracts": 8,
+   "valueRsd": 279000000,
+   "source": {
+    "kind": "integrity_watch",
+    "title": "Integrity Watch Srbija – pretraga: RADUN AVIA DOO NOVI SAD",
+    "url": "https://integritywatchserbia.org.rs/?l=sr",
+    "retrievedAt": "2026-10-30T13:47:26.488Z",
+    "official": false
+   }
+  },
+  {
+   "supplierName": "RADUN AVIA DOO NOVI SAD",
+   "supplierPib": "100731198",
+   "contractingAuthority": "JAVNO KOMUNALNO PREDUZEĆE \"ČISTOĆA\" NOVI SAD",
+   "linkType": "povezanost sa javnim funkcionerom",
+   "detail": "Integrity Watch označava ponuđača kao firmu povezanu sa javnim funkcionerom (ime funkcionera nije deo otvorenih podataka); označenih ugovora kod naručioca: 1; period: 2021-03-04 do 2021-03-04; najveći: 2661 (2021-03-04, 158,500,000 RSD)",
+   "contracts": 1,
+   "valueRsd": 158500000,
+   "source": {
+    "kind": "integrity_watch",
+    "title": "Integrity Watch Srbija – pretraga: RADUN AVIA DOO NOVI SAD",
+    "url": "https://integritywatchserbia.org.rs/?l=sr",
+    "retrievedAt": "2026-10-30T13:47:26.488Z",
+    "official": false
+   }
+  },
+  {
+   "supplierName": "RADUN AVIA DOO NOVI SAD",
+   "supplierPib": "100731198",
+   "contractingAuthority": "JAVNO PREDUZEĆE \"KOMUNALAC\" U RUMI",
+   "linkType": "povezanost sa javnim funkcionerom",
+   "detail": "Integrity Watch označava ponuđača kao firmu povezanu sa javnim funkcionerom (ime funkcionera nije deo otvorenih podataka); označenih ugovora kod naručioca: 4; period: 2022-06-10 do 2026-03-30; najveći: 2346 (2026-03-30, 34,900,000 RSD)",
+   "contracts": 4,
+   "valueRsd": 110550000,
+   "source": {
+    "kind": "integrity_watch",
+    "title": "Integrity Watch Srbija – pretraga: RADUN AVIA DOO NOVI SAD",
+    "url": "https://integritywatchserbia.org.rs/?l=sr",
+    "retrievedAt": "2026-10-30T13:47:26.488Z",
+    "official": false
+   }
+  },
+  {
+   "supplierName": "RADUN AVIA DOO NOVI SAD",
+   "supplierPib": "100731198",
+   "contractingAuthority": "Veterinarska ustanova \"Napredak\", Ćuprija",
+   "linkType": "povezanost sa javnim funkcionerom",
+   "detail": "Integrity Watch označava ponuđača kao firmu povezanu sa javnim funkcionerom (ime funkcionera nije deo otvorenih podataka); označenih ugovora kod naručioca: 4; period: 2023-01-04 do 2026-01-01; najveći: 1099 (2023-01-04, 14,835,600 RSD)",
+   "contracts": 4,
+   "valueRsd": 55968800,
+   "source": {
+    "kind": "integrity_watch",
+    "title": "Integrity Watch Srbija – pretraga: RADUN AVIA DOO NOVI SAD",
+    "url": "https://integritywatchserbia.org.rs/?l=sr",
+    "retrievedAt": "2026-10-30T13:47:26.488Z",
+    "official": false
+   }
+  },
+  {
+   "supplierName": "RADUN AVIA DOO NOVI SAD",
+   "supplierPib": "100731198",
+   "contractingAuthority": "JAVNO PREDUZEĆE \"VODOVOD\"",
+   "linkType": "povezanost sa javnim funkcionerom",
+   "detail": "Integrity Watch označava ponuđača kao firmu povezanu sa javnim funkcionerom (ime funkcionera nije deo otvorenih podataka); označenih ugovora kod naručioca: 3; period: 2023-07-03 do 2025-07-10; najveći: 1481 (2025-07-10, 15,000,000 RSD)",
+   "contracts": 3,
+   "valueRsd": 39700000,
+   "source": {
+    "kind": "integrity_watch",
+    "title": "Integrity Watch Srbija – pretraga: RADUN AVIA DOO NOVI SAD",
+    "url": "https://integritywatchserbia.org.rs/?l=sr",
+    "retrievedAt": "2026-10-30T13:47:26.488Z",
+    "official": false
+   }
+  },
+  {
+   "supplierName": "RADUN AVIA DOO NOVI SAD",
+   "supplierPib": "100731198",
+   "contractingAuthority": "JKP \"Lisje\" Novi Sad",
+   "linkType": "povezanost sa javnim funkcionerom",
+   "detail": "Integrity Watch označava ponuđača kao firmu povezanu sa javnim funkcionerom (ime funkcionera nije deo otvorenih podataka); označenih ugovora kod naručioca: 2; period: 2025-02-19 do 2026-01-16; najveći: 19-1997/128-17-25 (2026-01-16, 18,000,000 RSD)",
+   "contracts": 2,
+   "valueRsd": 36000000,
+   "source": {
+    "kind": "integrity_watch",
+    "title": "Integrity Watch Srbija – pretraga: RADUN AVIA DOO NOVI SAD",
+    "url": "https://integritywatchserbia.org.rs/?l=sr",
+    "retrievedAt": "2026-10-30T13:47:26.488Z",
+    "official": false
+   }
+  },
+  {
+   "supplierName": "RADUN AVIA DOO NOVI SAD",
+   "supplierPib": "100731198",
+   "contractingAuthority": "JAVNO KOMUNALNO PREDUZEĆE \"PARKING SERVIS\" NOVI SAD",
+   "linkType": "povezanost sa javnim funkcionerom",
+   "detail": "Integrity Watch označava ponuđača kao firmu povezanu sa javnim funkcionerom (ime funkcionera nije deo otvorenih podataka); označenih ugovora kod naručioca: 2; period: 2023-03-11 do 2025-03-14; najveći: 2025-6-5/14 (2025-03-14, 18,000,000 RSD)",
+   "contracts": 2,
+   "valueRsd": 34000000,
+   "source": {
+    "kind": "integrity_watch",
+    "title": "Integrity Watch Srbija – pretraga: RADUN AVIA DOO NOVI SAD",
+    "url": "https://integritywatchserbia.org.rs/?l=sr",
+    "retrievedAt": "2026-10-30T13:47:26.488Z",
+    "official": false
+   }
+  },
+  {
+   "supplierName": "RADUN AVIA DOO NOVI SAD",
+   "supplierPib": "100731198",
+   "contractingAuthority": "JAVNO KOMUNALNO PREDUZEĆE \"KOMUNALPROJEKT\"",
+   "linkType": "povezanost sa javnim funkcionerom",
+   "detail": "Integrity Watch označava ponuđača kao firmu povezanu sa javnim funkcionerom (ime funkcionera nije deo otvorenih podataka); označenih ugovora kod naručioca: 1; od toga u zajedničkoj ponudi: 1 (vrednost cele ponude 30,000,000 RSD, nije pripisana firmi); period: 2025-04-24 do 2025-04-24; najveći: 05-288/6 (2025-04-24, 30,000,000 RSD)",
+   "contracts": 1,
+   "source": {
+    "kind": "integrity_watch",
+    "title": "Integrity Watch Srbija – pretraga: RADUN AVIA DOO NOVI SAD",
+    "url": "https://integritywatchserbia.org.rs/?l=sr",
+    "retrievedAt": "2026-10-30T13:47:26.488Z",
+    "official": false
+   }
+  },
+  {
+   "supplierName": "RADUN AVIA DOO NOVI SAD",
+   "supplierPib": "100731198",
+   "contractingAuthority": "JKP Standard",
+   "linkType": "povezanost sa javnim funkcionerom",
+   "detail": "Integrity Watch označava ponuđača kao firmu povezanu sa javnim funkcionerom (ime funkcionera nije deo otvorenih podataka); označenih ugovora kod naručioca: 2; period: 2024-10-18 do 2025-06-17; najveći: JN1-25-3-5 (2025-06-17, 20,000,000 RSD)",
+   "contracts": 2,
+   "valueRsd": 28000000,
+   "source": {
+    "kind": "integrity_watch",
+    "title": "Integrity Watch Srbija – pretraga: RADUN AVIA DOO NOVI SAD",
+    "url": "https://integritywatchserbia.org.rs/?l=sr",
+    "retrievedAt": "2026-10-30T13:47:26.488Z",
+    "official": false
+   }
+  },
+  {
+   "supplierName": "RADUN AVIA DOO NOVI SAD",
+   "supplierPib": "100731198",
+   "contractingAuthority": "PREDŠKOLSKA USTANOVA \"RADOSNO DETINJSTVO\"",
+   "linkType": "povezanost sa javnim funkcionerom",
+   "detail": "Integrity Watch označava ponuđača kao firmu povezanu sa javnim funkcionerom (ime funkcionera nije deo otvorenih podataka); označenih ugovora kod naručioca: 4; period: 2022-11-28 do 2025-12-02; najveći: 7104/01 (2023-11-27, 7,333,333 RSD)",
+   "contracts": 4,
+   "valueRsd": 27666666.67,
+   "source": {
+    "kind": "integrity_watch",
+    "title": "Integrity Watch Srbija – pretraga: RADUN AVIA DOO NOVI SAD",
+    "url": "https://integritywatchserbia.org.rs/?l=sr",
+    "retrievedAt": "2026-10-30T13:47:26.488Z",
+    "official": false
+   }
+  },
+  {
+   "supplierName": "RADUN AVIA DOO NOVI SAD",
+   "supplierPib": "100731198",
+   "contractingAuthority": "JKP TVRĐAVA BAČ",
+   "linkType": "povezanost sa javnim funkcionerom",
+   "detail": "Integrity Watch označava ponuđača kao firmu povezanu sa javnim funkcionerom (ime funkcionera nije deo otvorenih podataka); označenih ugovora kod naručioca: 3; od toga u zajedničkoj ponudi: 3 (vrednost cele ponude 24,027,333 RSD, nije pripisana firmi); period: 2024-04-29 do 2026-01-14; najveći: 02-105/2024-17 (2024-04-29, 13,604,833 RSD)",
+   "contracts": 3,
+   "source": {
+    "kind": "integrity_watch",
+    "title": "Integrity Watch Srbija – pretraga: RADUN AVIA DOO NOVI SAD",
+    "url": "https://integritywatchserbia.org.rs/?l=sr",
+    "retrievedAt": "2026-10-30T13:47:26.488Z",
+    "official": false
+   }
+  },
+  {
+   "supplierName": "RADUN AVIA DOO NOVI SAD",
+   "supplierPib": "100731198",
+   "contractingAuthority": "JAVNO KOMUNALNO PREDUZEĆE \"STAN\"",
+   "linkType": "povezanost sa javnim funkcionerom",
+   "detail": "Integrity Watch označava ponuđača kao firmu povezanu sa javnim funkcionerom (ime funkcionera nije deo otvorenih podataka); označenih ugovora kod naručioca: 3; period: 2023-02-09 do 2026-02-13; najveći: 54 (2026-02-13, 8,000,000 RSD)",
+   "contracts": 3,
+   "valueRsd": 24000000,
+   "source": {
+    "kind": "integrity_watch",
+    "title": "Integrity Watch Srbija – pretraga: RADUN AVIA DOO NOVI SAD",
+    "url": "https://integritywatchserbia.org.rs/?l=sr",
+    "retrievedAt": "2026-10-30T13:47:26.488Z",
+    "official": false
+   }
+  },
+  {
+   "supplierName": "RADUN AVIA DOO NOVI SAD",
+   "supplierPib": "100731198",
+   "contractingAuthority": "DOM ZDRAVLJA NOVI BEČEJ",
+   "linkType": "povezanost sa javnim funkcionerom",
+   "detail": "Integrity Watch označava ponuđača kao firmu povezanu sa javnim funkcionerom (ime funkcionera nije deo otvorenih podataka); označenih ugovora kod naručioca: 5; period: 2021-07-05 do 2025-05-20; najveći: 01-1296 (2022-07-04, 4,272,420 RSD)",
+   "contracts": 5,
+   "valueRsd": 19526030.25,
+   "source": {
+    "kind": "integrity_watch",
+    "title": "Integrity Watch Srbija – pretraga: RADUN AVIA DOO NOVI SAD",
+    "url": "https://integritywatchserbia.org.rs/?l=sr",
+    "retrievedAt": "2026-10-30T13:47:26.488Z",
+    "official": false
+   }
+  },
+  {
+   "supplierName": "RADUN AVIA DOO NOVI SAD",
+   "supplierPib": "100731198",
+   "contractingAuthority": "DOM ZDRAVLJA ŽABALJ",
+   "linkType": "povezanost sa javnim funkcionerom",
+   "detail": "Integrity Watch označava ponuđača kao firmu povezanu sa javnim funkcionerom (ime funkcionera nije deo otvorenih podataka); označenih ugovora kod naručioca: 5; period: 2021-11-23 do 2025-12-26; najveći: 1260-3 (2023-12-21, 4,002,200 RSD)",
+   "contracts": 5,
+   "valueRsd": 18685520,
+   "source": {
+    "kind": "integrity_watch",
+    "title": "Integrity Watch Srbija – pretraga: RADUN AVIA DOO NOVI SAD",
+    "url": "https://integritywatchserbia.org.rs/?l=sr",
+    "retrievedAt": "2026-10-30T13:47:26.488Z",
+    "official": false
+   }
+  },
+  {
+   "supplierName": "RADUN AVIA DOO NOVI SAD",
+   "supplierPib": "100731198",
+   "contractingAuthority": "DOM ZDRAVLJA \"ĆUPRIJA\"",
+   "linkType": "povezanost sa javnim funkcionerom",
+   "detail": "Integrity Watch označava ponuđača kao firmu povezanu sa javnim funkcionerom (ime funkcionera nije deo otvorenih podataka); označenih ugovora kod naručioca: 3; period: 2022-05-04 do 2024-06-12; najveći: 1646 (65/2022) (2022-05-04, 6,646,000 RSD)",
+   "contracts": 3,
+   "valueRsd": 18086760.5,
+   "source": {
+    "kind": "integrity_watch",
+    "title": "Integrity Watch Srbija – pretraga: RADUN AVIA DOO NOVI SAD",
+    "url": "https://integritywatchserbia.org.rs/?l=sr",
+    "retrievedAt": "2026-10-30T13:47:26.488Z",
+    "official": false
+   }
+  },
+  {
+   "supplierName": "RADUN AVIA DOO NOVI SAD",
+   "supplierPib": "100731198",
+   "contractingAuthority": "DOM ZDRAVLJA \"DR MLADEN STOJANOVIĆ\"",
+   "linkType": "povezanost sa javnim funkcionerom",
+   "detail": "Integrity Watch označava ponuđača kao firmu povezanu sa javnim funkcionerom (ime funkcionera nije deo otvorenih podataka); označenih ugovora kod naručioca: 1; od toga u zajedničkoj ponudi: 1 (vrednost cele ponude 12,549,120 RSD, nije pripisana firmi); period: 2025-04-24 do 2025-04-24; najveći: 03-1126/25 (2025-04-24, 12,549,120 RSD)",
+   "contracts": 1,
+   "source": {
+    "kind": "integrity_watch",
+    "title": "Integrity Watch Srbija – pretraga: RADUN AVIA DOO NOVI SAD",
+    "url": "https://integritywatchserbia.org.rs/?l=sr",
+    "retrievedAt": "2026-10-30T13:47:26.488Z",
+    "official": false
+   }
+  },
+  {
+   "supplierName": "RADUN AVIA DOO NOVI SAD",
+   "supplierPib": "100731198",
+   "contractingAuthority": "DOM ZDRAVLJA  KANJIŽA",
+   "linkType": "povezanost sa javnim funkcionerom",
+   "detail": "Integrity Watch označava ponuđača kao firmu povezanu sa javnim funkcionerom (ime funkcionera nije deo otvorenih podataka); označenih ugovora kod naručioca: 3; od toga u zajedničkoj ponudi: 3 (vrednost cele ponude 12,011,950 RSD, nije pripisana firmi); period: 2022-07-18 do 2024-07-29; najveći: R-492-10/2024 (2024-07-29, 4,769,000 RSD)",
+   "contracts": 3,
+   "source": {
+    "kind": "integrity_watch",
+    "title": "Integrity Watch Srbija – pretraga: RADUN AVIA DOO NOVI SAD",
+    "url": "https://integritywatchserbia.org.rs/?l=sr",
+    "retrievedAt": "2026-10-30T13:47:26.488Z",
+    "official": false
+   }
+  },
+  {
+   "supplierName": "RADUN AVIA DOO NOVI SAD",
+   "supplierPib": "100731198",
+   "contractingAuthority": "JP KOMUNALAC NOVI BEČEJ",
+   "linkType": "povezanost sa javnim funkcionerom",
+   "detail": "Integrity Watch označava ponuđača kao firmu povezanu sa javnim funkcionerom (ime funkcionera nije deo otvorenih podataka); označenih ugovora kod naručioca: 4; period: 2022-04-22 do 2025-08-27; najveći: 03-7/3 (2022-04-22, 3,921,420 RSD)",
+   "contracts": 4,
+   "valueRsd": 9810105,
+   "source": {
+    "kind": "integrity_watch",
+    "title": "Integrity Watch Srbija – pretraga: RADUN AVIA DOO NOVI SAD",
+    "url": "https://integritywatchserbia.org.rs/?l=sr",
+    "retrievedAt": "2026-10-30T13:47:26.488Z",
+    "official": false
+   }
+  },
+  {
+   "supplierName": "RADUN AVIA DOO NOVI SAD",
+   "supplierPib": "100731198",
+   "contractingAuthority": "SREDNjA POLjOPRIVREDNO-PREHRAMBENA ŠKOLA",
+   "linkType": "povezanost sa javnim funkcionerom",
+   "detail": "Integrity Watch označava ponuđača kao firmu povezanu sa javnim funkcionerom (ime funkcionera nije deo otvorenih podataka); označenih ugovora kod naručioca: 2; od toga u zajedničkoj ponudi: 2 (vrednost cele ponude 8,887,797 RSD, nije pripisana firmi); period: 2025-04-09 do 2026-03-27; najveći: 01-0222 (2026-03-27, 4,548,986 RSD)",
+   "contracts": 2,
+   "source": {
+    "kind": "integrity_watch",
+    "title": "Integrity Watch Srbija – pretraga: RADUN AVIA DOO NOVI SAD",
+    "url": "https://integritywatchserbia.org.rs/?l=sr",
+    "retrievedAt": "2026-10-30T13:47:26.488Z",
+    "official": false
+   }
+  },
+  {
+   "supplierName": "RADUN AVIA DOO NOVI SAD",
+   "supplierPib": "100731198",
+   "contractingAuthority": "JAVNO KOMUNALNO PREDUZEĆE \"RAVNO 2014\"",
+   "linkType": "povezanost sa javnim funkcionerom",
+   "detail": "Integrity Watch označava ponuđača kao firmu povezanu sa javnim funkcionerom (ime funkcionera nije deo otvorenih podataka); označenih ugovora kod naručioca: 1; period: 2022-05-17 do 2022-05-17; najveći: 2191 (2022-05-17, 7,652,400 RSD)",
+   "contracts": 1,
+   "valueRsd": 7652400,
+   "source": {
+    "kind": "integrity_watch",
+    "title": "Integrity Watch Srbija – pretraga: RADUN AVIA DOO NOVI SAD",
+    "url": "https://integritywatchserbia.org.rs/?l=sr",
+    "retrievedAt": "2026-10-30T13:47:26.488Z",
+    "official": false
+   }
+  },
+  {
+   "supplierName": "RADUN AVIA DOO NOVI SAD",
+   "supplierPib": "100731198",
+   "contractingAuthority": "Opština Kanjiža",
+   "linkType": "povezanost sa javnim funkcionerom",
+   "detail": "Integrity Watch označava ponuđača kao firmu povezanu sa javnim funkcionerom (ime funkcionera nije deo otvorenih podataka); označenih ugovora kod naručioca: 3; period: 2021-03-15 do 2025-03-18; najveći: 000475452 (2025-03-18, 3,062,500 RSD)",
+   "contracts": 3,
+   "valueRsd": 7395833.34,
+   "source": {
+    "kind": "integrity_watch",
+    "title": "Integrity Watch Srbija – pretraga: RADUN AVIA DOO NOVI SAD",
+    "url": "https://integritywatchserbia.org.rs/?l=sr",
+    "retrievedAt": "2026-10-30T13:47:26.488Z",
+    "official": false
+   }
+  },
+  {
+   "supplierName": "RADUN AVIA DOO NOVI SAD",
+   "supplierPib": "100731198",
+   "contractingAuthority": "Predškolska ustanova Zrenjanin",
+   "linkType": "povezanost sa javnim funkcionerom",
+   "detail": "Integrity Watch označava ponuđača kao firmu povezanu sa javnim funkcionerom (ime funkcionera nije deo otvorenih podataka); označenih ugovora kod naručioca: 4; period: 2022-07-27 do 2026-02-09; najveći: 844 (2025-02-07, 2,883,333 RSD)",
+   "contracts": 4,
+   "valueRsd": 6759153.58,
+   "source": {
+    "kind": "integrity_watch",
+    "title": "Integrity Watch Srbija – pretraga: RADUN AVIA DOO NOVI SAD",
+    "url": "https://integritywatchserbia.org.rs/?l=sr",
+    "retrievedAt": "2026-10-30T13:47:26.488Z",
+    "official": false
+   }
+  },
+  {
+   "supplierName": "RADUN AVIA DOO NOVI SAD",
+   "supplierPib": "100731198",
+   "contractingAuthority": "JAVNO KOMUNALNO PREDUZEĆE PIJACE I PARKINZI ZRENJANIN",
+   "linkType": "povezanost sa javnim funkcionerom",
+   "detail": "Integrity Watch označava ponuđača kao firmu povezanu sa javnim funkcionerom (ime funkcionera nije deo otvorenih podataka); označenih ugovora kod naručioca: 3; period: 2023-02-10 do 2026-02-18; najveći: 1/108 (2026-02-18, 3,803,750 RSD)",
+   "contracts": 3,
+   "valueRsd": 6720615,
+   "source": {
+    "kind": "integrity_watch",
+    "title": "Integrity Watch Srbija – pretraga: RADUN AVIA DOO NOVI SAD",
+    "url": "https://integritywatchserbia.org.rs/?l=sr",
+    "retrievedAt": "2026-10-30T13:47:26.488Z",
+    "official": false
+   }
+  },
+  {
+   "supplierName": "RADUN AVIA DOO NOVI SAD",
+   "supplierPib": "100731198",
+   "contractingAuthority": "USTANOVA \"REZERVATI PRIRODE\" ZRENJANIN",
+   "linkType": "povezanost sa javnim funkcionerom",
+   "detail": "Integrity Watch označava ponuđača kao firmu povezanu sa javnim funkcionerom (ime funkcionera nije deo otvorenih podataka); označenih ugovora kod naručioca: 5; period: 2022-07-27 do 2025-08-05; najveći: V-2-10/2023-881 (2023-05-16, 2,534,925 RSD)",
+   "contracts": 5,
+   "valueRsd": 5696026.45,
+   "source": {
+    "kind": "integrity_watch",
+    "title": "Integrity Watch Srbija – pretraga: RADUN AVIA DOO NOVI SAD",
+    "url": "https://integritywatchserbia.org.rs/?l=sr",
+    "retrievedAt": "2026-10-30T13:47:26.488Z",
+    "official": false
+   }
+  },
+  {
+   "supplierName": "RADUN AVIA DOO NOVI SAD",
+   "supplierPib": "100731198",
+   "contractingAuthority": "KLINIČKI CENTAR VOJVODINE",
+   "linkType": "povezanost sa javnim funkcionerom",
+   "detail": "Integrity Watch označava ponuđača kao firmu povezanu sa javnim funkcionerom (ime funkcionera nije deo otvorenih podataka); označenih ugovora kod naručioca: 1; period: 2021-04-21 do 2021-04-21; najveći: 3/981 (2021-04-21, 4,552,083 RSD)",
+   "contracts": 1,
+   "valueRsd": 4552083,
+   "source": {
+    "kind": "integrity_watch",
+    "title": "Integrity Watch Srbija – pretraga: RADUN AVIA DOO NOVI SAD",
+    "url": "https://integritywatchserbia.org.rs/?l=sr",
+    "retrievedAt": "2026-10-30T13:47:26.488Z",
+    "official": false
+   }
+  },
+  {
+   "supplierName": "RADUN AVIA DOO NOVI SAD",
+   "supplierPib": "100731198",
+   "contractingAuthority": "TEHNIČKA ŠKOLA ZRENJANIN",
+   "linkType": "povezanost sa javnim funkcionerom",
+   "detail": "Integrity Watch označava ponuđača kao firmu povezanu sa javnim funkcionerom (ime funkcionera nije deo otvorenih podataka); označenih ugovora kod naručioca: 4; period: 2022-05-18 do 2025-05-14; najveći: 274/2022 (2022-05-18, 1,385,595 RSD)",
+   "contracts": 4,
+   "valueRsd": 4384635,
+   "source": {
+    "kind": "integrity_watch",
+    "title": "Integrity Watch Srbija – pretraga: RADUN AVIA DOO NOVI SAD",
+    "url": "https://integritywatchserbia.org.rs/?l=sr",
+    "retrievedAt": "2026-10-30T13:47:26.488Z",
+    "official": false
+   }
+  },
+  {
+   "supplierName": "RADUN AVIA DOO NOVI SAD",
+   "supplierPib": "100731198",
+   "contractingAuthority": "JAVNO KOMUNALNO PREDUZEĆE GRADSKA TOPLANA ZRENJANIN",
+   "linkType": "povezanost sa javnim funkcionerom",
+   "detail": "Integrity Watch označava ponuđača kao firmu povezanu sa javnim funkcionerom (ime funkcionera nije deo otvorenih podataka); označenih ugovora kod naručioca: 2; period: 2022-09-15 do 2025-09-16; najveći: 5477/1 (2025-09-16, 2,200,000 RSD)",
+   "contracts": 2,
+   "valueRsd": 4200000,
+   "source": {
+    "kind": "integrity_watch",
+    "title": "Integrity Watch Srbija – pretraga: RADUN AVIA DOO NOVI SAD",
+    "url": "https://integritywatchserbia.org.rs/?l=sr",
+    "retrievedAt": "2026-10-30T13:47:26.488Z",
+    "official": false
+   }
+  },
+  {
+   "supplierName": "RADUN AVIA DOO NOVI SAD",
+   "supplierPib": "100731198",
+   "contractingAuthority": "POLJOPRIVREDNA STRUČNA SLUŽBA ZRENJANIN DOO",
+   "linkType": "povezanost sa javnim funkcionerom",
+   "detail": "Integrity Watch označava ponuđača kao firmu povezanu sa javnim funkcionerom (ime funkcionera nije deo otvorenih podataka); označenih ugovora kod naručioca: 2; od toga u zajedničkoj ponudi: 1 (vrednost cele ponude 2,000,000 RSD, nije pripisana firmi); period: 2022-03-09 do 2025-10-21; najveći: 2032 (2025-10-21, 2,000,000 RSD)",
+   "contracts": 2,
+   "valueRsd": 2000000,
+   "source": {
+    "kind": "integrity_watch",
+    "title": "Integrity Watch Srbija – pretraga: RADUN AVIA DOO NOVI SAD",
+    "url": "https://integritywatchserbia.org.rs/?l=sr",
+    "retrievedAt": "2026-10-30T13:47:26.488Z",
+    "official": false
+   }
+  },
+  {
+   "supplierName": "RADUN AVIA DOO NOVI SAD",
+   "supplierPib": "100731198",
+   "contractingAuthority": "JKP VODOVOD OPŠTINE ŽABALJ",
+   "linkType": "povezanost sa javnim funkcionerom",
+   "detail": "Integrity Watch označava ponuđača kao firmu povezanu sa javnim funkcionerom (ime funkcionera nije deo otvorenih podataka); označenih ugovora kod naručioca: 1; period: 2023-07-04 do 2023-07-04; najveći: 204/23 (2023-07-04, 4,000,000 RSD)",
+   "contracts": 1,
+   "valueRsd": 4000000,
+   "source": {
+    "kind": "integrity_watch",
+    "title": "Integrity Watch Srbija – pretraga: RADUN AVIA DOO NOVI SAD",
+    "url": "https://integritywatchserbia.org.rs/?l=sr",
+    "retrievedAt": "2026-10-30T13:47:26.488Z",
+    "official": false
+   }
+  },
+  {
+   "supplierName": "RADUN AVIA DOO NOVI SAD",
+   "supplierPib": "100731198",
+   "contractingAuthority": "DOM ZDRAVLJA BAČ",
+   "linkType": "povezanost sa javnim funkcionerom",
+   "detail": "Integrity Watch označava ponuđača kao firmu povezanu sa javnim funkcionerom (ime funkcionera nije deo otvorenih podataka); označenih ugovora kod naručioca: 1; od toga u zajedničkoj ponudi: 1 (vrednost cele ponude 3,800,000 RSD, nije pripisana firmi); period: 2025-07-28 do 2025-07-28; najveći: 01-1035/25 (2025-07-28, 3,800,000 RSD)",
+   "contracts": 1,
+   "source": {
+    "kind": "integrity_watch",
+    "title": "Integrity Watch Srbija – pretraga: RADUN AVIA DOO NOVI SAD",
+    "url": "https://integritywatchserbia.org.rs/?l=sr",
+    "retrievedAt": "2026-10-30T13:47:26.488Z",
+    "official": false
+   }
+  },
+  {
+   "supplierName": "RADUN AVIA DOO NOVI SAD",
+   "supplierPib": "100731198",
+   "contractingAuthority": "SREDNJA POLJOPRIVREDNA ŠKOLA ZRENJANIN",
+   "linkType": "povezanost sa javnim funkcionerom",
+   "detail": "Integrity Watch označava ponuđača kao firmu povezanu sa javnim funkcionerom (ime funkcionera nije deo otvorenih podataka); označenih ugovora kod naručioca: 2; period: 2022-10-12 do 2023-10-20; najveći: 03-775/22 (2022-10-12, 1,510,380 RSD)",
+   "contracts": 2,
+   "valueRsd": 3001850,
+   "source": {
+    "kind": "integrity_watch",
+    "title": "Integrity Watch Srbija – pretraga: RADUN AVIA DOO NOVI SAD",
+    "url": "https://integritywatchserbia.org.rs/?l=sr",
+    "retrievedAt": "2026-10-30T13:47:26.488Z",
+    "official": false
+   }
+  },
+  {
+   "supplierName": "RADUN AVIA DOO NOVI SAD",
+   "supplierPib": "100731198",
+   "contractingAuthority": "OPŠTINA BAČ",
+   "linkType": "povezanost sa javnim funkcionerom",
+   "detail": "Integrity Watch označava ponuđača kao firmu povezanu sa javnim funkcionerom (ime funkcionera nije deo otvorenih podataka); označenih ugovora kod naručioca: 1; od toga u zajedničkoj ponudi: 1 (vrednost cele ponude 2,279,250 RSD, nije pripisana firmi); period: 2025-07-14 do 2025-07-14; najveći: 002726629 2025 08291 004 004 405 029 42 011 (2025-07-14, 2,279,250 RSD)",
+   "contracts": 1,
+   "source": {
+    "kind": "integrity_watch",
+    "title": "Integrity Watch Srbija – pretraga: RADUN AVIA DOO NOVI SAD",
+    "url": "https://integritywatchserbia.org.rs/?l=sr",
+    "retrievedAt": "2026-10-30T13:47:26.488Z",
+    "official": false
+   }
+  },
+  {
+   "supplierName": "RADUN AVIA DOO NOVI SAD",
+   "supplierPib": "100731198",
+   "contractingAuthority": "SPECIJALNA BOLNICA ZA REHABILITACIJU \"BANJA KANJIŽA\"",
+   "linkType": "povezanost sa javnim funkcionerom",
+   "detail": "Integrity Watch označava ponuđača kao firmu povezanu sa javnim funkcionerom (ime funkcionera nije deo otvorenih podataka); označenih ugovora kod naručioca: 1; period: 2022-06-17 do 2022-06-17; najveći: 10/97 (2022-06-17, 1,220,040 RSD)",
+   "contracts": 1,
+   "valueRsd": 1220040,
+   "source": {
+    "kind": "integrity_watch",
+    "title": "Integrity Watch Srbija – pretraga: RADUN AVIA DOO NOVI SAD",
+    "url": "https://integritywatchserbia.org.rs/?l=sr",
+    "retrievedAt": "2026-10-30T13:47:26.488Z",
+    "official": false
+   }
+  },
+  {
+   "supplierName": "RADUN AVIA DOO NOVI SAD",
+   "supplierPib": "100731198",
+   "contractingAuthority": "Opština Ada",
+   "linkType": "povezanost sa javnim funkcionerom",
+   "detail": "Integrity Watch označava ponuđača kao firmu povezanu sa javnim funkcionerom (ime funkcionera nije deo otvorenih podataka); označenih ugovora kod naručioca: 1; period: 2025-04-29 do 2025-04-29; najveći: 001654190 2025 08245 004 000 405 029/7 (2025-04-29, 1,207,800 RSD)",
+   "contracts": 1,
+   "valueRsd": 1207800,
+   "source": {
+    "kind": "integrity_watch",
+    "title": "Integrity Watch Srbija – pretraga: RADUN AVIA DOO NOVI SAD",
+    "url": "https://integritywatchserbia.org.rs/?l=sr",
+    "retrievedAt": "2026-10-30T13:47:26.488Z",
+    "official": false
+   }
+  },
+  {
+   "supplierName": "RADUN AVIA DOO NOVI SAD",
+   "supplierPib": "100731198",
+   "contractingAuthority": "SREDNJA STRUČNA ŠKOLA \"STEVAN PETROVIĆ-BRILE\"",
+   "linkType": "povezanost sa javnim funkcionerom",
+   "detail": "Integrity Watch označava ponuđača kao firmu povezanu sa javnim funkcionerom (ime funkcionera nije deo otvorenih podataka); označenih ugovora kod naručioca: 2; period: 2024-05-24 do 2025-05-28; najveći: 3-6 (2024-05-24, 542,947 RSD)",
+   "contracts": 2,
+   "valueRsd": 1016633.65,
+   "source": {
+    "kind": "integrity_watch",
+    "title": "Integrity Watch Srbija – pretraga: RADUN AVIA DOO NOVI SAD",
+    "url": "https://integritywatchserbia.org.rs/?l=sr",
+    "retrievedAt": "2026-10-30T13:47:26.488Z",
+    "official": false
+   }
+  },
+  {
+   "supplierName": "RADUN AVIA DOO NOVI SAD",
+   "supplierPib": "100731198",
+   "contractingAuthority": "GERONTOLOŠKI CENTAR BAČKA PALANKA",
+   "linkType": "povezanost sa javnim funkcionerom",
+   "detail": "Integrity Watch označava ponuđača kao firmu povezanu sa javnim funkcionerom (ime funkcionera nije deo otvorenih podataka); označenih ugovora kod naručioca: 1; od toga u zajedničkoj ponudi: 1 (vrednost cele ponude 994,056 RSD, nije pripisana firmi); period: 2025-04-05 do 2025-04-05; najveći: 01-46-514 (2025-04-05, 994,056 RSD)",
+   "contracts": 1,
+   "source": {
+    "kind": "integrity_watch",
+    "title": "Integrity Watch Srbija – pretraga: RADUN AVIA DOO NOVI SAD",
+    "url": "https://integritywatchserbia.org.rs/?l=sr",
+    "retrievedAt": "2026-10-30T13:47:26.488Z",
+    "official": false
+   }
+  }
+ ]
+}

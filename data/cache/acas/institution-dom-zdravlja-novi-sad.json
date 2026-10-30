@@ -1,0 +1,19 @@
+{
+ "source": "acas",
+ "key": "institution-dom-zdravlja-novi-sad",
+ "retrievedAt": "2026-10-30T20:49:46.910Z",
+ "data": [
+  {
+   "id": "2068",
+   "name": "Dom zdravlja Novi Sad",
+   "nameCyr": "Дом здравља Нови Сад",
+   "source": {
+    "kind": "acas",
+    "title": "ACAS registar – pretraga: Dom zdravlja Novi Sad",
+    "url": "https://publicacas.acas.rs/#/acas/funkcioner",
+    "retrievedAt": "2026-10-30T20:49:46.910Z",
+    "official": true
+   }
+  }
+ ]
+}

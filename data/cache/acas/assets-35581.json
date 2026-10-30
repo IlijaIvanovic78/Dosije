@@ -1,0 +1,92 @@
+{
+ "source": "acas",
+ "key": "assets-35581",
+ "retrievedAt": "2026-10-30T20:57:59.283Z",
+ "data": [
+  {
+   "personId": "35581",
+   "fullName": "Ivana Nikolić",
+   "reportDate": "2026-05-15",
+   "reason": "promene u toku vršenja funkcije",
+   "source": {
+    "kind": "acas",
+    "title": "ACAS – Izveštaj o imovini i prihodima funkcionera (15.05.2026.)",
+    "url": "https://publicacas.acas.rs/#/acas/funkcionerIzvestajDetails/5039452",
+    "retrievedAt": "2026-10-30T20:57:53.299Z",
+    "publishedAt": "2026-05-15",
+    "official": true
+   },
+   "summary": [
+    "Prihod od javne funkcije (Predsednik, Gradska Opština Novi Beograd): 172.000 RSD mesečno, od 16.07.2024.",
+    "Prihod od javne funkcije (Aerodrom Nikola Tesla a.d. Beograd): 104.000 RSD mesečno, od 16.06.2022.",
+    "Nepokretna imovina: 4 stavke (kuća, ostalo, stan ×2)",
+    "Objekti: kuća 624 m2; ostalo 5 ari; stan 61,48 m2; stan 61,48 m2"
+   ],
+   "incomes": [
+    {
+     "source": "Predsednik, Gradska Opština Novi Beograd",
+     "amountRsd": 172000,
+     "period": "mesečno, od 16.07.2024."
+    },
+    {
+     "source": "Aerodrom Nikola Tesla a.d. Beograd",
+     "amountRsd": 104000,
+     "period": "mesečno, od 16.06.2022."
+    }
+   ]
+  },
+  {
+   "personId": "35581",
+   "fullName": "Ivana Nikolić",
+   "reportDate": "2025-05-13",
+   "reason": "promene u toku vršenja funkcije",
+   "source": {
+    "kind": "acas",
+    "title": "ACAS – Izveštaj o imovini i prihodima funkcionera (13.05.2025.)",
+    "url": "https://publicacas.acas.rs/#/acas/funkcionerIzvestajDetails/5033105",
+    "retrievedAt": "2026-10-30T20:57:56.442Z",
+    "publishedAt": "2025-05-13",
+    "official": true
+   },
+   "summary": [
+    "Prihod od javne funkcije (Predsednik opštine, Gradska Opština Novi Beograd): 172.000 RSD mesečno, od 16.07.2024.",
+    "Nepokretna imovina: 3 stavke (kuća, ostalo ×2)",
+    "Objekti: kuća 414 m2; ostalo 5 ari; ostalo 26,78 m2 + 31,62 m2"
+   ],
+   "incomes": [
+    {
+     "source": "Predsednik opštine, Gradska Opština Novi Beograd",
+     "amountRsd": 172000,
+     "period": "mesečno, od 16.07.2024."
+    }
+   ]
+  },
+  {
+   "personId": "35581",
+   "fullName": "Ivana Nikolić",
+   "reportDate": "2024-08-19",
+   "reason": "stupanje na javnu funkciju",
+   "source": {
+    "kind": "acas",
+    "title": "ACAS – Izveštaj o imovini i prihodima funkcionera (19.08.2024.)",
+    "url": "https://publicacas.acas.rs/#/acas/funkcionerIzvestajDetails/5028210",
+    "retrievedAt": "2026-10-30T20:57:58.540Z",
+    "publishedAt": "2024-08-19",
+    "official": true
+   },
+   "summary": [
+    "Prihod od javne funkcije (Predsednik opštine, Gradska Opština Novi Beograd): 172.000 RSD mesečno, od 16.07.2024.",
+    "Nepokretna imovina: 3 stavke (kuća, ostalo ×2)",
+    "Objekti: kuća 414 m2; ostalo 5 ari; ostalo 26,78 m2 + 31,62 m2",
+    "Pokretna imovina (registrovana): 1 (automobil Tiguan 2017)"
+   ],
+   "incomes": [
+    {
+     "source": "Predsednik opštine, Gradska Opština Novi Beograd",
+     "amountRsd": 172000,
+     "period": "mesečno, od 16.07.2024."
+    }
+   ]
+  }
+ ]
+}

@@ -1,0 +1,46 @@
+{
+ "source": "acas",
+ "key": "person-uros-loncar",
+ "retrievedAt": "2026-10-30T20:50:56.217Z",
+ "data": [
+  {
+   "id": "10262",
+   "fullName": "Uroš Lončar",
+   "fullNameCyr": "Урош Лончар",
+   "position": "Direktor",
+   "positionCyr": "Директор",
+   "isActing": false,
+   "institutionName": "JKP Vodovod i kanalizacija Novi Sad",
+   "from": "2023-11-03",
+   "appointedBy": "Skupština grada Novog Sada",
+   "source": {
+    "kind": "acas",
+    "title": "ACAS registar – pretraga: JKP Vodovod i kanalizacija Novi Sad",
+    "url": "https://publicacas.acas.rs/#/acas/funkcioner",
+    "retrievedAt": "2026-10-30T20:50:56.217Z",
+    "publishedAt": "2023-11-03",
+    "official": true
+   }
+  },
+  {
+   "id": "10262",
+   "fullName": "Uroš Lončar",
+   "fullNameCyr": "Урош Лончар",
+   "position": "v.d. direktora",
+   "positionCyr": "В.Д. Директора",
+   "isActing": true,
+   "institutionName": "JKP Vodovod i kanalizacija Novi Sad",
+   "from": "2023-02-24",
+   "to": "2023-11-03",
+   "appointedBy": "Skupština grada Novog Sada",
+   "source": {
+    "kind": "acas",
+    "title": "ACAS registar – pretraga: JKP Vodovod i kanalizacija Novi Sad",
+    "url": "https://publicacas.acas.rs/#/acas/funkcioner",
+    "retrievedAt": "2026-10-30T20:50:56.217Z",
+    "publishedAt": "2023-02-24",
+    "official": true
+   }
+  }
+ ]
+}

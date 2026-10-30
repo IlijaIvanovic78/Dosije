@@ -1,0 +1,34 @@
+{
+ "source": "acas",
+ "key": "assets-5005462",
+ "retrievedAt": "2026-10-30T20:58:39.924Z",
+ "data": [
+  {
+   "personId": "5005462",
+   "fullName": "Bili Vulović",
+   "reportDate": "2020-10-06",
+   "reason": "stupanje na javnu funkciju",
+   "source": {
+    "kind": "acas",
+    "title": "ACAS – Izveštaj o imovini i prihodima funkcionera (06.10.2020.)",
+    "url": "https://publicacas.acas.rs/#/acas/funkcionerIzvestajDetails/5009368",
+    "retrievedAt": "2026-10-30T20:58:38.789Z",
+    "publishedAt": "2020-10-06",
+    "official": true
+   },
+   "summary": [
+    "Prihod od javne funkcije (Direktor, Turistička organizacija opštine Lučani): 56.752,61 RSD mesečno, od 07.09.2020.",
+    "Nepokretna imovina: 3 stavke (stan ×2, poslovni prostor)",
+    "Objekti: stan 46 m2; stan 83m2; poslovni prostor 21 m2",
+    "Pokretna imovina (registrovana): 1 (automobil audi a6 2014)"
+   ],
+   "incomes": [
+    {
+     "source": "Direktor, Turistička organizacija opštine Lučani",
+     "amountRsd": 56752.61,
+     "period": "mesečno, od 07.09.2020."
+    }
+   ]
+  }
+ ]
+}

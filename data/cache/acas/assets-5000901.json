@@ -1,0 +1,58 @@
+{
+ "source": "acas",
+ "key": "assets-5000901",
+ "retrievedAt": "2026-10-30T20:53:20.569Z",
+ "data": [
+  {
+   "personId": "5000901",
+   "fullName": "Boris Bursać",
+   "reportDate": "2025-03-04",
+   "reason": "prestanak javne funkcije",
+   "source": {
+    "kind": "acas",
+    "title": "ACAS – Izveštaj o imovini i prihodima funkcionera (04.03.2025.)",
+    "url": "https://publicacas.acas.rs/#/acas/funkcionerIzvestajDetails/5031049",
+    "retrievedAt": "2026-10-30T20:53:09.196Z",
+    "publishedAt": "2025-03-04",
+    "official": true
+   },
+   "summary": [
+    "Prihod od javne funkcije (Narodni poslanik, Narodna skupština Republike Srbije): 120.000,32 RSD mesečno, 26.10.2020. - 01.08.2022.",
+    "Nepokretna imovina: nije prijavljena",
+    "Pokretna imovina (registrovana): 1 (automobil Opel - Corsa 2008)"
+   ],
+   "incomes": [
+    {
+     "source": "Narodni poslanik, Narodna skupština Republike Srbije",
+     "amountRsd": 120000.32,
+     "period": "mesečno, 26.10.2020. - 01.08.2022."
+    }
+   ]
+  },
+  {
+   "personId": "5000901",
+   "fullName": "Boris Bursać",
+   "reportDate": "2020-12-15",
+   "reason": "stupanje na javnu funkciju",
+   "source": {
+    "kind": "acas",
+    "title": "ACAS – Izveštaj o imovini i prihodima funkcionera (15.12.2020.)",
+    "url": "https://publicacas.acas.rs/#/acas/funkcionerIzvestajDetails/5003132",
+    "retrievedAt": "2026-10-30T20:53:14.429Z",
+    "publishedAt": "2020-12-15",
+    "official": true
+   },
+   "summary": [
+    "Prihod od javne funkcije (Narodni poslanik, Narodna skupština Republike Srbije): 120.000,32 RSD mesečno, od 26.10.2020.",
+    "Nepokretna imovina: nije prijavljena"
+   ],
+   "incomes": [
+    {
+     "source": "Narodni poslanik, Narodna skupština Republike Srbije",
+     "amountRsd": 120000.32,
+     "period": "mesečno, od 26.10.2020."
+    }
+   ]
+  }
+ ]
+}

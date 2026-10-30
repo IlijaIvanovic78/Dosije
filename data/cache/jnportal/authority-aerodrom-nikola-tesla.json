@@ -1,0 +1,13 @@
+{
+ "source": "jnportal",
+ "key": "authority-aerodrom-nikola-tesla",
+ "retrievedAt": "2026-10-30T20:57:46.029Z",
+ "data": [
+  {
+   "Id": 2933,
+   "Name": "АД АЕРОДРОМ НИКОЛА ТЕСЛА БЕОГРАД",
+   "IdentificationNumber": "100000539",
+   "City": "СУРЧИН"
+  }
+ ]
+}

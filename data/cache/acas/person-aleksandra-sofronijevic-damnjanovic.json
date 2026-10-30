@@ -1,0 +1,105 @@
+{
+ "source": "acas",
+ "key": "person-aleksandra-sofronijevic-damnjanovic",
+ "retrievedAt": "2026-10-30T21:05:34.898Z",
+ "data": [
+  {
+   "id": "2287",
+   "fullName": "Aleksandra Sofronijević (Damnjanović)",
+   "fullNameCyr": "Александра Софронијевић (Дамњановић)",
+   "position": "Ministar",
+   "positionCyr": "Министар",
+   "isActing": false,
+   "institutionName": "Ministarstvo građevinarstva, saobraćaja i infrastrukture",
+   "from": "2025-04-16",
+   "appointedBy": "Narodna skupština Republike Srbije",
+   "source": {
+    "kind": "acas",
+    "title": "ACAS registar – pretraga: Ministarstvo građevinarstva, saobraćaja i infrastrukture",
+    "url": "https://publicacas.acas.rs/#/acas/funkcioner",
+    "retrievedAt": "2026-10-30T21:05:34.897Z",
+    "publishedAt": "2025-04-16",
+    "official": true
+   }
+  },
+  {
+   "id": "2287",
+   "fullName": "Aleksandra Sofronijević (Damnjanović)",
+   "fullNameCyr": "Александра Софронијевић (Дамњановић)",
+   "position": "Član upravnog odbora",
+   "positionCyr": "Члан управног одбора",
+   "isActing": false,
+   "institutionName": "Fond za razvoj Republike Srbije",
+   "from": "2025-05-08",
+   "appointedBy": "Vlada Republike Srbije",
+   "source": {
+    "kind": "acas",
+    "title": "ACAS registar – pretraga: Fond za razvoj Republike Srbije",
+    "url": "https://publicacas.acas.rs/#/acas/funkcioner",
+    "retrievedAt": "2026-10-30T21:05:34.897Z",
+    "publishedAt": "2025-05-08",
+    "official": true
+   }
+  },
+  {
+   "id": "2287",
+   "fullName": "Aleksandra Sofronijević (Damnjanović)",
+   "fullNameCyr": "Александра Софронијевић (Дамњановић)",
+   "position": "Član upravnog odbora",
+   "positionCyr": "Члан управног одбора",
+   "isActing": false,
+   "institutionName": "Direktorat civilnog vazduhoplovstva Republike Srbije",
+   "from": "2021-01-14",
+   "to": "2025-05-29",
+   "appointedBy": "Vlada Republike Srbije",
+   "source": {
+    "kind": "acas",
+    "title": "ACAS registar – pretraga: Direktorat civilnog vazduhoplovstva Republike Srbije",
+    "url": "https://publicacas.acas.rs/#/acas/funkcioner",
+    "retrievedAt": "2026-10-30T21:05:34.897Z",
+    "publishedAt": "2021-01-14",
+    "official": true
+   }
+  },
+  {
+   "id": "2287",
+   "fullName": "Aleksandra Sofronijević (Damnjanović)",
+   "fullNameCyr": "Александра Софронијевић (Дамњановић)",
+   "position": "Državni sekretar",
+   "positionCyr": "Државни секретар",
+   "isActing": false,
+   "institutionName": "Ministarstvo građevinarstva, saobraćaja i infrastrukture",
+   "from": "2024-06-13",
+   "to": "2025-04-16",
+   "appointedBy": "Vlada Republike Srbije",
+   "source": {
+    "kind": "acas",
+    "title": "ACAS registar – pretraga: Ministarstvo građevinarstva, saobraćaja i infrastrukture",
+    "url": "https://publicacas.acas.rs/#/acas/funkcioner",
+    "retrievedAt": "2026-10-30T21:05:34.897Z",
+    "publishedAt": "2024-06-13",
+    "official": true
+   }
+  },
+  {
+   "id": "2287",
+   "fullName": "Aleksandra Sofronijević (Damnjanović)",
+   "fullNameCyr": "Александра Софронијевић (Дамњановић)",
+   "position": "Državni sekretar",
+   "positionCyr": "Државни секретар",
+   "isActing": false,
+   "institutionName": "Ministarstvo građevinarstva, saobraćaja i infrastrukture",
+   "from": "2020-11-05",
+   "to": "2024-05-02",
+   "appointedBy": "Vlada Republike Srbije",
+   "source": {
+    "kind": "acas",
+    "title": "ACAS registar – pretraga: Ministarstvo građevinarstva, saobraćaja i infrastrukture",
+    "url": "https://publicacas.acas.rs/#/acas/funkcioner",
+    "retrievedAt": "2026-10-30T21:05:34.898Z",
+    "publishedAt": "2020-11-05",
+    "official": true
+   }
+  }
+ ]
+}

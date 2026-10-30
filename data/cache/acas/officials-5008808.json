@@ -1,0 +1,121 @@
+{
+ "source": "acas",
+ "key": "officials-5008808",
+ "retrievedAt": "2026-10-30T20:51:33.314Z",
+ "data": [
+  {
+   "id": "50343",
+   "fullName": "Aleksandar Bjeličić",
+   "fullNameCyr": "Александар Бјеличић",
+   "position": "Izvršni direktor",
+   "positionCyr": "Извршни директор",
+   "isActing": false,
+   "institutionName": "AD \"Elektroprivreda Srbije\"",
+   "from": "2024-10-02",
+   "appointedBy": "Nadzorni odbor preduzeća",
+   "source": {
+    "kind": "acas",
+    "title": "ACAS registar – pretraga: AD \"Elektroprivreda Srbije\"",
+    "url": "https://publicacas.acas.rs/#/acas/funkcioner",
+    "retrievedAt": "2026-10-30T20:51:33.314Z",
+    "publishedAt": "2024-10-02",
+    "official": true
+   }
+  },
+  {
+   "id": "5043505",
+   "fullName": "Dušan Živković",
+   "fullNameCyr": "Душан Живковић",
+   "position": "Izvršni direktor",
+   "positionCyr": "Извршни директор",
+   "isActing": false,
+   "institutionName": "AD \"Elektroprivreda Srbije\"",
+   "from": "2023-06-16",
+   "appointedBy": "Nadzorni odbor preduzeća",
+   "source": {
+    "kind": "acas",
+    "title": "ACAS registar – pretraga: AD \"Elektroprivreda Srbije\"",
+    "url": "https://publicacas.acas.rs/#/acas/funkcioner",
+    "retrievedAt": "2026-10-30T20:51:33.314Z",
+    "publishedAt": "2023-06-16",
+    "official": true
+   }
+  },
+  {
+   "id": "40005",
+   "fullName": "Savo Bezmarević",
+   "fullNameCyr": "Саво Безмаревић",
+   "position": "Izvršni direktor",
+   "positionCyr": "Извршни директор",
+   "isActing": false,
+   "institutionName": "AD \"Elektroprivreda Srbije\"",
+   "from": "2024-01-01",
+   "appointedBy": "Nadzorni odbor preduzeća",
+   "source": {
+    "kind": "acas",
+    "title": "ACAS registar – pretraga: AD \"Elektroprivreda Srbije\"",
+    "url": "https://publicacas.acas.rs/#/acas/funkcioner",
+    "retrievedAt": "2026-10-30T20:51:33.314Z",
+    "publishedAt": "2024-01-01",
+    "official": true
+   }
+  },
+  {
+   "id": "5043504",
+   "fullName": "Milan Laković",
+   "fullNameCyr": "Милан Лаковић",
+   "position": "Izvršni direktor",
+   "positionCyr": "Извршни директор",
+   "isActing": false,
+   "institutionName": "AD \"Elektroprivreda Srbije\"",
+   "from": "2022-03-14",
+   "appointedBy": "Nadzorni odbor preduzeća",
+   "source": {
+    "kind": "acas",
+    "title": "ACAS registar – pretraga: AD \"Elektroprivreda Srbije\"",
+    "url": "https://publicacas.acas.rs/#/acas/funkcioner",
+    "retrievedAt": "2026-10-30T20:51:33.314Z",
+    "publishedAt": "2022-03-14",
+    "official": true
+   }
+  },
+  {
+   "id": "5043503",
+   "fullName": "Hristina Radovanović",
+   "fullNameCyr": "Христина Радовановић",
+   "position": "Izvršni direktor",
+   "positionCyr": "Извршни директор",
+   "isActing": false,
+   "institutionName": "AD \"Elektroprivreda Srbije\"",
+   "from": "2024-08-15",
+   "appointedBy": "Nadzorni odbor preduzeća",
+   "source": {
+    "kind": "acas",
+    "title": "ACAS registar – pretraga: AD \"Elektroprivreda Srbije\"",
+    "url": "https://publicacas.acas.rs/#/acas/funkcioner",
+    "retrievedAt": "2026-10-30T20:51:33.314Z",
+    "publishedAt": "2024-08-15",
+    "official": true
+   }
+  },
+  {
+   "id": "5043449",
+   "fullName": "Katarina Andrejević",
+   "fullNameCyr": "Катарина Андрејевић",
+   "position": "Izvršni direktor",
+   "positionCyr": "Извршни директор",
+   "isActing": false,
+   "institutionName": "AD \"Elektroprivreda Srbije\"",
+   "from": "2025-06-04",
+   "appointedBy": "Nadzorni odbor preduzeća",
+   "source": {
+    "kind": "acas",
+    "title": "ACAS registar – pretraga: AD \"Elektroprivreda Srbije\"",
+    "url": "https://publicacas.acas.rs/#/acas/funkcioner",
+    "retrievedAt": "2026-10-30T20:51:33.314Z",
+    "publishedAt": "2025-06-04",
+    "official": true
+   }
+  }
+ ]
+}

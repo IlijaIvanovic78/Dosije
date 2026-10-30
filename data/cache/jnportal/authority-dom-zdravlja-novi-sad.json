@@ -1,0 +1,55 @@
+{
+ "source": "jnportal",
+ "key": "authority-dom-zdravlja-novi-sad",
+ "retrievedAt": "2026-10-30T20:49:50.010Z",
+ "data": [
+  {
+   "Id": 17028,
+   "Name": "ДОМ ЗДРАВЉА \"ДР ДАНИЦА И КОСТА ШАМАНОВИЋ\"",
+   "IdentificationNumber": "100820824",
+   "City": "КНИЋ"
+  },
+  {
+   "Id": 5817,
+   "Name": "ДОМ ЗДРАВЉА \"ДР ЈОВАН ЈОВАНОВИЋ-ЗМАЈ\"",
+   "IdentificationNumber": "100535469",
+   "City": "СТАРА ПАЗОВА"
+  },
+  {
+   "Id": 2926,
+   "Name": "ДОМ ЗДРАВЉА \"ДР МЛАДЕН СТОЈАНОВИЋ\"",
+   "IdentificationNumber": "100752135",
+   "City": "БАЧКА ПАЛАНКА"
+  },
+  {
+   "Id": 2763,
+   "Name": "ДОМ ЗДРАВЉА \"НОВИ БЕОГРАД\"",
+   "IdentificationNumber": "101674909",
+   "City": "НОВИ БЕОГРАД"
+  },
+  {
+   "Id": 727,
+   "Name": "ДОМ ЗДРАВЉА \"НОВИ САД\"",
+   "IdentificationNumber": "101695296",
+   "City": "НОВИ САД"
+  },
+  {
+   "Id": 2461,
+   "Name": "ДОМ ЗДРАВЉА НОВИ БЕЧЕЈ",
+   "IdentificationNumber": "101431068",
+   "City": "НОВИ БЕЧЕЈ"
+  },
+  {
+   "Id": 2814,
+   "Name": "ДОМ ЗДРАВЉА НОВИ КНЕЖЕВАЦ",
+   "IdentificationNumber": "101460328",
+   "City": "НОВИ КНЕЖЕВАЦ"
+  },
+  {
+   "Id": 7121,
+   "Name": "Дом здравља Нови Пазар",
+   "IdentificationNumber": "107659125",
+   "City": "Нови Пазар"
+  }
+ ]
+}

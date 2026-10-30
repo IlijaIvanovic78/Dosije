@@ -1,0 +1,104 @@
+{
+ "source": "acas",
+ "key": "person-dusan-bajatovic",
+ "retrievedAt": "2026-10-30T20:52:19.782Z",
+ "data": [
+  {
+   "id": "85",
+   "fullName": "Dušan Bajatović",
+   "fullNameCyr": "Душан Бајатовић",
+   "position": "Poslanik",
+   "positionCyr": "Посланик",
+   "isActing": false,
+   "institutionName": "Skupština AP Vojvodine",
+   "from": "2024-02-09",
+   "to": "2024-04-24",
+   "appointedBy": "Neposredno od građana",
+   "source": {
+    "kind": "acas",
+    "title": "ACAS registar – pretraga: Skupština AP Vojvodine",
+    "url": "https://publicacas.acas.rs/#/acas/funkcioner",
+    "retrievedAt": "2026-10-30T20:52:19.782Z",
+    "publishedAt": "2024-02-09",
+    "official": true
+   }
+  },
+  {
+   "id": "85",
+   "fullName": "Dušan Bajatović",
+   "fullNameCyr": "Душан Бајатовић",
+   "position": "Narodni poslanik",
+   "positionCyr": "Народни посланик",
+   "isActing": false,
+   "institutionName": "Narodna skupština Republike Srbije",
+   "from": "2024-02-06",
+   "appointedBy": "Neposredno od građana",
+   "source": {
+    "kind": "acas",
+    "title": "ACAS registar – pretraga: Narodna skupština Republike Srbije",
+    "url": "https://publicacas.acas.rs/#/acas/funkcioner",
+    "retrievedAt": "2026-10-30T20:52:19.782Z",
+    "publishedAt": "2024-02-06",
+    "official": true
+   }
+  },
+  {
+   "id": "85",
+   "fullName": "Dušan Bajatović",
+   "fullNameCyr": "Душан Бајатовић",
+   "position": "Predsednik skupštine",
+   "positionCyr": "Председник Скупштине",
+   "isActing": false,
+   "institutionName": "Novi Sad Gas d.o.o.",
+   "from": "2020-04-16",
+   "appointedBy": "Vlada Republike Srbije",
+   "source": {
+    "kind": "acas",
+    "title": "ACAS registar – pretraga: Novi Sad Gas d.o.o.",
+    "url": "https://publicacas.acas.rs/#/acas/funkcioner",
+    "retrievedAt": "2026-10-30T20:52:19.782Z",
+    "publishedAt": "2020-04-16",
+    "official": true
+   }
+  },
+  {
+   "id": "85",
+   "fullName": "Dušan Bajatović",
+   "fullNameCyr": "Душан Бајатовић",
+   "position": "Narodni poslanik",
+   "positionCyr": "Народни посланик",
+   "isActing": false,
+   "institutionName": "Narodna skupština Republike Srbije",
+   "from": "2022-08-01",
+   "to": "2024-02-06",
+   "appointedBy": "Neposredno od građana",
+   "source": {
+    "kind": "acas",
+    "title": "ACAS registar – pretraga: Narodna skupština Republike Srbije",
+    "url": "https://publicacas.acas.rs/#/acas/funkcioner",
+    "retrievedAt": "2026-10-30T20:52:19.782Z",
+    "publishedAt": "2022-08-01",
+    "official": true
+   }
+  },
+  {
+   "id": "85",
+   "fullName": "Dušan Bajatović",
+   "fullNameCyr": "Душан Бајатовић",
+   "position": "Generalni direktor",
+   "positionCyr": "Генерални Директор",
+   "isActing": false,
+   "institutionName": "JP Srbijagas Novi Sad",
+   "from": "2012-11-28",
+   "appointedBy": "Vlada Republike Srbije",
+   "source": {
+    "kind": "acas",
+    "title": "ACAS registar – pretraga: JP Srbijagas Novi Sad",
+    "url": "https://publicacas.acas.rs/#/acas/funkcioner",
+    "retrievedAt": "2026-10-30T20:52:19.782Z",
+    "publishedAt": "2012-11-28",
+    "official": true
+   }
+  }
+ ]
+}

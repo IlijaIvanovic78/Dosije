@@ -1,0 +1,31 @@
+{
+ "source": "resolver",
+ "key": "institution-ministarstvo-gradjevinarstva-saobracaja-i-infrastrukture",
+ "retrievedAt": "2026-10-30T20:55:22.932Z",
+ "data": {
+  "query": "Ministarstvo građevinarstva, saobraćaja i infrastrukture",
+  "slug": "ministarstvo-gradjevinarstva-saobracaja-i-infrastrukture",
+  "name": "Ministarstvo građevinarstva, saobraćaja i infrastrukture",
+  "nameCyr": "Министарство грађевинарства, саобраћаја и инфраструктуре",
+  "legalType": "organ_drzavne_uprave",
+  "pib": "108510088",
+  "acasId": "9314",
+  "jnId": "2167",
+  "sources": [
+   {
+    "kind": "acas",
+    "title": "ACAS registar – pretraga: Ministarstvo građevinarstva, saobraćaja i infrastrukture",
+    "url": "https://publicacas.acas.rs/#/acas/funkcioner",
+    "retrievedAt": "2026-10-30T20:55:10.648Z",
+    "official": true
+   },
+   {
+    "kind": "jnportal",
+    "title": "Portal javnih nabavki – ugovori naručioca: MINISTARSTVO GRAĐEVINARSTVA, SAOBRAĆAJA I INFRASTRUKTURE",
+    "url": "https://jnportal.ujn.gov.rs/ugovori?initFilter=%5B%22OfficialName%22%2C%22%3D%22%2C%22%D0%9C%D0%98%D0%9D%D0%98%D0%A1%D0%A2%D0%90%D0%A0%D0%A1%D0%A2%D0%92%D0%9E%20%D0%93%D0%A0%D0%90%D0%82%D0%95%D0%92%D0%98%D0%9D%D0%90%D0%A0%D0%A1%D0%A2%D0%92%D0%90%2C%20%D0%A1%D0%90%D0%9E%D0%91%D0%A0%D0%90%D0%8B%D0%90%D0%88%D0%90%20%D0%98%20%D0%98%D0%9D%D0%A4%D0%A0%D0%90%D0%A1%D0%A2%D0%A0%D0%A3%D0%9A%D0%A2%D0%A3%D0%A0%D0%95%22%5D",
+    "retrievedAt": "2026-10-30T20:55:22.819Z",
+    "official": true
+   }
+  ]
+ }
+}

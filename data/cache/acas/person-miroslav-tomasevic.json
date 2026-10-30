@@ -1,0 +1,26 @@
+{
+ "source": "acas",
+ "key": "person-miroslav-tomasevic",
+ "retrievedAt": "2026-10-30T20:51:50.570Z",
+ "data": [
+  {
+   "id": "5014860",
+   "fullName": "Miroslav Tomašević",
+   "fullNameCyr": "Мирослав Томашевић",
+   "position": "v.d. generalnog direktora",
+   "positionCyr": "В.Д. Генералног Директора",
+   "isActing": true,
+   "institutionName": "JP EPS Beograd",
+   "from": "2022-03-03",
+   "appointedBy": "Vlada Republike Srbije",
+   "source": {
+    "kind": "acas",
+    "title": "ACAS registar – pretraga: JP EPS Beograd",
+    "url": "https://publicacas.acas.rs/#/acas/funkcioner",
+    "retrievedAt": "2026-10-30T20:51:50.570Z",
+    "publishedAt": "2022-03-03",
+    "official": true
+   }
+  }
+ ]
+}

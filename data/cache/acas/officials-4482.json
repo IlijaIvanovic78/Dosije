@@ -1,0 +1,1165 @@
+{
+ "source": "acas",
+ "key": "officials-4482",
+ "retrievedAt": "2026-10-30T20:49:10.843Z",
+ "data": [
+  {
+   "id": "43509",
+   "fullName": "Vuk Raonić",
+   "fullNameCyr": "Вук Раонић",
+   "position": "Pomoćnik gradonačelnika",
+   "positionCyr": "Помоћник Градоначелника",
+   "isActing": false,
+   "institutionName": "Grad Novi Sad",
+   "from": "2025-11-28",
+   "appointedBy": "Gradonačelnik grada Novog Sada",
+   "source": {
+    "kind": "acas",
+    "title": "ACAS registar – pretraga: Grad Novi Sad",
+    "url": "https://publicacas.acas.rs/#/acas/funkcioner",
+    "retrievedAt": "2026-10-30T20:49:10.842Z",
+    "publishedAt": "2025-11-28",
+    "official": true
+   }
+  },
+  {
+   "id": "41749",
+   "fullName": "Dragan Marinković",
+   "fullNameCyr": "Драган Маринковић",
+   "position": "Član veća",
+   "positionCyr": "Члан Већа",
+   "isActing": false,
+   "institutionName": "Grad Novi Sad",
+   "from": "2025-07-31",
+   "appointedBy": "Skupština grada Novog Sada",
+   "source": {
+    "kind": "acas",
+    "title": "ACAS registar – pretraga: Grad Novi Sad",
+    "url": "https://publicacas.acas.rs/#/acas/funkcioner",
+    "retrievedAt": "2026-10-30T20:49:10.842Z",
+    "publishedAt": "2025-07-31",
+    "official": true
+   }
+  },
+  {
+   "id": "10264",
+   "fullName": "Mirjana Marković",
+   "fullNameCyr": "Мирјана Марковић",
+   "position": "Član veća",
+   "positionCyr": "Члан Већа",
+   "isActing": false,
+   "institutionName": "Grad Novi Sad",
+   "from": "2025-02-24",
+   "appointedBy": "Skupština grada Novog Sada",
+   "source": {
+    "kind": "acas",
+    "title": "ACAS registar – pretraga: Grad Novi Sad",
+    "url": "https://publicacas.acas.rs/#/acas/funkcioner",
+    "retrievedAt": "2026-10-30T20:49:10.842Z",
+    "publishedAt": "2025-02-24",
+    "official": true
+   }
+  },
+  {
+   "id": "5031863",
+   "fullName": "Vanja Petković",
+   "fullNameCyr": "Вања Петковић",
+   "position": "Član veća",
+   "positionCyr": "Члан Већа",
+   "isActing": false,
+   "institutionName": "Grad Novi Sad",
+   "from": "2025-02-24",
+   "appointedBy": "Skupština grada Novog Sada",
+   "source": {
+    "kind": "acas",
+    "title": "ACAS registar – pretraga: Grad Novi Sad",
+    "url": "https://publicacas.acas.rs/#/acas/funkcioner",
+    "retrievedAt": "2026-10-30T20:49:10.842Z",
+    "publishedAt": "2025-02-24",
+    "official": true
+   }
+  },
+  {
+   "id": "34790",
+   "fullName": "Sonja Radaković",
+   "fullNameCyr": "Соња Радаковић",
+   "position": "Član veća",
+   "positionCyr": "Члан Већа",
+   "isActing": false,
+   "institutionName": "Grad Novi Sad",
+   "from": "2025-02-24",
+   "appointedBy": "Skupština grada Novog Sada",
+   "source": {
+    "kind": "acas",
+    "title": "ACAS registar – pretraga: Grad Novi Sad",
+    "url": "https://publicacas.acas.rs/#/acas/funkcioner",
+    "retrievedAt": "2026-10-30T20:49:10.842Z",
+    "publishedAt": "2025-02-24",
+    "official": true
+   }
+  },
+  {
+   "id": "5017347",
+   "fullName": "Tatjana Medved",
+   "fullNameCyr": "Татјана Медвед",
+   "position": "Član veća",
+   "positionCyr": "Члан Већа",
+   "isActing": false,
+   "institutionName": "Grad Novi Sad",
+   "from": "2025-02-24",
+   "appointedBy": "Skupština grada Novog Sada",
+   "source": {
+    "kind": "acas",
+    "title": "ACAS registar – pretraga: Grad Novi Sad",
+    "url": "https://publicacas.acas.rs/#/acas/funkcioner",
+    "retrievedAt": "2026-10-30T20:49:10.842Z",
+    "publishedAt": "2025-02-24",
+    "official": true
+   }
+  },
+  {
+   "id": "32016",
+   "fullName": "Milorad Radojević",
+   "fullNameCyr": "Милорад Радојевић",
+   "position": "Član veća",
+   "positionCyr": "Члан Већа",
+   "isActing": false,
+   "institutionName": "Grad Novi Sad",
+   "from": "2025-02-24",
+   "appointedBy": "Skupština grada Novog Sada",
+   "source": {
+    "kind": "acas",
+    "title": "ACAS registar – pretraga: Grad Novi Sad",
+    "url": "https://publicacas.acas.rs/#/acas/funkcioner",
+    "retrievedAt": "2026-10-30T20:49:10.842Z",
+    "publishedAt": "2025-02-24",
+    "official": true
+   }
+  },
+  {
+   "id": "5015340",
+   "fullName": "Aleksandar Bulajić",
+   "fullNameCyr": "Александар Булајић",
+   "position": "Član veća",
+   "positionCyr": "Члан Већа",
+   "isActing": false,
+   "institutionName": "Grad Novi Sad",
+   "from": "2025-02-24",
+   "appointedBy": "Skupština grada Novog Sada",
+   "source": {
+    "kind": "acas",
+    "title": "ACAS registar – pretraga: Grad Novi Sad",
+    "url": "https://publicacas.acas.rs/#/acas/funkcioner",
+    "retrievedAt": "2026-10-30T20:49:10.842Z",
+    "publishedAt": "2025-02-24",
+    "official": true
+   }
+  },
+  {
+   "id": "29534",
+   "fullName": "Milovan Amidžić",
+   "fullNameCyr": "Милован Амиџић",
+   "position": "Član veća",
+   "positionCyr": "Члан Већа",
+   "isActing": false,
+   "institutionName": "Grad Novi Sad",
+   "from": "2025-02-24",
+   "appointedBy": "Skupština grada Novog Sada",
+   "source": {
+    "kind": "acas",
+    "title": "ACAS registar – pretraga: Grad Novi Sad",
+    "url": "https://publicacas.acas.rs/#/acas/funkcioner",
+    "retrievedAt": "2026-10-30T20:49:10.842Z",
+    "publishedAt": "2025-02-24",
+    "official": true
+   }
+  },
+  {
+   "id": "23057",
+   "fullName": "Dejan Mandić",
+   "fullNameCyr": "Дејан Мандић",
+   "position": "Član veća",
+   "positionCyr": "Члан Већа",
+   "isActing": false,
+   "institutionName": "Grad Novi Sad",
+   "from": "2025-02-24",
+   "to": "2025-07-31",
+   "appointedBy": "Skupština grada Novog Sada",
+   "source": {
+    "kind": "acas",
+    "title": "ACAS registar – pretraga: Grad Novi Sad",
+    "url": "https://publicacas.acas.rs/#/acas/funkcioner",
+    "retrievedAt": "2026-10-30T20:49:10.842Z",
+    "publishedAt": "2025-02-24",
+    "official": true
+   }
+  },
+  {
+   "id": "29453",
+   "fullName": "Đurađ Jakšić",
+   "fullNameCyr": "Ђурађ Јакшић",
+   "position": "Zamenik gradonačelnika",
+   "positionCyr": "Заменик Градоначелника",
+   "isActing": false,
+   "institutionName": "Grad Novi Sad",
+   "from": "2025-02-24",
+   "appointedBy": "Skupština grada Novog Sada",
+   "source": {
+    "kind": "acas",
+    "title": "ACAS registar – pretraga: Grad Novi Sad",
+    "url": "https://publicacas.acas.rs/#/acas/funkcioner",
+    "retrievedAt": "2026-10-30T20:49:10.842Z",
+    "publishedAt": "2025-02-24",
+    "official": true
+   }
+  },
+  {
+   "id": "53557",
+   "fullName": "Maja Čeremidžić Šainović",
+   "fullNameCyr": "Маја Черемиџић Шаиновић",
+   "position": "Član veća",
+   "positionCyr": "Члан Већа",
+   "isActing": false,
+   "institutionName": "Grad Novi Sad",
+   "from": "2025-02-24",
+   "appointedBy": "Skupština grada Novog Sada",
+   "source": {
+    "kind": "acas",
+    "title": "ACAS registar – pretraga: Grad Novi Sad",
+    "url": "https://publicacas.acas.rs/#/acas/funkcioner",
+    "retrievedAt": "2026-10-30T20:49:10.842Z",
+    "publishedAt": "2025-02-24",
+    "official": true
+   }
+  },
+  {
+   "id": "55867",
+   "fullName": "Milica Vučićević",
+   "fullNameCyr": "Милица Вучићевић",
+   "position": "Član veća",
+   "positionCyr": "Члан Већа",
+   "isActing": false,
+   "institutionName": "Grad Novi Sad",
+   "from": "2025-02-24",
+   "appointedBy": "Skupština grada Novog Sada",
+   "source": {
+    "kind": "acas",
+    "title": "ACAS registar – pretraga: Grad Novi Sad",
+    "url": "https://publicacas.acas.rs/#/acas/funkcioner",
+    "retrievedAt": "2026-10-30T20:49:10.842Z",
+    "publishedAt": "2025-02-24",
+    "official": true
+   }
+  },
+  {
+   "id": "5034216",
+   "fullName": "Danijela Andrić",
+   "fullNameCyr": "Данијела Андрић",
+   "position": "Član veća",
+   "positionCyr": "Члан Већа",
+   "isActing": false,
+   "institutionName": "Grad Novi Sad",
+   "from": "2025-02-24",
+   "appointedBy": "Skupština grada Novog Sada",
+   "source": {
+    "kind": "acas",
+    "title": "ACAS registar – pretraga: Grad Novi Sad",
+    "url": "https://publicacas.acas.rs/#/acas/funkcioner",
+    "retrievedAt": "2026-10-30T20:49:10.843Z",
+    "publishedAt": "2025-02-24",
+    "official": true
+   }
+  },
+  {
+   "id": "31521",
+   "fullName": "Žarko Mićin",
+   "fullNameCyr": "Жарко Мићин",
+   "position": "Gradonačelnik",
+   "positionCyr": "Градоначелник",
+   "isActing": false,
+   "institutionName": "Grad Novi Sad",
+   "from": "2025-02-24",
+   "appointedBy": "Skupština grada Novog Sada",
+   "source": {
+    "kind": "acas",
+    "title": "ACAS registar – pretraga: Grad Novi Sad",
+    "url": "https://publicacas.acas.rs/#/acas/funkcioner",
+    "retrievedAt": "2026-10-30T20:49:10.843Z",
+    "publishedAt": "2025-02-24",
+    "official": true
+   }
+  },
+  {
+   "id": "38308",
+   "fullName": "Dejan Šijak",
+   "fullNameCyr": "Дејан Шијак",
+   "position": "Pomoćnik gradonačelnika",
+   "positionCyr": "Помоћник Градоначелника",
+   "isActing": false,
+   "institutionName": "Grad Novi Sad",
+   "from": "2025-02-25",
+   "appointedBy": "Gradonačelnik",
+   "source": {
+    "kind": "acas",
+    "title": "ACAS registar – pretraga: Grad Novi Sad",
+    "url": "https://publicacas.acas.rs/#/acas/funkcioner",
+    "retrievedAt": "2026-10-30T20:49:10.843Z",
+    "publishedAt": "2025-02-25",
+    "official": true
+   }
+  },
+  {
+   "id": "5007696",
+   "fullName": "Ivan Siler",
+   "fullNameCyr": "Иван Силер",
+   "position": "Pomoćnik gradonačelnika",
+   "positionCyr": "Помоћник Градоначелника",
+   "isActing": false,
+   "institutionName": "Grad Novi Sad",
+   "from": "2025-02-25",
+   "appointedBy": "Gradonačelnik",
+   "source": {
+    "kind": "acas",
+    "title": "ACAS registar – pretraga: Grad Novi Sad",
+    "url": "https://publicacas.acas.rs/#/acas/funkcioner",
+    "retrievedAt": "2026-10-30T20:49:10.843Z",
+    "publishedAt": "2025-02-25",
+    "official": true
+   }
+  },
+  {
+   "id": "5006444",
+   "fullName": "Aleksandar Petrović",
+   "fullNameCyr": "Александар Петровић",
+   "position": "Pomoćnik gradonačelnika",
+   "positionCyr": "Помоћник Градоначелника",
+   "isActing": false,
+   "institutionName": "Grad Novi Sad",
+   "from": "2025-02-25",
+   "appointedBy": "Gradonačelnik",
+   "source": {
+    "kind": "acas",
+    "title": "ACAS registar – pretraga: Grad Novi Sad",
+    "url": "https://publicacas.acas.rs/#/acas/funkcioner",
+    "retrievedAt": "2026-10-30T20:49:10.843Z",
+    "publishedAt": "2025-02-25",
+    "official": true
+   }
+  },
+  {
+   "id": "5007283",
+   "fullName": "Aron Madaras",
+   "fullNameCyr": "Арон Мадарас",
+   "position": "Pomoćnik gradonačelnika",
+   "positionCyr": "Помоћник Градоначелника",
+   "isActing": false,
+   "institutionName": "Grad Novi Sad",
+   "from": "2025-02-25",
+   "appointedBy": "Gradonačelnik",
+   "source": {
+    "kind": "acas",
+    "title": "ACAS registar – pretraga: Grad Novi Sad",
+    "url": "https://publicacas.acas.rs/#/acas/funkcioner",
+    "retrievedAt": "2026-10-30T20:49:10.843Z",
+    "publishedAt": "2025-02-25",
+    "official": true
+   }
+  },
+  {
+   "id": "5034216",
+   "fullName": "Danijela Andrić",
+   "fullNameCyr": "Данијела Андрић",
+   "position": "Pomoćnik gradonačelnika",
+   "positionCyr": "Помоћник Градоначелника",
+   "isActing": false,
+   "institutionName": "Grad Novi Sad",
+   "from": "2024-12-31",
+   "to": "2025-02-24",
+   "appointedBy": "Gradonačelnik",
+   "source": {
+    "kind": "acas",
+    "title": "ACAS registar – pretraga: Grad Novi Sad",
+    "url": "https://publicacas.acas.rs/#/acas/funkcioner",
+    "retrievedAt": "2026-10-30T20:49:10.843Z",
+    "publishedAt": "2024-12-31",
+    "official": true
+   }
+  },
+  {
+   "id": "55867",
+   "fullName": "Milica Vučićević",
+   "fullNameCyr": "Милица Вучићевић",
+   "position": "v.d. načelnika uprave",
+   "positionCyr": "В.д. начелника управе",
+   "isActing": true,
+   "institutionName": "Grad Novi Sad",
+   "from": "2024-12-28",
+   "to": "2025-02-24",
+   "appointedBy": "Gradsko veće grada Novi Sad",
+   "source": {
+    "kind": "acas",
+    "title": "ACAS registar – pretraga: Grad Novi Sad",
+    "url": "https://publicacas.acas.rs/#/acas/funkcioner",
+    "retrievedAt": "2026-10-30T20:49:10.843Z",
+    "publishedAt": "2024-12-28",
+    "official": true
+   }
+  },
+  {
+   "id": "55867",
+   "fullName": "Milica Vučićević",
+   "fullNameCyr": "Милица Вучићевић",
+   "position": "v.d. načelnika uprave",
+   "positionCyr": "В.д. начелника управе",
+   "isActing": true,
+   "institutionName": "Grad Novi Sad",
+   "from": "2024-09-27",
+   "to": "2024-12-28",
+   "appointedBy": "Gradsko veće grada Novi Sad",
+   "source": {
+    "kind": "acas",
+    "title": "ACAS registar – pretraga: Grad Novi Sad",
+    "url": "https://publicacas.acas.rs/#/acas/funkcioner",
+    "retrievedAt": "2026-10-30T20:49:10.843Z",
+    "publishedAt": "2024-09-27",
+    "official": true
+   }
+  },
+  {
+   "id": "5023179",
+   "fullName": "Nina Janković",
+   "fullNameCyr": "Нина Јанковић",
+   "position": "v.d. zamenika načelnika",
+   "positionCyr": "В.д. заменика начелника",
+   "isActing": true,
+   "institutionName": "Grad Novi Sad",
+   "from": "2024-09-05",
+   "to": "2024-12-06",
+   "appointedBy": "Gradsko veće grada Novi Sad",
+   "source": {
+    "kind": "acas",
+    "title": "ACAS registar – pretraga: Grad Novi Sad",
+    "url": "https://publicacas.acas.rs/#/acas/funkcioner",
+    "retrievedAt": "2026-10-30T20:49:10.843Z",
+    "publishedAt": "2024-09-05",
+    "official": true
+   }
+  },
+  {
+   "id": "5007283",
+   "fullName": "Aron Madaras",
+   "fullNameCyr": "Арон Мадарас",
+   "position": "Pomoćnik gradonačelnika",
+   "positionCyr": "Помоћник Градоначелника",
+   "isActing": false,
+   "institutionName": "Grad Novi Sad",
+   "from": "2024-09-02",
+   "to": "2025-02-25",
+   "appointedBy": "Gradonačelnik",
+   "source": {
+    "kind": "acas",
+    "title": "ACAS registar – pretraga: Grad Novi Sad",
+    "url": "https://publicacas.acas.rs/#/acas/funkcioner",
+    "retrievedAt": "2026-10-30T20:49:10.843Z",
+    "publishedAt": "2024-09-02",
+    "official": true
+   }
+  },
+  {
+   "id": "5007696",
+   "fullName": "Ivan Siler",
+   "fullNameCyr": "Иван Силер",
+   "position": "Pomoćnik gradonačelnika",
+   "positionCyr": "Помоћник Градоначелника",
+   "isActing": false,
+   "institutionName": "Grad Novi Sad",
+   "from": "2024-08-29",
+   "to": "2025-02-25",
+   "appointedBy": "Gradonačelnik",
+   "source": {
+    "kind": "acas",
+    "title": "ACAS registar – pretraga: Grad Novi Sad",
+    "url": "https://publicacas.acas.rs/#/acas/funkcioner",
+    "retrievedAt": "2026-10-30T20:49:10.843Z",
+    "publishedAt": "2024-08-29",
+    "official": true
+   }
+  },
+  {
+   "id": "5006444",
+   "fullName": "Aleksandar Petrović",
+   "fullNameCyr": "Александар Петровић",
+   "position": "Pomoćnik gradonačelnika",
+   "positionCyr": "Помоћник Градоначелника",
+   "isActing": false,
+   "institutionName": "Grad Novi Sad",
+   "from": "2024-08-29",
+   "to": "2025-02-25",
+   "appointedBy": "Gradonačelnik",
+   "source": {
+    "kind": "acas",
+    "title": "ACAS registar – pretraga: Grad Novi Sad",
+    "url": "https://publicacas.acas.rs/#/acas/funkcioner",
+    "retrievedAt": "2026-10-30T20:49:10.843Z",
+    "publishedAt": "2024-08-29",
+    "official": true
+   }
+  },
+  {
+   "id": "53557",
+   "fullName": "Maja Čeremidžić Šainović",
+   "fullNameCyr": "Маја Черемиџић Шаиновић",
+   "position": "Pomoćnik gradonačelnika",
+   "positionCyr": "Помоћник Градоначелника",
+   "isActing": false,
+   "institutionName": "Grad Novi Sad",
+   "from": "2024-09-02",
+   "to": "2025-02-24",
+   "appointedBy": "Gradonačelnik",
+   "source": {
+    "kind": "acas",
+    "title": "ACAS registar – pretraga: Grad Novi Sad",
+    "url": "https://publicacas.acas.rs/#/acas/funkcioner",
+    "retrievedAt": "2026-10-30T20:49:10.843Z",
+    "publishedAt": "2024-09-02",
+    "official": true
+   }
+  },
+  {
+   "id": "5015340",
+   "fullName": "Aleksandar Bulajić",
+   "fullNameCyr": "Александар Булајић",
+   "position": "Član veća",
+   "positionCyr": "Члан Већа",
+   "isActing": false,
+   "institutionName": "Grad Novi Sad",
+   "from": "2024-08-28",
+   "to": "2025-02-24",
+   "appointedBy": "Skupština grada Novog Sada",
+   "source": {
+    "kind": "acas",
+    "title": "ACAS registar – pretraga: Grad Novi Sad",
+    "url": "https://publicacas.acas.rs/#/acas/funkcioner",
+    "retrievedAt": "2026-10-30T20:49:10.843Z",
+    "publishedAt": "2024-08-28",
+    "official": true
+   }
+  },
+  {
+   "id": "32016",
+   "fullName": "Milorad Radojević",
+   "fullNameCyr": "Милорад Радојевић",
+   "position": "Član veća",
+   "positionCyr": "Члан Већа",
+   "isActing": false,
+   "institutionName": "Grad Novi Sad",
+   "from": "2024-08-28",
+   "to": "2025-02-24",
+   "appointedBy": "Skupština grada Novog Sada",
+   "source": {
+    "kind": "acas",
+    "title": "ACAS registar – pretraga: Grad Novi Sad",
+    "url": "https://publicacas.acas.rs/#/acas/funkcioner",
+    "retrievedAt": "2026-10-30T20:49:10.843Z",
+    "publishedAt": "2024-08-28",
+    "official": true
+   }
+  },
+  {
+   "id": "29534",
+   "fullName": "Milovan Amidžić",
+   "fullNameCyr": "Милован Амиџић",
+   "position": "Član veća",
+   "positionCyr": "Члан Већа",
+   "isActing": false,
+   "institutionName": "Grad Novi Sad",
+   "from": "2024-08-28",
+   "to": "2025-02-24",
+   "appointedBy": "Skupština grada Novog Sada",
+   "source": {
+    "kind": "acas",
+    "title": "ACAS registar – pretraga: Grad Novi Sad",
+    "url": "https://publicacas.acas.rs/#/acas/funkcioner",
+    "retrievedAt": "2026-10-30T20:49:10.843Z",
+    "publishedAt": "2024-08-28",
+    "official": true
+   }
+  },
+  {
+   "id": "22882",
+   "fullName": "Milan Đurić",
+   "fullNameCyr": "Милан Ђурић",
+   "position": "Gradonačelnik",
+   "positionCyr": "Градоначелник",
+   "isActing": false,
+   "institutionName": "Grad Novi Sad",
+   "from": "2024-08-28",
+   "to": "2025-02-24",
+   "appointedBy": "Skupština grada Novog Sada",
+   "source": {
+    "kind": "acas",
+    "title": "ACAS registar – pretraga: Grad Novi Sad",
+    "url": "https://publicacas.acas.rs/#/acas/funkcioner",
+    "retrievedAt": "2026-10-30T20:49:10.843Z",
+    "publishedAt": "2024-08-28",
+    "official": true
+   }
+  },
+  {
+   "id": "35408",
+   "fullName": "Mira Radenović Bojić",
+   "fullNameCyr": "Мира Раденовић Бојић",
+   "position": "Član veća",
+   "positionCyr": "Члан Већа",
+   "isActing": false,
+   "institutionName": "Grad Novi Sad",
+   "to": "2024-08-28",
+   "appointedBy": "Skupština grada Novog Sada",
+   "source": {
+    "kind": "acas",
+    "title": "ACAS registar – pretraga: Grad Novi Sad",
+    "url": "https://publicacas.acas.rs/#/acas/funkcioner",
+    "retrievedAt": "2026-10-30T20:49:10.843Z",
+    "official": true
+   }
+  },
+  {
+   "id": "23057",
+   "fullName": "Dejan Mandić",
+   "fullNameCyr": "Дејан Мандић",
+   "position": "Član veća",
+   "positionCyr": "Члан Већа",
+   "isActing": false,
+   "institutionName": "Grad Novi Sad",
+   "from": "2024-08-28",
+   "to": "2025-02-24",
+   "appointedBy": "Skupština grada Novog Sada",
+   "source": {
+    "kind": "acas",
+    "title": "ACAS registar – pretraga: Grad Novi Sad",
+    "url": "https://publicacas.acas.rs/#/acas/funkcioner",
+    "retrievedAt": "2026-10-30T20:49:10.843Z",
+    "publishedAt": "2024-08-28",
+    "official": true
+   }
+  },
+  {
+   "id": "34790",
+   "fullName": "Sonja Radaković",
+   "fullNameCyr": "Соња Радаковић",
+   "position": "Član veća",
+   "positionCyr": "Члан Већа",
+   "isActing": false,
+   "institutionName": "Grad Novi Sad",
+   "from": "2024-08-28",
+   "to": "2025-02-24",
+   "appointedBy": "Skupština grada Novog Sada",
+   "source": {
+    "kind": "acas",
+    "title": "ACAS registar – pretraga: Grad Novi Sad",
+    "url": "https://publicacas.acas.rs/#/acas/funkcioner",
+    "retrievedAt": "2026-10-30T20:49:10.843Z",
+    "publishedAt": "2024-08-28",
+    "official": true
+   }
+  },
+  {
+   "id": "5031863",
+   "fullName": "Vanja Petković",
+   "fullNameCyr": "Вања Петковић",
+   "position": "Član veća",
+   "positionCyr": "Члан Већа",
+   "isActing": false,
+   "institutionName": "Grad Novi Sad",
+   "from": "2024-08-28",
+   "to": "2025-02-24",
+   "appointedBy": "Skupština grada Novog Sada",
+   "source": {
+    "kind": "acas",
+    "title": "ACAS registar – pretraga: Grad Novi Sad",
+    "url": "https://publicacas.acas.rs/#/acas/funkcioner",
+    "retrievedAt": "2026-10-30T20:49:10.843Z",
+    "publishedAt": "2024-08-28",
+    "official": true
+   }
+  },
+  {
+   "id": "50050",
+   "fullName": "Aleksandra Ilić",
+   "fullNameCyr": "Александра Илић",
+   "position": "Član veća",
+   "positionCyr": "Члан Већа",
+   "isActing": false,
+   "institutionName": "Grad Novi Sad",
+   "from": "2024-08-28",
+   "to": "2025-02-24",
+   "appointedBy": "Skupština grada Novog Sada",
+   "source": {
+    "kind": "acas",
+    "title": "ACAS registar – pretraga: Grad Novi Sad",
+    "url": "https://publicacas.acas.rs/#/acas/funkcioner",
+    "retrievedAt": "2026-10-30T20:49:10.843Z",
+    "publishedAt": "2024-08-28",
+    "official": true
+   }
+  },
+  {
+   "id": "5017347",
+   "fullName": "Tatjana Medved",
+   "fullNameCyr": "Татјана Медвед",
+   "position": "Član veća",
+   "positionCyr": "Члан Већа",
+   "isActing": false,
+   "institutionName": "Grad Novi Sad",
+   "from": "2024-08-28",
+   "to": "2025-02-24",
+   "appointedBy": "Skupština grada Novog Sada",
+   "source": {
+    "kind": "acas",
+    "title": "ACAS registar – pretraga: Grad Novi Sad",
+    "url": "https://publicacas.acas.rs/#/acas/funkcioner",
+    "retrievedAt": "2026-10-30T20:49:10.843Z",
+    "publishedAt": "2024-08-28",
+    "official": true
+   }
+  },
+  {
+   "id": "38308",
+   "fullName": "Dejan Šijak",
+   "fullNameCyr": "Дејан Шијак",
+   "position": "Član veća",
+   "positionCyr": "Члан Већа",
+   "isActing": false,
+   "institutionName": "Grad Novi Sad",
+   "from": "2024-08-28",
+   "to": "2025-02-25",
+   "appointedBy": "Skupština grada Novog Sada",
+   "source": {
+    "kind": "acas",
+    "title": "ACAS registar – pretraga: Grad Novi Sad",
+    "url": "https://publicacas.acas.rs/#/acas/funkcioner",
+    "retrievedAt": "2026-10-30T20:49:10.843Z",
+    "publishedAt": "2024-08-28",
+    "official": true
+   }
+  },
+  {
+   "id": "36468",
+   "fullName": "Tijana Delić",
+   "fullNameCyr": "Тијана Делић",
+   "position": "Član veća",
+   "positionCyr": "Члан Већа",
+   "isActing": false,
+   "institutionName": "Grad Novi Sad",
+   "from": "2024-08-28",
+   "to": "2025-02-24",
+   "appointedBy": "Skupština grada Novog Sada",
+   "source": {
+    "kind": "acas",
+    "title": "ACAS registar – pretraga: Grad Novi Sad",
+    "url": "https://publicacas.acas.rs/#/acas/funkcioner",
+    "retrievedAt": "2026-10-30T20:49:10.843Z",
+    "publishedAt": "2024-08-28",
+    "official": true
+   }
+  },
+  {
+   "id": "48360",
+   "fullName": "Petar Đurđev",
+   "fullNameCyr": "Петар Ђурђев",
+   "position": "Član veća",
+   "positionCyr": "Члан Већа",
+   "isActing": false,
+   "institutionName": "Grad Novi Sad",
+   "from": "2024-08-28",
+   "to": "2025-02-24",
+   "appointedBy": "Skupština grada Novog Sada",
+   "source": {
+    "kind": "acas",
+    "title": "ACAS registar – pretraga: Grad Novi Sad",
+    "url": "https://publicacas.acas.rs/#/acas/funkcioner",
+    "retrievedAt": "2026-10-30T20:49:10.843Z",
+    "publishedAt": "2024-08-28",
+    "official": true
+   }
+  },
+  {
+   "id": "29453",
+   "fullName": "Đurađ Jakšić",
+   "fullNameCyr": "Ђурађ Јакшић",
+   "position": "Zamenik gradonačelnika",
+   "positionCyr": "Заменик Градоначелника",
+   "isActing": false,
+   "institutionName": "Grad Novi Sad",
+   "from": "2024-08-28",
+   "to": "2025-02-24",
+   "appointedBy": "Skupština grada Novog Sada",
+   "source": {
+    "kind": "acas",
+    "title": "ACAS registar – pretraga: Grad Novi Sad",
+    "url": "https://publicacas.acas.rs/#/acas/funkcioner",
+    "retrievedAt": "2026-10-30T20:49:10.843Z",
+    "publishedAt": "2024-08-28",
+    "official": true
+   }
+  },
+  {
+   "id": "5015340",
+   "fullName": "Aleksandar Bulajić",
+   "fullNameCyr": "Александар Булајић",
+   "position": "Član veća",
+   "positionCyr": "Члан Већа",
+   "isActing": false,
+   "institutionName": "Grad Novi Sad",
+   "from": "2023-02-24",
+   "to": "2024-08-28",
+   "appointedBy": "Skupština grada Novog Sada",
+   "source": {
+    "kind": "acas",
+    "title": "ACAS registar – pretraga: Grad Novi Sad",
+    "url": "https://publicacas.acas.rs/#/acas/funkcioner",
+    "retrievedAt": "2026-10-30T20:49:10.843Z",
+    "publishedAt": "2023-02-24",
+    "official": true
+   }
+  },
+  {
+   "id": "36932",
+   "fullName": "Danijela Kostić",
+   "fullNameCyr": "Данијела Костић",
+   "position": "Član veća",
+   "positionCyr": "Члан Већа",
+   "isActing": false,
+   "institutionName": "Grad Novi Sad",
+   "from": "2023-02-10",
+   "to": "2024-08-28",
+   "appointedBy": "Skupština grada Novog Sada",
+   "source": {
+    "kind": "acas",
+    "title": "ACAS registar – pretraga: Grad Novi Sad",
+    "url": "https://publicacas.acas.rs/#/acas/funkcioner",
+    "retrievedAt": "2026-10-30T20:49:10.843Z",
+    "publishedAt": "2023-02-10",
+    "official": true
+   }
+  },
+  {
+   "id": "32016",
+   "fullName": "Milorad Radojević",
+   "fullNameCyr": "Милорад Радојевић",
+   "position": "Član veća",
+   "positionCyr": "Члан Већа",
+   "isActing": false,
+   "institutionName": "Grad Novi Sad",
+   "from": "2022-10-26",
+   "to": "2024-08-28",
+   "appointedBy": "Skupština grada Novog Sada",
+   "source": {
+    "kind": "acas",
+    "title": "ACAS registar – pretraga: Grad Novi Sad",
+    "url": "https://publicacas.acas.rs/#/acas/funkcioner",
+    "retrievedAt": "2026-10-30T20:49:10.843Z",
+    "publishedAt": "2022-10-26",
+    "official": true
+   }
+  },
+  {
+   "id": "35408",
+   "fullName": "Mira Radenović Bojić",
+   "fullNameCyr": "Мира Раденовић Бојић",
+   "position": "Član veća",
+   "positionCyr": "Члан Већа",
+   "isActing": false,
+   "institutionName": "Grad Novi Sad",
+   "from": "2022-10-26",
+   "to": "2024-08-28",
+   "appointedBy": "Skupština grada Novog Sada",
+   "source": {
+    "kind": "acas",
+    "title": "ACAS registar – pretraga: Grad Novi Sad",
+    "url": "https://publicacas.acas.rs/#/acas/funkcioner",
+    "retrievedAt": "2026-10-30T20:49:10.843Z",
+    "publishedAt": "2022-10-26",
+    "official": true
+   }
+  },
+  {
+   "id": "31438",
+   "fullName": "Ognjen Cvjetićanin",
+   "fullNameCyr": "Огњен Цвјетићанин",
+   "position": "Član veća",
+   "positionCyr": "Члан Већа",
+   "isActing": false,
+   "institutionName": "Grad Novi Sad",
+   "from": "2022-10-26",
+   "to": "2024-07-24",
+   "appointedBy": "Skupština grada Novog Sada",
+   "source": {
+    "kind": "acas",
+    "title": "ACAS registar – pretraga: Grad Novi Sad",
+    "url": "https://publicacas.acas.rs/#/acas/funkcioner",
+    "retrievedAt": "2026-10-30T20:49:10.843Z",
+    "publishedAt": "2022-10-26",
+    "official": true
+   }
+  },
+  {
+   "id": "5006445",
+   "fullName": "Dragan Stajić",
+   "fullNameCyr": "Драган Стајић",
+   "position": "Član veća",
+   "positionCyr": "Члан Већа",
+   "isActing": false,
+   "institutionName": "Grad Novi Sad",
+   "from": "2022-10-26",
+   "appointedBy": "Skupština grada Novog Sada",
+   "source": {
+    "kind": "acas",
+    "title": "ACAS registar – pretraga: Grad Novi Sad",
+    "url": "https://publicacas.acas.rs/#/acas/funkcioner",
+    "retrievedAt": "2026-10-30T20:49:10.843Z",
+    "publishedAt": "2022-10-26",
+    "official": true
+   }
+  },
+  {
+   "id": "17688",
+   "fullName": "Dalibor Rožić",
+   "fullNameCyr": "Далибор Рожић",
+   "position": "Član veća",
+   "positionCyr": "Члан Већа",
+   "isActing": false,
+   "institutionName": "Grad Novi Sad",
+   "from": "2022-10-26",
+   "to": "2024-08-28",
+   "appointedBy": "Skupština grada Novog Sada",
+   "source": {
+    "kind": "acas",
+    "title": "ACAS registar – pretraga: Grad Novi Sad",
+    "url": "https://publicacas.acas.rs/#/acas/funkcioner",
+    "retrievedAt": "2026-10-30T20:49:10.843Z",
+    "publishedAt": "2022-10-26",
+    "official": true
+   }
+  },
+  {
+   "id": "29469",
+   "fullName": "Dina Vučinić (Malešević)",
+   "fullNameCyr": "Дина Вучинић (Малешевић)",
+   "position": "Član veća",
+   "positionCyr": "Члан Већа",
+   "isActing": false,
+   "institutionName": "Grad Novi Sad",
+   "from": "2022-10-26",
+   "to": "2024-08-06",
+   "appointedBy": "Skupština grada Novog Sada",
+   "source": {
+    "kind": "acas",
+    "title": "ACAS registar – pretraga: Grad Novi Sad",
+    "url": "https://publicacas.acas.rs/#/acas/funkcioner",
+    "retrievedAt": "2026-10-30T20:49:10.843Z",
+    "publishedAt": "2022-10-26",
+    "official": true
+   }
+  },
+  {
+   "id": "29455",
+   "fullName": "Zdravko Jelušić",
+   "fullNameCyr": "Здравко Јелушић",
+   "position": "Član veća",
+   "positionCyr": "Члан Већа",
+   "isActing": false,
+   "institutionName": "Grad Novi Sad",
+   "from": "2022-10-26",
+   "to": "2024-08-28",
+   "appointedBy": "Skupština grada Novog Sada",
+   "source": {
+    "kind": "acas",
+    "title": "ACAS registar – pretraga: Grad Novi Sad",
+    "url": "https://publicacas.acas.rs/#/acas/funkcioner",
+    "retrievedAt": "2026-10-30T20:49:10.843Z",
+    "publishedAt": "2022-10-26",
+    "official": true
+   }
+  },
+  {
+   "id": "29534",
+   "fullName": "Milovan Amidžić",
+   "fullNameCyr": "Милован Амиџић",
+   "position": "Član veća",
+   "positionCyr": "Члан Већа",
+   "isActing": false,
+   "institutionName": "Grad Novi Sad",
+   "from": "2022-10-26",
+   "to": "2024-08-28",
+   "appointedBy": "Skupština grada Novog Sada",
+   "source": {
+    "kind": "acas",
+    "title": "ACAS registar – pretraga: Grad Novi Sad",
+    "url": "https://publicacas.acas.rs/#/acas/funkcioner",
+    "retrievedAt": "2026-10-30T20:49:10.843Z",
+    "publishedAt": "2022-10-26",
+    "official": true
+   }
+  },
+  {
+   "id": "48722",
+   "fullName": "Adrijana Mesarović",
+   "fullNameCyr": "Адријана Месаровић",
+   "position": "Član veća",
+   "positionCyr": "Члан Већа",
+   "isActing": false,
+   "institutionName": "Grad Novi Sad",
+   "from": "2022-10-26",
+   "to": "2024-05-01",
+   "appointedBy": "Skupština grada Novog Sada",
+   "source": {
+    "kind": "acas",
+    "title": "ACAS registar – pretraga: Grad Novi Sad",
+    "url": "https://publicacas.acas.rs/#/acas/funkcioner",
+    "retrievedAt": "2026-10-30T20:49:10.843Z",
+    "publishedAt": "2022-10-26",
+    "official": true
+   }
+  },
+  {
+   "id": "5000027",
+   "fullName": "Igor Crnobarac",
+   "fullNameCyr": "Игор Црнобарац",
+   "position": "Zamenik gradonačelnika",
+   "positionCyr": "Заменик Градоначелника",
+   "isActing": false,
+   "institutionName": "Grad Novi Sad",
+   "from": "2022-10-26",
+   "to": "2024-08-28",
+   "appointedBy": "Skupština grada Novog Sada",
+   "source": {
+    "kind": "acas",
+    "title": "ACAS registar – pretraga: Grad Novi Sad",
+    "url": "https://publicacas.acas.rs/#/acas/funkcioner",
+    "retrievedAt": "2026-10-30T20:49:10.843Z",
+    "publishedAt": "2022-10-26",
+    "official": true
+   }
+  },
+  {
+   "id": "22882",
+   "fullName": "Milan Đurić",
+   "fullNameCyr": "Милан Ђурић",
+   "position": "Gradonačelnik",
+   "positionCyr": "Градоначелник",
+   "isActing": false,
+   "institutionName": "Grad Novi Sad",
+   "from": "2022-10-26",
+   "to": "2024-08-28",
+   "appointedBy": "Skupština grada Novog Sada",
+   "source": {
+    "kind": "acas",
+    "title": "ACAS registar – pretraga: Grad Novi Sad",
+    "url": "https://publicacas.acas.rs/#/acas/funkcioner",
+    "retrievedAt": "2026-10-30T20:49:10.843Z",
+    "publishedAt": "2022-10-26",
+    "official": true
+   }
+  },
+  {
+   "id": "5007696",
+   "fullName": "Ivan Siler",
+   "fullNameCyr": "Иван Силер",
+   "position": "Pomoćnik gradonačelnika",
+   "positionCyr": "Помоћник Градоначелника",
+   "isActing": false,
+   "institutionName": "Grad Novi Sad",
+   "from": "2020-11-02",
+   "to": "2024-08-29",
+   "appointedBy": "Gradonačelnik",
+   "source": {
+    "kind": "acas",
+    "title": "ACAS registar – pretraga: Grad Novi Sad",
+    "url": "https://publicacas.acas.rs/#/acas/funkcioner",
+    "retrievedAt": "2026-10-30T20:49:10.843Z",
+    "publishedAt": "2020-11-02",
+    "official": true
+   }
+  },
+  {
+   "id": "5006444",
+   "fullName": "Aleksandar Petrović",
+   "fullNameCyr": "Александар Петровић",
+   "position": "Pomoćnik gradonačelnika",
+   "positionCyr": "Помоћник Градоначелника",
+   "isActing": false,
+   "institutionName": "Grad Novi Sad",
+   "from": "2020-09-22",
+   "to": "2024-08-29",
+   "appointedBy": "Gradonačelnik",
+   "source": {
+    "kind": "acas",
+    "title": "ACAS registar – pretraga: Grad Novi Sad",
+    "url": "https://publicacas.acas.rs/#/acas/funkcioner",
+    "retrievedAt": "2026-10-30T20:49:10.843Z",
+    "publishedAt": "2020-09-22",
+    "official": true
+   }
+  },
+  {
+   "id": "21722",
+   "fullName": "Igor Bašnec",
+   "fullNameCyr": "Игор Башнец",
+   "position": "Pomoćnik gradonačelnika",
+   "positionCyr": "Помоћник Градоначелника",
+   "isActing": false,
+   "institutionName": "Grad Novi Sad",
+   "from": "2020-09-22",
+   "to": "2024-05-17",
+   "appointedBy": "Gradonačelnik",
+   "source": {
+    "kind": "acas",
+    "title": "ACAS registar – pretraga: Grad Novi Sad",
+    "url": "https://publicacas.acas.rs/#/acas/funkcioner",
+    "retrievedAt": "2026-10-30T20:49:10.843Z",
+    "publishedAt": "2020-09-22",
+    "official": true
+   }
+  },
+  {
+   "id": "3475",
+   "fullName": "Vladimir Stojković",
+   "fullNameCyr": "Владимир Стојковић",
+   "position": "Pomoćnik gradonačelnika",
+   "positionCyr": "Помоћник Градоначелника",
+   "isActing": false,
+   "institutionName": "Grad Novi Sad",
+   "from": "2020-09-22",
+   "appointedBy": "Gradonačelnik",
+   "source": {
+    "kind": "acas",
+    "title": "ACAS registar – pretraga: Grad Novi Sad",
+    "url": "https://publicacas.acas.rs/#/acas/funkcioner",
+    "retrievedAt": "2026-10-30T20:49:10.843Z",
+    "publishedAt": "2020-09-22",
+    "official": true
+   }
+  },
+  {
+   "id": "48519",
+   "fullName": "Stanko Ljubičić",
+   "fullNameCyr": "Станко Љубичић",
+   "position": "Pomoćnik gradonačelnika",
+   "positionCyr": "Помоћник Градоначелника",
+   "isActing": false,
+   "institutionName": "Grad Novi Sad",
+   "from": "2020-09-22",
+   "to": "2024-08-29",
+   "appointedBy": "Gradonačelnik",
+   "source": {
+    "kind": "acas",
+    "title": "ACAS registar – pretraga: Grad Novi Sad",
+    "url": "https://publicacas.acas.rs/#/acas/funkcioner",
+    "retrievedAt": "2026-10-30T20:49:10.843Z",
+    "publishedAt": "2020-09-22",
+    "official": true
+   }
+  }
+ ]
+}

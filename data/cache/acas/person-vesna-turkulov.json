@@ -1,0 +1,123 @@
+{
+ "source": "acas",
+ "key": "person-vesna-turkulov",
+ "retrievedAt": "2026-10-30T20:47:45.611Z",
+ "data": [
+  {
+   "id": "5013109",
+   "fullName": "Vesna Turkulov",
+   "fullNameCyr": "Весна Туркулов",
+   "position": "Direktor",
+   "positionCyr": "Директор",
+   "isActing": false,
+   "institutionName": "Univerzitetski klinički centar Vojvodine",
+   "from": "2024-12-06",
+   "appointedBy": "Skupština AP Vojvodine",
+   "source": {
+    "kind": "acas",
+    "title": "ACAS registar – pretraga: Univerzitetski klinički centar Vojvodine",
+    "url": "https://publicacas.acas.rs/#/acas/funkcioner",
+    "retrievedAt": "2026-10-30T20:47:45.611Z",
+    "publishedAt": "2024-12-06",
+    "official": true
+   }
+  },
+  {
+   "id": "5013109",
+   "fullName": "Vesna Turkulov",
+   "fullNameCyr": "Весна Туркулов",
+   "position": "v.d. direktora",
+   "positionCyr": "В.Д. Директора",
+   "isActing": true,
+   "institutionName": "Klinički centar Vojvodine",
+   "from": "2024-08-29",
+   "to": "2024-12-06",
+   "appointedBy": "Skupština AP Vojvodine",
+   "source": {
+    "kind": "acas",
+    "title": "ACAS registar – pretraga: Klinički centar Vojvodine",
+    "url": "https://publicacas.acas.rs/#/acas/funkcioner",
+    "retrievedAt": "2026-10-30T20:47:45.611Z",
+    "publishedAt": "2024-08-29",
+    "official": true
+   }
+  },
+  {
+   "id": "5013109",
+   "fullName": "Vesna Turkulov",
+   "fullNameCyr": "Весна Туркулов",
+   "position": "Predsednik upravnog odbora",
+   "positionCyr": "Председник управног одбора",
+   "isActing": false,
+   "institutionName": "Univerzitetski klinički centar Vojvodine",
+   "to": "2024-08-29",
+   "appointedBy": "Skupština AP Vojvodine",
+   "source": {
+    "kind": "acas",
+    "title": "ACAS registar – pretraga: Univerzitetski klinički centar Vojvodine",
+    "url": "https://publicacas.acas.rs/#/acas/funkcioner",
+    "retrievedAt": "2026-10-30T20:47:45.611Z",
+    "official": true
+   }
+  },
+  {
+   "id": "5013109",
+   "fullName": "Vesna Turkulov",
+   "fullNameCyr": "Весна Туркулов",
+   "position": "Odbornik",
+   "positionCyr": "Одборник",
+   "isActing": false,
+   "institutionName": "Skupština grada Novog Sada",
+   "from": "2024-08-07",
+   "appointedBy": "Neposredno od građana",
+   "source": {
+    "kind": "acas",
+    "title": "ACAS registar – pretraga: Skupština grada Novog Sada",
+    "url": "https://publicacas.acas.rs/#/acas/funkcioner",
+    "retrievedAt": "2026-10-30T20:47:45.611Z",
+    "publishedAt": "2024-08-07",
+    "official": true
+   }
+  },
+  {
+   "id": "5013109",
+   "fullName": "Vesna Turkulov",
+   "fullNameCyr": "Весна Туркулов",
+   "position": "Državni sekretar",
+   "positionCyr": "Државни секретар",
+   "isActing": false,
+   "institutionName": "Ministarstvo zdravlja",
+   "from": "2023-05-18",
+   "to": "2024-05-02",
+   "appointedBy": "Vlada Republike Srbije",
+   "source": {
+    "kind": "acas",
+    "title": "ACAS registar – pretraga: Ministarstvo zdravlja",
+    "url": "https://publicacas.acas.rs/#/acas/funkcioner",
+    "retrievedAt": "2026-10-30T20:47:45.611Z",
+    "publishedAt": "2023-05-18",
+    "official": true
+   }
+  },
+  {
+   "id": "5013109",
+   "fullName": "Vesna Turkulov",
+   "fullNameCyr": "Весна Туркулов",
+   "position": "Predsednik upravnog odbora",
+   "positionCyr": "Председник управног одбора",
+   "isActing": false,
+   "institutionName": "Klinički centar Vojvodine",
+   "from": "2021-12-16",
+   "to": "2024-08-29",
+   "appointedBy": "Skupština AP Vojvodine",
+   "source": {
+    "kind": "acas",
+    "title": "ACAS registar – pretraga: Klinički centar Vojvodine",
+    "url": "https://publicacas.acas.rs/#/acas/funkcioner",
+    "retrievedAt": "2026-10-30T20:47:45.611Z",
+    "publishedAt": "2021-12-16",
+    "official": true
+   }
+  }
+ ]
+}

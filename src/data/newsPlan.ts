@@ -50,9 +50,10 @@ export function mediaName(name: string): string {
 		.replace(/["„“”'`]/g, " ")
 		.replace(/\s+/g, " ")
 		.trim()
-	const city = /\s+(beograd|novi sad|niš|nis|kragujevac|subotica)$/i.exec(s)
+	const city = /[,\s]+(beograd|novi sad|niš|nis|kragujevac|subotica)$/i.exec(s)
 	// normalizeName itself keeps the city when the rest is a generic phrase: then it is part of the name
 	if (city && normalizeName(s.slice(0, city.index)) === normalizeName(s)) s = s.slice(0, city.index)
+	s = s.replace(/[,;\s]+$/, "")
 	return s || searchName(name)
 }
 

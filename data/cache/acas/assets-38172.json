@@ -1,0 +1,154 @@
+{
+ "source": "acas",
+ "key": "assets-38172",
+ "retrievedAt": "2026-10-30T21:37:42.142Z",
+ "data": [
+  {
+   "personId": "38172",
+   "fullName": "Nebojša Bojović",
+   "reportDate": "2025-05-07",
+   "reason": "prestanak javne funkcije",
+   "source": {
+    "kind": "acas",
+    "title": "ACAS – Izveštaj o imovini i prihodima funkcionera (07.05.2025.)",
+    "url": "https://publicacas.acas.rs/#/acas/funkcionerIzvestajDetails/5033224",
+    "retrievedAt": "2026-10-30T21:37:41.092Z",
+    "publishedAt": "2025-05-07",
+    "official": true
+   },
+   "summary": [
+    "Prihod od javne funkcije (Predsednik skupštine, Infrastruktura železnice Srbije a.d. Beograd): 90.000 RSD mesečno, 10.08.2015. - 15.04.2025.",
+    "Prihod od javne funkcije (Predsednik upravnog odbora, Institut za arhitekturu i urbanizam Srbije): 131.659 RSD, od 16.03.2023.",
+    "Prihod od javne funkcije (Saobraćajni fakultet u Beogradu): 265.000 RSD mesečno, 01.10.2021. - 01.10.2024.",
+    "Prihod od javne funkcije (Saobraćajni fakultet u Beogradu): 36.000 RSD mesečno, od 01.01.2015.",
+    "Prihod od javne funkcije (Univerzitet u Beogradu): 165.000 RSD mesečno, od 02.10.2024.",
+    "Prihod od javne funkcije (Saobraćajni fakultet u Beogradu): 125.000 RSD mesečno, od 02.10.2024.",
+    "Nepokretna imovina: 2 stavke (stan, garaža)",
+    "Objekti: stan 51 m2; garaža 14 m2",
+    "Pokretna imovina (registrovana): 1 (automobil Audi A4 2017)"
+   ],
+   "incomes": [
+    {
+     "source": "Predsednik skupštine, Infrastruktura železnice Srbije a.d. Beograd",
+     "amountRsd": 90000,
+     "period": "mesečno, 10.08.2015. - 15.04.2025."
+    },
+    {
+     "source": "Predsednik upravnog odbora, Institut za arhitekturu i urbanizam Srbije",
+     "amountRsd": 131659,
+     "period": "od 16.03.2023."
+    },
+    {
+     "source": "Saobraćajni fakultet u Beogradu",
+     "amountRsd": 265000,
+     "period": "mesečno, 01.10.2021. - 01.10.2024."
+    },
+    {
+     "source": "Saobraćajni fakultet u Beogradu",
+     "amountRsd": 36000,
+     "period": "mesečno, od 01.01.2015."
+    },
+    {
+     "source": "Univerzitet u Beogradu",
+     "amountRsd": 165000,
+     "period": "mesečno, od 02.10.2024."
+    },
+    {
+     "source": "Saobraćajni fakultet u Beogradu",
+     "amountRsd": 125000,
+     "period": "mesečno, od 02.10.2024."
+    }
+   ]
+  },
+  {
+   "personId": "38172",
+   "fullName": "Nebojša Bojović",
+   "reportDate": "2024-05-14",
+   "reason": "stupanje na javnu funkciju",
+   "source": {
+    "kind": "acas",
+    "title": "ACAS – Izveštaj o imovini i prihodima funkcionera (14.05.2024.)",
+    "url": "https://publicacas.acas.rs/#/acas/funkcionerIzvestajDetails/5027098",
+    "retrievedAt": "2026-10-30T21:37:41.444Z",
+    "publishedAt": "2024-05-14",
+    "official": true
+   },
+   "summary": [
+    "Prihod od javne funkcije (Predsednik skupštine, Infrastruktura železnice Srbije a.d. Beograd): 90.000 RSD mesečno, od 10.08.2015.",
+    "Prihod od javne funkcije (Predsednik upravnog odbora, Institut za arhitekturu i urbanizam Srbije): 95.000 RSD, od 16.03.2023.",
+    "Prihod od javne funkcije (Saobraćajni fakultet u Beogradu): 265.000 RSD mesečno, od 01.10.2021.",
+    "Prihod od javne funkcije (Saobraćajni fakultet u Beogradu): 36.000 RSD mesečno, od 01.01.2015.",
+    "Nepokretna imovina: 1 stavka (poslovni prostor)",
+    "Objekti: poslovni prostor 51,55 m2",
+    "Pokretna imovina (registrovana): 1 (automobil Audi A4 2017)"
+   ],
+   "incomes": [
+    {
+     "source": "Predsednik skupštine, Infrastruktura železnice Srbije a.d. Beograd",
+     "amountRsd": 90000,
+     "period": "mesečno, od 10.08.2015."
+    },
+    {
+     "source": "Predsednik upravnog odbora, Institut za arhitekturu i urbanizam Srbije",
+     "amountRsd": 95000,
+     "period": "od 16.03.2023."
+    },
+    {
+     "source": "Saobraćajni fakultet u Beogradu",
+     "amountRsd": 265000,
+     "period": "mesečno, od 01.10.2021."
+    },
+    {
+     "source": "Saobraćajni fakultet u Beogradu",
+     "amountRsd": 36000,
+     "period": "mesečno, od 01.01.2015."
+    }
+   ]
+  },
+  {
+   "personId": "38172",
+   "fullName": "Nebojša Bojović",
+   "reportDate": "2023-04-06",
+   "reason": "stupanje na javnu funkciju",
+   "source": {
+    "kind": "acas",
+    "title": "ACAS – Izveštaj o imovini i prihodima funkcionera (06.04.2023.)",
+    "url": "https://publicacas.acas.rs/#/acas/funkcionerIzvestajDetails/5022364",
+    "retrievedAt": "2026-10-30T21:37:41.806Z",
+    "publishedAt": "2023-04-06",
+    "official": true
+   },
+   "summary": [
+    "Prihod od javne funkcije (Predsednik skupštine, Infrastruktura železnice Srbije a.d. Beograd): 90.000 RSD mesečno, od 10.08.2015.",
+    "Prihod od javne funkcije (Predsednik upravnog odbora, Institut za arhitekturu i urbanizam Srbije): 78.000 RSD, od 16.03.2023.",
+    "Prihod od javne funkcije (Saobraćajni fakultet u Beogradu): 265.000 RSD mesečno, od 01.10.2021.",
+    "Prihod od javne funkcije (Saobraćajni fakultet u Beogradu): 42.000 RSD mesečno, od 01.01.2015.",
+    "Nepokretna imovina: 2 stavke (stan, poslovni prostor)",
+    "Objekti: stan 55,76 m2; poslovni prostor 51,55 m2",
+    "Pokretna imovina (registrovana): 1 (automobil Audi A4 2017)"
+   ],
+   "incomes": [
+    {
+     "source": "Predsednik skupštine, Infrastruktura železnice Srbije a.d. Beograd",
+     "amountRsd": 90000,
+     "period": "mesečno, od 10.08.2015."
+    },
+    {
+     "source": "Predsednik upravnog odbora, Institut za arhitekturu i urbanizam Srbije",
+     "amountRsd": 78000,
+     "period": "od 16.03.2023."
+    },
+    {
+     "source": "Saobraćajni fakultet u Beogradu",
+     "amountRsd": 265000,
+     "period": "mesečno, od 01.10.2021."
+    },
+    {
+     "source": "Saobraćajni fakultet u Beogradu",
+     "amountRsd": 42000,
+     "period": "mesečno, od 01.01.2015."
+    }
+   ]
+  }
+ ]
+}

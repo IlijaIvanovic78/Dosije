@@ -1,0 +1,236 @@
+{
+ "source": "acas",
+ "key": "officials-8067",
+ "retrievedAt": "2026-10-30T20:58:33.103Z",
+ "data": [
+  {
+   "id": "32585",
+   "fullName": "Nataša Nikolić",
+   "fullNameCyr": "Наташа Николић",
+   "position": "Član upravnog odbora",
+   "positionCyr": "Члан управног одбора",
+   "isActing": false,
+   "institutionName": "Republički fond za zdravstveno osiguranje",
+   "from": "2026-04-02",
+   "appointedBy": "Vlada Republike Srbije",
+   "source": {
+    "kind": "acas",
+    "title": "ACAS registar – pretraga: Republički fond za zdravstveno osiguranje",
+    "url": "https://publicacas.acas.rs/#/acas/funkcioner",
+    "retrievedAt": "2026-10-30T20:58:33.102Z",
+    "publishedAt": "2026-04-02",
+    "official": true
+   }
+  },
+  {
+   "id": "5005462",
+   "fullName": "Bili Vulović",
+   "fullNameCyr": "Били Вуловић",
+   "position": "Član upravnog odbora",
+   "positionCyr": "Члан управног одбора",
+   "isActing": false,
+   "institutionName": "Republički fond za zdravstveno osiguranje",
+   "from": "2025-08-07",
+   "appointedBy": "Vlada Republike Srbije",
+   "source": {
+    "kind": "acas",
+    "title": "ACAS registar – pretraga: Republički fond za zdravstveno osiguranje",
+    "url": "https://publicacas.acas.rs/#/acas/funkcioner",
+    "retrievedAt": "2026-10-30T20:58:33.103Z",
+    "publishedAt": "2025-08-07",
+    "official": true
+   }
+  },
+  {
+   "id": "5036357",
+   "fullName": "Bojana Popović",
+   "fullNameCyr": "Бојана Поповић",
+   "position": "Predsednik upravnog odbora",
+   "positionCyr": "Председник управног одбора",
+   "isActing": false,
+   "institutionName": "Republički fond za zdravstveno osiguranje",
+   "from": "2025-05-22",
+   "appointedBy": "Vlada Republike Srbije",
+   "source": {
+    "kind": "acas",
+    "title": "ACAS registar – pretraga: Republički fond za zdravstveno osiguranje",
+    "url": "https://publicacas.acas.rs/#/acas/funkcioner",
+    "retrievedAt": "2026-10-30T20:58:33.103Z",
+    "publishedAt": "2025-05-22",
+    "official": true
+   }
+  },
+  {
+   "id": "17614",
+   "fullName": "Dragana Kalinović",
+   "fullNameCyr": "Драгана Калиновић",
+   "position": "Član upravnog odbora",
+   "positionCyr": "Члан управног одбора",
+   "isActing": false,
+   "institutionName": "Republički fond za zdravstveno osiguranje",
+   "from": "2025-01-30",
+   "appointedBy": "Vlada Republike Srbije",
+   "source": {
+    "kind": "acas",
+    "title": "ACAS registar – pretraga: Republički fond za zdravstveno osiguranje",
+    "url": "https://publicacas.acas.rs/#/acas/funkcioner",
+    "retrievedAt": "2026-10-30T20:58:33.103Z",
+    "publishedAt": "2025-01-30",
+    "official": true
+   }
+  },
+  {
+   "id": "18001",
+   "fullName": "Olga Alizadeh (Pejaković)",
+   "fullNameCyr": "Олга Ализадех (Пејаковић)",
+   "position": "Član upravnog odbora",
+   "positionCyr": "Члан управног одбора",
+   "isActing": false,
+   "institutionName": "Republički fond za zdravstveno osiguranje",
+   "from": "2018-08-02",
+   "appointedBy": "Vlada Republike Srbije",
+   "source": {
+    "kind": "acas",
+    "title": "ACAS registar – pretraga: Republički fond za zdravstveno osiguranje",
+    "url": "https://publicacas.acas.rs/#/acas/funkcioner",
+    "retrievedAt": "2026-10-30T20:58:33.103Z",
+    "publishedAt": "2018-08-02",
+    "official": true
+   }
+  },
+  {
+   "id": "37618",
+   "fullName": "Vanja Mandić",
+   "fullNameCyr": "Вања Мандић",
+   "position": "Predsednik upravnog odbora",
+   "positionCyr": "Председник управног одбора",
+   "isActing": false,
+   "institutionName": "Republički fond za zdravstveno osiguranje",
+   "from": "2016-12-15",
+   "to": "2025-05-22",
+   "appointedBy": "Vlada Republike Srbije",
+   "source": {
+    "kind": "acas",
+    "title": "ACAS registar – pretraga: Republički fond za zdravstveno osiguranje",
+    "url": "https://publicacas.acas.rs/#/acas/funkcioner",
+    "retrievedAt": "2026-10-30T20:58:33.103Z",
+    "publishedAt": "2016-12-15",
+    "official": true
+   }
+  },
+  {
+   "id": "36182",
+   "fullName": "Dragan Marjanović",
+   "fullNameCyr": "Драган Марјановић",
+   "position": "Član nadzornog odbora",
+   "positionCyr": "Члан надзорног одбора",
+   "isActing": false,
+   "institutionName": "Republički fond za zdravstveno osiguranje",
+   "from": "2015-03-12",
+   "appointedBy": "Vlada Republike Srbije",
+   "source": {
+    "kind": "acas",
+    "title": "ACAS registar – pretraga: Republički fond za zdravstveno osiguranje",
+    "url": "https://publicacas.acas.rs/#/acas/funkcioner",
+    "retrievedAt": "2026-10-30T20:58:33.103Z",
+    "publishedAt": "2015-03-12",
+    "official": true
+   }
+  },
+  {
+   "id": "36181",
+   "fullName": "Saša Nedović",
+   "fullNameCyr": "Саша Недовић",
+   "position": "Član nadzornog odbora",
+   "positionCyr": "Члан надзорног одбора",
+   "isActing": false,
+   "institutionName": "Republički fond za zdravstveno osiguranje",
+   "from": "2015-03-12",
+   "appointedBy": "Vlada Republike Srbije",
+   "source": {
+    "kind": "acas",
+    "title": "ACAS registar – pretraga: Republički fond za zdravstveno osiguranje",
+    "url": "https://publicacas.acas.rs/#/acas/funkcioner",
+    "retrievedAt": "2026-10-30T20:58:33.103Z",
+    "publishedAt": "2015-03-12",
+    "official": true
+   }
+  },
+  {
+   "id": "36180",
+   "fullName": "Zoran Dmitrović",
+   "fullNameCyr": "Зоран Дмитровић",
+   "position": "Član nadzornog odbora",
+   "positionCyr": "Члан надзорног одбора",
+   "isActing": false,
+   "institutionName": "Republički fond za zdravstveno osiguranje",
+   "from": "2015-03-12",
+   "appointedBy": "Vlada Republike Srbije",
+   "source": {
+    "kind": "acas",
+    "title": "ACAS registar – pretraga: Republički fond za zdravstveno osiguranje",
+    "url": "https://publicacas.acas.rs/#/acas/funkcioner",
+    "retrievedAt": "2026-10-30T20:58:33.103Z",
+    "publishedAt": "2015-03-12",
+    "official": true
+   }
+  },
+  {
+   "id": "36179",
+   "fullName": "Milan Grubišić",
+   "fullNameCyr": "Милан Грубишић",
+   "position": "Predsednik nadzornog odbora",
+   "positionCyr": "Председник надзорног одбора",
+   "isActing": false,
+   "institutionName": "Republički fond za zdravstveno osiguranje",
+   "from": "2015-03-12",
+   "appointedBy": "Vlada Republike Srbije",
+   "source": {
+    "kind": "acas",
+    "title": "ACAS registar – pretraga: Republički fond za zdravstveno osiguranje",
+    "url": "https://publicacas.acas.rs/#/acas/funkcioner",
+    "retrievedAt": "2026-10-30T20:58:33.103Z",
+    "publishedAt": "2015-03-12",
+    "official": true
+   }
+  },
+  {
+   "id": "36178",
+   "fullName": "Živko Kulić",
+   "fullNameCyr": "Живко Кулић",
+   "position": "Član upravnog odbora",
+   "positionCyr": "Члан управног одбора",
+   "isActing": false,
+   "institutionName": "Republički fond za zdravstveno osiguranje",
+   "from": "2015-03-12",
+   "appointedBy": "Vlada Republike Srbije",
+   "source": {
+    "kind": "acas",
+    "title": "ACAS registar – pretraga: Republički fond za zdravstveno osiguranje",
+    "url": "https://publicacas.acas.rs/#/acas/funkcioner",
+    "retrievedAt": "2026-10-30T20:58:33.103Z",
+    "publishedAt": "2015-03-12",
+    "official": true
+   }
+  },
+  {
+   "id": "35641",
+   "fullName": "Aleksandra Potparević",
+   "fullNameCyr": "Александра Потпаревић",
+   "position": "Zamenik predsednika upravnog odbora",
+   "positionCyr": "Заменик Председника управног одбора",
+   "isActing": false,
+   "institutionName": "Republički fond za zdravstveno osiguranje",
+   "from": "2014-12-23",
+   "appointedBy": "Vlada Republike Srbije",
+   "source": {
+    "kind": "acas",
+    "title": "ACAS registar – pretraga: Republički fond za zdravstveno osiguranje",
+    "url": "https://publicacas.acas.rs/#/acas/funkcioner",
+    "retrievedAt": "2026-10-30T20:58:33.103Z",
+    "publishedAt": "2014-12-23",
+    "official": true
+   }
+  }
+ ]
+}

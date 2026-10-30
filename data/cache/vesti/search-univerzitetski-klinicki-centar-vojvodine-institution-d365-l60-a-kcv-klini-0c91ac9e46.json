@@ -1,0 +1,1339 @@
+{
+ "source": "vesti",
+ "key": "search-univerzitetski-klinicki-centar-vojvodine-institution-d365-l60-a-kcv-klini-0c91ac9e46",
+ "retrievedAt": "2026-10-30T20:47:47.409Z",
+ "meta": {
+  "query": "Univerzitetski klinički centar Vojvodine",
+  "kind": "institution",
+  "days": 365,
+  "limit": 60,
+  "aliases": [
+   "KCV",
+   "Klinički centar Vojvodine"
+  ],
+  "context": [],
+  "exclude": []
+ },
+ "data": [
+  {
+   "id": "3c5797afb57d",
+   "title": "Iz Univerzitetskog kliničkog centra Vojvodine potvrdili da je pao deo plafona i povredio medicinsku sestru",
+   "url": "https://www.danas.rs/vesti/drustvo/univerzitetski-klinicki-centar-vojvodine-pao-plafon-povredio-medicinsku-sestru/",
+   "outlet": "Danas",
+   "snippet": "Iz Univerzitetskog kliničkog centra Vojvodine potvrdili su da je 4. marta pao deo plafonske konstrukcije u sobi za dnevni odmor zaposlenih, prilikom čega je...",
+   "matched": [
+    "Univerzitetski klinički centar Vojvodine",
+    "Klinički centar Vojvodine"
+   ],
+   "provider": "serper",
+   "verified": "naslov",
+   "score": 36,
+   "source": {
+    "kind": "vesti",
+    "title": "Danas: Iz Univerzitetskog kliničkog centra Vojvodine potvrdili da je pao deo plafona i povredio medicinsku sestru",
+    "url": "https://www.danas.rs/vesti/drustvo/univerzitetski-klinicki-centar-vojvodine-pao-plafon-povredio-medicinsku-sestru/",
+    "retrievedAt": "2026-10-30T20:47:33.660Z",
+    "official": false
+   }
+  },
+  {
+   "id": "55b5aa2512a1",
+   "title": "U Univerzitetskom kliničkom centru Vojvodine izvedena prva operacija aneurizme uz primenu ICG videoangiografije",
+   "url": "https://tanjug.rs/srbija/politika/291484/u-univerzitetskom-klinickom-centru-vojvodine-izvedena-prva-operacija-aneurizme-uz-primenu-icg-videoangiografije/vest",
+   "outlet": "tanjug.rs",
+   "publishedAt": "2026-10-21T11:36:00.000Z",
+   "snippet": "operacija aneurizme operacija Univerzitetski klinički centar Vojvodine",
+   "matched": [
+    "Univerzitetski klinički centar Vojvodine",
+    "Klinički centar Vojvodine"
+   ],
+   "provider": "brave",
+   "verified": "naslov",
+   "score": 35,
+   "source": {
+    "kind": "vesti",
+    "title": "tanjug.rs: U Univerzitetskom kliničkom centru Vojvodine izvedena prva operacija aneurizme uz primenu ICG videoangiografije",
+    "url": "https://tanjug.rs/srbija/politika/291484/u-univerzitetskom-klinickom-centru-vojvodine-izvedena-prva-operacija-aneurizme-uz-primenu-icg-videoangiografije/vest",
+    "retrievedAt": "2026-10-30T20:47:33.660Z",
+    "publishedAt": "2026-10-21T11:36:00.000Z",
+    "official": false
+   }
+  },
+  {
+   "id": "4a1a4ad336d1",
+   "title": "Oglasio se Klinički centar Vojvodine povodom navoda da se u Betaniji pojavila opasna bakterija",
+   "url": "https://news.google.com/rss/articles/CBMiygFBVV95cUxNNV9xcTZaZC1GOEdmU0dHS3ZmaHpQYm5nQVZPT01xQnpKbTN2ZUIzLU10WWQ4V2xFcVpwSHVXczJlVlMxenR5WVN4VS1GN1BBVllYQW4wTklRX2NuTV9Bemk1V2hpLXVVMk1SbkJEQXV3a1VZeGhGOHdWckpRa1pxMjFlMVFzNXJ6NXVvWUhwaWIzVnV6ZGw3bzk0LUxOUHZmWnBlUEtIWVpkMGo3bkZZZkJlaERqV3NiUElULXcyLURMcG1fbXlLaEZR?oc=5",
+   "outlet": "Danas",
+   "publishedAt": "2026-09-22T07:00:00.000Z",
+   "matched": [
+    "Klinički centar Vojvodine"
+   ],
+   "provider": "google-news-rss",
+   "verified": "naslov",
+   "score": 35,
+   "unresolved": true,
+   "source": {
+    "kind": "vesti",
+    "title": "Danas: Oglasio se Klinički centar Vojvodine povodom navoda da se u Betaniji pojavila opasna bakterija",
+    "url": "https://news.google.com/rss/articles/CBMiygFBVV95cUxNNV9xcTZaZC1GOEdmU0dHS3ZmaHpQYm5nQVZPT01xQnpKbTN2ZUIzLU10WWQ4V2xFcVpwSHVXczJlVlMxenR5WVN4VS1GN1BBVllYQW4wTklRX2NuTV9Bemk1V2hpLXVVMk1SbkJEQXV3a1VZeGhGOHdWckpRa1pxMjFlMVFzNXJ6NXVvWUhwaWIzVnV6ZGw3bzk0LUxOUHZmWnBlUEtIWVpkMGo3bkZZZkJlaERqV3NiUElULXcyLURMcG1fbXlLaEZR?oc=5",
+    "retrievedAt": "2026-10-30T20:47:33.660Z",
+    "publishedAt": "2026-09-22T07:00:00.000Z",
+    "official": false
+   }
+  },
+  {
+   "id": "0e6b84dd777c",
+   "title": "Klinički centar Vojvodine naplatio 23 miliona dinara za hitnu medicinsku pomoć zahvaljujući državnoj reviziji",
+   "url": "https://www.google.com/goto?url=CAESzQEB6zswFShouMgx0ZwInxSytp7cnaYY235xb4EeAhkKR_djXjCLGHi3Qil_eXryGLIjEY-2yEjjAUa-uQzldvdnS6_ol1ItFxkN4ktQuR0FZYUlKgfTUC446I9fcyyMEdzrttDeUyxPbB_JKWhh39oS8oH8dKw3TtXL0-_JB_iAKN_6BbFiSppspl_GGegNgTMVCHLo3lUfXOyB2bwdZZ_2K8SpYWaq58BH_bB68mZr2tLha35sJoLjiA6yFSxke1UONEOaPkNRVIXzv8DK",
+   "outlet": "Danas",
+   "publishedAt": "2026-08-03T22:00:00.000Z",
+   "snippet": "Klinički centar Vojvodine (KCV) naplatio je skoro 23 miliona dinara od Ministarstva zdravlja za usluge hitne medicinske pomoći neosiguranim licima,...",
+   "matched": [
+    "KCV",
+    "Klinički centar Vojvodine"
+   ],
+   "provider": "serper",
+   "verified": "naslov",
+   "score": 35,
+   "source": {
+    "kind": "vesti",
+    "title": "Danas: Klinički centar Vojvodine naplatio 23 miliona dinara za hitnu medicinsku pomoć zahvaljujući državnoj reviziji",
+    "url": "https://www.google.com/goto?url=CAESzQEB6zswFShouMgx0ZwInxSytp7cnaYY235xb4EeAhkKR_djXjCLGHi3Qil_eXryGLIjEY-2yEjjAUa-uQzldvdnS6_ol1ItFxkN4ktQuR0FZYUlKgfTUC446I9fcyyMEdzrttDeUyxPbB_JKWhh39oS8oH8dKw3TtXL0-_JB_iAKN_6BbFiSppspl_GGegNgTMVCHLo3lUfXOyB2bwdZZ_2K8SpYWaq58BH_bB68mZr2tLha35sJoLjiA6yFSxke1UONEOaPkNRVIXzv8DK",
+    "retrievedAt": "2026-10-30T20:47:33.660Z",
+    "publishedAt": "2026-08-03T22:00:00.000Z",
+    "official": false
+   }
+  },
+  {
+   "id": "93d8433ea76f",
+   "title": "Klinički centar Vojvodine rekonstruisao kliniku 2019. pa je sad ponovo rekonstruiše: Mnogi radovi isti kao prošli put",
+   "url": "https://news.google.com/rss/articles/CBMi7gFBVV95cUxNNlBYWGxvbFE4cVp3ZzRacXNHUFZEWHhMeVNSWmZRWWgzT2dwYnhFS2c1dGFKSllLOE5UZ0hfczU0TDVfZFQ0aHN2S3RLQ0RhQWNzRG95LXdHVUJsOE95dWRmOUZwVUNhWXhyZTVMRzF0TTNJVmhyWFBmQjFla0h1Z0liV285d0lIMHExNlMtVHU4Q1ZuNTVLNXJYUHJfUFBXVG96eWZ4RkRXczNtUDU5SEo4TUQzM29YMThfR2pqZV9WT2Y4T2JpdTVyeGNmZ0d3SmlGUXRneDN4MGhnNjZYUjB6MWR4QkJoX1owMFNR?oc=5",
+   "outlet": "Nova Ekonomija",
+   "publishedAt": "2026-07-23T07:00:00.000Z",
+   "matched": [
+    "Klinički centar Vojvodine"
+   ],
+   "provider": "google-news-rss",
+   "verified": "naslov",
+   "score": 35,
+   "unresolved": true,
+   "source": {
+    "kind": "vesti",
+    "title": "Nova Ekonomija: Klinički centar Vojvodine rekonstruisao kliniku 2019. pa je sad ponovo rekonstruiše: Mnogi radovi isti kao prošli put",
+    "url": "https://news.google.com/rss/articles/CBMi7gFBVV95cUxNNlBYWGxvbFE4cVp3ZzRacXNHUFZEWHhMeVNSWmZRWWgzT2dwYnhFS2c1dGFKSllLOE5UZ0hfczU0TDVfZFQ0aHN2S3RLQ0RhQWNzRG95LXdHVUJsOE95dWRmOUZwVUNhWXhyZTVMRzF0TTNJVmhyWFBmQjFla0h1Z0liV285d0lIMHExNlMtVHU4Q1ZuNTVLNXJYUHJfUFBXVG96eWZ4RkRXczNtUDU5SEo4TUQzM29YMThfR2pqZV9WT2Y4T2JpdTVyeGNmZ0d3SmlGUXRneDN4MGhnNjZYUjB6MWR4QkJoX1owMFNR?oc=5",
+    "retrievedAt": "2026-10-30T20:47:33.660Z",
+    "publishedAt": "2026-07-23T07:00:00.000Z",
+    "official": false
+   }
+  },
+  {
+   "id": "16e7d0dd3964",
+   "title": "KCV: Nije pao deo plafona na Klinici za rehabilitaciju, u toku su radovi",
+   "url": "https://news.google.com/rss/articles/CBMisAFBVV95cUxPXzR2dlhRclZuRkNycTBxdmt4UUtuRWtVWWJ4ekE2a1RlemplVlNuOUdrcUd2Uk5BckZxV0xiZzBiTXNzU0JzVVBDWVVjQ20xdnU0ZGhPaUMwRTU2eU1wbXdlbnJRR2c5RlUzNmowbjdNbng1amY1dGtHX0hhY1NXMEh4VFFFX3RLN3NuWFZ3dmdfaXd4SGpYMnl5TXk1Y1RySGJNVEVTRnAtUDJrQzhRWg?oc=5",
+   "outlet": "021.rs",
+   "publishedAt": "2026-07-03T07:00:00.000Z",
+   "matched": [
+    "KCV"
+   ],
+   "provider": "google-news-rss",
+   "verified": "naslov",
+   "score": 35,
+   "unresolved": true,
+   "source": {
+    "kind": "vesti",
+    "title": "021.rs: KCV: Nije pao deo plafona na Klinici za rehabilitaciju, u toku su radovi",
+    "url": "https://news.google.com/rss/articles/CBMisAFBVV95cUxPXzR2dlhRclZuRkNycTBxdmt4UUtuRWtVWWJ4ekE2a1RlemplVlNuOUdrcUd2Uk5BckZxV0xiZzBiTXNzU0JzVVBDWVVjQ20xdnU0ZGhPaUMwRTU2eU1wbXdlbnJRR2c5RlUzNmowbjdNbng1amY1dGtHX0hhY1NXMEh4VFFFX3RLN3NuWFZ3dmdfaXd4SGpYMnl5TXk1Y1RySGJNVEVTRnAtUDJrQzhRWg?oc=5",
+    "retrievedAt": "2026-10-30T20:47:33.660Z",
+    "publishedAt": "2026-07-03T07:00:00.000Z",
+    "official": false
+   }
+  },
+  {
+   "id": "028347ed20e1",
+   "title": "Šta kaže KCV o tvrdnjama da deo Betanije nema upotrebnu dozvolu?",
+   "url": "https://news.google.com/rss/articles/CBMipwFBVV95cUxQbHZJRHJqU1RCam96ZzZYZm9uZTNLM244TzlFZTl5OFJ5d1JPRjJNc041NDhHekNYOU1sN2FlNi1WbUZ2TE9NWDZ6V0FwbWFSa0FDRTZIWnNVY1FBUERsdFhwX2VqUEdBanRfMUxoRFZqMXJZTDVFY3hVWl9TNFBGdmNVTTAxRFdXX3RYOHBWbEE1bUFza212WnVseTRycXV1QVhWWnU1RQ?oc=5",
+   "outlet": "021.rs",
+   "publishedAt": "2026-05-27T07:00:00.000Z",
+   "matched": [
+    "KCV"
+   ],
+   "provider": "google-news-rss",
+   "verified": "naslov",
+   "score": 35,
+   "unresolved": true,
+   "source": {
+    "kind": "vesti",
+    "title": "021.rs: Šta kaže KCV o tvrdnjama da deo Betanije nema upotrebnu dozvolu?",
+    "url": "https://news.google.com/rss/articles/CBMipwFBVV95cUxQbHZJRHJqU1RCam96ZzZYZm9uZTNLM244TzlFZTl5OFJ5d1JPRjJNc041NDhHekNYOU1sN2FlNi1WbUZ2TE9NWDZ6V0FwbWFSa0FDRTZIWnNVY1FBUERsdFhwX2VqUEdBanRfMUxoRFZqMXJZTDVFY3hVWl9TNFBGdmNVTTAxRFdXX3RYOHBWbEE1bUFza212WnVseTRycXV1QVhWWnU1RQ?oc=5",
+    "retrievedAt": "2026-10-30T20:47:33.660Z",
+    "publishedAt": "2026-05-27T07:00:00.000Z",
+    "official": false
+   }
+  },
+  {
+   "id": "e05404b85e9b",
+   "title": "KCV o mladiću koji je pao u Azotari: Nalazi se u izrazito teškom stanju",
+   "url": "https://news.google.com/rss/articles/CBMiswFBVV95cUxOQVBXRVBIWjZYWHdyT09TMmZ1T24wYmZYaEREMWdFb0FKMmgyY3RlNm1Rd0F3Rlh5c2RoRFNJNVdNbkF1Q0FtVGN2N3NibmFrZkxRbEFiU2p1b0lEMndRaV9fSkxoZEpGM2ZpRGtVWXoxLVBuN0hKX1JYWHdGQWtGa2Vmc0xNQ2xGa1ROWDVYb2s2QXNxN3ZmRWZ2OXhPRHlJSWhhcEg1VWlOenZZWl9pWmdyTQ?oc=5",
+   "outlet": "021.rs",
+   "publishedAt": "2026-04-15T07:00:00.000Z",
+   "matched": [
+    "KCV"
+   ],
+   "provider": "google-news-rss",
+   "verified": "naslov",
+   "score": 35,
+   "unresolved": true,
+   "source": {
+    "kind": "vesti",
+    "title": "021.rs: KCV o mladiću koji je pao u Azotari: Nalazi se u izrazito teškom stanju",
+    "url": "https://news.google.com/rss/articles/CBMiswFBVV95cUxOQVBXRVBIWjZYWHdyT09TMmZ1T24wYmZYaEREMWdFb0FKMmgyY3RlNm1Rd0F3Rlh5c2RoRFNJNVdNbkF1Q0FtVGN2N3NibmFrZkxRbEFiU2p1b0lEMndRaV9fSkxoZEpGM2ZpRGtVWXoxLVBuN0hKX1JYWHdGQWtGa2Vmc0xNQ2xGa1ROWDVYb2s2QXNxN3ZmRWZ2OXhPRHlJSWhhcEg1VWlOenZZWl9pWmdyTQ?oc=5",
+    "retrievedAt": "2026-10-30T20:47:33.660Z",
+    "publishedAt": "2026-04-15T07:00:00.000Z",
+    "official": false
+   }
+  },
+  {
+   "id": "7c0cca87433f",
+   "title": "Klinički centar Vojvodine naplatio 23 miliona dinara za hitnu medicinsku pomoć zahvaljujući državnoj reviziji",
+   "url": "https://news.google.com/rss/articles/CBMi3gFBVV95cUxQTHN1MjJUQ0dxR1BvNFJocDVGempsT2dwanNvOThtTnVDRlVXYTU1VkVPZTNiS2dLOWIzU05jRlRocHF1Y2RMY3dTSkxSdktURTRmVVZCZGNlMmRNWGZ5R0R4UmJoeU0wMFZ6VklyMnYxWEk0dDZUSlFLNUV2TXc1c1dDbUVHbFZ4am4weDY3d3l5VWZpUFpaS3loaVJHYlNNYW41bFpEYnd2OUttakoyUUczWDFMSjBjSzc2S1YzMmNZTW5XaFBYRzhSc2NsMUJQam9LQlRJMUVtNnBMbWc?oc=5",
+   "outlet": "Danas",
+   "publishedAt": "2026-04-08T07:00:00.000Z",
+   "matched": [
+    "Klinički centar Vojvodine"
+   ],
+   "provider": "google-news-rss",
+   "verified": "naslov",
+   "score": 35,
+   "unresolved": true,
+   "source": {
+    "kind": "vesti",
+    "title": "Danas: Klinički centar Vojvodine naplatio 23 miliona dinara za hitnu medicinsku pomoć zahvaljujući državnoj reviziji",
+    "url": "https://news.google.com/rss/articles/CBMi3gFBVV95cUxQTHN1MjJUQ0dxR1BvNFJocDVGempsT2dwanNvOThtTnVDRlVXYTU1VkVPZTNiS2dLOWIzU05jRlRocHF1Y2RMY3dTSkxSdktURTRmVVZCZGNlMmRNWGZ5R0R4UmJoeU0wMFZ6VklyMnYxWEk0dDZUSlFLNUV2TXc1c1dDbUVHbFZ4am4weDY3d3l5VWZpUFpaS3loaVJHYlNNYW41bFpEYnd2OUttakoyUUczWDFMSjBjSzc2S1YzMmNZTW5XaFBYRzhSc2NsMUJQam9LQlRJMUVtNnBMbWc?oc=5",
+    "retrievedAt": "2026-10-30T20:47:33.660Z",
+    "publishedAt": "2026-04-08T07:00:00.000Z",
+    "official": false
+   }
+  },
+  {
+   "id": "c86aff4e3400",
+   "title": "Jovović: U Kliničkom centru Vojvodine pao deo još jednog plafona",
+   "url": "https://news.google.com/rss/articles/CBMioAFBVV95cUxNSWU1Rk8yVWp5dlNGamxlUU5yQUNfRGZYM1FYUGMzbTIxNlBTZk16RlJsOHQtSmdLTHVSY0NFWnZiWGl1UWVBbDVsdzBNbDJLV3l2bGxyQXU5M08xVS1rNW9IcGtTRjVGSlZhVC1pRkh4VkRFSW9UV2dHRW1jRUIxNU9DeWhST1VFdU5kSGpQYi02bVNkOUpwZWZGOXJwWVhJ?oc=5",
+   "outlet": "Danas",
+   "publishedAt": "2026-03-25T07:00:00.000Z",
+   "matched": [
+    "Klinički centar Vojvodine"
+   ],
+   "provider": "google-news-rss",
+   "verified": "naslov",
+   "score": 35,
+   "unresolved": true,
+   "source": {
+    "kind": "vesti",
+    "title": "Danas: Jovović: U Kliničkom centru Vojvodine pao deo još jednog plafona",
+    "url": "https://news.google.com/rss/articles/CBMioAFBVV95cUxNSWU1Rk8yVWp5dlNGamxlUU5yQUNfRGZYM1FYUGMzbTIxNlBTZk16RlJsOHQtSmdLTHVSY0NFWnZiWGl1UWVBbDVsdzBNbDJLV3l2bGxyQXU5M08xVS1rNW9IcGtTRjVGSlZhVC1pRkh4VkRFSW9UV2dHRW1jRUIxNU9DeWhST1VFdU5kSGpQYi02bVNkOUpwZWZGOXJwWVhJ?oc=5",
+    "retrievedAt": "2026-10-30T20:47:33.660Z",
+    "publishedAt": "2026-03-25T07:00:00.000Z",
+    "official": false
+   }
+  },
+  {
+   "id": "8c36afac242c",
+   "title": "U Kliničkom centru Vojvodine prvi put izvedena endoskopska operacija lumbalne diskus hernije",
+   "url": "https://rtv.rs/sr_lat/vojvodina/novi-sad/u-klinickom-centru-vojvodine-prvi-put-izvedena-endoskopska-operacija-lumbalne-diskus-hernije_1692115.html",
+   "outlet": "Радио-телевизија Војводине",
+   "snippet": "Univerzitetski klinički centar Vojvodine, napravio je značajan iskorak u primeni savremenih minimalno invazivnih tehnika u spinalnoj hirurgiji.",
+   "matched": [
+    "Univerzitetski klinički centar Vojvodine",
+    "Klinički centar Vojvodine"
+   ],
+   "provider": "serper",
+   "verified": "naslov",
+   "score": 35,
+   "source": {
+    "kind": "vesti",
+    "title": "Радио-телевизија Војводине: U Kliničkom centru Vojvodine prvi put izvedena endoskopska operacija lumbalne diskus hernije",
+    "url": "https://rtv.rs/sr_lat/vojvodina/novi-sad/u-klinickom-centru-vojvodine-prvi-put-izvedena-endoskopska-operacija-lumbalne-diskus-hernije_1692115.html",
+    "retrievedAt": "2026-10-30T20:47:33.660Z",
+    "official": false
+   }
+  },
+  {
+   "id": "e2ad8e75157c",
+   "title": "NASTUP DUA „POSTSKRIPTUM” U KCV „MILOŠ CRNJANSKI“ Koncert moderne umetničke solo pesme",
+   "url": "https://news.google.com/rss/articles/CBMi2gFBVV95cUxNYzhoRk1zQndYYXBzQ0w4TTRqMm12djlIUmRJdERwa3hIdlRIUDZnbGZuQmRmd0JtNmREaVdCNGJOTm1LNU92ZHZBSjBoTmJWWnUyXzNMUTR4dTZ5LVA2YjlqR1BBMlRLZkoxMFJ6OHRJaUg2TDViUkw2b2I4MUtmM3QtTmhvSU84T1JWcTBHcDM2alYtQk5uRDQyOHlfaHdpSTR0U1Mzd2pReFpBeVRsWjQ2OU9HNHlmWWNmSDFTTkx0XzE1NnBUcWkxV0lUekFua2xfbHBjV3BCdw?oc=5",
+   "outlet": "www.dnevnik.rs",
+   "publishedAt": "2026-10-29T08:31:00.000Z",
+   "matched": [
+    "KCV"
+   ],
+   "provider": "google-news-rss",
+   "verified": "naslov",
+   "score": 34,
+   "unresolved": true,
+   "source": {
+    "kind": "vesti",
+    "title": "www.dnevnik.rs: NASTUP DUA „POSTSKRIPTUM” U KCV „MILOŠ CRNJANSKI“ Koncert moderne umetničke solo pesme",
+    "url": "https://news.google.com/rss/articles/CBMi2gFBVV95cUxNYzhoRk1zQndYYXBzQ0w4TTRqMm12djlIUmRJdERwa3hIdlRIUDZnbGZuQmRmd0JtNmREaVdCNGJOTm1LNU92ZHZBSjBoTmJWWnUyXzNMUTR4dTZ5LVA2YjlqR1BBMlRLZkoxMFJ6OHRJaUg2TDViUkw2b2I4MUtmM3QtTmhvSU84T1JWcTBHcDM2alYtQk5uRDQyOHlfaHdpSTR0U1Mzd2pReFpBeVRsWjQ2OU9HNHlmWWNmSDFTTkx0XzE1NnBUcWkxV0lUekFua2xfbHBjV3BCdw?oc=5",
+    "retrievedAt": "2026-10-30T20:47:33.660Z",
+    "publishedAt": "2026-10-29T08:31:00.000Z",
+    "official": false
+   }
+  },
+  {
+   "id": "d73181abcb67",
+   "title": "U KCV-U IZVEDENA PRVA OPERACIJA ANEURIZME: Uz savremenu metodu videoangiografije",
+   "url": "https://news.google.com/rss/articles/CBMirwFBVV95cUxNZzNQeEN6N0FqMkk3d3Z3VzZhMjZ5c18xRXBuRWJUOGF6ZFh1dEI2cG9NOVp2cVhYckQyVVlfS2VRU2VZRTJ4RmZQUUtqYjBuTmlnM3hDazZSbTVWZUFfZDVLS3lMNWVEaDgyQ3pxMm00UTFqdFJUczA4eExyTVBmc0pBREZ5TXFUdXQ0c3k5UVdoZ2VUcDhUUmttU1VkaE9IZnBJY0JZZzRTUTBKS1ZR?oc=5",
+   "outlet": "NS Reporter",
+   "publishedAt": "2026-10-21T17:25:05.000Z",
+   "matched": [
+    "KCV"
+   ],
+   "provider": "google-news-rss",
+   "verified": "naslov",
+   "score": 34,
+   "unresolved": true,
+   "source": {
+    "kind": "vesti",
+    "title": "NS Reporter: U KCV-U IZVEDENA PRVA OPERACIJA ANEURIZME: Uz savremenu metodu videoangiografije",
+    "url": "https://news.google.com/rss/articles/CBMirwFBVV95cUxNZzNQeEN6N0FqMkk3d3Z3VzZhMjZ5c18xRXBuRWJUOGF6ZFh1dEI2cG9NOVp2cVhYckQyVVlfS2VRU2VZRTJ4RmZQUUtqYjBuTmlnM3hDazZSbTVWZUFfZDVLS3lMNWVEaDgyQ3pxMm00UTFqdFJUczA4eExyTVBmc0pBREZ5TXFUdXQ0c3k5UVdoZ2VUcDhUUmttU1VkaE9IZnBJY0JZZzRTUTBKS1ZR?oc=5",
+    "retrievedAt": "2026-10-30T20:47:33.660Z",
+    "publishedAt": "2026-10-21T17:25:05.000Z",
+    "official": false
+   }
+  },
+  {
+   "id": "de323815b1c7",
+   "title": "U KCV-u izvedena prva operacija aneurizme uz primenu ICG videoangiografije (FOTO)",
+   "url": "https://news.google.com/rss/articles/CBMiqwFBVV95cUxOVjlvYkhQM25hT0NIQ0xJVXZWTEtSdUkzb1NEMzBMbjBRUUc2cVlWaVpFT2Z1ZlljVWttczNXRTNDYUxLM2lzZzhvanI1WGpuYjZhQzktX3NwUnRyNl9XcTRlbTZLUEh1cENJQXRZOHF6N0MzOFFmZG9aRXpLMGpwOFdEeDRBMXpmV3Q3ZjhUcDcwS0hEeEI1cExYWGduRUVUcmxWTlNBTUx3akk?oc=5",
+   "outlet": "Moj Novi Sad",
+   "publishedAt": "2026-10-21T07:00:00.000Z",
+   "matched": [
+    "KCV"
+   ],
+   "provider": "google-news-rss",
+   "verified": "naslov",
+   "score": 34,
+   "unresolved": true,
+   "source": {
+    "kind": "vesti",
+    "title": "Moj Novi Sad: U KCV-u izvedena prva operacija aneurizme uz primenu ICG videoangiografije (FOTO)",
+    "url": "https://news.google.com/rss/articles/CBMiqwFBVV95cUxOVjlvYkhQM25hT0NIQ0xJVXZWTEtSdUkzb1NEMzBMbjBRUUc2cVlWaVpFT2Z1ZlljVWttczNXRTNDYUxLM2lzZzhvanI1WGpuYjZhQzktX3NwUnRyNl9XcTRlbTZLUEh1cENJQXRZOHF6N0MzOFFmZG9aRXpLMGpwOFdEeDRBMXpmV3Q3ZjhUcDcwS0hEeEI1cExYWGduRUVUcmxWTlNBTUx3akk?oc=5",
+    "retrievedAt": "2026-10-30T20:47:33.660Z",
+    "publishedAt": "2026-10-21T07:00:00.000Z",
+    "official": false
+   }
+  },
+  {
+   "id": "5c0355b92a85",
+   "title": "Krađa u Kliničkom centru Vojvodine",
+   "url": "https://alo.rs/hronika/crna-hronika/17001734/kradja-u-klinickom-centru-vojvodine.html",
+   "outlet": "alo.rs",
+   "publishedAt": "2026-10-14T15:00:00.000Z",
+   "snippet": "Upao u KBC Vojvodina i ukrao aparate koji ljudima spašavaju živote: Plen vredan čitavo bogatstvo",
+   "matched": [
+    "Klinički centar Vojvodine"
+   ],
+   "provider": "brave",
+   "verified": "naslov",
+   "score": 34,
+   "source": {
+    "kind": "vesti",
+    "title": "alo.rs: Krađa u Kliničkom centru Vojvodine",
+    "url": "https://alo.rs/hronika/crna-hronika/17001734/kradja-u-klinickom-centru-vojvodine.html",
+    "retrievedAt": "2026-10-30T20:47:33.660Z",
+    "publishedAt": "2026-10-14T15:00:00.000Z",
+    "official": false
+   }
+  },
+  {
+   "id": "e7bb2551b4ce",
+   "title": "Ветерани Фолклорног ансамбла КЦВ на фестивалу у Охриду",
+   "url": "https://news.google.com/rss/articles/CBMib0FVX3lxTE9nZHdRTmUyLWR4YlRSV0xxZHhvRmRWMjVqWlhjTFRKX28tX2FMQXZFY0hZbXN2QzJLOTFuZ1JZSHRWWk0tdW82NU9Pak9zOGJLeHBndzVfd3BFVnZCVWZwamxkYWpnZjVGeFRyUzU2RQ?oc=5",
+   "outlet": "VRBAS.net",
+   "publishedAt": "2026-09-07T07:00:00.000Z",
+   "matched": [
+    "KCV"
+   ],
+   "provider": "google-news-rss",
+   "verified": "naslov",
+   "score": 34,
+   "unresolved": true,
+   "source": {
+    "kind": "vesti",
+    "title": "VRBAS.net: Ветерани Фолклорног ансамбла КЦВ на фестивалу у Охриду",
+    "url": "https://news.google.com/rss/articles/CBMib0FVX3lxTE9nZHdRTmUyLWR4YlRSV0xxZHhvRmRWMjVqWlhjTFRKX28tX2FMQXZFY0hZbXN2QzJLOTFuZ1JZSHRWWk0tdW82NU9Pak9zOGJLeHBndzVfd3BFVnZCVWZwamxkYWpnZjVGeFRyUzU2RQ?oc=5",
+    "retrievedAt": "2026-10-30T20:47:33.660Z",
+    "publishedAt": "2026-09-07T07:00:00.000Z",
+    "official": false
+   }
+  },
+  {
+   "id": "a09356481039",
+   "title": "Kulja (SRCE): KCV nije jasno odgovorio na pitanje da li deo Betanije ima upotrebnu dozvolu",
+   "url": "https://news.google.com/rss/articles/CBMitgFBVV95cUxNT180cHp4azhIREZDMTFJTjNKTDJfdDFQa0lVOEk3eXNCNWZ1a0dYZjFUUmJma2RuXzBzYmtIU0lUUk5uSkJ5UDBaTTdCcHdHcGpJSHZNX2FvSkk5M0VtdjNEdUlodkFEcG50SGJkWXg3MVA5QTVGV1VwTGp0RVVTeGxpbEZlWEJPOG9UX0lBNFpSdU14TnZFQlhrMXpudWwtXzJaRzh5ZVlGRW9KVU54aDBsckxmQQ?oc=5",
+   "outlet": "Moj Novi Sad",
+   "publishedAt": "2026-05-29T07:00:00.000Z",
+   "matched": [
+    "KCV"
+   ],
+   "provider": "google-news-rss",
+   "verified": "naslov",
+   "score": 34,
+   "unresolved": true,
+   "source": {
+    "kind": "vesti",
+    "title": "Moj Novi Sad: Kulja (SRCE): KCV nije jasno odgovorio na pitanje da li deo Betanije ima upotrebnu dozvolu",
+    "url": "https://news.google.com/rss/articles/CBMitgFBVV95cUxNT180cHp4azhIREZDMTFJTjNKTDJfdDFQa0lVOEk3eXNCNWZ1a0dYZjFUUmJma2RuXzBzYmtIU0lUUk5uSkJ5UDBaTTdCcHdHcGpJSHZNX2FvSkk5M0VtdjNEdUlodkFEcG50SGJkWXg3MVA5QTVGV1VwTGp0RVVTeGxpbEZlWEJPOG9UX0lBNFpSdU14TnZFQlhrMXpudWwtXzJaRzh5ZVlGRW9KVU54aDBsckxmQQ?oc=5",
+    "retrievedAt": "2026-10-30T20:47:33.660Z",
+    "publishedAt": "2026-05-29T07:00:00.000Z",
+    "official": false
+   }
+  },
+  {
+   "id": "0bc87573482d",
+   "title": "KCV: Mladić koji je pao sa Azotare je u izrazito teškom stanju",
+   "url": "https://news.google.com/rss/articles/CBMikwFBVV95cUxQY3UwV2VHYkJtZTJqMkcyYWtycGFWc0RyZDZrZXdVSUozSWIyckpoS1JMa2N1RWRHLXFYRnc0NTJ1Wkhja2tDVTRmTzZNWWhIWERYZDViaDRfZHc4VTlwLW5GNEFXQWhCT3FzbC0zYUJZcUNpa1l4ejczTnMyMXdkaW8tcG9oNHNiV3p2UVE5Rl9UMFk?oc=5",
+   "outlet": "Moj Novi Sad",
+   "publishedAt": "2026-04-15T07:00:00.000Z",
+   "matched": [
+    "KCV"
+   ],
+   "provider": "google-news-rss",
+   "verified": "naslov",
+   "score": 34,
+   "unresolved": true,
+   "source": {
+    "kind": "vesti",
+    "title": "Moj Novi Sad: KCV: Mladić koji je pao sa Azotare je u izrazito teškom stanju",
+    "url": "https://news.google.com/rss/articles/CBMikwFBVV95cUxQY3UwV2VHYkJtZTJqMkcyYWtycGFWc0RyZDZrZXdVSUozSWIyckpoS1JMa2N1RWRHLXFYRnc0NTJ1Wkhja2tDVTRmTzZNWWhIWERYZDViaDRfZHc4VTlwLW5GNEFXQWhCT3FzbC0zYUJZcUNpa1l4ejczTnMyMXdkaW8tcG9oNHNiV3p2UVE5Rl9UMFk?oc=5",
+    "retrievedAt": "2026-10-30T20:47:33.660Z",
+    "publishedAt": "2026-04-15T07:00:00.000Z",
+    "official": false
+   }
+  },
+  {
+   "id": "d8c9a3e60b37",
+   "title": "Jovović: U Kliničkom centru Vojvodine pao još jedan plafon",
+   "url": "https://news.google.com/rss/articles/CBMiigFBVV95cUxQbkF1VGRwcGxZSl9MRWdzWUdXS2dfdzdpSU8wVXpZOUNWWkR1VGo0YW9ickxKVlhSaUtLempXb2pycjBNWHhiSDREMEU4UU4xQTNlNWktdld0WUtmdFpMVUhKQXY4b1BXeDhaMkdYeldiUzhHYk1fREtzUmoxOUl0MURQU0N3d2MwdEE?oc=5",
+   "outlet": "Autonomija",
+   "publishedAt": "2026-03-25T07:00:00.000Z",
+   "matched": [
+    "Klinički centar Vojvodine"
+   ],
+   "provider": "google-news-rss",
+   "verified": "naslov",
+   "score": 34,
+   "unresolved": true,
+   "source": {
+    "kind": "vesti",
+    "title": "Autonomija: Jovović: U Kliničkom centru Vojvodine pao još jedan plafon",
+    "url": "https://news.google.com/rss/articles/CBMiigFBVV95cUxQbkF1VGRwcGxZSl9MRWdzWUdXS2dfdzdpSU8wVXpZOUNWWkR1VGo0YW9ickxKVlhSaUtLempXb2pycjBNWHhiSDREMEU4UU4xQTNlNWktdld0WUtmdFpMVUhKQXY4b1BXeDhaMkdYeldiUzhHYk1fREtzUmoxOUl0MURQU0N3d2MwdEE?oc=5",
+    "retrievedAt": "2026-10-30T20:47:33.660Z",
+    "publishedAt": "2026-03-25T07:00:00.000Z",
+    "official": false
+   }
+  },
+  {
+   "id": "7948fc0dbdfa",
+   "title": "U KCV-u po prvi put izvedena procedura epiduralne adheziolize",
+   "url": "https://news.google.com/rss/articles/CBMikwFBVV95cUxQdng2akxaRFd0b2lhcWFaOUlTMTFmUXlkTUxJSWNLb3hpd2Fidi1uZUFrNlhsZF9uckktSDIzbV9rQlZWNTRldjRiUUgwSlN0RGU5dERtLWxob3E0VUo5NzRVWExqSWNBTmQyRXRkYUh2akdxdWlNaER4anZQV2pwbWxHMkF0anE3LXAyaUluUnA1bmM?oc=5",
+   "outlet": "Moj Novi Sad",
+   "publishedAt": "2026-02-03T08:00:00.000Z",
+   "matched": [
+    "KCV"
+   ],
+   "provider": "google-news-rss",
+   "verified": "naslov",
+   "score": 34,
+   "unresolved": true,
+   "source": {
+    "kind": "vesti",
+    "title": "Moj Novi Sad: U KCV-u po prvi put izvedena procedura epiduralne adheziolize",
+    "url": "https://news.google.com/rss/articles/CBMikwFBVV95cUxQdng2akxaRFd0b2lhcWFaOUlTMTFmUXlkTUxJSWNLb3hpd2Fidi1uZUFrNlhsZF9uckktSDIzbV9rQlZWNTRldjRiUUgwSlN0RGU5dERtLWxob3E0VUo5NzRVWExqSWNBTmQyRXRkYUh2akdxdWlNaER4anZQV2pwbWxHMkF0anE3LXAyaUluUnA1bmM?oc=5",
+    "retrievedAt": "2026-10-30T20:47:33.660Z",
+    "publishedAt": "2026-02-03T08:00:00.000Z",
+    "official": false
+   }
+  },
+  {
+   "id": "69663c0714f2",
+   "title": "Koncert dua \"Post skriptum\" u petak u KCV \"Miloš Crnjanski\"",
+   "url": "https://news.google.com/rss/articles/CBMinAFBVV95cUxPLUJkWlI3cE53SGF6ZWtFenNjQ0FrZEphOFgzYmE5YWNLT0lRNFg5SUE3bk9OandwTUgxOXNodHhjT0xCR1FPamc4SEIxWU5xQW16Y0VWNGlnV28yRjVsTkFRVlhyRFc0UmIwSTVPMXVBRS1mQV9mRS1YdmxVZDFHVUt6cXBOZ1RRUm9lYXlyRXRlWE5PR0pjUlE4UVk?oc=5",
+   "outlet": "021.rs",
+   "publishedAt": "2026-10-29T12:00:00.000Z",
+   "matched": [
+    "KCV"
+   ],
+   "provider": "google-news-rss",
+   "verified": "naslov",
+   "score": 32,
+   "unresolved": true,
+   "source": {
+    "kind": "vesti",
+    "title": "021.rs: Koncert dua \"Post skriptum\" u petak u KCV \"Miloš Crnjanski\"",
+    "url": "https://news.google.com/rss/articles/CBMinAFBVV95cUxPLUJkWlI3cE53SGF6ZWtFenNjQ0FrZEphOFgzYmE5YWNLT0lRNFg5SUE3bk9OandwTUgxOXNodHhjT0xCR1FPamc4SEIxWU5xQW16Y0VWNGlnV28yRjVsTkFRVlhyRFc0UmIwSTVPMXVBRS1mQV9mRS1YdmxVZDFHVUt6cXBOZ1RRUm9lYXlyRXRlWE5PR0pjUlE4UVk?oc=5",
+    "retrievedAt": "2026-10-30T20:47:33.660Z",
+    "publishedAt": "2026-10-29T12:00:00.000Z",
+    "official": false
+   }
+  },
+  {
+   "id": "fbf30025dfba",
+   "title": "Izložba radova sa slikarske kolonije \"Eko art kamp\" u KCV \"Miloš Crnjanski\" od utorka",
+   "url": "https://news.google.com/rss/articles/CBMivwFBVV95cUxNakdkN1FTV2hyd2VLczVlVkJPNFQ0a3VabnRvcVNYMTB2SlhBUnhtbDFHYUU3bXF1enUwcEMtbXpzbWktWWlLVkVPeUZjZ3JlWFI0ZXNfZzF6WFVjR25MeU9lNC0xXzhLeXc3bVlqMGZVaV9zZlpRU19PZUx3MkVTSXBhXzQxLWFpdlVXYWdtcW9nNzRFT1RhUkZ3SXJGanZtamF1T0o0WjlzZTU4VkxOeGdBQkNsbnVlRFQxNHhDUQ?oc=5",
+   "outlet": "021.rs",
+   "publishedAt": "2026-10-18T07:00:00.000Z",
+   "matched": [
+    "KCV"
+   ],
+   "provider": "google-news-rss",
+   "verified": "naslov",
+   "score": 32,
+   "unresolved": true,
+   "source": {
+    "kind": "vesti",
+    "title": "021.rs: Izložba radova sa slikarske kolonije \"Eko art kamp\" u KCV \"Miloš Crnjanski\" od utorka",
+    "url": "https://news.google.com/rss/articles/CBMivwFBVV95cUxNakdkN1FTV2hyd2VLczVlVkJPNFQ0a3VabnRvcVNYMTB2SlhBUnhtbDFHYUU3bXF1enUwcEMtbXpzbWktWWlLVkVPeUZjZ3JlWFI0ZXNfZzF6WFVjR25MeU9lNC0xXzhLeXc3bVlqMGZVaV9zZlpRU19PZUx3MkVTSXBhXzQxLWFpdlVXYWdtcW9nNzRFT1RhUkZ3SXJGanZtamF1T0o0WjlzZTU4VkxOeGdBQkNsbnVlRFQxNHhDUQ?oc=5",
+    "retrievedAt": "2026-10-30T20:47:33.660Z",
+    "publishedAt": "2026-10-18T07:00:00.000Z",
+    "official": false
+   }
+  },
+  {
+   "id": "add2eb3c5c7e",
+   "title": "MUP: U Novom Sadu uhapšen osumnjičeni za krađu dva aparata iz KCV",
+   "url": "https://news.google.com/rss/articles/CBMiYkFVX3lxTE5GNjhjTFlncmkxV3E1d1BaWHhDMkZycUktdks3amdwRWUzVWVILVFlNHg0anl2OXZHeEZ4MkdldFlVYzB0SFloZWJIWUdxN216MlplTXR2M2VXRjR5NGg4SjNB?oc=5",
+   "outlet": "N1",
+   "publishedAt": "2026-10-14T07:00:00.000Z",
+   "matched": [
+    "KCV"
+   ],
+   "provider": "google-news-rss",
+   "verified": "naslov",
+   "score": 32,
+   "unresolved": true,
+   "source": {
+    "kind": "vesti",
+    "title": "N1: MUP: U Novom Sadu uhapšen osumnjičeni za krađu dva aparata iz KCV",
+    "url": "https://news.google.com/rss/articles/CBMiYkFVX3lxTE5GNjhjTFlncmkxV3E1d1BaWHhDMkZycUktdks3amdwRWUzVWVILVFlNHg0anl2OXZHeEZ4MkdldFlVYzB0SFloZWJIWUdxN216MlplTXR2M2VXRjR5NGg4SjNB?oc=5",
+    "retrievedAt": "2026-10-30T20:47:33.660Z",
+    "publishedAt": "2026-10-14T07:00:00.000Z",
+    "official": false
+   }
+  },
+  {
+   "id": "75a498f65d9d",
+   "title": "Ukrao dva aparata za terapiju iz Kliničkog centra Vojvodine: Krađa \"teška\" 700.000 dinara",
+   "url": "https://news.google.com/rss/articles/CBMiyAFBVV95cUxNS0JoUEdGX3Zvc0E2MjNraU93M3Vxb29wVlNjTTQ1SWwyQXc0amJ5NjRIMHg4RjIwamFraWpybEdTS0RMQkhvX3RXeWJXNmJDZGU4ekgyWTV4UVQ4VHktdGIxZjRsbnNrc2FXVU1YUkZ3bWh3V3JsQ2J2dU5heGVkN3Q3QUd3Nk5FZHQzLUdxemdIci1xUGFfQ1FSUkFMbXNWSTVINlVfUW5vYWluVGcwcy1PTHVnYWlXN0lkal9haDNUeEU2TTRIRg?oc=5",
+   "outlet": "021.rs",
+   "publishedAt": "2026-10-14T07:00:00.000Z",
+   "matched": [
+    "Klinički centar Vojvodine"
+   ],
+   "provider": "google-news-rss",
+   "verified": "naslov",
+   "score": 32,
+   "unresolved": true,
+   "source": {
+    "kind": "vesti",
+    "title": "021.rs: Ukrao dva aparata za terapiju iz Kliničkog centra Vojvodine: Krađa \"teška\" 700.000 dinara",
+    "url": "https://news.google.com/rss/articles/CBMiyAFBVV95cUxNS0JoUEdGX3Zvc0E2MjNraU93M3Vxb29wVlNjTTQ1SWwyQXc0amJ5NjRIMHg4RjIwamFraWpybEdTS0RMQkhvX3RXeWJXNmJDZGU4ekgyWTV4UVQ4VHktdGIxZjRsbnNrc2FXVU1YUkZ3bWh3V3JsQ2J2dU5heGVkN3Q3QUd3Nk5FZHQzLUdxemdIci1xUGFfQ1FSUkFMbXNWSTVINlVfUW5vYWluVGcwcy1PTHVnYWlXN0lkal9haDNUeEU2TTRIRg?oc=5",
+    "retrievedAt": "2026-10-30T20:47:33.660Z",
+    "publishedAt": "2026-10-14T07:00:00.000Z",
+    "official": false
+   }
+  },
+  {
+   "id": "2b2ba9bf8a3c",
+   "title": "Koncert kamerne muzike u četvrtak u KCV \"Miloš Crnjanski\"",
+   "url": "https://news.google.com/rss/articles/CBMinAFBVV95cUxOaHVtVW1fSEVaU0hIQy1ySGRoSVZmQ0xhLVRjazdhMktWSFVZcG1tLWNyelJwVWZtZGtlM3JGMGFxd2Q2WnloQml3RVpFbHdncmhRQnZmSHA1bXU1ZktGaGViUFJBVWROTG8yeTVNM0YyS0NtLXFRWGlIby1jTE5IWmFxRWhWUlZUWHA3SHhhUzBkU1VBVVRrcWlaZ2Y?oc=5",
+   "outlet": "021.rs",
+   "publishedAt": "2026-10-11T07:00:00.000Z",
+   "matched": [
+    "KCV"
+   ],
+   "provider": "google-news-rss",
+   "verified": "naslov",
+   "score": 32,
+   "unresolved": true,
+   "source": {
+    "kind": "vesti",
+    "title": "021.rs: Koncert kamerne muzike u četvrtak u KCV \"Miloš Crnjanski\"",
+    "url": "https://news.google.com/rss/articles/CBMinAFBVV95cUxOaHVtVW1fSEVaU0hIQy1ySGRoSVZmQ0xhLVRjazdhMktWSFVZcG1tLWNyelJwVWZtZGtlM3JGMGFxd2Q2WnloQml3RVpFbHdncmhRQnZmSHA1bXU1ZktGaGViUFJBVWROTG8yeTVNM0YyS0NtLXFRWGlIby1jTE5IWmFxRWhWUlZUWHA3SHhhUzBkU1VBVVRrcWlaZ2Y?oc=5",
+    "retrievedAt": "2026-10-30T20:47:33.660Z",
+    "publishedAt": "2026-10-11T07:00:00.000Z",
+    "official": false
+   }
+  },
+  {
+   "id": "322bb4119bdf",
+   "title": "Objavljena dokumenta – poznato šta je Srdanović radio koleginici na KCV; Isplivala prva izjava o maltretiranju",
+   "url": "https://news.google.com/rss/articles/CBMi6AFBVV95cUxNZ3RCZ2sxV04zb1pFOFgzemZkUjUyd01OV1ZBRDl3QjJEOWJBdUZib05IdmVWc1RSVUVUaE9TRHZ6SFdoTkNUNmt1MnNkU1hid2FSTEVjUjBNQjlzUXlZQkh5al9fMi1UNHBReVJMLTdMaU80LWtDOU1BaEhJR1dKSXFiRkNfWTNOaHBTMG03SXFpUUhJeEdUMHdxemZsMGFkMDdGX2t0Y19FSjhibUEyMWdPalR4S0Vqb3lud01mSWtwTEpveGtCelZVeTF5U2cxVER4Z3Jmcy1NSWVPbHZ1N09LUmZsZVpp?oc=5",
+   "outlet": "B92",
+   "publishedAt": "2026-09-18T07:00:00.000Z",
+   "matched": [
+    "KCV"
+   ],
+   "provider": "google-news-rss",
+   "verified": "naslov",
+   "score": 32,
+   "unresolved": true,
+   "source": {
+    "kind": "vesti",
+    "title": "B92: Objavljena dokumenta – poznato šta je Srdanović radio koleginici na KCV; Isplivala prva izjava o maltretiranju",
+    "url": "https://news.google.com/rss/articles/CBMi6AFBVV95cUxNZ3RCZ2sxV04zb1pFOFgzemZkUjUyd01OV1ZBRDl3QjJEOWJBdUZib05IdmVWc1RSVUVUaE9TRHZ6SFdoTkNUNmt1MnNkU1hid2FSTEVjUjBNQjlzUXlZQkh5al9fMi1UNHBReVJMLTdMaU80LWtDOU1BaEhJR1dKSXFiRkNfWTNOaHBTMG03SXFpUUhJeEdUMHdxemZsMGFkMDdGX2t0Y19FSjhibUEyMWdPalR4S0Vqb3lud01mSWtwTEpveGtCelZVeTF5U2cxVER4Z3Jmcy1NSWVPbHZ1N09LUmZsZVpp?oc=5",
+    "retrievedAt": "2026-10-30T20:47:33.660Z",
+    "publishedAt": "2026-09-18T07:00:00.000Z",
+    "official": false
+   }
+  },
+  {
+   "id": "1585284eb32a",
+   "title": "Izložba \"Ritualna inkluzija – kuća od piksela\" u KCV \"Miloš Crnjanski\" od 11. septembra",
+   "url": "https://news.google.com/rss/articles/CBMivgFBVV95cUxOZ1hmV2l1Y1VDc3ZVSVdDamlZMFYyR1Yxb1Q5a1lQci1FQWthMW5qNEZaVl9oQVFTR0dCV1VVX2pRUWFKRFg2WTF4WVVsdlhIWjJ6NTlhYUFjYTE4WTlsQVljU2VadzFHWE1SeWEwelJCbDVHSVdxWi1yRlVYT1hqV0lUbU1XNDQyMUkycmQ5akRHTjNSckxjZ0VfaGFZckhnZERrV3Y5TDNuVlBCejJpMmFVRy1McGtrOTNJTU9R?oc=5",
+   "outlet": "021.rs",
+   "publishedAt": "2026-09-05T07:00:00.000Z",
+   "matched": [
+    "KCV"
+   ],
+   "provider": "google-news-rss",
+   "verified": "naslov",
+   "score": 32,
+   "unresolved": true,
+   "source": {
+    "kind": "vesti",
+    "title": "021.rs: Izložba \"Ritualna inkluzija – kuća od piksela\" u KCV \"Miloš Crnjanski\" od 11. septembra",
+    "url": "https://news.google.com/rss/articles/CBMivgFBVV95cUxOZ1hmV2l1Y1VDc3ZVSVdDamlZMFYyR1Yxb1Q5a1lQci1FQWthMW5qNEZaVl9oQVFTR0dCV1VVX2pRUWFKRFg2WTF4WVVsdlhIWjJ6NTlhYUFjYTE4WTlsQVljU2VadzFHWE1SeWEwelJCbDVHSVdxWi1yRlVYT1hqV0lUbU1XNDQyMUkycmQ5akRHTjNSckxjZ0VfaGFZckhnZERrV3Y5TDNuVlBCejJpMmFVRy1McGtrOTNJTU9R?oc=5",
+    "retrievedAt": "2026-10-30T20:47:33.660Z",
+    "publishedAt": "2026-09-05T07:00:00.000Z",
+    "official": false
+   }
+  },
+  {
+   "id": "2d3d351e450c",
+   "title": "Otvaranje izložbe \"Makaze menjaju svet\" u ponedeljak u KCV \"Miloš Crnjanski\"",
+   "url": "https://news.google.com/rss/articles/CBMiswFBVV95cUxNMjJWU21iQU9PUEppWlViX09VQzJreUFoVDFrY2E5QTQ5N0hYbXhEcU41d3FMTlR4bTMydS1YM2l1MjBwd1VFbS0xTkt3bzBnZ3p5R3pCcWE5aXR0MmpOYlVlLTRHSjQwNjVDSTg4ZllNYzR5cFJnUUwxMVFVTjBhXzBjODhRSUJabUg1c3JQSW9JTTJWYnpxbkluTFNtclVyU1k4NTRYdS04RE5HT1ByOEo2WQ?oc=5",
+   "outlet": "021.rs",
+   "publishedAt": "2026-08-02T07:00:00.000Z",
+   "matched": [
+    "KCV"
+   ],
+   "provider": "google-news-rss",
+   "verified": "naslov",
+   "score": 32,
+   "unresolved": true,
+   "source": {
+    "kind": "vesti",
+    "title": "021.rs: Otvaranje izložbe \"Makaze menjaju svet\" u ponedeljak u KCV \"Miloš Crnjanski\"",
+    "url": "https://news.google.com/rss/articles/CBMiswFBVV95cUxNMjJWU21iQU9PUEppWlViX09VQzJreUFoVDFrY2E5QTQ5N0hYbXhEcU41d3FMTlR4bTMydS1YM2l1MjBwd1VFbS0xTkt3bzBnZ3p5R3pCcWE5aXR0MmpOYlVlLTRHSjQwNjVDSTg4ZllNYzR5cFJnUUwxMVFVTjBhXzBjODhRSUJabUg1c3JQSW9JTTJWYnpxbkluTFNtclVyU1k4NTRYdS04RE5HT1ByOEo2WQ?oc=5",
+    "retrievedAt": "2026-10-30T20:47:33.660Z",
+    "publishedAt": "2026-08-02T07:00:00.000Z",
+    "official": false
+   }
+  },
+  {
+   "id": "c42f0be7abba",
+   "title": "Pucnjava na Bulevaru oslobođenja: Ranjen muškarac u stabilnom stanju u KCV",
+   "url": "https://news.google.com/rss/articles/CBMiuAFBVV95cUxPRjlQVXpsLVgzdDhIaDlfcDJVdW1IYV92R2E5YXdyemVsbXdhMVluQjhDOU5ZWW5Ya3ptMXlyMjdPcEdGeENPMnRibzRJWkNTUTFlUHBaZ2RMUDVFSno3Tk5hQTFHSW9pV25kYXB0VWZrTXVucGFvOUUzVC1vVFpxWEhoNnlIQ3BFcWVaV0VtUW5UN0JydG1CN2xiYWN0U0luRjdLcHU2RXBDM3RqbWYzOGhVb0h5Yk1w?oc=5",
+   "outlet": "021.rs",
+   "publishedAt": "2026-07-01T07:00:00.000Z",
+   "matched": [
+    "KCV"
+   ],
+   "provider": "google-news-rss",
+   "verified": "naslov",
+   "score": 32,
+   "unresolved": true,
+   "source": {
+    "kind": "vesti",
+    "title": "021.rs: Pucnjava na Bulevaru oslobođenja: Ranjen muškarac u stabilnom stanju u KCV",
+    "url": "https://news.google.com/rss/articles/CBMiuAFBVV95cUxPRjlQVXpsLVgzdDhIaDlfcDJVdW1IYV92R2E5YXdyemVsbXdhMVluQjhDOU5ZWW5Ya3ptMXlyMjdPcEdGeENPMnRibzRJWkNTUTFlUHBaZ2RMUDVFSno3Tk5hQTFHSW9pV25kYXB0VWZrTXVucGFvOUUzVC1vVFpxWEhoNnlIQ3BFcWVaV0VtUW5UN0JydG1CN2xiYWN0U0luRjdLcHU2RXBDM3RqbWYzOGhVb0h5Yk1w?oc=5",
+    "retrievedAt": "2026-10-30T20:47:33.660Z",
+    "publishedAt": "2026-07-01T07:00:00.000Z",
+    "official": false
+   }
+  },
+  {
+   "id": "ed1f09bef0e3",
+   "title": "Porodica tvrdi da je žena s tumorom mozga odbijena za prijem u bolnicu, KCV negira navode",
+   "url": "https://news.google.com/rss/articles/CBMivwFBVV95cUxOYy0xSUtRZXE2OER5clQwWUp0RW9WM0R0YTVaelRsdU9kTXYwemNkdVJTUnAta0t0V2YzakFXUWFROWhNYTNIbVlPSW9ZTGVkZlotcFJZa3pOSUlfV052N2VIdThhTXU3bm9LXzNpdkU5UWNOa1psYkx5el8xbGlaMFlDOWdJQVBCSXJsWl9kN2ZtcDd4ODByVVJTYjJoQ3VIM09RUnF1bFp2eURQYUtVMmVxaFRlT3VvTEVZTTB6Zw?oc=5",
+   "outlet": "N1",
+   "publishedAt": "2026-06-26T07:00:00.000Z",
+   "matched": [
+    "KCV"
+   ],
+   "provider": "google-news-rss",
+   "verified": "naslov",
+   "score": 32,
+   "unresolved": true,
+   "source": {
+    "kind": "vesti",
+    "title": "N1: Porodica tvrdi da je žena s tumorom mozga odbijena za prijem u bolnicu, KCV negira navode",
+    "url": "https://news.google.com/rss/articles/CBMivwFBVV95cUxOYy0xSUtRZXE2OER5clQwWUp0RW9WM0R0YTVaelRsdU9kTXYwemNkdVJTUnAta0t0V2YzakFXUWFROWhNYTNIbVlPSW9ZTGVkZlotcFJZa3pOSUlfV052N2VIdThhTXU3bm9LXzNpdkU5UWNOa1psYkx5el8xbGlaMFlDOWdJQVBCSXJsWl9kN2ZtcDd4ODByVVJTYjJoQ3VIM09RUnF1bFp2eURQYUtVMmVxaFRlT3VvTEVZTTB6Zw?oc=5",
+    "retrievedAt": "2026-10-30T20:47:33.660Z",
+    "publishedAt": "2026-06-26T07:00:00.000Z",
+    "official": false
+   }
+  },
+  {
+   "id": "7a6b1980e019",
+   "title": "Stanje povređenih u udesu kod Merkatora: Oglasio se KCV",
+   "url": "https://news.google.com/rss/articles/CBMinwFBVV95cUxNdEJFbHFTOElSRWFGYXZlZUtqNWc3akVKaWk5cl9VVXVwSHBmb2NzU1BmTmsxcHZyaVAzdHpvUDUzZTJFQXBfZThScWVETjRLak9uYllvZEVoR25OU1lCS3BSMVp3Zm0xUjBEWXdqN3hvMTJGS2xTdXRsVHpEMEdLbFpEUFNHZDNkaVp6UERKMldYUzBUdS1USUdNaG5MeWM?oc=5",
+   "outlet": "021.rs",
+   "publishedAt": "2026-04-07T07:00:00.000Z",
+   "matched": [
+    "KCV"
+   ],
+   "provider": "google-news-rss",
+   "verified": "naslov",
+   "score": 32,
+   "unresolved": true,
+   "source": {
+    "kind": "vesti",
+    "title": "021.rs: Stanje povređenih u udesu kod Merkatora: Oglasio se KCV",
+    "url": "https://news.google.com/rss/articles/CBMinwFBVV95cUxNdEJFbHFTOElSRWFGYXZlZUtqNWc3akVKaWk5cl9VVXVwSHBmb2NzU1BmTmsxcHZyaVAzdHpvUDUzZTJFQXBfZThScWVETjRLak9uYllvZEVoR25OU1lCS3BSMVp3Zm0xUjBEWXdqN3hvMTJGS2xTdXRsVHpEMEdLbFpEUFNHZDNkaVp6UERKMldYUzBUdS1USUdNaG5MeWM?oc=5",
+    "retrievedAt": "2026-10-30T20:47:33.660Z",
+    "publishedAt": "2026-04-07T07:00:00.000Z",
+    "official": false
+   }
+  },
+  {
+   "id": "64e499d17f4e",
+   "title": "Pao plafon na medicinsku sestru u KCV Novi Sad",
+   "url": "https://news.google.com/rss/articles/CBMiigFBVV95cUxQaDA0TGhicWJ3T01XY2ZDbV9BUU9keU55Y1lEVTRYVkF6Z19QM2trYWNucWRvYkJlZVdqWnlydTU4cno5YXhJM21wMV9ubWllZWtMSS1tQTQ1VUVnWGZoOG9wdkNkRlllektobUdMcl90NVFreHBTdnlUS3Z0aFZOTnJOc28wNlJSdWc?oc=5",
+   "outlet": "Danas",
+   "publishedAt": "2026-03-09T07:00:00.000Z",
+   "matched": [
+    "KCV"
+   ],
+   "provider": "google-news-rss",
+   "verified": "naslov",
+   "score": 32,
+   "unresolved": true,
+   "source": {
+    "kind": "vesti",
+    "title": "Danas: Pao plafon na medicinsku sestru u KCV Novi Sad",
+    "url": "https://news.google.com/rss/articles/CBMiigFBVV95cUxQaDA0TGhicWJ3T01XY2ZDbV9BUU9keU55Y1lEVTRYVkF6Z19QM2trYWNucWRvYkJlZVdqWnlydTU4cno5YXhJM21wMV9ubWllZWtMSS1tQTQ1VUVnWGZoOG9wdkNkRlllektobUdMcl90NVFreHBTdnlUS3Z0aFZOTnJOc28wNlJSdWc?oc=5",
+    "retrievedAt": "2026-10-30T20:47:33.660Z",
+    "publishedAt": "2026-03-09T07:00:00.000Z",
+    "official": false
+   }
+  },
+  {
+   "id": "a407fb2d2c44",
+   "title": "Zatvara se noćna ambulanta Hitne pomoći u KCV: Prebacuje se u Dunavsku",
+   "url": "https://news.google.com/rss/articles/CBMirwFBVV95cUxPc0tWWktlOFlfNDRtdjBlWXNQbnBhZENMdVR3Qk4zMWNpaHhXRTBIVjZNVDN2cTVrVHAxT3ctanZ2M3NxdmF0bWNZcFBWcDJfQ1k3UU9pMEZCRlBPVFdTVUtSOHBPdDFuQ3F2aVRqdGNuTjJPblYzRW1lbms1aldkSlVaSVFyaHF3VE9lU3dhQVViOV9COHlIRHlTa3hRNlhPQ2FXMlpIOXd2QUZjN2dN?oc=5",
+   "outlet": "021.rs",
+   "publishedAt": "2026-01-30T08:00:00.000Z",
+   "matched": [
+    "KCV"
+   ],
+   "provider": "google-news-rss",
+   "verified": "naslov",
+   "score": 32,
+   "unresolved": true,
+   "source": {
+    "kind": "vesti",
+    "title": "021.rs: Zatvara se noćna ambulanta Hitne pomoći u KCV: Prebacuje se u Dunavsku",
+    "url": "https://news.google.com/rss/articles/CBMirwFBVV95cUxPc0tWWktlOFlfNDRtdjBlWXNQbnBhZENMdVR3Qk4zMWNpaHhXRTBIVjZNVDN2cTVrVHAxT3ctanZ2M3NxdmF0bWNZcFBWcDJfQ1k3UU9pMEZCRlBPVFdTVUtSOHBPdDFuQ3F2aVRqdGNuTjJPblYzRW1lbms1aldkSlVaSVFyaHF3VE9lU3dhQVViOV9COHlIRHlTa3hRNlhPQ2FXMlpIOXd2QUZjN2dN?oc=5",
+    "retrievedAt": "2026-10-30T20:47:33.660Z",
+    "publishedAt": "2026-01-30T08:00:00.000Z",
+    "official": false
+   }
+  },
+  {
+   "id": "af4e3a65ba52",
+   "title": "Oglasio se Univerzitetski klinički centar Vojvodine: Poznato stanje žene na koju su pale drvene merdevine u No",
+   "url": "https://www.google.com/goto?url=CAESxwEB6zswFdQxBgP6R3NzdUtqzxJBs93Y5tMrwlG0nRKpVgQzVgaBwL1-RhuLoj1rk-cO4V7wP4lNv8BJJFsmIbTnfvFxGggUlMmaKZfy1QCpUougx0ekBV9r5kTTq1Aevs1QIbqXw5Hzwmdf7t1jcnsGQnZjad4DTCxGAdNnJ9UMGbL5A2Dg5J5fYbPwz-ceS_kmTwtAqB4AIHE0ukwIA074Kza0Mf_aDCAyNzhGVJvBoARVWyZCpaY3nw-b2IQnFLZrH5E4AcNC",
+   "outlet": "Mondo Crna Gora",
+   "snippet": "U Univerzitetski klinički centar Vojvodine (UKCV) primljena je žena koja je povrijeđena nakon što je na nju pao dio skele na ulici.",
+   "matched": [
+    "Univerzitetski klinički centar Vojvodine",
+    "Klinički centar Vojvodine"
+   ],
+   "provider": "serper",
+   "verified": "naslov",
+   "score": 32,
+   "source": {
+    "kind": "vesti",
+    "title": "Mondo Crna Gora: Oglasio se Univerzitetski klinički centar Vojvodine: Poznato stanje žene na koju su pale drvene merdevine u No",
+    "url": "https://www.google.com/goto?url=CAESxwEB6zswFdQxBgP6R3NzdUtqzxJBs93Y5tMrwlG0nRKpVgQzVgaBwL1-RhuLoj1rk-cO4V7wP4lNv8BJJFsmIbTnfvFxGggUlMmaKZfy1QCpUougx0ekBV9r5kTTq1Aevs1QIbqXw5Hzwmdf7t1jcnsGQnZjad4DTCxGAdNnJ9UMGbL5A2Dg5J5fYbPwz-ceS_kmTwtAqB4AIHE0ukwIA074Kza0Mf_aDCAyNzhGVJvBoARVWyZCpaY3nw-b2IQnFLZrH5E4AcNC",
+    "retrievedAt": "2026-10-30T20:47:33.660Z",
+    "official": false
+   }
+  },
+  {
+   "id": "1af31bb60d8e",
+   "title": "Navodi o opasnoj bakteriji u Betaniji, oglasio se KCV",
+   "url": "https://www.google.com/goto?url=CAESmAEB6zswFZ5ZOipqDMPLM5TxNoqRXmDbYHYTY3fiYWjYlNyZbSsxzJ3xDVPUuAeWHDLzkUZAh_XH_mCAwgO1o7MI3gOxkBBrrrVa2TtbIF0t1RC_SbfCgwHRPDTBXTNPGa8z6uXAL2shgjg0TrE6gS5Uriro2_NK3sVQA6stxP44PH1CLIwi6AI8pwQJ32Y_ccjH8XXRRT8ZTg",
+   "outlet": "021.rs",
+   "snippet": "U javnosti su se pojavili navodi da se u Betaniji pojavila bakterija legionela, te da su zaražene pacijentkinje. U Kliničkom centru Vojvodine poručuju da...",
+   "matched": [
+    "KCV",
+    "Klinički centar Vojvodine"
+   ],
+   "provider": "serper",
+   "verified": "naslov",
+   "score": 32,
+   "source": {
+    "kind": "vesti",
+    "title": "021.rs: Navodi o opasnoj bakteriji u Betaniji, oglasio se KCV",
+    "url": "https://www.google.com/goto?url=CAESmAEB6zswFZ5ZOipqDMPLM5TxNoqRXmDbYHYTY3fiYWjYlNyZbSsxzJ3xDVPUuAeWHDLzkUZAh_XH_mCAwgO1o7MI3gOxkBBrrrVa2TtbIF0t1RC_SbfCgwHRPDTBXTNPGa8z6uXAL2shgjg0TrE6gS5Uriro2_NK3sVQA6stxP44PH1CLIwi6AI8pwQJ32Y_ccjH8XXRRT8ZTg",
+    "retrievedAt": "2026-10-30T20:47:33.660Z",
+    "official": false
+   }
+  },
+  {
+   "id": "50b5a3126f0a",
+   "title": "ЖЕНА ЗАДОБИЛА ОПЕКОТИНЕ ГЛАВЕ И ТЕЛА, МЛАДИЋ ОПЕКОТИНЕ ОБЕ ПОДЛАКТИЦЕ Огласио се Универзитетски клинички центар Војводине, ово је стање повређених",
+   "url": "https://www.dnevnik.rs/vesti/hronika/zena-zadobila-opekotine-glave-tela-mladic-opekotine-obe-podlaktice-oglasio-univerzitetski-klinicki-centar-vojvodine-ovo-je-stanje-povredjenih-2026-08-25",
+   "outlet": "Dnevnik online",
+   "snippet": "Две особе повређене су у пожару који је јутрос око 6 часова избио у магацину курирске службе у новосадској индустријској зони. Служба за односе с јавношћу...",
+   "matched": [
+    "Univerzitetski klinički centar Vojvodine",
+    "Klinički centar Vojvodine"
+   ],
+   "provider": "serper",
+   "verified": "naslov",
+   "score": 32,
+   "source": {
+    "kind": "vesti",
+    "title": "Dnevnik online: ЖЕНА ЗАДОБИЛА ОПЕКОТИНЕ ГЛАВЕ И ТЕЛА, МЛАДИЋ ОПЕКОТИНЕ ОБЕ ПОДЛАКТИЦЕ Огласио се Универзитетски клинички центар Војводине, ово је стање повређених",
+    "url": "https://www.dnevnik.rs/vesti/hronika/zena-zadobila-opekotine-glave-tela-mladic-opekotine-obe-podlaktice-oglasio-univerzitetski-klinicki-centar-vojvodine-ovo-je-stanje-povredjenih-2026-08-25",
+    "retrievedAt": "2026-10-30T20:47:33.660Z",
+    "official": false
+   }
+  },
+  {
+   "id": "379913ca066d",
+   "title": "ВАЖНА НОВОСТ ИЗ КЛИНИЧКОГ ЦЕНТРА ВОЈВОДИНЕ: Пацијент после сложене операције мозга пуштен кући већ трећег дана, уведена нова метода",
+   "url": "https://news.google.com/rss/articles/CBMiiAJBVV95cUxQa3pHaUUyLXREVHJXYkFIc29Tdmt5MFJXSFRyZlNuekNZanJLcjZydzdVYW41V25PZ0tGSUhDdEZfUGFtNEg3cE9hUjhmWUxsTERBdm9PTUlLV195dlVCTUFFQkFBbDF3TWllZUZGVE9oYV93UHNYdXV1UjM0YVE0aGJRb1M3QXdzRURlM0M2UW9FeHNBaWtSQjRCU1hoUzFTb0t0Q3JsNEEzaGRIeFo2WjVqNDFENG1wN1BEVUpwU1R2a1lVYldhVzlVUS1WUVpBR2xEVm1faGQ2eFpBMnJWdEs0a1JNZnp4RlRwSE1TZ200aWswR0ZfSDYwd0RXOGg2Q0VSQVVJbWI?oc=5",
+   "outlet": "www.dnevnik.rs",
+   "publishedAt": "2026-10-21T12:21:06.000Z",
+   "matched": [
+    "Klinički centar Vojvodine"
+   ],
+   "provider": "google-news-rss",
+   "verified": "naslov",
+   "score": 31,
+   "unresolved": true,
+   "source": {
+    "kind": "vesti",
+    "title": "www.dnevnik.rs: ВАЖНА НОВОСТ ИЗ КЛИНИЧКОГ ЦЕНТРА ВОЈВОДИНЕ: Пацијент после сложене операције мозга пуштен кући већ трећег дана, уведена нова метода",
+    "url": "https://news.google.com/rss/articles/CBMiiAJBVV95cUxQa3pHaUUyLXREVHJXYkFIc29Tdmt5MFJXSFRyZlNuekNZanJLcjZydzdVYW41V25PZ0tGSUhDdEZfUGFtNEg3cE9hUjhmWUxsTERBdm9PTUlLV195dlVCTUFFQkFBbDF3TWllZUZGVE9oYV93UHNYdXV1UjM0YVE0aGJRb1M3QXdzRURlM0M2UW9FeHNBaWtSQjRCU1hoUzFTb0t0Q3JsNEEzaGRIeFo2WjVqNDFENG1wN1BEVUpwU1R2a1lVYldhVzlVUS1WUVpBR2xEVm1faGQ2eFpBMnJWdEs0a1JNZnp4RlRwSE1TZ200aWswR0ZfSDYwd0RXOGg2Q0VSQVVJbWI?oc=5",
+    "retrievedAt": "2026-10-30T20:47:33.660Z",
+    "publishedAt": "2026-10-21T12:21:06.000Z",
+    "official": false
+   }
+  },
+  {
+   "id": "76fe9bf62b0f",
+   "title": "Rasvetljene dve krađe medicinske opreme iz KCV-a, aparati vraćeni klinici – Dunav Televizija",
+   "url": "https://news.google.com/rss/articles/CBMi0gFBVV95cUxQVEdoUG9HVUVMdnhMNHZjTTAzcG11N0hTNEVRanQ2Ym9PamxmMHhheG5sSEFydXNOUEdhdzFNZ2VwZ2dSaC1EU2ZEcW9PZVFkZ1lXd3JKcWpDcjI0b1V0Q3VKWW9DNUVHa1I1TXhQVTBUa2p0N3plSGFHMi1ITVpRRVZlV0dKOGkyU0FXMmNveWlaa3lSZFItU2otOWdwc3JUWFR0THA4ZlJsc0pfOGdqSEdEUFRlTzlTMVJDM2lKM01MQXhzTjNiaXM0Z2pQQ2VNZnc?oc=5",
+   "outlet": "Vojvodjanski",
+   "publishedAt": "2026-10-14T07:00:00.000Z",
+   "matched": [
+    "KCV"
+   ],
+   "provider": "google-news-rss",
+   "verified": "naslov",
+   "score": 31,
+   "unresolved": true,
+   "source": {
+    "kind": "vesti",
+    "title": "Vojvodjanski: Rasvetljene dve krađe medicinske opreme iz KCV-a, aparati vraćeni klinici – Dunav Televizija",
+    "url": "https://news.google.com/rss/articles/CBMi0gFBVV95cUxQVEdoUG9HVUVMdnhMNHZjTTAzcG11N0hTNEVRanQ2Ym9PamxmMHhheG5sSEFydXNOUEdhdzFNZ2VwZ2dSaC1EU2ZEcW9PZVFkZ1lXd3JKcWpDcjI0b1V0Q3VKWW9DNUVHa1I1TXhQVTBUa2p0N3plSGFHMi1ITVpRRVZlV0dKOGkyU0FXMmNveWlaa3lSZFItU2otOWdwc3JUWFR0THA4ZlJsc0pfOGdqSEdEUFRlTzlTMVJDM2lKM01MQXhzTjNiaXM0Z2pQQ2VNZnc?oc=5",
+    "retrievedAt": "2026-10-30T20:47:33.660Z",
+    "publishedAt": "2026-10-14T07:00:00.000Z",
+    "official": false
+   }
+  },
+  {
+   "id": "626989161a1c",
+   "title": "NOVI SAD: Iz Klinike za ortopediju KCV-a ukradeni aparati vredni 700.000 dinara",
+   "url": "https://news.google.com/rss/articles/CBMisAFBVV95cUxPallUX2JnODRkNWJRYnVyWE5HMHZ5RWZ1THJETTJ1MXRZazJWZHlrakJ4Y0NwSXYtQW43NVdwbTc5QUVmTGpWcU5BNVV5LXQ2QjhrYVF3R1EyZndEdnFEUVdVVmU2V0V3QXR6QlpObDlOekcyOWVsS1piblJLV1IySWVBNlNjS2hCalBWVHhFNXZRZGtaaWJ1N3Y2SDZidWQ5cEVTOEpkOVRMV0R0Z05yRA?oc=5",
+   "outlet": "Vojvođanski reporter",
+   "publishedAt": "2026-10-14T07:00:00.000Z",
+   "matched": [
+    "KCV"
+   ],
+   "provider": "google-news-rss",
+   "verified": "naslov",
+   "score": 31,
+   "unresolved": true,
+   "source": {
+    "kind": "vesti",
+    "title": "Vojvođanski reporter: NOVI SAD: Iz Klinike za ortopediju KCV-a ukradeni aparati vredni 700.000 dinara",
+    "url": "https://news.google.com/rss/articles/CBMisAFBVV95cUxPallUX2JnODRkNWJRYnVyWE5HMHZ5RWZ1THJETTJ1MXRZazJWZHlrakJ4Y0NwSXYtQW43NVdwbTc5QUVmTGpWcU5BNVV5LXQ2QjhrYVF3R1EyZndEdnFEUVdVVmU2V0V3QXR6QlpObDlOekcyOWVsS1piblJLV1IySWVBNlNjS2hCalBWVHhFNXZRZGtaaWJ1N3Y2SDZidWQ5cEVTOEpkOVRMV0R0Z05yRA?oc=5",
+    "retrievedAt": "2026-10-30T20:47:33.660Z",
+    "publishedAt": "2026-10-14T07:00:00.000Z",
+    "official": false
+   }
+  },
+  {
+   "id": "236b12b188fc",
+   "title": "Novosađanin ukrao dva aparata za medicinske terapije iz KCV-a",
+   "url": "https://news.google.com/rss/articles/CBMikwFBVV95cUxONnVKdXdvNDR0bTZLUzVId1BRT20wd3NFR1ZfVHVpNUNGWTVaZEJGaWZsWkZRMV9YYzAzYjdfNWJ1OF9XUTg0Ymx5WFlQUm1PV2lsY2hRLW9PS0pOckc1Wm9zSFFfSjdYbzJPZGhtOWhkMElhNTViMEdGd2cwbUtTSFFySDhVeVpOU1RQWDA1TW9FRms?oc=5",
+   "outlet": "Moj Novi Sad",
+   "publishedAt": "2026-10-14T07:00:00.000Z",
+   "matched": [
+    "KCV"
+   ],
+   "provider": "google-news-rss",
+   "verified": "naslov",
+   "score": 31,
+   "unresolved": true,
+   "source": {
+    "kind": "vesti",
+    "title": "Moj Novi Sad: Novosađanin ukrao dva aparata za medicinske terapije iz KCV-a",
+    "url": "https://news.google.com/rss/articles/CBMikwFBVV95cUxONnVKdXdvNDR0bTZLUzVId1BRT20wd3NFR1ZfVHVpNUNGWTVaZEJGaWZsWkZRMV9YYzAzYjdfNWJ1OF9XUTg0Ymx5WFlQUm1PV2lsY2hRLW9PS0pOckc1Wm9zSFFfSjdYbzJPZGhtOWhkMElhNTViMEdGd2cwbUtTSFFySDhVeVpOU1RQWDA1TW9FRms?oc=5",
+    "retrievedAt": "2026-10-30T20:47:33.660Z",
+    "publishedAt": "2026-10-14T07:00:00.000Z",
+    "official": false
+   }
+  },
+  {
+   "id": "b12589ba5aac",
+   "title": "Uhapšen zbog krađe dva aparata za terapije iz KCV",
+   "url": "https://news.google.com/rss/articles/CBMiigFBVV95cUxOMGFmV2ZNUEFWcExJMmZ2VlhQakpuV2RGOFFtYmgtRmJhR0lKTlJkWnNuM0w4OHEzV2RMWUxBaXBPYlZmM0wxRWVtQjFHZnFDemFUYWpyclVmSk9Lb0pleGhQbWYtaTJjTWJiaHpBdFVJMktJVnVfTGNCa3BtVFBuTHdYMF9yeTFObGc?oc=5",
+   "outlet": "Vesti.rs",
+   "publishedAt": "2026-10-14T07:00:00.000Z",
+   "matched": [
+    "KCV"
+   ],
+   "provider": "google-news-rss",
+   "verified": "naslov",
+   "score": 31,
+   "unresolved": true,
+   "source": {
+    "kind": "vesti",
+    "title": "Vesti.rs: Uhapšen zbog krađe dva aparata za terapije iz KCV",
+    "url": "https://news.google.com/rss/articles/CBMiigFBVV95cUxOMGFmV2ZNUEFWcExJMmZ2VlhQakpuV2RGOFFtYmgtRmJhR0lKTlJkWnNuM0w4OHEzV2RMWUxBaXBPYlZmM0wxRWVtQjFHZnFDemFUYWpyclVmSk9Lb0pleGhQbWYtaTJjTWJiaHpBdFVJMktJVnVfTGNCa3BtVFBuTHdYMF9yeTFObGc?oc=5",
+    "retrievedAt": "2026-10-30T20:47:33.660Z",
+    "publishedAt": "2026-10-14T07:00:00.000Z",
+    "official": false
+   }
+  },
+  {
+   "id": "da1698f029e1",
+   "title": "Užas! Dokumenti otkrivaju šta je Srdanović radio koleginici na KCV: Njena izjava izaziva jezu, dokaz crno na belo (FOTO)",
+   "url": "https://news.google.com/rss/articles/CBMi4AFBVV95cUxOVXc1OFhRY0VpS3ZPYnFXRWRpaERtc1RNMVZodl84RXY0YjhNcW9tbkd4TlRib3V1WHhFSTVRTnFjYkcwUlEyUnVtVzVaT0ZERnRpeVNPRkkxelp5aXczTG4zUFVhMy1wdUhOb2ZWUmxpNmJZMGN4SW1VdldDU2ltR3Q3anJzQkR3QVlLaXlnUE9hanhVMmtNaGpLcEV4MHc0UGF1bTZWNVdNLTl1VzBsYUtYYTZjR2ZtNVZRMEt4RUZHRWUteml5OC1ucEpFR1FSU3lVTll1dW1GX2k4X19ueA?oc=5",
+   "outlet": "Pink.rs",
+   "publishedAt": "2026-09-17T07:00:00.000Z",
+   "matched": [
+    "KCV"
+   ],
+   "provider": "google-news-rss",
+   "verified": "naslov",
+   "score": 31,
+   "unresolved": true,
+   "source": {
+    "kind": "vesti",
+    "title": "Pink.rs: Užas! Dokumenti otkrivaju šta je Srdanović radio koleginici na KCV: Njena izjava izaziva jezu, dokaz crno na belo (FOTO)",
+    "url": "https://news.google.com/rss/articles/CBMi4AFBVV95cUxOVXc1OFhRY0VpS3ZPYnFXRWRpaERtc1RNMVZodl84RXY0YjhNcW9tbkd4TlRib3V1WHhFSTVRTnFjYkcwUlEyUnVtVzVaT0ZERnRpeVNPRkkxelp5aXczTG4zUFVhMy1wdUhOb2ZWUmxpNmJZMGN4SW1VdldDU2ltR3Q3anJzQkR3QVlLaXlnUE9hanhVMmtNaGpLcEV4MHc0UGF1bTZWNVdNLTl1VzBsYUtYYTZjR2ZtNVZRMEt4RUZHRWUteml5OC1ucEpFR1FSU3lVTll1dW1GX2k4X19ueA?oc=5",
+    "retrievedAt": "2026-10-30T20:47:33.660Z",
+    "publishedAt": "2026-09-17T07:00:00.000Z",
+    "official": false
+   }
+  },
+  {
+   "id": "235c80e8634b",
+   "title": "Mračna tajna Ilija Srdanovića! Šok otkriće o prvom na blokaderskoj listi: Pravio kovid žurke, donosio alkohol u KCV",
+   "url": "https://news.google.com/rss/articles/CBMiekFVX3lxTE1rcHhKdjBzTG1CSXVnaDEwQVZiSEZUTE84YVdYOEFqY2dNNFFXR1p0RzZtdzh6S1FzaVBkaVZVWlhvR094S2lxY3NSZHc4T1VVMW5lRWdCMnlUZU51bXJJNk10d0I4UVJ5X2Y5eDdSeDg1UWhHdGpmS2Vn?oc=5",
+   "outlet": "Informer",
+   "publishedAt": "2026-09-15T07:00:00.000Z",
+   "matched": [
+    "KCV"
+   ],
+   "provider": "google-news-rss",
+   "verified": "naslov",
+   "score": 31,
+   "unresolved": true,
+   "source": {
+    "kind": "vesti",
+    "title": "Informer: Mračna tajna Ilija Srdanovića! Šok otkriće o prvom na blokaderskoj listi: Pravio kovid žurke, donosio alkohol u KCV",
+    "url": "https://news.google.com/rss/articles/CBMiekFVX3lxTE1rcHhKdjBzTG1CSXVnaDEwQVZiSEZUTE84YVdYOEFqY2dNNFFXR1p0RzZtdzh6S1FzaVBkaVZVWlhvR094S2lxY3NSZHc4T1VVMW5lRWdCMnlUZU51bXJJNk10d0I4UVJ5X2Y5eDdSeDg1UWhHdGpmS2Vn?oc=5",
+    "retrievedAt": "2026-10-30T20:47:33.660Z",
+    "publishedAt": "2026-09-15T07:00:00.000Z",
+    "official": false
+   }
+  },
+  {
+   "id": "9ea6c690834c",
+   "title": "Virus Zapadnog Nila odneo tri života u Vojvodini: Dvoje pacijenata u KCV-u na respiratoru",
+   "url": "https://news.google.com/rss/articles/CBMitwFBVV95cUxNcnRGSVVvZ0RyRXBpbmFqM0tHdGZkQ3VCSWFhb3N0amtGbDJtNE1LUVU2Tlo1akp0NVUxZlJ5Rk5xX295RE90SHhsWF9qSjBET3FzR1BKclZuUFRHRzY1NE5SWnhTWXBhcUZiSDljNWIwWTNjdnhfZmVJYkZNaGlJUWRNSDZFX3VYRlV0TmRGRENPN19LZHp2LUVaMkZoQ0l6OTNvZGZHMUY4ZzI5RFBMRFcyOEVkdEE?oc=5",
+   "outlet": "Moj Novi Sad",
+   "publishedAt": "2026-09-11T07:00:00.000Z",
+   "matched": [
+    "KCV"
+   ],
+   "provider": "google-news-rss",
+   "verified": "naslov",
+   "score": 31,
+   "unresolved": true,
+   "source": {
+    "kind": "vesti",
+    "title": "Moj Novi Sad: Virus Zapadnog Nila odneo tri života u Vojvodini: Dvoje pacijenata u KCV-u na respiratoru",
+    "url": "https://news.google.com/rss/articles/CBMitwFBVV95cUxNcnRGSVVvZ0RyRXBpbmFqM0tHdGZkQ3VCSWFhb3N0amtGbDJtNE1LUVU2Tlo1akp0NVUxZlJ5Rk5xX295RE90SHhsWF9qSjBET3FzR1BKclZuUFRHRzY1NE5SWnhTWXBhcUZiSDljNWIwWTNjdnhfZmVJYkZNaGlJUWRNSDZFX3VYRlV0TmRGRENPN19LZHp2LUVaMkZoQ0l6OTNvZGZHMUY4ZzI5RFBMRFcyOEVkdEE?oc=5",
+    "retrievedAt": "2026-10-30T20:47:33.660Z",
+    "publishedAt": "2026-09-11T07:00:00.000Z",
+    "official": false
+   }
+  },
+  {
+   "id": "387499829b7d",
+   "title": "Utorkom i sredom razgovori građana sa direktorkom KCV-a Vesnom Turkulov",
+   "url": "https://news.google.com/rss/articles/CBMimAFBVV95cUxOZVNjWkxRR01jeG8xNVU0LTdYTlpNS0k3WHZ1OVNWbEd6RGV4Wk5YZmtJUVhWZEdENjUwV0tEajFYbTQ5OC01SWM0b3lxSnpfV1AtZHo2UGRlRlhJNTlrTlRfT1pzNmw3dXVWV294allzMFhtcnJqTC1idWp4dWZiSW5HQVdiVWxXM3ZsbFMzalBuWDNldlVZYg?oc=5",
+   "outlet": "IN Medija",
+   "publishedAt": "2026-08-19T07:00:00.000Z",
+   "matched": [
+    "KCV"
+   ],
+   "provider": "google-news-rss",
+   "verified": "naslov",
+   "score": 31,
+   "unresolved": true,
+   "source": {
+    "kind": "vesti",
+    "title": "IN Medija: Utorkom i sredom razgovori građana sa direktorkom KCV-a Vesnom Turkulov",
+    "url": "https://news.google.com/rss/articles/CBMimAFBVV95cUxOZVNjWkxRR01jeG8xNVU0LTdYTlpNS0k3WHZ1OVNWbEd6RGV4Wk5YZmtJUVhWZEdENjUwV0tEajFYbTQ5OC01SWM0b3lxSnpfV1AtZHo2UGRlRlhJNTlrTlRfT1pzNmw3dXVWV294allzMFhtcnJqTC1idWp4dWZiSW5HQVdiVWxXM3ZsbFMzalBuWDNldlVZYg?oc=5",
+    "retrievedAt": "2026-10-30T20:47:33.660Z",
+    "publishedAt": "2026-08-19T07:00:00.000Z",
+    "official": false
+   }
+  },
+  {
+   "id": "e0dc58e40ed9",
+   "title": "Dr Turkulov od danas prima građane u KCV-u, neophodno zakazivanje",
+   "url": "https://news.google.com/rss/articles/CBMilwFBVV95cUxQZkZiOHRtclk1Z25oZDQxdXhtZGNXbElnVUJ4VG5LZGl2R2ctVWdfMXVaTnd6OVZWdk5BS0FXV0RqaXBoOXBFSVR0SnYxd1Frb3BHVzY0RmRZUkotejBCMzhhdHd5ekhmSVJXd1FjRE94MTZlTTdwTHlpSkRlWWtIaGppWlNwNHdUdS1LLTRZVmFTQUFtR3Jr?oc=5",
+   "outlet": "Moj Novi Sad",
+   "publishedAt": "2026-08-19T07:00:00.000Z",
+   "matched": [
+    "KCV"
+   ],
+   "provider": "google-news-rss",
+   "verified": "naslov",
+   "score": 31,
+   "unresolved": true,
+   "source": {
+    "kind": "vesti",
+    "title": "Moj Novi Sad: Dr Turkulov od danas prima građane u KCV-u, neophodno zakazivanje",
+    "url": "https://news.google.com/rss/articles/CBMilwFBVV95cUxQZkZiOHRtclk1Z25oZDQxdXhtZGNXbElnVUJ4VG5LZGl2R2ctVWdfMXVaTnd6OVZWdk5BS0FXV0RqaXBoOXBFSVR0SnYxd1Frb3BHVzY0RmRZUkotejBCMzhhdHd5ekhmSVJXd1FjRE94MTZlTTdwTHlpSkRlWWtIaGppWlNwNHdUdS1LLTRZVmFTQUFtR3Jr?oc=5",
+    "retrievedAt": "2026-10-30T20:47:33.660Z",
+    "publishedAt": "2026-08-19T07:00:00.000Z",
+    "official": false
+   }
+  },
+  {
+   "id": "4c96c7362663",
+   "title": "Zborovi NS: Pao deo plafona na Klinici za rehabilitaciju, KCV: Nije tačno",
+   "url": "https://news.google.com/rss/articles/CBMinwFBVV95cUxNeTl0ZTAySFdnNnM2Nnltdk42blEyTExkSXdHeVJOWURiUTRNZHlxYVR2QTgweTNnZWMtSjktdlVrMDVLQU9pc3djQ3RHZmxFVFlXemJLdzRyX0t2NHhMTExNVzlQV2hSTS1MU215NjNtdmtMMmxFbmJmRlYyLWE0WGlBX2JqZGRtSDU4WUV0a3dPVkhNVlBuQmFlZDgtMXc?oc=5",
+   "outlet": "Moj Novi Sad",
+   "publishedAt": "2026-07-03T07:00:00.000Z",
+   "matched": [
+    "KCV"
+   ],
+   "provider": "google-news-rss",
+   "verified": "naslov",
+   "score": 31,
+   "unresolved": true,
+   "source": {
+    "kind": "vesti",
+    "title": "Moj Novi Sad: Zborovi NS: Pao deo plafona na Klinici za rehabilitaciju, KCV: Nije tačno",
+    "url": "https://news.google.com/rss/articles/CBMinwFBVV95cUxNeTl0ZTAySFdnNnM2Nnltdk42blEyTExkSXdHeVJOWURiUTRNZHlxYVR2QTgweTNnZWMtSjktdlVrMDVLQU9pc3djQ3RHZmxFVFlXemJLdzRyX0t2NHhMTExNVzlQV2hSTS1MU215NjNtdmtMMmxFbmJmRlYyLWE0WGlBX2JqZGRtSDU4WUV0a3dPVkhNVlBuQmFlZDgtMXc?oc=5",
+    "retrievedAt": "2026-10-30T20:47:33.660Z",
+    "publishedAt": "2026-07-03T07:00:00.000Z",
+    "official": false
+   }
+  },
+  {
+   "id": "2e7449eea341",
+   "title": "Pao plafon na Klinici za fizikalnu medicinu KCV, srećom nema povređenih",
+   "url": "https://news.google.com/rss/articles/CBMilwFBVV95cUxNVWw1aUV4MUN6MmNMU25uZ0RUMEdRNmxUYVc0QklKcG9aXzdTV1pRZndHMU52VXpleG1KUWlaY3ppc0w2eVBLZG54bmdMaDlFUTRRM19oOEJpczQ1dDRfeV9jTzV1MU1JWXVNY3NyRVU4YUNLTUxuc0hVeUE5QkFRTEpBYjRCSGYtbTFkN3NjSHE4M19IcHJj?oc=5",
+   "outlet": "Autonomija",
+   "publishedAt": "2026-07-03T07:00:00.000Z",
+   "matched": [
+    "KCV"
+   ],
+   "provider": "google-news-rss",
+   "verified": "naslov",
+   "score": 31,
+   "unresolved": true,
+   "source": {
+    "kind": "vesti",
+    "title": "Autonomija: Pao plafon na Klinici za fizikalnu medicinu KCV, srećom nema povređenih",
+    "url": "https://news.google.com/rss/articles/CBMilwFBVV95cUxNVWw1aUV4MUN6MmNMU25uZ0RUMEdRNmxUYVc0QklKcG9aXzdTV1pRZndHMU52VXpleG1KUWlaY3ppc0w2eVBLZG54bmdMaDlFUTRRM19oOEJpczQ1dDRfeV9jTzV1MU1JWXVNY3NyRVU4YUNLTUxuc0hVeUE5QkFRTEpBYjRCSGYtbTFkN3NjSHE4M19IcHJj?oc=5",
+    "retrievedAt": "2026-10-30T20:47:33.660Z",
+    "publishedAt": "2026-07-03T07:00:00.000Z",
+    "official": false
+   }
+  },
+  {
+   "id": "8d75271f0f4b",
+   "title": "Noćna ambulanta Hitne pomoći iz KCV-a seli se u Dunavsku ulicu",
+   "url": "https://news.google.com/rss/articles/CBMilAFBVV95cUxQNjBQVDhaZjF6MDVnMmFsZ1cxYjBBTHpaTFR4ODg1aEJhTmJlZU1VMlhNN3R6eEl6aHltNnk0X1Vwd2VyRWljNTh5OVdkTWluQTdibnI5YVo1YjQ4Y3pyaFZUTC1teUJrVlhkUlpvaENUdTVlTDJObDNGR052N0xaWnI4ZVlvdHNLQ2VqZjZhcXFhdUlR?oc=5",
+   "outlet": "Moj Novi Sad",
+   "publishedAt": "2026-01-30T08:00:00.000Z",
+   "matched": [
+    "KCV"
+   ],
+   "provider": "google-news-rss",
+   "verified": "naslov",
+   "score": 31,
+   "unresolved": true,
+   "source": {
+    "kind": "vesti",
+    "title": "Moj Novi Sad: Noćna ambulanta Hitne pomoći iz KCV-a seli se u Dunavsku ulicu",
+    "url": "https://news.google.com/rss/articles/CBMilAFBVV95cUxQNjBQVDhaZjF6MDVnMmFsZ1cxYjBBTHpaTFR4ODg1aEJhTmJlZU1VMlhNN3R6eEl6aHltNnk0X1Vwd2VyRWljNTh5OVdkTWluQTdibnI5YVo1YjQ4Y3pyaFZUTC1teUJrVlhkUlpvaENUdTVlTDJObDNGR052N0xaWnI4ZVlvdHNLQ2VqZjZhcXFhdUlR?oc=5",
+    "retrievedAt": "2026-10-30T20:47:33.660Z",
+    "publishedAt": "2026-01-30T08:00:00.000Z",
+    "official": false
+   }
+  },
+  {
+   "id": "4230eaf03448",
+   "title": "Udes kod mosta Beška, majka i troje male dece prevezeni u KCV",
+   "url": "https://news.google.com/rss/articles/CBMikgFBVV95cUxPaUVtWVMwZDhHdG42MEd1dVNnUG1TQnJLeGZCQnJ6dnJjX1hpVWUySHJkVGg1a0ozR2V6ZVVjam4wbThVSjZ0YmhreTJrTE9qeDM0VTNBT1BEbV9YbC1GSnNVMjhUaXpwRjBhVmlIVWRYTHVobVIzTXNCZXVNd0xEcWNmQW1FYmY0RVV5SFYwTFNlUQ?oc=5",
+   "outlet": "Moj Novi Sad",
+   "publishedAt": "2026-01-08T08:00:00.000Z",
+   "matched": [
+    "KCV"
+   ],
+   "provider": "google-news-rss",
+   "verified": "naslov",
+   "score": 31,
+   "unresolved": true,
+   "source": {
+    "kind": "vesti",
+    "title": "Moj Novi Sad: Udes kod mosta Beška, majka i troje male dece prevezeni u KCV",
+    "url": "https://news.google.com/rss/articles/CBMikgFBVV95cUxPaUVtWVMwZDhHdG42MEd1dVNnUG1TQnJLeGZCQnJ6dnJjX1hpVWUySHJkVGg1a0ozR2V6ZVVjam4wbThVSjZ0YmhreTJrTE9qeDM0VTNBT1BEbV9YbC1GSnNVMjhUaXpwRjBhVmlIVWRYTHVobVIzTXNCZXVNd0xEcWNmQW1FYmY0RVV5SFYwTFNlUQ?oc=5",
+    "retrievedAt": "2026-10-30T20:47:33.660Z",
+    "publishedAt": "2026-01-08T08:00:00.000Z",
+    "official": false
+   }
+  },
+  {
+   "id": "9774e2db8030",
+   "title": "Na tvrdnje da se u Betaniji pojavila opasna bakterija, iz KCV-a poručuju da nema razloga za uznemirenje javnosti",
+   "url": "https://www.google.com/goto?url=CAESzwEB6zswFXCxRefK55B8jMqIO5qkMh7kmfq96UELA-hFMJVSSlN8V-wt8cgd2cKw2baKyBazyL8G84s_z2R00yy4LDFF77GmPQ-Xx-e6kCFLlCQk86A5dAOWhRTP6PgQ3giqxEBnvAzt2rNFvEku4miKTr5Ls9HhTHXCPFSDnt8pwFm5pg4FjKiKSEekfoVaH8iybmJqCH5oD6PQsnptE4ouYa_YFMGbzE1NqJ5QrtNdp78VcKkmCbftYZozA43A2qdTShj7Nk6F-MKvg8BZW6k",
+   "outlet": "Moj Novi Sad",
+   "snippet": "Tokom prethodne sedmice, Medija tim Mreže zborova Novi Sad posalao nam je informacije do kojih je došao, a koje se, kako su naveli, odnose na bezbednost...",
+   "matched": [
+    "KCV"
+   ],
+   "provider": "serper",
+   "verified": "naslov",
+   "score": 31,
+   "source": {
+    "kind": "vesti",
+    "title": "Moj Novi Sad: Na tvrdnje da se u Betaniji pojavila opasna bakterija, iz KCV-a poručuju da nema razloga za uznemirenje javnosti",
+    "url": "https://www.google.com/goto?url=CAESzwEB6zswFXCxRefK55B8jMqIO5qkMh7kmfq96UELA-hFMJVSSlN8V-wt8cgd2cKw2baKyBazyL8G84s_z2R00yy4LDFF77GmPQ-Xx-e6kCFLlCQk86A5dAOWhRTP6PgQ3giqxEBnvAzt2rNFvEku4miKTr5Ls9HhTHXCPFSDnt8pwFm5pg4FjKiKSEekfoVaH8iybmJqCH5oD6PQsnptE4ouYa_YFMGbzE1NqJ5QrtNdp78VcKkmCbftYZozA43A2qdTShj7Nk6F-MKvg8BZW6k",
+    "retrievedAt": "2026-10-30T20:47:33.660Z",
+    "official": false
+   }
+  },
+  {
+   "id": "6e1d12a1ac80",
+   "title": "SNS biznismen koji je u fond Vista Rika uložio više od pola miliona evra ređa poslove od države: Sklapa ugovore sa Elektrodistribucijom, PIO fondom, Narodnom bankom...",
+   "url": "https://nova.rs/vesti/biznis/bozo-prelevic-pozvao-vitezove-poziva-lex-a-da-brane-profesiju-istinu-ustav-i-zakone",
+   "outlet": "nova.rs",
+   "publishedAt": "2026-10-23T05:12:09.000Z",
+   "snippet": "Kao naručioci, osim gore pomenutih preduzeća, navedeni su i Univerzitetski klinički centar Vojvodine i Uprava za zajedničke poslove pokrajinskih organa.",
+   "matched": [
+    "Univerzitetski klinički centar Vojvodine",
+    "Klinički centar Vojvodine"
+   ],
+   "provider": "brave",
+   "verified": "opis",
+   "score": 21,
+   "source": {
+    "kind": "vesti",
+    "title": "nova.rs: SNS biznismen koji je u fond Vista Rika uložio više od pola miliona evra ređa poslove od države: Sklapa ugovore sa Elektrodistribucijom, PIO fondom, Narodnom bankom...",
+    "url": "https://nova.rs/vesti/biznis/bozo-prelevic-pozvao-vitezove-poziva-lex-a-da-brane-profesiju-istinu-ustav-i-zakone",
+    "retrievedAt": "2026-10-30T20:47:33.660Z",
+    "publishedAt": "2026-10-23T05:12:09.000Z",
+    "official": false
+   }
+  },
+  {
+   "id": "27adfbfd54f6",
+   "title": "UKC Vojvodine: Trudnice i porodilje ni u jednom trenutku nisu bile ugrožene, u uzorku vode i u brisu sa klima uređaja nema legionele",
+   "url": "https://www.google.com/goto?url=CAES1QEB6zswFf1BQ5ipgW59WPyDaNtlwFhRQHP0SNm8-YQ7qi0Q32oDfNOQ3f9dg6-uSKZ9Xmcj3UPWVNl3rbPFJ0K6AMNkAU_Bkn-Qp6MjkSMrRzvOwsmA2-xLyjnFEmOs5DPcT9uWVvp_JQFoFfQ_M2lPtvQ04nC_b4_6uUnf1IMDDl5lHHX9guESqtILf3fVMlWxQUqs2dQiStmqR92dMKtmfLpUt8NavBD5LFhItmUTRYIf155CkU1VXwDTuyb0jkvOkqxdlNfwZhWB80FSImkiiH5sXwM",
+   "outlet": "N1",
+   "snippet": "Univerzitetski klinički centar Vojvodine navodi da su dve pacijentkinje, koje su se javile Institutu za plućne bolesti u Sremskoj Kamenici prethodno bile...",
+   "matched": [
+    "Univerzitetski klinički centar Vojvodine",
+    "Klinički centar Vojvodine"
+   ],
+   "provider": "serper",
+   "verified": "opis",
+   "score": 21,
+   "source": {
+    "kind": "vesti",
+    "title": "N1: UKC Vojvodine: Trudnice i porodilje ni u jednom trenutku nisu bile ugrožene, u uzorku vode i u brisu sa klima uređaja nema legionele",
+    "url": "https://www.google.com/goto?url=CAES1QEB6zswFf1BQ5ipgW59WPyDaNtlwFhRQHP0SNm8-YQ7qi0Q32oDfNOQ3f9dg6-uSKZ9Xmcj3UPWVNl3rbPFJ0K6AMNkAU_Bkn-Qp6MjkSMrRzvOwsmA2-xLyjnFEmOs5DPcT9uWVvp_JQFoFfQ_M2lPtvQ04nC_b4_6uUnf1IMDDl5lHHX9guESqtILf3fVMlWxQUqs2dQiStmqR92dMKtmfLpUt8NavBD5LFhItmUTRYIf155CkU1VXwDTuyb0jkvOkqxdlNfwZhWB80FSImkiiH5sXwM",
+    "retrievedAt": "2026-10-30T20:47:33.660Z",
+    "official": false
+   }
+  },
+  {
+   "id": "2b03ac789a92",
+   "title": "Olivera Kovačević o Vučićevim optužbama: Razvlašćen si, vidimo se na sudu, tigre od papira – razglas news",
+   "url": "https://razglas-news.com/2026/10/30/olivera-kovacevic-o-vucicevim-optuzbama-razvlascen-si-vidimo-se-na-sudu-tigre-od-papira",
+   "outlet": "razglas-news.com",
+   "publishedAt": "2026-10-30T14:34:34.000Z",
+   "snippet": "Univerzitetski klinički centar Vojvodine zbrinuo je dva muškarca koja su povređena u sudaru kamiona i kombija.",
+   "matched": [
+    "Univerzitetski klinički centar Vojvodine",
+    "Klinički centar Vojvodine"
+   ],
+   "provider": "brave",
+   "verified": "opis",
+   "score": 20,
+   "source": {
+    "kind": "vesti",
+    "title": "razglas-news.com: Olivera Kovačević o Vučićevim optužbama: Razvlašćen si, vidimo se na sudu, tigre od papira – razglas news",
+    "url": "https://razglas-news.com/2026/10/30/olivera-kovacevic-o-vucicevim-optuzbama-razvlascen-si-vidimo-se-na-sudu-tigre-od-papira",
+    "retrievedAt": "2026-10-30T20:47:33.660Z",
+    "publishedAt": "2026-10-30T14:34:34.000Z",
+    "official": false
+   }
+  },
+  {
+   "id": "bd1bd8b98cff",
+   "title": "SNS biznismen u fond Vista Rika uložio više od pola miliona evra, pa dobio brojne poslove od države – razglas news",
+   "url": "https://razglas-news.com/2026/10/23/sns-biznismen-u-fond-vista-rika-ulozio-vise-od-pola-miliona-evra-pa-dobio-brojne-poslove-od-drzave",
+   "outlet": "razglas-news.com",
+   "publishedAt": "2026-10-23T06:48:17.000Z",
+   "snippet": "Kao naručioci, osim gore pomenutih preduzeća, navedeni su i Univerzitetski klinički centar Vojvodine i Uprava za zajedničke poslove pokrajinskih organa.",
+   "matched": [
+    "Univerzitetski klinički centar Vojvodine",
+    "Klinički centar Vojvodine"
+   ],
+   "provider": "brave",
+   "verified": "opis",
+   "score": 20,
+   "source": {
+    "kind": "vesti",
+    "title": "razglas-news.com: SNS biznismen u fond Vista Rika uložio više od pola miliona evra, pa dobio brojne poslove od države – razglas news",
+    "url": "https://razglas-news.com/2026/10/23/sns-biznismen-u-fond-vista-rika-ulozio-vise-od-pola-miliona-evra-pa-dobio-brojne-poslove-od-drzave",
+    "retrievedAt": "2026-10-30T20:47:33.660Z",
+    "publishedAt": "2026-10-23T06:48:17.000Z",
+    "official": false
+   }
+  },
+  {
+   "id": "3dd3373d5f83",
+   "title": "Vučić najavio nova ulaganja u zdravstvo: Da ne šaljemo ljude kod privatnika za svaki pregled - Blic",
+   "url": "https://blic.rs/vesti/drustvo/vucic-najavio-nova-ulaganja-u-zdravstvo-da-ne-saljemo-ljude-kod-privatnika-za-svaki/0qbbbk0",
+   "outlet": "blic.rs",
+   "publishedAt": "2026-10-22T05:35:58.000Z",
+   "snippet": "Nosilac liste \"Ujedinjena Srbija\" i kandidat za premijera Aleksandar Vučić rekao je da će uskoro krenuti da se gradi i Univerzitetski klinički centar Kragujevac. Kako je rekao, želeo je da se uradi Klinički centar Beograd, Klinički centar Niš i Klinički centar Vojvodina.",
+   "matched": [
+    "Klinički centar Vojvodine"
+   ],
+   "provider": "brave",
+   "verified": "opis",
+   "score": 20,
+   "source": {
+    "kind": "vesti",
+    "title": "blic.rs: Vučić najavio nova ulaganja u zdravstvo: Da ne šaljemo ljude kod privatnika za svaki pregled - Blic",
+    "url": "https://blic.rs/vesti/drustvo/vucic-najavio-nova-ulaganja-u-zdravstvo-da-ne-saljemo-ljude-kod-privatnika-za-svaki/0qbbbk0",
+    "retrievedAt": "2026-10-30T20:47:33.660Z",
+    "publishedAt": "2026-10-22T05:35:58.000Z",
+    "official": false
+   }
+  },
+  {
+   "id": "5c4aae18972d",
+   "title": "Вучић: Да сваки човек има једнако доступну здравствену заштиту, уложићемо 1,3 милијарде евра",
+   "url": "https://vranjskaplustv.rs/2026/10/21/vucic-da-svaki-covek-ima-jednako-dostupnu-zdravstvenu-zastitu-ulozicemo-13-milijarde-evra",
+   "outlet": "vranjskaplustv.rs",
+   "publishedAt": "2026-10-21T06:53:18.000Z",
+   "snippet": "„Направили смо ... најмодернији Универзитетски клинички центар у Београду, реконструисали и доградили Клинички центар Војводине....",
+   "matched": [
+    "Klinički centar Vojvodine"
+   ],
+   "provider": "brave",
+   "verified": "opis",
+   "score": 20,
+   "source": {
+    "kind": "vesti",
+    "title": "vranjskaplustv.rs: Вучић: Да сваки човек има једнако доступну здравствену заштиту, уложићемо 1,3 милијарде евра",
+    "url": "https://vranjskaplustv.rs/2026/10/21/vucic-da-svaki-covek-ima-jednako-dostupnu-zdravstvenu-zastitu-ulozicemo-13-milijarde-evra",
+    "retrievedAt": "2026-10-30T20:47:33.660Z",
+    "publishedAt": "2026-10-21T06:53:18.000Z",
+    "official": false
+   }
+  },
+  {
+   "id": "c41bc5551a2f",
+   "title": "VUČIĆ OBJAVIO JOŠ JEDAN DEO VELIKOG PROGRAMA ZA ZDRAVSTVO: Milijarde za lečenje dece, besplatni zubari, prenatalni testovi, inovativni lekovi",
+   "url": "https://novosti.rs/vesti/politika/1660878/vucic-objavio-jos-jedan-deo-velikog-programa-zdravstvo-milijarde-lecenje-dece-besplatni-zubari-prenatalni-testovi-inovativni-lekovi",
+   "outlet": "novosti.rs",
+   "publishedAt": "2026-10-17T05:52:00.000Z",
+   "snippet": "Istovremeno, ulaganja su nastavljena u Univerzitetski klinički centar Vojvodine, dok je modernizacija kliničkog centra u Kragujevcu ostala jedan od ključnih projekata za centralnu Srbiju.",
+   "matched": [
+    "Univerzitetski klinički centar Vojvodine",
+    "Klinički centar Vojvodine"
+   ],
+   "provider": "brave",
+   "verified": "opis",
+   "score": 20,
+   "source": {
+    "kind": "vesti",
+    "title": "novosti.rs: VUČIĆ OBJAVIO JOŠ JEDAN DEO VELIKOG PROGRAMA ZA ZDRAVSTVO: Milijarde za lečenje dece, besplatni zubari, prenatalni testovi, inovativni lekovi",
+    "url": "https://novosti.rs/vesti/politika/1660878/vucic-objavio-jos-jedan-deo-velikog-programa-zdravstvo-milijarde-lecenje-dece-besplatni-zubari-prenatalni-testovi-inovativni-lekovi",
+    "retrievedAt": "2026-10-30T20:47:33.660Z",
+    "publishedAt": "2026-10-17T05:52:00.000Z",
+    "official": false
+   }
+  },
+  {
+   "id": "dc3a3cfffd26",
+   "title": "Vučić najavio veliki plan za zdravstvo: Do dve milijarde evra za bolnice, domove zdravlja i modernu medicinsku opremu",
+   "url": "https://mondo.rs/Info/Politika/a2297605/vucic-najavio-veliki-plan-za-zdravstvo.html",
+   "outlet": "mondo.rs",
+   "publishedAt": "2026-10-17T03:40:06.000Z",
+   "snippet": "Istovremeno, ulaganja su nastavljena u Univerzitetski klinički centar Vojvodine, dok je modernizacija kliničkog centra u Kragujevcu ostala jedan od ključnih projekata za centralnu Srbiju.",
+   "matched": [
+    "Univerzitetski klinički centar Vojvodine",
+    "Klinički centar Vojvodine"
+   ],
+   "provider": "brave",
+   "verified": "opis",
+   "score": 20,
+   "source": {
+    "kind": "vesti",
+    "title": "mondo.rs: Vučić najavio veliki plan za zdravstvo: Do dve milijarde evra za bolnice, domove zdravlja i modernu medicinsku opremu",
+    "url": "https://mondo.rs/Info/Politika/a2297605/vucic-najavio-veliki-plan-za-zdravstvo.html",
+    "retrievedAt": "2026-10-30T20:47:33.660Z",
+    "publishedAt": "2026-10-17T03:40:06.000Z",
+    "official": false
+   }
+  },
+  {
+   "id": "9086ffaa1404",
+   "title": "Najsavremenije bolnice, inovativni lekovi, moderna oprema! Vučić najavio velika ulaganja: Dve milijarde evra za unapređenje srpskog zdravstvenog sistema | pink.rs",
+   "url": "https://pink.rs/drustvo/821126/najsavremenije-bolnice-inovativni-lekovi-moderna-oprema-vucic-najavio-velika-ulaganja-dve-milijarde-evra-za-unapredenje-srpskog-zdravstvenog-siste",
+   "outlet": "pink.rs",
+   "publishedAt": "2026-10-17T03:34:34.000Z",
+   "snippet": "Istovremeno, ulaganja su nastavljena u Univerzitetski klinički centar Vojvodine, dok je modernizacija kliničkog centra u Kragujevcu ostala jedan od ključnih projekata za centralnu Srbiju.",
+   "matched": [
+    "Univerzitetski klinički centar Vojvodine",
+    "Klinički centar Vojvodine"
+   ],
+   "provider": "brave",
+   "verified": "opis",
+   "score": 20,
+   "source": {
+    "kind": "vesti",
+    "title": "pink.rs: Najsavremenije bolnice, inovativni lekovi, moderna oprema! Vučić najavio velika ulaganja: Dve milijarde evra za unapređenje srpskog zdravstvenog sistema | pink.rs",
+    "url": "https://pink.rs/drustvo/821126/najsavremenije-bolnice-inovativni-lekovi-moderna-oprema-vucic-najavio-velika-ulaganja-dve-milijarde-evra-za-unapredenje-srpskog-zdravstvenog-siste",
+    "retrievedAt": "2026-10-30T20:47:33.660Z",
+    "publishedAt": "2026-10-17T03:34:34.000Z",
+    "official": false
+   }
+  }
+ ]
+}

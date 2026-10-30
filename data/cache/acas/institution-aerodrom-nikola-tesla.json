@@ -1,0 +1,31 @@
+{
+ "source": "acas",
+ "key": "institution-aerodrom-nikola-tesla",
+ "retrievedAt": "2026-10-30T20:57:43.038Z",
+ "data": [
+  {
+   "id": "4675",
+   "name": "JP Aerodrom Nikola Tesla",
+   "nameCyr": "ЈП Аеродром Никола Тесла",
+   "source": {
+    "kind": "acas",
+    "title": "ACAS registar – pretraga: JP Aerodrom Nikola Tesla",
+    "url": "https://publicacas.acas.rs/#/acas/funkcioner",
+    "retrievedAt": "2026-10-30T20:57:43.038Z",
+    "official": true
+   }
+  },
+  {
+   "id": "8726",
+   "name": "Aerodrom Nikola Tesla a.d. Beograd",
+   "nameCyr": "Аеродром Никола Тесла а.д. Београд",
+   "source": {
+    "kind": "acas",
+    "title": "ACAS registar – pretraga: Aerodrom Nikola Tesla a.d. Beograd",
+    "url": "https://publicacas.acas.rs/#/acas/funkcioner",
+    "retrievedAt": "2026-10-30T20:57:43.038Z",
+    "official": true
+   }
+  }
+ ]
+}

@@ -1,0 +1,338 @@
+{
+ "source": "vesti",
+ "key": "search-nebojsa-surlan-person-d730-l40-c-infrastruktura-zeleznice-srbije-a-d-infr-a7e3eb3394",
+ "retrievedAt": "2026-10-30T21:37:51.548Z",
+ "meta": {
+  "query": "Nebojša Šurlan",
+  "kind": "person",
+  "days": 730,
+  "limit": 40,
+  "aliases": [],
+  "context": [
+   "Infrastruktura železnice Srbije a.d.",
+   "Infrastruktura železnice Srbije",
+   "IŽS"
+  ],
+  "exclude": []
+ },
+ "data": [
+  {
+   "id": "e5948e687c71",
+   "title": "Nebojsa_Surlan_foto_Infrastruktura_zeleznice_Srbije",
+   "url": "https://www.krik.rs/tanaskovic-se-nije-nasla-pod-istragom-za-finansijski-kriminal-zahvaljujuci-suprugu-njene-prijateljice-nacelniku-policije-cmolicu/nebojsa_surlan_foto_infrastruktura_zeleznice_srbije/",
+   "outlet": "KRIK",
+   "publishedAt": "2024-12-04T08:00:00.000Z",
+   "matched": [
+    "Nebojša Šurlan"
+   ],
+   "provider": "google-news-rss",
+   "verified": "naslov",
+   "score": 37,
+   "source": {
+    "kind": "vesti",
+    "title": "KRIK: Nebojsa_Surlan_foto_Infrastruktura_zeleznice_Srbije",
+    "url": "https://www.krik.rs/tanaskovic-se-nije-nasla-pod-istragom-za-finansijski-kriminal-zahvaljujuci-suprugu-njene-prijateljice-nacelniku-policije-cmolicu/nebojsa_surlan_foto_infrastruktura_zeleznice_srbije/",
+    "retrievedAt": "2026-10-30T21:37:38.252Z",
+    "publishedAt": "2024-12-04T08:00:00.000Z",
+    "official": false
+   }
+  },
+  {
+   "id": "9654118f00ff",
+   "title": "НЕБОЈША ШУРЛАН РЕАНИМИРАН Бивши директор Инфраструктуре железнице Србије у критичном стању",
+   "url": "https://www.dnevnik.rs/vesti/hronika/nebojsa-surlan-reanimiran-2024-11-27",
+   "outlet": "Dnevnik online",
+   "publishedAt": "2024-11-27T08:00:00.000Z",
+   "matched": [
+    "Nebojša Šurlan"
+   ],
+   "provider": "google-news-rss",
+   "verified": "naslov",
+   "score": 36,
+   "source": {
+    "kind": "vesti",
+    "title": "Dnevnik online: НЕБОЈША ШУРЛАН РЕАНИМИРАН Бивши директор Инфраструктуре железнице Србије у критичном стању",
+    "url": "https://www.dnevnik.rs/vesti/hronika/nebojsa-surlan-reanimiran-2024-11-27",
+    "retrievedAt": "2026-10-30T21:37:38.252Z",
+    "publishedAt": "2024-11-27T08:00:00.000Z",
+    "official": false
+   }
+  },
+  {
+   "id": "f2088a43462b",
+   "title": "Ko je Nebojša Šurlan, glavni junak objavljenog telefonskog razgovora o pomaganju Zvezdi i njenim navijačima",
+   "url": "https://www.google.com/goto?url=CAESgAEB6zswFSBm-laV5FpyhHdr1FklRSIx_cw_vqI-QTf21KKj4nCIE9hCCEx8XtxGQP8uSiCv-mbTFk9tmtOADNOkzHuhIl0unVeX9F7hO8GAlnGsvzEvAIiQ8D1pFzLmmjh3EaD4nfIT36c2x-ZdT8Ky8kH4tBahL1fOiw_fx-8PUw&gsessionid=diSxD6oE4duRMXI7hiy3Wb8xR3xLdb1kofaMmxTwWkcdThaaryBYGw",
+   "outlet": "Danas",
+   "snippet": "U 2023. godini Infrastruktura železnice Srbije je izvela radove u vrednosti 1,5 milijardi evra, a u narednih pet, šest godina će na granju...",
+   "matched": [
+    "Nebojša Šurlan"
+   ],
+   "provider": "serper",
+   "verified": "naslov",
+   "score": 35,
+   "source": {
+    "kind": "vesti",
+    "title": "Danas: Ko je Nebojša Šurlan, glavni junak objavljenog telefonskog razgovora o pomaganju Zvezdi i njenim navijačima",
+    "url": "https://www.google.com/goto?url=CAESgAEB6zswFSBm-laV5FpyhHdr1FklRSIx_cw_vqI-QTf21KKj4nCIE9hCCEx8XtxGQP8uSiCv-mbTFk9tmtOADNOkzHuhIl0unVeX9F7hO8GAlnGsvzEvAIiQ8D1pFzLmmjh3EaD4nfIT36c2x-ZdT8Ky8kH4tBahL1fOiw_fx-8PUw&gsessionid=diSxD6oE4duRMXI7hiy3Wb8xR3xLdb1kofaMmxTwWkcdThaaryBYGw",
+    "retrievedAt": "2026-10-30T21:37:38.252Z",
+    "official": false
+   }
+  },
+  {
+   "id": "2484393ae23b",
+   "title": "Ko je Nebojša Šurlan, uhapšen zbog pada nadstrešnice u Novom Sadu",
+   "url": "https://www.google.com/goto?url=CAESpAEB6zswFQS5fiil1OzI05cB-3GXhHRBOSONEGEbMBfa_V8eNNzB8KDba9s_m8bDdYmXxkqoIhIJrLkLJcCsnk6gLADi7dHhPuJe0HkvGjzwX5alNbpyIFe8SGjvLpFzMRfNMNu842uRCbFwogN0CyjyBvVsvUjAE4op4PzI5992avGHfCZBOiovGGEu64XIL_txHq3OrOMdtg90drXWr3Vh9mV-9Q&gsessionid=diSxD6oE4duRMXI7hiy3Wb8xR3xLdb1kofaMmxTwWkcdThaaryBYGw",
+   "outlet": "Nova Ekonomija",
+   "snippet": "Nebojša Šurlan, bivši direktor Infrastrukture železnice Srbije uhapšen je danas zbog pada nadstrešnice na Železničkoj stanici u Novom Sadu...",
+   "matched": [
+    "Nebojša Šurlan"
+   ],
+   "provider": "serper",
+   "verified": "naslov",
+   "score": 35,
+   "source": {
+    "kind": "vesti",
+    "title": "Nova Ekonomija: Ko je Nebojša Šurlan, uhapšen zbog pada nadstrešnice u Novom Sadu",
+    "url": "https://www.google.com/goto?url=CAESpAEB6zswFQS5fiil1OzI05cB-3GXhHRBOSONEGEbMBfa_V8eNNzB8KDba9s_m8bDdYmXxkqoIhIJrLkLJcCsnk6gLADi7dHhPuJe0HkvGjzwX5alNbpyIFe8SGjvLpFzMRfNMNu842uRCbFwogN0CyjyBvVsvUjAE4op4PzI5992avGHfCZBOiovGGEu64XIL_txHq3OrOMdtg90drXWr3Vh9mV-9Q&gsessionid=diSxD6oE4duRMXI7hiy3Wb8xR3xLdb1kofaMmxTwWkcdThaaryBYGw",
+    "retrievedAt": "2026-10-30T21:37:38.252Z",
+    "official": false
+   }
+  },
+  {
+   "id": "9ea731afff92",
+   "title": "Nebojša Šurlan podneo ostavku na mesto direktora \"Infrastrukture železnice\"",
+   "url": "https://www.google.com/goto?url=CAESrQEB6zswFS5gOxKmuvqbz6Fc3nJIPavKX-obqyD2Y2RSVPoKGtGzxiJE1DXZraGKtHM-PrMtCzzF_vs-TOMBELt2XR2PLWZ_GyqH9KaHtDbE0M2qLHfh_VSdKDT1HsbgNa3Ufe4FL2U8T2V4uchuwtolLJAFzmHUiK9SpUNu5hBHf8k_Am8WydBfnFT1jmN09awH7v0oeLd7pOXrpSFIwzuVI6zVmZmkbeMhgkkLNg&gsessionid=diSxD6oE4duRMXI7hiy3Wb8xR3xLdb1kofaMmxTwWkcdThaaryBYGw",
+   "outlet": "Blic",
+   "snippet": "Vršilac dužnosti direktora \"Infrastrukture železnice\" Srbije Nebojša Šurlan podneo je neopozivu ostavku na tu funkciju, potvrđeno je u...",
+   "matched": [
+    "Nebojša Šurlan"
+   ],
+   "provider": "serper",
+   "verified": "naslov",
+   "score": 35,
+   "source": {
+    "kind": "vesti",
+    "title": "Blic: Nebojša Šurlan podneo ostavku na mesto direktora \"Infrastrukture železnice\"",
+    "url": "https://www.google.com/goto?url=CAESrQEB6zswFS5gOxKmuvqbz6Fc3nJIPavKX-obqyD2Y2RSVPoKGtGzxiJE1DXZraGKtHM-PrMtCzzF_vs-TOMBELt2XR2PLWZ_GyqH9KaHtDbE0M2qLHfh_VSdKDT1HsbgNa3Ufe4FL2U8T2V4uchuwtolLJAFzmHUiK9SpUNu5hBHf8k_Am8WydBfnFT1jmN09awH7v0oeLd7pOXrpSFIwzuVI6zVmZmkbeMhgkkLNg&gsessionid=diSxD6oE4duRMXI7hiy3Wb8xR3xLdb1kofaMmxTwWkcdThaaryBYGw",
+    "retrievedAt": "2026-10-30T21:37:38.252Z",
+    "official": false
+   }
+  },
+  {
+   "id": "60420fd2266d",
+   "title": "НЕБОЈША ШУРЛАН НАПУСТИО БОЛНИЦУ: \"Нoвости\" сазнају - Осумњичени који се доводи у везу са трагедијом у Новом Саду, враћен у притвор",
+   "url": "https://www.novosti.rs/c/drustvo/vesti/1435672/nebojsa-surlan-napustio-bolnicu-novosti-saznaju-osumnjiceni-koji-dovodi-vezu-tragedijom-novom-sadu-vracen-pritvor",
+   "outlet": "novosti.rs",
+   "publishedAt": "2024-12-02T16:13:00.000Z",
+   "snippet": "НЕБОЈША Шурлан, бивши директор \" Инфраструктура железница Србије\" , према незваничним сазнањима\"Новости\", данас поподне је пуштен са Института за кардиоваскуларни ...",
+   "matched": [
+    "Nebojša Šurlan"
+   ],
+   "provider": "brave",
+   "verified": "naslov",
+   "score": 34,
+   "source": {
+    "kind": "vesti",
+    "title": "novosti.rs: НЕБОЈША ШУРЛАН НАПУСТИО БОЛНИЦУ: \"Нoвости\" сазнају - Осумњичени који се доводи у везу са трагедијом у Новом Саду, враћен у притвор",
+    "url": "https://www.novosti.rs/c/drustvo/vesti/1435672/nebojsa-surlan-napustio-bolnicu-novosti-saznaju-osumnjiceni-koji-dovodi-vezu-tragedijom-novom-sadu-vracen-pritvor",
+    "retrievedAt": "2026-10-30T21:37:38.252Z",
+    "publishedAt": "2024-12-02T16:13:00.000Z",
+    "official": false
+   }
+  },
+  {
+   "id": "4bbd1d121b7d",
+   "title": "Mediji: Nebojša Šurlan reanimiran - B92",
+   "url": "https://www.b92.net/info/politika/80800/mediji-nebojsa-surlan-reanimiran/vest",
+   "outlet": "b92.net",
+   "publishedAt": "2024-11-27T11:31:00.000Z",
+   "snippet": "Bivšem direktoru Infrastruktura Železnica Srbije pozlilo je jutros u bolnici u Sremskoj Kamenici, nezvanično saznaje \"Blic\".",
+   "matched": [
+    "Nebojša Šurlan"
+   ],
+   "provider": "brave",
+   "verified": "naslov",
+   "score": 34,
+   "source": {
+    "kind": "vesti",
+    "title": "b92.net: Mediji: Nebojša Šurlan reanimiran - B92",
+    "url": "https://www.b92.net/info/politika/80800/mediji-nebojsa-surlan-reanimiran/vest",
+    "retrievedAt": "2026-10-30T21:37:38.252Z",
+    "publishedAt": "2024-11-27T11:31:00.000Z",
+    "official": false
+   }
+  },
+  {
+   "id": "8118dc70ed8f",
+   "title": "НЕБОЈША ШУРЛАН РЕАНИМИРАН",
+   "url": "https://www.novosti.rs/c/vesti/politika/1433796/nebojsa-surlan-reanimiran",
+   "outlet": "novosti.rs",
+   "publishedAt": "2024-11-27T11:30:00.000Z",
+   "snippet": "БИВШИ директор Инфраструктуре железнице Србије Небојша Шурлан јутрос је реанимиран.",
+   "matched": [
+    "Nebojša Šurlan"
+   ],
+   "provider": "brave",
+   "verified": "naslov",
+   "score": 34,
+   "source": {
+    "kind": "vesti",
+    "title": "novosti.rs: НЕБОЈША ШУРЛАН РЕАНИМИРАН",
+    "url": "https://www.novosti.rs/c/vesti/politika/1433796/nebojsa-surlan-reanimiran",
+    "retrievedAt": "2026-10-30T21:37:38.252Z",
+    "publishedAt": "2024-11-27T11:30:00.000Z",
+    "official": false
+   }
+  },
+  {
+   "id": "0179040fc4ff",
+   "title": "Direktor Infrastrukture železnice Srbije Nebojša Šurlan podneo ostavku",
+   "url": "https://www.google.com/goto?url=CAESoAEB6zswFa_Vj3aE_354vm6yPBzLjuIptC4uX89QnHMAMpI2CGn7A-RSHY_87966O9fk1AdR63JEDMvmrWkzdcUJvz2D9_lrRlMUW2y3Vf1nEF9L7_FZMp0qZblx-PUj4fdjmCbtsbraI6qd8M5CGh8mfjSLUTB3IxoVG3tbJOzqVN8dE8xgEUnrXlb-_vTxhK6DhxayafP4hxvCC3kb5kyV&gsessionid=diSxD6oE4duRMXI7hiy3Wb8xR3xLdb1kofaMmxTwWkcdThaaryBYGw",
+   "outlet": "beta.rs",
+   "snippet": "Vršilac dužnosti direktora preduzeća Infrastruktura železnica Srbije Nebojša Šurlan podneo je neopozivu ostavku na tu funkciju, potvrdilo je...",
+   "matched": [
+    "Nebojša Šurlan"
+   ],
+   "provider": "serper",
+   "verified": "naslov",
+   "score": 33,
+   "source": {
+    "kind": "vesti",
+    "title": "beta.rs: Direktor Infrastrukture železnice Srbije Nebojša Šurlan podneo ostavku",
+    "url": "https://www.google.com/goto?url=CAESoAEB6zswFa_Vj3aE_354vm6yPBzLjuIptC4uX89QnHMAMpI2CGn7A-RSHY_87966O9fk1AdR63JEDMvmrWkzdcUJvz2D9_lrRlMUW2y3Vf1nEF9L7_FZMp0qZblx-PUj4fdjmCbtsbraI6qd8M5CGh8mfjSLUTB3IxoVG3tbJOzqVN8dE8xgEUnrXlb-_vTxhK6DhxayafP4hxvCC3kb5kyV&gsessionid=diSxD6oE4duRMXI7hiy3Wb8xR3xLdb1kofaMmxTwWkcdThaaryBYGw",
+    "retrievedAt": "2026-10-30T21:37:38.252Z",
+    "official": false
+   }
+  },
+  {
+   "id": "73290c46326d",
+   "title": "Mali mu tražio novac, Vučić ga nazvao bednikom: Ko je Nebojša Šurlan uhapšen zbog pada nadstrešnice",
+   "url": "https://www.google.com/goto?url=CAESaAHrOzAV6D2mEokaxbd6VqquHmaj6gIGGSrt5mH040YRI-uc3LBhL4I51bAVGdYjysq14ZBHlpuMVE81mHJryw63A4Mqc2yiHN9VANMJVGwZ_ds0fyhwRHl77KixjvG0-xCbJZlgdwak&gsessionid=diSxD6oE4duRMXI7hiy3Wb8xR3xLdb1kofaMmxTwWkcdThaaryBYGw",
+   "outlet": "N1",
+   "snippet": "Među uhapšenima zbog pada nadstrešnice na železničkoj stanici u Novom Sadu je i bivši direktor Infrastrukture Železnice Srbije Nebojša...",
+   "matched": [
+    "Nebojša Šurlan"
+   ],
+   "provider": "serper",
+   "verified": "naslov",
+   "score": 32,
+   "source": {
+    "kind": "vesti",
+    "title": "N1: Mali mu tražio novac, Vučić ga nazvao bednikom: Ko je Nebojša Šurlan uhapšen zbog pada nadstrešnice",
+    "url": "https://www.google.com/goto?url=CAESaAHrOzAV6D2mEokaxbd6VqquHmaj6gIGGSrt5mH040YRI-uc3LBhL4I51bAVGdYjysq14ZBHlpuMVE81mHJryw63A4Mqc2yiHN9VANMJVGwZ_ds0fyhwRHl77KixjvG0-xCbJZlgdwak&gsessionid=diSxD6oE4duRMXI7hiy3Wb8xR3xLdb1kofaMmxTwWkcdThaaryBYGw",
+    "retrievedAt": "2026-10-30T21:37:38.252Z",
+    "official": false
+   }
+  },
+  {
+   "id": "e1f27fc196a5",
+   "title": "Slučaj \"Nadstrešnica\": Razlozi zbog kojih tužilac ne prihvata odbranu Šurlana, Dimoski i ostalih optuženih | Novosadski informativni portal 021",
+   "url": "https://021.rs/novi-sad/vesti/452096/slucaj-nadstresnica-razlozi-zbog-kojih-tuzilac-ne-prihvata-odbranu-surlana-dimoski-i-ostalih-optuzenih",
+   "outlet": "021.rs",
+   "publishedAt": "2026-08-13T06:00:00.000Z",
+   "snippet": "Nebojša Šurlan je na čelu \"Infrastrukture železnice Srbije\" bio do 1. aprila 2024.",
+   "matched": [
+    "Nebojša Šurlan"
+   ],
+   "provider": "brave",
+   "verified": "opis",
+   "score": 21,
+   "source": {
+    "kind": "vesti",
+    "title": "021.rs: Slučaj \"Nadstrešnica\": Razlozi zbog kojih tužilac ne prihvata odbranu Šurlana, Dimoski i ostalih optuženih | Novosadski informativni portal 021",
+    "url": "https://021.rs/novi-sad/vesti/452096/slucaj-nadstresnica-razlozi-zbog-kojih-tuzilac-ne-prihvata-odbranu-surlana-dimoski-i-ostalih-optuzenih",
+    "retrievedAt": "2026-10-30T21:37:38.252Z",
+    "publishedAt": "2026-08-13T06:00:00.000Z",
+    "official": false
+   }
+  },
+  {
+   "id": "212f55a58443",
+   "title": "Ko su političari i inženjeri koji čekaju suđenje za novosadsku tragediju?",
+   "url": "https://izlaz.com/ko-su-politicari-i-inzenjeri-koji-cekaju-sudenje-za-novosadsku-tragediju",
+   "outlet": "izlaz.com",
+   "publishedAt": "2026-08-15T16:23:46.000Z",
+   "snippet": "Ubrzo po objavljivanju snimka Šurlan je podneo ostavku na funkciju v.d. generalnog direktora. U postupku za pad nadstrešnice optužen je i nekadašnji direktor “Infrastrukture železnice Srbije” Nebojša Šurlan, nije postupao po odredbama Pravilnika za građevinske konstrukcije, jer ...",
+   "matched": [
+    "Nebojša Šurlan"
+   ],
+   "provider": "brave",
+   "verified": "opis",
+   "score": 20,
+   "source": {
+    "kind": "vesti",
+    "title": "izlaz.com: Ko su političari i inženjeri koji čekaju suđenje za novosadsku tragediju?",
+    "url": "https://izlaz.com/ko-su-politicari-i-inzenjeri-koji-cekaju-sudenje-za-novosadsku-tragediju",
+    "retrievedAt": "2026-10-30T21:37:38.252Z",
+    "publishedAt": "2026-08-15T16:23:46.000Z",
+    "official": false
+   }
+  },
+  {
+   "id": "dc07f7f3922e",
+   "title": "Ухапшено једанаест особа у вези са падом надстрешнице - Pravda Србија",
+   "url": "https://serbia.news-pravda.com/serbia/2025/08/01/322126.html",
+   "outlet": "serbia.news-pravda.com",
+   "publishedAt": "2025-08-01T13:40:36.000Z",
+   "snippet": "Слободе су лишени и Небојша Шурлан, који је био вршилац дужности генералног директора привредног друштва \"Инфраструктура железнице Србије\" а.д.",
+   "matched": [
+    "Nebojša Šurlan"
+   ],
+   "provider": "brave",
+   "verified": "opis",
+   "score": 20,
+   "source": {
+    "kind": "vesti",
+    "title": "serbia.news-pravda.com: Ухапшено једанаест особа у вези са падом надстрешнице - Pravda Србија",
+    "url": "https://serbia.news-pravda.com/serbia/2025/08/01/322126.html",
+    "retrievedAt": "2026-10-30T21:37:38.252Z",
+    "publishedAt": "2025-08-01T13:40:36.000Z",
+    "official": false
+   }
+  },
+  {
+   "id": "c7e1aea385e1",
+   "title": "Огласило се Тужилаштво за организовани криминал о хапшењима званичника - Pravda Србија",
+   "url": "https://serbia.news-pravda.com/serbia/2025/08/01/321949.html",
+   "outlet": "serbia.news-pravda.com",
+   "publishedAt": "2025-08-01T09:02:52.000Z",
+   "snippet": "Ухапшен је и Небојша Шурлан, који је био вршилац дужности генералног директора \"Инфраструктуре железнице Србије\" од маја 2020. до марта 2024.",
+   "matched": [
+    "Nebojša Šurlan"
+   ],
+   "provider": "brave",
+   "verified": "opis",
+   "score": 20,
+   "source": {
+    "kind": "vesti",
+    "title": "serbia.news-pravda.com: Огласило се Тужилаштво за организовани криминал о хапшењима званичника - Pravda Србија",
+    "url": "https://serbia.news-pravda.com/serbia/2025/08/01/321949.html",
+    "retrievedAt": "2026-10-30T21:37:38.252Z",
+    "publishedAt": "2025-08-01T09:02:52.000Z",
+    "official": false
+   }
+  },
+  {
+   "id": "bafd0904011a",
+   "title": "Koji sud je nadležan da odluči o pritvoru za Vesića i Dimoski: Različita tumačenja Višeg i Apelacionog, dok su spisi poslati u Vrhovni | Insajder TV",
+   "url": "https://insajder.net/vesti/koji-sud-je-nadlezan-da-odluci-o-pritvoru-za-vesica-i-dimoski-razlicita-tumacenja-viseg-i-apelacionog-dok-su-spisi-poslati-u-vrhovni",
+   "outlet": "insajder.net",
+   "publishedAt": "2026-10-22T10:08:16.000Z",
+   "snippet": "Prema potvrđenoj optužnici, Vesić, Tanasković, Dimoski i Nebojša Šurlan, koji je takođe obavljao funkciju direktora „Infrastruktura železnice“ se terete za teško delo protiv opšte sigurnosti u vezi sa krivičnim delom izazivanje opšte…",
+   "matched": [
+    "Nebojša Šurlan"
+   ],
+   "provider": "brave",
+   "verified": "tekst",
+   "score": 10,
+   "source": {
+    "kind": "vesti",
+    "title": "insajder.net: Koji sud je nadležan da odluči o pritvoru za Vesića i Dimoski: Različita tumačenja Višeg i Apelacionog, dok su spisi poslati u Vrhovni | Insajder TV",
+    "url": "https://insajder.net/vesti/koji-sud-je-nadlezan-da-odluci-o-pritvoru-za-vesica-i-dimoski-razlicita-tumacenja-viseg-i-apelacionog-dok-su-spisi-poslati-u-vrhovni",
+    "retrievedAt": "2026-10-30T21:37:38.252Z",
+    "publishedAt": "2026-10-22T10:08:16.000Z",
+    "official": false
+   }
+  }
+ ]
+}

@@ -1,0 +1,20 @@
+{
+	"_comment": "Short names journalists type for big public bodies -> the name used in the registers (ACAS, JN portal, APR). Public facts only; the registers decide the rest.",
+	"eps": "Elektroprivreda Srbije",
+	"ems": "Elektromreža Srbije",
+	"nis": "Naftna industrija Srbije",
+	"rfzo": "Republički fond za zdravstveno osiguranje",
+	"pio": "Republički fond za penzijsko i invalidsko osiguranje",
+	"pio fond": "Republički fond za penzijsko i invalidsko osiguranje",
+	"rfpio": "Republički fond za penzijsko i invalidsko osiguranje",
+	"kcv": "Klinički centar Vojvodine",
+	"ukcv": "Klinički centar Vojvodine",
+	"kcs": "Klinički centar Srbije",
+	"kcn": "Klinički centar Niš",
+	"kck": "Klinički centar Kragujevac",
+	"rzs": "Republički zavod za statistiku",
+	"gsp": "Gradsko saobraćajno preduzeće Beograd",
+	"mup": "Ministarstvo unutrašnjih poslova",
+	"bia": "Bezbednosno-informativna agencija",
+	"telekom": "Telekom Srbija"
+}

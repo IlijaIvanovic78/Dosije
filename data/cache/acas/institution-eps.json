@@ -1,0 +1,331 @@
+{
+ "source": "acas",
+ "key": "institution-eps",
+ "retrievedAt": "2026-10-30T20:51:32.958Z",
+ "data": [
+  {
+   "id": "5057",
+   "name": "JP EPS Beograd",
+   "nameCyr": "ЈП ЕПС Београд",
+   "source": {
+    "kind": "acas",
+    "title": "ACAS registar – pretraga: JP EPS Beograd",
+    "url": "https://publicacas.acas.rs/#/acas/funkcioner",
+    "retrievedAt": "2026-10-30T20:51:32.957Z",
+    "official": true
+   }
+  },
+  {
+   "id": "9995",
+   "name": "JP EPS, Beograd, TENT Obrenovac",
+   "nameCyr": "JП ЕПС, Београд, ТЕНТ Обреновац",
+   "source": {
+    "kind": "acas",
+    "title": "ACAS registar – pretraga: JP EPS, Beograd, TENT Obrenovac",
+    "url": "https://publicacas.acas.rs/#/acas/funkcioner",
+    "retrievedAt": "2026-10-30T20:51:32.957Z",
+    "official": true
+   }
+  },
+  {
+   "id": "10325",
+   "name": "JP EPS, Beograd, Ogranak Panonske TE-TO Novi Sad",
+   "nameCyr": "ЈП ЕПС, Београд, Огранак Панонске ТЕ-ТО Нови Сад",
+   "source": {
+    "kind": "acas",
+    "title": "ACAS registar – pretraga: JP EPS, Beograd, Ogranak Panonske TE-TO Novi Sad",
+    "url": "https://publicacas.acas.rs/#/acas/funkcioner",
+    "retrievedAt": "2026-10-30T20:51:32.957Z",
+    "official": true
+   }
+  },
+  {
+   "id": "9690",
+   "name": "EPS Elektrovojvodina d.o.o. Novi Sad, Centar za javne nabavke",
+   "nameCyr": "ЕПС Електровојводина д.о.о. Нови Сад, Центар за јавне набавке",
+   "source": {
+    "kind": "acas",
+    "title": "ACAS registar – pretraga: EPS Elektrovojvodina d.o.o. Novi Sad, Centar za javne nabavke",
+    "url": "https://publicacas.acas.rs/#/acas/funkcioner",
+    "retrievedAt": "2026-10-30T20:51:32.957Z",
+    "official": true
+   }
+  },
+  {
+   "id": "9985",
+   "name": "EPS Distribucija d.o.o. Beograd",
+   "nameCyr": "ЕПС Дистрибуција д.о.о. Београд",
+   "source": {
+    "kind": "acas",
+    "title": "ACAS registar – pretraga: EPS Distribucija d.o.o. Beograd",
+    "url": "https://publicacas.acas.rs/#/acas/funkcioner",
+    "retrievedAt": "2026-10-30T20:51:32.957Z",
+    "official": true
+   }
+  },
+  {
+   "id": "8461",
+   "name": "EPS Elektrodistribucija d.o.o. Kraljevo",
+   "nameCyr": "ЕПС Електродистрибуција д.о.о. Краљево",
+   "source": {
+    "kind": "acas",
+    "title": "ACAS registar – pretraga: EPS Elektrodistribucija d.o.o. Kraljevo",
+    "url": "https://publicacas.acas.rs/#/acas/funkcioner",
+    "retrievedAt": "2026-10-30T20:51:32.957Z",
+    "official": true
+   }
+  },
+  {
+   "id": "8462",
+   "name": "EPS Elektrosrbija d.o.o. Kraljevo",
+   "nameCyr": "ЕПС Електросрбија д.о.о. Краљево",
+   "source": {
+    "kind": "acas",
+    "title": "ACAS registar – pretraga: EPS Elektrosrbija d.o.o. Kraljevo",
+    "url": "https://publicacas.acas.rs/#/acas/funkcioner",
+    "retrievedAt": "2026-10-30T20:51:32.957Z",
+    "official": true
+   }
+  },
+  {
+   "id": "8500",
+   "name": "JP EPS ELEKTROSRBIJA DOO KRALJEVO",
+   "nameCyr": "ЈП ЕПС ЕЛЕКТРОСРБИЈА ДОО КРАЉЕВО",
+   "source": {
+    "kind": "acas",
+    "title": "ACAS registar – pretraga: JP EPS ELEKTROSRBIJA DOO KRALJEVO",
+    "url": "https://publicacas.acas.rs/#/acas/funkcioner",
+    "retrievedAt": "2026-10-30T20:51:32.957Z",
+    "official": true
+   }
+  },
+  {
+   "id": "9229",
+   "name": "Privredno društvo \"EPS obnovljivi izvori\" doo",
+   "nameCyr": "Привредно друштво \"ЕПС обновљиви извори\" доо",
+   "source": {
+    "kind": "acas",
+    "title": "ACAS registar – pretraga: Privredno društvo \"EPS obnovljivi izvori\" doo",
+    "url": "https://publicacas.acas.rs/#/acas/funkcioner",
+    "retrievedAt": "2026-10-30T20:51:32.957Z",
+    "official": true
+   }
+  },
+  {
+   "id": "9354",
+   "name": "JP EPS Elektrosrbija d.o.o. ED Aranđelovac",
+   "nameCyr": "ЈП ЕПС Електросрбија д.о.о. ЕД Аранђеловац",
+   "source": {
+    "kind": "acas",
+    "title": "ACAS registar – pretraga: JP EPS Elektrosrbija d.o.o. ED Aranđelovac",
+    "url": "https://publicacas.acas.rs/#/acas/funkcioner",
+    "retrievedAt": "2026-10-30T20:51:32.957Z",
+    "official": true
+   }
+  },
+  {
+   "id": "9374",
+   "name": "JP EPS Elektrosrbija d.o.o. ED Kraljevo",
+   "nameCyr": "ЈП ЕПС Електросрбија д.о.о. ЕД Краљево",
+   "source": {
+    "kind": "acas",
+    "title": "ACAS registar – pretraga: JP EPS Elektrosrbija d.o.o. ED Kraljevo",
+    "url": "https://publicacas.acas.rs/#/acas/funkcioner",
+    "retrievedAt": "2026-10-30T20:51:32.957Z",
+    "official": true
+   }
+  },
+  {
+   "id": "9376",
+   "name": "JP EPS Elektrosrbija d.o.o. ED Valjevo",
+   "nameCyr": "ЈП ЕПС Електросрбија д.о.о. ЕД Ваљево",
+   "source": {
+    "kind": "acas",
+    "title": "ACAS registar – pretraga: JP EPS Elektrosrbija d.o.o. ED Valjevo",
+    "url": "https://publicacas.acas.rs/#/acas/funkcioner",
+    "retrievedAt": "2026-10-30T20:51:32.957Z",
+    "official": true
+   }
+  },
+  {
+   "id": "9391",
+   "name": "JP EPS Elektrosrbija d.o.o. ED Kruševac",
+   "nameCyr": "ЈП ЕПС Електросрбија д.о.о. ЕД Крушевац",
+   "source": {
+    "kind": "acas",
+    "title": "ACAS registar – pretraga: JP EPS Elektrosrbija d.o.o. ED Kruševac",
+    "url": "https://publicacas.acas.rs/#/acas/funkcioner",
+    "retrievedAt": "2026-10-30T20:51:32.957Z",
+    "official": true
+   }
+  },
+  {
+   "id": "9403",
+   "name": "JP EPS Elektrosrbija d.o.o. ED Čačak",
+   "nameCyr": "ЈП ЕПС Електросрбија д.о.о. ЕД Чачак",
+   "source": {
+    "kind": "acas",
+    "title": "ACAS registar – pretraga: JP EPS Elektrosrbija d.o.o. ED Čačak",
+    "url": "https://publicacas.acas.rs/#/acas/funkcioner",
+    "retrievedAt": "2026-10-30T20:51:32.957Z",
+    "official": true
+   }
+  },
+  {
+   "id": "9409",
+   "name": "EPS Elektrosrbija d.o.o. ED Loznica",
+   "nameCyr": "ЕПС Електросрбија д.о.о. ЕД Лозница",
+   "source": {
+    "kind": "acas",
+    "title": "ACAS registar – pretraga: EPS Elektrosrbija d.o.o. ED Loznica",
+    "url": "https://publicacas.acas.rs/#/acas/funkcioner",
+    "retrievedAt": "2026-10-30T20:51:32.957Z",
+    "official": true
+   }
+  },
+  {
+   "id": "9412",
+   "name": "JP EPS Elektrosrbija d.o.o. ED Loznica",
+   "nameCyr": "ЈП ЕПС Електросрбија д.о.о. ЕД Лозница",
+   "source": {
+    "kind": "acas",
+    "title": "ACAS registar – pretraga: JP EPS Elektrosrbija d.o.o. ED Loznica",
+    "url": "https://publicacas.acas.rs/#/acas/funkcioner",
+    "retrievedAt": "2026-10-30T20:51:32.957Z",
+    "official": true
+   }
+  },
+  {
+   "id": "9675",
+   "name": "JP EPS Elektrosrbija d.o.o. ED Aranđelovac",
+   "nameCyr": "JП ЕПС Електросрбија д.о.о. ЕД Аранђеловац",
+   "source": {
+    "kind": "acas",
+    "title": "ACAS registar – pretraga: JP EPS Elektrosrbija d.o.o. ED Aranđelovac",
+    "url": "https://publicacas.acas.rs/#/acas/funkcioner",
+    "retrievedAt": "2026-10-30T20:51:32.957Z",
+    "official": true
+   }
+  },
+  {
+   "id": "9685",
+   "name": "JP EPS Elektrosrbija d.o.o. ED Lazarevac",
+   "nameCyr": "ЈП ЕПС Електросрбија д.о.о. ЕД Лазаревац",
+   "source": {
+    "kind": "acas",
+    "title": "ACAS registar – pretraga: JP EPS Elektrosrbija d.o.o. ED Lazarevac",
+    "url": "https://publicacas.acas.rs/#/acas/funkcioner",
+    "retrievedAt": "2026-10-30T20:51:32.957Z",
+    "official": true
+   }
+  },
+  {
+   "id": "9744",
+   "name": "JP EPS, Rudarski basen Kolubara",
+   "nameCyr": "ЈП ЕПС, Рударски басен Колубара",
+   "source": {
+    "kind": "acas",
+    "title": "ACAS registar – pretraga: JP EPS, Rudarski basen Kolubara",
+    "url": "https://publicacas.acas.rs/#/acas/funkcioner",
+    "retrievedAt": "2026-10-30T20:51:32.957Z",
+    "official": true
+   }
+  },
+  {
+   "id": "8501",
+   "name": "JP EPS ELEKTROSRBIJA DOO KRALJEVO, ELEKTRODISTRIBUCIJA JAG.",
+   "nameCyr": "ЈП ЕПС ЕЛЕКТРОСРБИЈА ДОО КРАЉЕВО, ЕЛЕКТРОДИСТРИБУЦИЈА ЈАГ.",
+   "source": {
+    "kind": "acas",
+    "title": "ACAS registar – pretraga: JP EPS ELEKTROSRBIJA DOO KRALJEVO, ELEKTRODISTRIBUCIJA JAG.",
+    "url": "https://publicacas.acas.rs/#/acas/funkcioner",
+    "retrievedAt": "2026-10-30T20:51:32.957Z",
+    "official": true
+   }
+  },
+  {
+   "id": "9136",
+   "name": "EPS, Elektrosbija Kraljevo, ED Jagodina",
+   "nameCyr": "ЕПС, Електросбија Краљево, ЕД Јагодина",
+   "source": {
+    "kind": "acas",
+    "title": "ACAS registar – pretraga: EPS, Elektrosbija Kraljevo, ED Jagodina",
+    "url": "https://publicacas.acas.rs/#/acas/funkcioner",
+    "retrievedAt": "2026-10-30T20:51:32.957Z",
+    "official": true
+   }
+  },
+  {
+   "id": "9375",
+   "name": "P EPS Elektrosrbija d.o.o. ED Valjevo",
+   "nameCyr": "П ЕПС Електросрбија д.о.о. ЕД Ваљево",
+   "source": {
+    "kind": "acas",
+    "title": "ACAS registar – pretraga: P EPS Elektrosrbija d.o.o. ED Valjevo",
+    "url": "https://publicacas.acas.rs/#/acas/funkcioner",
+    "retrievedAt": "2026-10-30T20:51:32.957Z",
+    "official": true
+   }
+  },
+  {
+   "id": "9477",
+   "name": "JP EPS \"Termoelektrane i kopovi Kostolac\" d.o.o. Kostolac",
+   "nameCyr": "ЈП ЕПС \"Термоелектране и копови Костолац\" д.о.о. Костолац",
+   "source": {
+    "kind": "acas",
+    "title": "ACAS registar – pretraga: JP EPS \"Termoelektrane i kopovi Kostolac\" d.o.o. Kostolac",
+    "url": "https://publicacas.acas.rs/#/acas/funkcioner",
+    "retrievedAt": "2026-10-30T20:51:32.957Z",
+    "official": true
+   }
+  },
+  {
+   "id": "9506",
+   "name": "JP EPS Elektrosrbija d.o.o. ED Novi Pazar",
+   "nameCyr": "ЈП ЕПС Електросрбија д.о.о. ЕД Нови Пазар",
+   "source": {
+    "kind": "acas",
+    "title": "ACAS registar – pretraga: JP EPS Elektrosrbija d.o.o. ED Novi Pazar",
+    "url": "https://publicacas.acas.rs/#/acas/funkcioner",
+    "retrievedAt": "2026-10-30T20:51:32.957Z",
+    "official": true
+   }
+  },
+  {
+   "id": "4987",
+   "name": "EPS - JP Te Kosovo sa PO Obilić",
+   "nameCyr": "ЕПС - ЈП Те Косово са ПО Обилић",
+   "source": {
+    "kind": "acas",
+    "title": "ACAS registar – pretraga: EPS - JP Te Kosovo sa PO Obilić",
+    "url": "https://publicacas.acas.rs/#/acas/funkcioner",
+    "retrievedAt": "2026-10-30T20:51:32.957Z",
+    "official": true
+   }
+  },
+  {
+   "id": "4993",
+   "name": "EPS -JPPK Kosovo sa PO Obilić u Dobrom Selu",
+   "nameCyr": "ЕПС -ЈППК Косово са ПО Обилић у Добром Селу",
+   "source": {
+    "kind": "acas",
+    "title": "ACAS registar – pretraga: EPS -JPPK Kosovo sa PO Obilić u Dobrom Selu",
+    "url": "https://publicacas.acas.rs/#/acas/funkcioner",
+    "retrievedAt": "2026-10-30T20:51:32.957Z",
+    "official": true
+   }
+  },
+  {
+   "id": "8712",
+   "name": "Epsturs d.o.o. Beograd",
+   "nameCyr": "Епстурс д.о.о. Београд",
+   "source": {
+    "kind": "acas",
+    "title": "ACAS registar – pretraga: Epsturs d.o.o. Beograd",
+    "url": "https://publicacas.acas.rs/#/acas/funkcioner",
+    "retrievedAt": "2026-10-30T20:51:32.957Z",
+    "official": true
+   }
+  }
+ ]
+}
