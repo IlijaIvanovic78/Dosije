@@ -1,0 +1,339 @@
+{
+ "source": "vesti",
+ "key": "search-infrastruktura-zeleznice-srbije-d90-l25",
+ "retrievedAt": "2026-10-30T13:56:18.075Z",
+ "data": [
+  {
+   "id": "1ab8c780e48b",
+   "title": "Sindikat „Nezavisnost“ traži ostavke rukovodstva „Infrastrukture železnice Srbije“ u roku od 48 sati",
+   "url": "https://www.danas.rs/vesti/ekonomija/sindikat-nezavisnost-zahteva-ostavke-celnika-infrastrukture-zeleznice-srbije-u-roku-od-48-sati/",
+   "outlet": "raspadsistema.com (Danas)",
+   "publishedAt": "2026-10-30T10:09:00.000Z",
+   "snippet": "Sindikat železničkog saobraćaja Srbije „Nezavisnost“ zatražio je ostavke četvorice funkcionera u roku od 48 sati. Sindikat tvrdi da je bilo pritisaka i mobinga nad zaposlenima koji nisu podržavali SNS, zapošljavanja po stranačkoj liniji od januara 2026. i mogućih nepravilnosti u tenderima i remontima pruga, i poziva tužilaštvo da ispita navode. Prozvani se nisu oglasili. Funkcija: v.d. pomoćnika m",
+   "matched": [
+    "infrastruktura",
+    "zeleznice",
+    "srbije"
+   ],
+   "provider": "rss:raspadsistema",
+   "source": {
+    "kind": "vesti",
+    "title": "raspadsistema.com (Danas): Sindikat „Nezavisnost“ traži ostavke rukovodstva „Infrastrukture železnice Srbije“ u roku od 48 sati",
+    "url": "https://www.danas.rs/vesti/ekonomija/sindikat-nezavisnost-zahteva-ostavke-celnika-infrastrukture-zeleznice-srbije-u-roku-od-48-sati/",
+    "retrievedAt": "2026-10-30T13:56:00.432Z",
+    "publishedAt": "2026-10-30T10:09:00.000Z",
+    "official": false
+   }
+  },
+  {
+   "id": "c8b7829e1316",
+   "title": "Počelo suđenje KRIK-u po trećoj tužbi Jelene Tanasković: tužila lično bivšu novinarku",
+   "url": "https://www.krik.rs/pocelo-sudenje-krik-u-po-trecoj-tuzbi-jelene-tanaskovic-tuzila-licno-bivsu-novinarku/",
+   "outlet": "KRIK",
+   "publishedAt": "2026-10-28T13:24:27.000Z",
+   "snippet": "U Prvom osnovnom sudu u Beogradu danas je počelo suđenje KRIK-u po novoj, trećoj tužbi Jelene Tanasković, bivše direktorke Infrastrukture železnice Srbije optužene u slučaju nadstrešnica. Tanasković je ovu tužbu podnela lično protiv sada bivše novinarke KRIK-a Sofije Parojčić i to zbog videa objavljenog na našim društvenim mrežama, u kome […] The post Počelo suđenje KRIK-u po trećoj tužbi Jelene T",
+   "matched": [
+    "infrastruktura",
+    "zeleznice",
+    "srbije"
+   ],
+   "provider": "rss:krik",
+   "source": {
+    "kind": "vesti",
+    "title": "KRIK: Počelo suđenje KRIK-u po trećoj tužbi Jelene Tanasković: tužila lično bivšu novinarku",
+    "url": "https://www.krik.rs/pocelo-sudenje-krik-u-po-trecoj-tuzbi-jelene-tanaskovic-tuzila-licno-bivsu-novinarku/",
+    "retrievedAt": "2026-10-30T13:56:00.432Z",
+    "publishedAt": "2026-10-28T13:24:27.000Z",
+    "official": false
+   }
+  },
+  {
+   "id": "deeef4074e29",
+   "title": "Infrastruktura železnice Srbije: Pruga Niš-Brestovac prošla predviđena ispitivanja",
+   "url": "https://www.tanjug.rs/ekonomija/srbija/288429/infrastruktura-zeleznice-srbije-pruga-nis-brestovac-prosla-predvidena-ispitivanja/vest",
+   "outlet": "tanjug.rs",
+   "publishedAt": "2026-10-10T07:00:00.000Z",
+   "matched": [
+    "infrastruktura",
+    "zeleznice",
+    "srbije"
+   ],
+   "provider": "google-news-rss",
+   "source": {
+    "kind": "vesti",
+    "title": "tanjug.rs: Infrastruktura železnice Srbije: Pruga Niš-Brestovac prošla predviđena ispitivanja",
+    "url": "https://www.tanjug.rs/ekonomija/srbija/288429/infrastruktura-zeleznice-srbije-pruga-nis-brestovac-prosla-predvidena-ispitivanja/vest",
+    "retrievedAt": "2026-10-30T13:56:00.432Z",
+    "publishedAt": "2026-10-10T07:00:00.000Z",
+    "official": false
+   }
+  },
+  {
+   "id": "8344fec46dd1",
+   "title": "Infrastruktura železnice Srbije: Pruga Niš-Brestovac prošla predviđena ispitivanja",
+   "url": "https://naslovi.net/2026-10-10/euronews/infrastruktura-zeleznice-srbije-pruga-nis-brestovac-prosla-predvidjena-ispitivanja/42472058",
+   "outlet": "Naslovi.net",
+   "publishedAt": "2026-10-10T07:00:00.000Z",
+   "matched": [
+    "infrastruktura",
+    "zeleznice",
+    "srbije"
+   ],
+   "provider": "google-news-rss",
+   "source": {
+    "kind": "vesti",
+    "title": "Naslovi.net: Infrastruktura železnice Srbije: Pruga Niš-Brestovac prošla predviđena ispitivanja",
+    "url": "https://naslovi.net/2026-10-10/euronews/infrastruktura-zeleznice-srbije-pruga-nis-brestovac-prosla-predvidjena-ispitivanja/42472058",
+    "retrievedAt": "2026-10-30T13:56:00.432Z",
+    "publishedAt": "2026-10-10T07:00:00.000Z",
+    "official": false
+   }
+  },
+  {
+   "id": "01d9cf33f0f1",
+   "title": "Infrastrukture železnice Srbije: Od petka redovan putnički saobraćaj na pruzi Niš-Leskovac",
+   "url": "https://insajder.net/prenosimo/infrastrukture-zeleznice-srbije-od-petka-redovan-putnicki-saobracaj-na-pruzi-nis-leskovac",
+   "outlet": "Insajder TV",
+   "publishedAt": "2026-10-08T07:00:00.000Z",
+   "matched": [
+    "infrastruktura",
+    "zeleznice",
+    "srbije"
+   ],
+   "provider": "google-news-rss",
+   "source": {
+    "kind": "vesti",
+    "title": "Insajder TV: Infrastrukture železnice Srbije: Od petka redovan putnički saobraćaj na pruzi Niš-Leskovac",
+    "url": "https://insajder.net/prenosimo/infrastrukture-zeleznice-srbije-od-petka-redovan-putnicki-saobracaj-na-pruzi-nis-leskovac",
+    "retrievedAt": "2026-10-30T13:56:00.432Z",
+    "publishedAt": "2026-10-08T07:00:00.000Z",
+    "official": false
+   }
+  },
+  {
+   "id": "4e4d3efd28a0",
+   "title": "Infrastruktura železnica Srbije: Od danas otvorena tehničko putnička stanica Novi Sad",
+   "url": "https://novaekonomija.rs/vesti-iz-zemlje/infrastruktura-zeleznica-srbije-od-danas-otvorena-tehnicko-putnicka-stanica-novi-sad",
+   "outlet": "Nova Ekonomija",
+   "publishedAt": "2026-10-07T07:00:00.000Z",
+   "matched": [
+    "infrastruktura",
+    "zeleznice",
+    "srbije"
+   ],
+   "provider": "google-news-rss",
+   "source": {
+    "kind": "vesti",
+    "title": "Nova Ekonomija: Infrastruktura železnica Srbije: Od danas otvorena tehničko putnička stanica Novi Sad",
+    "url": "https://novaekonomija.rs/vesti-iz-zemlje/infrastruktura-zeleznica-srbije-od-danas-otvorena-tehnicko-putnicka-stanica-novi-sad",
+    "retrievedAt": "2026-10-30T13:56:00.432Z",
+    "publishedAt": "2026-10-07T07:00:00.000Z",
+    "official": false
+   }
+  },
+  {
+   "id": "f3b92b689d89",
+   "title": "Infrastrukture železnice Srbije: Saobraćaj na pruzi Niš-Leskovac počinje u petak",
+   "url": "https://www.tanjug.rs/ekonomija/srbija/287398/infrastrukture-zeleznice-srbije-saobracaj-na-pruzi-nis-leskovac-pocinje-u-petak/vest",
+   "outlet": "tanjug.rs",
+   "publishedAt": "2026-10-07T07:00:00.000Z",
+   "matched": [
+    "infrastruktura",
+    "zeleznice",
+    "srbije"
+   ],
+   "provider": "google-news-rss",
+   "source": {
+    "kind": "vesti",
+    "title": "tanjug.rs: Infrastrukture železnice Srbije: Saobraćaj na pruzi Niš-Leskovac počinje u petak",
+    "url": "https://www.tanjug.rs/ekonomija/srbija/287398/infrastrukture-zeleznice-srbije-saobracaj-na-pruzi-nis-leskovac-pocinje-u-petak/vest",
+    "retrievedAt": "2026-10-30T13:56:00.432Z",
+    "publishedAt": "2026-10-07T07:00:00.000Z",
+    "official": false
+   }
+  },
+  {
+   "id": "1a2fa092d86d",
+   "title": "Infrastruktura železnice: Izdata upotrebna dozvola za novo železničko stajalište u Novom Sadu, rasterećenje stanice u Petrovaradinu",
+   "url": "https://insajder.net/prenosimo/infrastruktura-zeleznice-upotrebna-dozvola-za-novo-zeleznicko-stajaliste-u-novom-sadu-rasterecenje-stanice-u-petrovaradinu",
+   "outlet": "Insajder TV",
+   "publishedAt": "2026-10-04T07:00:00.000Z",
+   "matched": [
+    "infrastruktura",
+    "zeleznice"
+   ],
+   "provider": "google-news-rss",
+   "source": {
+    "kind": "vesti",
+    "title": "Insajder TV: Infrastruktura železnice: Izdata upotrebna dozvola za novo železničko stajalište u Novom Sadu, rasterećenje stanice u Petrovaradinu",
+    "url": "https://insajder.net/prenosimo/infrastruktura-zeleznice-upotrebna-dozvola-za-novo-zeleznicko-stajaliste-u-novom-sadu-rasterecenje-stanice-u-petrovaradinu",
+    "retrievedAt": "2026-10-30T13:56:00.432Z",
+    "publishedAt": "2026-10-04T07:00:00.000Z",
+    "official": false
+   }
+  },
+  {
+   "id": "6b86a3359758",
+   "title": "Infrastruktura: Uskoro železnički saobraćaj, obnovljena pruga Niš-Brestovac, netačni navodi medija o rekonstrukciji",
+   "url": "https://jugmedia.rs/infrastruktura-uskoro-zeleznicki-saobracaj-obnovljena-pruga-nis-brestovac-netacni-navodi-medija-o-rekonstrukciji/",
+   "outlet": "JuGmedia",
+   "publishedAt": "2026-09-25T07:00:00.000Z",
+   "matched": [
+    "infrastruktura",
+    "zeleznice"
+   ],
+   "provider": "google-news-rss",
+   "source": {
+    "kind": "vesti",
+    "title": "JuGmedia: Infrastruktura: Uskoro železnički saobraćaj, obnovljena pruga Niš-Brestovac, netačni navodi medija o rekonstrukciji",
+    "url": "https://jugmedia.rs/infrastruktura-uskoro-zeleznicki-saobracaj-obnovljena-pruga-nis-brestovac-netacni-navodi-medija-o-rekonstrukciji/",
+    "retrievedAt": "2026-10-30T13:56:00.432Z",
+    "publishedAt": "2026-09-25T07:00:00.000Z",
+    "official": false
+   }
+  },
+  {
+   "id": "9bc2ad7be71e",
+   "title": "Infrastruktura železnice: Putnički vozovi na pruzi Niš–Brestovac ići će bezbedno brzinom od 120 kilometara na sat",
+   "url": "https://www.danas.rs/vesti/ekonomija/infrastruktura-zeleznice-putnicki-vozovi-na-pruzi-nis-brestovac-ici-ce-bezbedno-brzinom-od-120-kilometara-na-sat/",
+   "outlet": "Danas",
+   "publishedAt": "2026-09-24T07:00:00.000Z",
+   "matched": [
+    "infrastruktura",
+    "zeleznice"
+   ],
+   "provider": "google-news-rss",
+   "source": {
+    "kind": "vesti",
+    "title": "Danas: Infrastruktura železnice: Putnički vozovi na pruzi Niš–Brestovac ići će bezbedno brzinom od 120 kilometara na sat",
+    "url": "https://www.danas.rs/vesti/ekonomija/infrastruktura-zeleznice-putnicki-vozovi-na-pruzi-nis-brestovac-ici-ce-bezbedno-brzinom-od-120-kilometara-na-sat/",
+    "retrievedAt": "2026-10-30T13:56:00.432Z",
+    "publishedAt": "2026-09-24T07:00:00.000Z",
+    "official": false
+   }
+  },
+  {
+   "id": "ddf864532d90",
+   "title": "Uskoro putnički železnički saobraćaj za brzinu do 120 kilometara na sat Infrastruktura: Obnovljena pruga Niš-Brestovac, netačni navodi medija o rekonstrukciji (video)",
+   "url": "https://naslovi.net/2026-09-24/dnevnik/uskoro-putnicki-zeleznicki-saobracaj-za-brzinu-do-120-kilometara-na-sat-infrastruktura-obnovljena-pruga-nis-brestovac-netacni-navodi-medija-o-rekonstrukciji-video/42402461",
+   "outlet": "Naslovi.net",
+   "publishedAt": "2026-09-24T07:00:00.000Z",
+   "matched": [
+    "infrastruktura",
+    "zeleznice"
+   ],
+   "provider": "google-news-rss",
+   "source": {
+    "kind": "vesti",
+    "title": "Naslovi.net: Uskoro putnički železnički saobraćaj za brzinu do 120 kilometara na sat Infrastruktura: Obnovljena pruga Niš-Brestovac, netačni navodi medija o rekonstrukciji (video)",
+    "url": "https://naslovi.net/2026-09-24/dnevnik/uskoro-putnicki-zeleznicki-saobracaj-za-brzinu-do-120-kilometara-na-sat-infrastruktura-obnovljena-pruga-nis-brestovac-netacni-navodi-medija-o-rekonstrukciji-video/42402461",
+    "retrievedAt": "2026-10-30T13:56:00.432Z",
+    "publishedAt": "2026-09-24T07:00:00.000Z",
+    "official": false
+   }
+  },
+  {
+   "id": "da1ad375882f",
+   "title": "УСКОРО ПУТНИЧКИ ЖЕЛЕЗНИЧКИ САОБРАЋАЈ ЗА БРЗИНУ ДО 120 КИЛОМЕТАРА НА САТ Инфраструктура: Обновљена пруга Ниш-Брестовац, нетачни наводи медија о реконструкцији (ВИДЕО)",
+   "url": "https://www.dnevnik.rs/biznis/najnovije-vesti/uskoro-putnicki-zeleznicki-saobracaj-za-brzinu-do-120-kilometara-na-sat-infrastruktura-obnovljena-pruga-nis-brestovac-netacni-navodi-medija-rekonstrukciji-2026-09-24",
+   "outlet": "www.dnevnik.rs",
+   "publishedAt": "2026-09-24T07:00:00.000Z",
+   "matched": [
+    "infrastruktura",
+    "zeleznice"
+   ],
+   "provider": "google-news-rss",
+   "source": {
+    "kind": "vesti",
+    "title": "www.dnevnik.rs: УСКОРО ПУТНИЧКИ ЖЕЛЕЗНИЧКИ САОБРАЋАЈ ЗА БРЗИНУ ДО 120 КИЛОМЕТАРА НА САТ Инфраструктура: Обновљена пруга Ниш-Брестовац, нетачни наводи медија о реконструкцији (ВИДЕО)",
+    "url": "https://www.dnevnik.rs/biznis/najnovije-vesti/uskoro-putnicki-zeleznicki-saobracaj-za-brzinu-do-120-kilometara-na-sat-infrastruktura-obnovljena-pruga-nis-brestovac-netacni-navodi-medija-rekonstrukciji-2026-09-24",
+    "retrievedAt": "2026-10-30T13:56:00.432Z",
+    "publishedAt": "2026-09-24T07:00:00.000Z",
+    "official": false
+   }
+  },
+  {
+   "id": "0d189c4fdcc7",
+   "title": "Infrastruktura železnice: Ukradeno 80 metara kontaktne mreže na pruzi Ovča - Pančevo, saobraćaj samo desnim kolosekom",
+   "url": "https://n1info.rs/vesti/infrastruktura-zeleznice-ukradeno-80-metara-kontaktne-mreze-na-pruzi-ovca-pancevo-saobracaj-samo-desnim-kolosekom/",
+   "outlet": "N1",
+   "publishedAt": "2026-09-14T07:00:00.000Z",
+   "matched": [
+    "infrastruktura",
+    "zeleznice"
+   ],
+   "provider": "google-news-rss",
+   "source": {
+    "kind": "vesti",
+    "title": "N1: Infrastruktura železnice: Ukradeno 80 metara kontaktne mreže na pruzi Ovča - Pančevo, saobraćaj samo desnim kolosekom",
+    "url": "https://n1info.rs/vesti/infrastruktura-zeleznice-ukradeno-80-metara-kontaktne-mreze-na-pruzi-ovca-pancevo-saobracaj-samo-desnim-kolosekom/",
+    "retrievedAt": "2026-10-30T13:56:00.432Z",
+    "publishedAt": "2026-09-14T07:00:00.000Z",
+    "official": false
+   }
+  },
+  {
+   "id": "35f0bc2d3a07",
+   "title": "Posao vredan 470 miliona dinara \"Infrastruktura železnice Srbije\" dodelila firmi Daneta Šijana",
+   "url": "https://www.021.rs/info/srbija/454127/posao-vredan-470-miliona-dinara-infrastruktura-zeleznice-srbije-dodelila-firmi-daneta-sijana",
+   "outlet": "021.rs",
+   "publishedAt": "2026-09-03T07:00:00.000Z",
+   "matched": [
+    "infrastruktura",
+    "zeleznice",
+    "srbije"
+   ],
+   "provider": "google-news-rss",
+   "source": {
+    "kind": "vesti",
+    "title": "021.rs: Posao vredan 470 miliona dinara \"Infrastruktura železnice Srbije\" dodelila firmi Daneta Šijana",
+    "url": "https://www.021.rs/info/srbija/454127/posao-vredan-470-miliona-dinara-infrastruktura-zeleznice-srbije-dodelila-firmi-daneta-sijana",
+    "retrievedAt": "2026-10-30T13:56:00.432Z",
+    "publishedAt": "2026-09-03T07:00:00.000Z",
+    "official": false
+   }
+  },
+  {
+   "id": "13122e883da6",
+   "title": "Инфраструктура железнице Србије: Нетачне су и злонамерне тврдње на друштвеним мрежама да се „срушио део надвожњака у Сурчину“. Оштећене су лимене каналете за каблове, привремено је обустављен друмски саобраћај",
+   "url": "https://www.nspm.rs/hronika/infrastruktura-zeleznice-srbije-netacne-su-i-zlonamerne-tvrdnje-koje-su-se-pojavile-na-drustvenim-mrezama-da-se-srusio-deo-nadvoznjaka-u-surcinu.-ostecene-su-limene-kanalete-za-kablove-zbog-cega-je-privremeno-obustavljen-drumski-saobracaj.html",
+   "outlet": "Нова српска политичка мисао",
+   "publishedAt": "2026-08-30T07:00:00.000Z",
+   "matched": [
+    "infrastruktura",
+    "zeleznice",
+    "srbije"
+   ],
+   "provider": "google-news-rss",
+   "source": {
+    "kind": "vesti",
+    "title": "Нова српска политичка мисао: Инфраструктура железнице Србије: Нетачне су и злонамерне тврдње на друштвеним мрежама да се „срушио део надвожњака у Сурчину“. Оштећене су лимене каналете за каблове, прив",
+    "url": "https://www.nspm.rs/hronika/infrastruktura-zeleznice-srbije-netacne-su-i-zlonamerne-tvrdnje-koje-su-se-pojavile-na-drustvenim-mrezama-da-se-srusio-deo-nadvoznjaka-u-surcinu.-ostecene-su-limene-kanalete-za-kablove-zbog-cega-je-privremeno-obustavljen-drumski-saobracaj.html",
+    "retrievedAt": "2026-10-30T13:56:00.432Z",
+    "publishedAt": "2026-08-30T07:00:00.000Z",
+    "official": false
+   }
+  },
+  {
+   "id": "1740dec541e8",
+   "title": "Apeli Infrastrukture železnice Srbije dali rezultate na putnom prelazu u Železniku, još ima neodgovornih",
+   "url": "https://www.tanjug.rs/srbija/drustvo/276545/apeli-infrastrukture-zeleznice-srbije-dali-rezultate-na-putnom-prelazu-u-zelezniku-jos-ima-neodgovornih/vest",
+   "outlet": "tanjug.rs",
+   "publishedAt": "2026-08-27T07:00:00.000Z",
+   "matched": [
+    "infrastruktura",
+    "zeleznice",
+    "srbije"
+   ],
+   "provider": "google-news-rss",
+   "source": {
+    "kind": "vesti",
+    "title": "tanjug.rs: Apeli Infrastrukture železnice Srbije dali rezultate na putnom prelazu u Železniku, još ima neodgovornih",
+    "url": "https://www.tanjug.rs/srbija/drustvo/276545/apeli-infrastrukture-zeleznice-srbije-dali-rezultate-na-putnom-prelazu-u-zelezniku-jos-ima-neodgovornih/vest",
+    "retrievedAt": "2026-10-30T13:56:00.432Z",
+    "publishedAt": "2026-08-27T07:00:00.000Z",
+    "official": false
+   }
+  }
+ ]
+}
