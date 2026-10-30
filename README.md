@@ -85,12 +85,14 @@ Open **http://localhost:3000** and click **"Infrastruktura železnice Srbije"**.
 ### Two-minute demo script
 
 1. Click the demo chip. **Kadrovik, Nabavke, Revizor and Mediji start at the same moment** on one `dosije.started` event.
+   Watch **"Pretraga uživo"** under the timeline: every request to ACAS, the procurement portal, APR, DRI or a news source
+   appears live, with the agent that made it and a link to the public source.
 2. Nabavke registers suppliers. Each `entity.added` makes the **Fabrika spawn a "Firme · X" agent**, and lanes
    slide in ("← pokrenuo: entity.added · Nabavke"). Officials found by the Kadrovik spawn **Imovina** and **Mediji** agents.
 3. Mediji tries to file a claim without a source. A red ✗ appears: **the Urednik's gate blocks it** (`claim.blocked`),
    and the agent retries with the article as the source.
-4. The inbox shows *"Urednik predlaže signal: Zoran Jevtić je v.d. 17 meseci…"*. The **Kadrovik's lane turns amber
-   ("čeka novinara ⏸") while every other lane keeps moving.** Approve it.
+4. The inbox shows *"Urednik predlaže signal: Zoran Jevtić je v.d. 17 meseci…"*. **Only the Kadrovik's lane switches to
+   "čeka tebe" (an amber hatched bar) while every other lane keeps moving.** Approve it.
 5. Answer an owner question (look the company up on APR and type the owner's name). The Firme agent wakes up,
    registers the person, and **Provera + Mediji agents spawn for that name**, checking the ACAS register and PEP
    lists. A human answer turns into new concurrent work.
@@ -236,6 +238,15 @@ typical run has 2 interventions, not one per call.
    **await** the journalist's decision. Mozaik awaits `handle()` inside that one loop, so **only that agent pauses
    while all the others keep running.**
 
+### Live search: you can watch the agents look things up
+- Every request a tool makes to a public source becomes an `izvor.upit` event on the same Mozaik bus, with the
+  producer set to the agent. There are two events per request: `u_toku`, then `ok`, `kes` or `greska`.
+- Each event carries the source, a Serbian label ("funkcioneri: Infrastruktura železnice Srbije", "ugovori, strana
+  3/16", "PDF: Izveštaj o reviziji … 2023") and the public URL.
+- Attribution needs no plumbing: tools run inside an `AsyncLocalStorage` context `{agent, tool}`, so the data layer
+  knows who is asking without knowing about Mozaik (`src/data/activity.ts`, `src/mozaik/activity.ts`).
+- The UI shows this as **"Pretraga uživo"**, and each lane's status shows what that agent is fetching right now.
+
 ### The human is a participant, not just the user
 - The journalist is a `createHuman` participant on the same bus. The REST endpoints publish events on her behalf:
   `dosije.started`, `odgovor.coveka`, `entity.added` (when she adds a lead) and `dosije.zatvori`.
@@ -269,6 +280,7 @@ typical run has 2 interventions, not one per call.
 | Custom `SemanticEvent`s via `sendEvent` | `src/mozaik/domain.ts` (`emit`) |
 | Custom `InferenceRunner` (resilient LLM, scripted) | `src/mozaik/inference/resilient.ts`, `src/mozaik/inference/scripted.ts`, `src/mozaik/inference/policies.ts` |
 | Observers streaming the bus (SSE, JSONL trace) | `src/mozaik/participants.ts`, `src/mozaik/bus.ts`, `src/server.ts` |
+| Data-layer activity as bus events (live search, `izvor.upit`) | `src/data/activity.ts`, `src/mozaik/activity.ts` |
 
 Deeper docs:
 - [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md): the full design;
