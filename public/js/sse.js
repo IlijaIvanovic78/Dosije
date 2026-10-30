@@ -1,10 +1,15 @@
 // EventSource with auto-reconnect; re-fetches /api/state after every reconnect.
+// Browsers allow about six connections per server over HTTP/1.1 and every open tab keeps one stream open, so a tab
+// that stays in the background gives its stream back and reconnects (snapshot + replay) when it is shown again.
 
 import { api } from "./api.js"
 import { applyEvent, applySnapshot, applyStats, setConn } from "./store.js"
 
+const HIDDEN_GRACE_MS = 15000
+
 let es = null
 let hadError = false
+let hiddenTimer = null
 
 function parse(e) {
 	try {
@@ -16,9 +21,11 @@ function parse(e) {
 
 export function startStream() {
 	if (es) es.close()
-	es = new EventSource("/api/events")
+	const src = new EventSource("/api/events")
+	es = src
 
-	es.addEventListener("open", async () => {
+	src.addEventListener("open", async () => {
+		if (src !== es) return
 		setConn("up")
 		if (hadError) {
 			hadError = false
@@ -29,12 +36,28 @@ export function startStream() {
 			}
 		}
 	})
-	es.addEventListener("error", () => {
+	src.addEventListener("error", () => {
+		if (src !== es) return
 		hadError = true
 		setConn("down")
-		if (es.readyState === EventSource.CLOSED) setTimeout(startStream, 2000)
+		// a hidden tab reconnects when it is shown again
+		if (src.readyState === EventSource.CLOSED && !document.hidden) setTimeout(() => src === es && startStream(), 2000)
 	})
-	es.addEventListener("snapshot", (e) => applySnapshot(parse(e)))
-	es.addEventListener("ev", (e) => applyEvent(parse(e)))
-	es.addEventListener("stats", (e) => applyStats(parse(e)))
+	src.addEventListener("snapshot", (e) => applySnapshot(parse(e)))
+	src.addEventListener("ev", (e) => applyEvent(parse(e)))
+	src.addEventListener("stats", (e) => applyStats(parse(e)))
 }
+
+function pause() {
+	if (!es) return
+	es.close()
+	es = null
+	hadError = true // the reconnect re-fetches the state
+	setConn("paused")
+}
+
+document.addEventListener("visibilitychange", () => {
+	clearTimeout(hiddenTimer)
+	if (document.hidden) hiddenTimer = setTimeout(pause, HIDDEN_GRACE_MS)
+	else if (!es || es.readyState === EventSource.CLOSED) startStream()
+})

@@ -327,7 +327,7 @@ export function applySnapshot(snap) {
 }
 
 export function setConn(c) {
-	if (c === "down") wasDisconnected = true
+	if (c === "down" || c === "paused") wasDisconnected = true
 	state.conn = c
 	emit("conn", c)
 }

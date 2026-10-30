@@ -26,18 +26,31 @@ const DEMO_KIND = {
 	"grad-novi-sad": "Lokalna samouprava",
 }
 
+const STUCK_MS = 8000
+let connSince = Date.now()
+let lastConn = null
+let stuckTimer = null
+
 /** The top bar only speaks up when the connection to the server is in trouble. */
 function renderMode() {
 	const el = $("modeText")
+	if (state.conn !== lastConn) {
+		lastConn = state.conn
+		connSince = Date.now()
+		clearTimeout(stuckTimer)
+		if (state.conn !== "up") stuckTimer = setTimeout(renderMode, STUCK_MS + 100)
+	}
 	if (state.conn === "up") {
 		el.hidden = true
 		el.textContent = ""
 		return
 	}
+	// still not connected after a while: say what usually causes it
+	const stuck = Date.now() - connSince > STUCK_MS
 	el.hidden = false
-	el.className = `conn-text ${state.conn === "down" ? "down" : ""}`
-	el.textContent = state.conn === "down" ? t("veza prekinuta, povezujem…") : t("povezujem…")
-	el.title = t("Veza sa serverom (SSE)")
+	el.className = `conn-text ${state.conn === "down" || stuck ? "down" : ""}`
+	el.textContent = stuck ? t("nema veze sa serverom") : state.conn === "down" ? t("veza prekinuta, povezujem…") : t("povezujem…")
+	el.title = stuck ? t("Proveri da li server radi (npm start) i zatvori višak tabova sa Dosijeom: pregledač drži najviše 6 veza ka istom serveru.") : t("Veza sa serverom (SSE)")
 }
 
 const BUILDING_ICON =

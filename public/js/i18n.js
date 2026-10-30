@@ -115,6 +115,9 @@ const EN = {
 	"+ Dodaj trag": "+ Add a lead",
 	"Tim agenata": "Agent team",
 	"najvažnije za proveru": "the most important to verify",
+	"nema veze sa serverom": "no connection to the server",
+	"Proveri da li server radi (npm start) i zatvori višak tabova sa Dosijeom: pregledač drži najviše 6 veza ka istom serveru.":
+		"Check that the server is running (npm start) and close extra Dosije tabs: the browser keeps at most 6 connections to one server.",
 	"pretražuje izvor": "searching a source",
 	"novi agent": "new agent",
 	"Pitanja agenata, tvoje odluke i tragovi koje dodaješ timu.": "The agents' questions, your decisions and the leads you add to the team.",
@@ -417,6 +420,7 @@ const EN = {
 	"Pokreće pun dosije za ovu instituciju": "Starts a full dossier for this institution",
 	"Otvori dosije": "Open dossier",
 	"razrešeno kao": "resolved as",
+	"Naziv odgovara i drugim ustanovama ({list}); izabrana je {name}.": "The name also fits other bodies ({list}); {name} was picked.",
 	"agent proverava izvore": "agent is checking sources",
 	"u redu": "queued",
 	"Sakrij": "Hide",
