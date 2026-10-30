@@ -188,8 +188,7 @@ async function* nabavke(): AsyncGenerator<Step, string, ToolResult> {
 	}
 
 	const iw = (yield call("iw_veze")).json
-	const sourceByUrl = new Map(srcs(iw?.sources).map((s) => [String(s.url), s]))
-	for (const l of (iw?.links ?? []) as { supplierName: string; pib?: string; mb?: string; kinds: string[]; contracts: number; valueRsd?: number; sourceUrls: string[] }[]) {
+	for (const l of (iw?.links ?? []) as { supplierName: string; pib?: string; mb?: string; kinds: string[]; contracts: number; valueRsd?: number; sources: unknown }[]) {
 		const kinds = [...new Set(l.kinds)].join(" i ")
 		const cand = cands.find((c) => c.pib === l.pib)
 		yield call("add_finding", {
@@ -198,7 +197,7 @@ async function* nabavke(): AsyncGenerator<Step, string, ToolResult> {
 			text: `Baza Integrity Watch Srbija (Transparentnost Srbija) označava firmu ${l.supplierName} kao: ${kinds}. Označenih ugovora kod ove institucije: ${l.contracts}${l.valueRsd ? `, vrednost samostalnih ugovora ${money(l.valueRsd)}` : ""}. Otvoreni podaci ne imenuju funkcionera ni stranku; podatak zahteva proveru.`,
 			severity: "signal",
 			signalCode: "POLITICKA_VEZA",
-			sources: [...new Set(l.sourceUrls)].map((u) => sourceByUrl.get(u)).filter((s): s is Src => !!s),
+			sources: srcs(l.sources),
 			entityIds: cand ? [entityIdFor("firma", cand.name, { mb: cand.mb, pib: cand.pib })] : [],
 		})
 	}
@@ -269,10 +268,18 @@ type Item = { title: string; outlet?: string; publishedAt?: string; url: string;
 const itemSource = (i: Item) => ({ kind: "vesti", title: `${i.outlet ?? "Vesti"}: ${i.title}`, url: i.url, publishedAt: i.publishedAt })
 const stripOutlet = (s: string) => s.replace(/\s+/g, " ").trim()
 
-function lead(text: string, max = 280): string {
+// "v. d.", "br.", "čl. 23" etc. are not sentence ends
+const ABBREVIATION = /(?:^|[\s(„"])(?:[\p{L}]{1,2}|br|tzv|npr|itd|god|mil|mlrd|čl|tač|st|sl|dr|mr|prof|ul)$/iu
+
+function lead(text: string, max = 340): string {
 	const t = stripOutlet(text)
 	const cut = t.slice(0, max)
-	const end = Math.max(cut.lastIndexOf(". "), cut.lastIndexOf("; "))
+	let end = -1
+	for (const m of cut.matchAll(/[.;!?](?=\s)/g)) {
+		const before = cut.slice(Math.max(0, m.index - 12), m.index)
+		if (m[0] === "." && ABBREVIATION.test(before)) continue
+		end = m.index
+	}
 	return end > 80 ? cut.slice(0, end + 1) : clip(t, max)
 }
 

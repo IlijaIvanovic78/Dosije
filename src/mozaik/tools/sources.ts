@@ -225,20 +225,21 @@ export function nabavkeTools(ctx: ToolCtx): Tool[] {
 			handler: async () => {
 				const inst = jnInst()
 				const links = await data.iw.getLinksForAuthority({ name: inst.name, pib: inst.pib })
-				const byPib = new Map<string, { supplierName: string; pib?: string; mb?: string; kinds: string[]; contracts: number; valueRsd?: number; detail: string; sourceUrls: string[] }>()
+				const byPib = new Map<string, { supplierName: string; pib?: string; mb?: string; kinds: string[]; contracts: number; valueRsd?: number; detail: string; own: typeof links[number]["source"][] }>()
 				for (const l of links) {
 					const k = l.supplierPib ?? l.supplierName
-					const e = byPib.get(k) ?? { supplierName: l.supplierName, pib: l.supplierPib, mb: l.supplierMb ?? lookupSupplierMb(l.supplierPib)?.mb, kinds: [], contracts: 0, valueRsd: l.valueRsd, detail: "", sourceUrls: [] }
+					const e = byPib.get(k) ?? { supplierName: l.supplierName, pib: l.supplierPib, mb: l.supplierMb ?? lookupSupplierMb(l.supplierPib)?.mb, kinds: [], contracts: 0, valueRsd: l.valueRsd, detail: "", own: [] }
 					e.kinds.push(l.linkType)
 					e.contracts = Math.max(e.contracts, l.contracts ?? 0)
 					e.valueRsd = Math.max(e.valueRsd ?? 0, l.valueRsd ?? 0) || undefined
 					e.detail = clip(l.detail ?? "", 200)
-					e.sourceUrls.push(l.source.url)
+					e.own.push(l.source)
 					byPib.set(k, e)
 				}
 				return {
 					count: byPib.size,
-					links: [...byPib.values()],
+					// every link carries its own sources: several firms share the same generic Integrity Watch URL
+					links: [...byPib.values()].map(({ own, ...rest }) => ({ ...rest, sources: uniqueSources(own).map(srcOut) })),
 					napomena: "Otvoreni podaci ne imenuju funkcionera ni stranku. Prazan rezultat znači samo da nema oznake u bazi.",
 					sources: uniqueSources(links.map((l) => l.source)).map(srcOut),
 				}

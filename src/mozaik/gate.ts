@@ -55,8 +55,43 @@ export class UrednikGate implements InterceptionHandler {
 
 	constructor(private readonly ctx: GateCtx) {}
 
+	/**
+	 * Mozaik calls this exactly once per transition. Only calls that need an editorial intervention are intercepted
+	 * (so interception.started on the bus means the Urednik really acted); plain calls are just counted here.
+	 */
 	isSatisfiedBy(transition: ExecutableTransition): boolean {
-		return transition.nextStateId === "function_call"
+		if (transition.nextStateId !== "function_call") return false
+		try {
+			const state = S()
+			const { call } = transition.input
+			const isEditor = this.ctx.group === "urednik"
+			if (!state.isCurrent(this.ctx.caseId) || (!isEditor && state.status !== "running")) return true
+			this.calls++
+			if (!isEditor) {
+				state.refreshExhausted()
+				if (this.calls > config.budget.maxToolCallsPerLoop || state.budget.exhausted) return true
+			}
+			let args: Record<string, unknown> = {}
+			try {
+				const parsed = JSON.parse(call.args)
+				if (parsed && typeof parsed === "object" && !Array.isArray(parsed)) args = parsed as Record<string, unknown>
+			} catch {}
+			if ("_approval" in args) return true
+			if (call.name === "add_finding" || call.name === "add_entity" || call.name === "ask_human") {
+				if (JSON.stringify(scrubValue(args)) !== JSON.stringify(args)) return true
+			}
+			if (call.name === "add_finding") {
+				const rawSources = Array.isArray(args.sources) ? args.sources : []
+				if (!rawSources.some((s) => s && typeof s === "object" && isHttpUrl((s as { url?: unknown }).url))) return true
+				const code = args.signalCode as string | undefined
+				if (args.severity === "signal" && code && APPROVAL_CODES.includes(code as never)) return true
+			}
+			this.countCall()
+			return false
+		} catch (err) {
+			logError(`gate.isSatisfiedBy ${this.ctx.agentId}`, err)
+			return false
+		}
 	}
 
 	async handle(transition: ExecutableTransition): Promise<ExecutableTransition> {
@@ -101,8 +136,7 @@ export class UrednikGate implements InterceptionHandler {
 		const closed = !state.isCurrent(this.ctx.caseId) || (!isEditor && state.status !== "running")
 		if (closed) return this.endLoop(t, "Dosije je zatvoren: završi rad jednom rečenicom.")
 
-		// (1) budget
-		this.calls++
+		// (1) budget (calls were counted in isSatisfiedBy)
 		if (!isEditor) {
 			const overLoop = this.calls > config.budget.maxToolCallsPerLoop
 			state.refreshExhausted()

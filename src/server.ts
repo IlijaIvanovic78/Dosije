@@ -11,6 +11,7 @@ import { ApiError, addLead, boot, closeCase, configView, getReport, getSnapshot,
 import { bus } from "./mozaik/bus"
 import { S } from "./mozaik/domain"
 import { logError } from "./mozaik/util"
+import type { WireEvent } from "./shared/types"
 
 applyEntryDefaults("server")
 
@@ -37,6 +38,10 @@ const MIME: Record<string, string> = {
 }
 
 const clients = new Set<http.ServerResponse>()
+
+// Events of the current case, replayed after the snapshot on (re)connect so a page reload rebuilds the live Gantt.
+const HISTORY_MAX = 8000
+let history: WireEvent[] = []
 
 function sse(res: http.ServerResponse, event: string, data: unknown): void {
 	try {
@@ -91,6 +96,7 @@ async function handleApi(req: http.IncomingMessage, res: http.ServerResponse, pa
 			res.writeHead(200, { "content-type": "text/event-stream; charset=utf-8", "cache-control": "no-store, no-transform", connection: "keep-alive", "x-accel-buffering": "no" })
 			res.write("retry: 1500\n\n")
 			sse(res, "snapshot", getSnapshot())
+			for (const ev of history) sse(res, "ev", ev)
 			clients.add(res)
 			const heartbeat = setInterval(() => {
 				try {
@@ -168,7 +174,12 @@ const server = http.createServer((req, res) => {
 		})
 })
 
-bus.onWire((ev) => broadcast("ev", ev))
+bus.onWire((ev) => {
+	if (ev.type === "dosije.started") history = []
+	history.push(ev)
+	if (history.length > HISTORY_MAX) history.splice(0, history.length - HISTORY_MAX)
+	broadcast("ev", ev)
+})
 bus.onSnapshot((snap) => broadcast("snapshot", snap))
 
 const statsTimer = setInterval(() => {
