@@ -4,7 +4,6 @@
 [Mozaik](https://docs.jigjoy.ai) agents searches public registers live, and the journalist is a member of the team.
 It shows signals for verification, never verdicts.
 
-NTP Novi Sad Hackathon 2026 · Freestyle track · `@mozaik-ai/core` 4.2.0
 
 ![Agents working at the same time; the Kadrovik waits for the journalist while the others continue](docs/img/01-team-live.png)
 
