@@ -92,13 +92,21 @@ Every agent's loop runs through the **UrednikGate** (`InterceptionHandler`).
   | `entity.added` (firm) | Fabrika spawns a Firme agent |
   | `entity.added` (person) | Fabrika spawns Imovina and Mediji agents |
   | `finding.added` | Urednik dedupes and resolves conflicts |
+  | `finding.added` VD_PREKO_ROKA / VD_LANAC (from Kadrovik) | **Mediji** opens a new loop that checks how outlets reported that appointment (feeds the conflict check) |
+  | `finding.added` BEZ_OBJAVE / KONCENTRACIJA (from Nabavke) | **Revizor** opens a new loop that looks for earlier DRI findings and files a corroborated finding citing both sources |
   | `odgovor.coveka` | a new loop for the agent that asked |
   | `message_received.started` / `model.answer` | completion tracking |
 
+  Each cross-agent reaction fires at most once per case and trigger. The loop's first message starts with
+  "Povod: nalaz <agent>: <title>", and an `agent.reakcija` event is published. The UI marks the lane "reaguje na nalaz
+  · <agent>".
 - **Every `runLoop` is fire-and-forget**, with its own fresh `ModelContext` and its own tools and gate instance.
   Contexts are mutated in place, so sharing an agent's memory across concurrent loops would interleave them.
-- **One scripted IŽS run:** peak **13 concurrent loops**, **21 agents** (16 spawned at runtime), ~105 tool calls and
-  ~880 Mozaik events in about 30 s.
+- **A typical scripted IŽS run (cached, three runs, stable):**
+  - peak of 13-14 concurrent loops;
+  - 19 agents, 14 of them spawned at runtime;
+  - 22 loops, about 100 tool calls and about 770 Mozaik events, in about 27 s.
+  - With an owner answer there are 21 agents and 25 loops.
 - **The evidence is checkable:**
   - the live Gantt and concurrency sparkline in the UI;
   - `out/trace-<case>.jsonl` (every event, written by the Zapisničar observer);
