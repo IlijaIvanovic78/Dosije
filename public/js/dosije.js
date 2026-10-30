@@ -8,6 +8,8 @@ import { api } from "./api.js"
 import { toast } from "./toast.js"
 
 const SEV_RANK = { signal: 3, paznja: 2, info: 1 }
+const STATUS_RANK = { zvanicno: 4, potvrdjeno: 3, nepotvrdjeno: 2, demantovano: 1 }
+const SECTION_RANK = { rukovodstvo: 5, novac: 4, firme: 3, revizija: 2, mediji: 1 }
 const cards = new Map() // findingId -> { el, sig }
 const fresh = new Map() // id -> timestamp (animate entry)
 const chipCache = new Map()
@@ -175,7 +177,10 @@ function renderSignals() {
 		count = report.topSignals.length
 		nodes = [report.lede ? h("p", { class: "lede" }, report.lede) : null, h("div", { class: "sig-list" }, report.topSignals.map((s) => signalRow(s.findingId, s.headline, state.findings.get(s.findingId))))]
 	} else {
-		const list = [...state.findings.values()].filter((f) => f.severity === "signal").sort((a, b) => (parseIso(b.createdAt) || 0) - (parseIso(a.createdAt) || 0))
+		// live ranking: official sources first, then leadership > money > firms > audit > media, then newest
+		const list = [...state.findings.values()]
+			.filter((f) => f.severity === "signal" && f.status !== "demantovano" && f.approval !== "rejected")
+			.sort((a, b) => (STATUS_RANK[b.status] || 0) - (STATUS_RANK[a.status] || 0) || (SECTION_RANK[b.section] || 0) - (SECTION_RANK[a.section] || 0) || (parseIso(b.createdAt) || 0) - (parseIso(a.createdAt) || 0))
 		count = list.length
 		sig = `live|${list.map((f) => f.id + f.status + f.title).join(",")}|${state.status}`
 		nodes = list.length

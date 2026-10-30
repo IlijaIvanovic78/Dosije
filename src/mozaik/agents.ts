@@ -1,5 +1,5 @@
 // Agent definitions: Serbian instructions (developer message in LLM mode, `[[agent:<group>]]` marker for the scripted
-// runner), UI metadata and the first message of each loop. Mirrors docs/AGENTS.md.
+// runner), UI metadata and the first message of each loop. Mirrors docs/AGENT_BEHAVIOR.md.
 
 import { createAgent, type Agent } from "@mozaik-ai/core"
 import { LEGAL_LABELS, type ResolvedInstitution } from "../data/resolver"

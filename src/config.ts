@@ -73,7 +73,7 @@ function loadConfig(): Config {
 		approvalTimeoutAction: process.env.HUMAN_AUTO_APPROVE_MS === undefined ? "expire" : "approve",
 		port: num("PORT", 3000),
 		idleMs: num("DOSIJE_IDLE_MS", 2500),
-		questionGraceMs: Math.max(0, num("DOSIJE_QUESTION_GRACE_MS", 40_000)),
+		questionGraceMs: Math.max(0, num("DOSIJE_QUESTION_GRACE_MS", 30_000)),
 		budget: {
 			maxFirme: num("DOSIJE_MAX_FIRME", 8),
 			maxOsobe: num("DOSIJE_MAX_OSOBE", 6),

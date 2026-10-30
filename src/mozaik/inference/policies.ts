@@ -1,4 +1,4 @@
-// Scripted per-group policies (docs/AGENTS.md). A policy is an async generator: every `yield` is exactly ONE tool call (what
+// Scripted per-group policies (docs/AGENT_BEHAVIOR.md). A policy is an async generator: every `yield` is exactly ONE tool call (what
 // an LLM would emit for one step) and receives that tool's output as the next input, so a policy only uses what an LLM
 // would see in its context. The scripted runner turns each yield into a Mozaik FunctionCallItem.
 
