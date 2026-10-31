@@ -1,4 +1,4 @@
-// Lists (and with --delete removes) cache files that no run reads any more, so the committed cache stays coherent.
+// Lists (and with --delete removes) cache files that no run reads any more, so the local cache stays coherent.
 //   CACHE_TRACE=out/cache-trace.txt  <run the cases / npm run qa / npm test / npm run mapa>
 //   npx.cmd tsx scripts/prune-cache.ts out/cache-trace.txt [--sources vesti,integrity_watch] [--delete]
 // Only the listed sources are touched (default: vesti: old news queries and articles); everything else is just reported.

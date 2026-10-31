@@ -3,7 +3,7 @@
 
 import { h, reconcile, avatar, parseIso, fmtClock, fmtDur, fmtDate, safeUrl } from "./format.js"
 import { state, on, setFilter, isDone } from "./store.js"
-import { t, pl, onLang } from "./i18n.js"
+import { t, tx, agentName, pl, onLang, onTx } from "./i18n.js"
 
 const VISIBLE_CAP = 150
 const rowsById = new Map() // id -> { el, sig }
@@ -35,11 +35,11 @@ function statusNode(a, status) {
 function buildRow(a, status) {
 	const info = state.agents.get(a.agentId) || { name: a.agentName, group: "sistem" }
 	const url = safeUrl(a.url)
-	const label = url ? h("a", { class: "lbl", href: url, target: "_blank", rel: "noopener noreferrer" }, a.label) : h("span", { class: "lbl" }, a.label)
+	const label = url ? h("a", { class: "lbl", href: url, target: "_blank", rel: "noopener noreferrer" }, tx(a.label)) : h("span", { class: "lbl" }, tx(a.label))
 	const time = a.t0 || parseIso(a.at) || Date.now()
 	return h(
 		"div",
-		{ class: `srow ${status}`, dataset: { agent: a.agentId }, title: `${a.agentName} · ${a.tool}${a.error ? ` · ${a.error}` : ""}` },
+		{ class: `srow ${status}`, dataset: { agent: a.agentId }, title: `${agentName(a.agentName)} · ${a.tool}${a.error ? ` · ${tx(a.error)}` : ""}` },
 		h("span", { class: "rt" }, fmtClock(time)),
 		avatar(info),
 		h("b", { class: "rsrc", title: a.source }, a.source),
@@ -60,7 +60,7 @@ function render() {
 		filterEl.dataset.sig = fsig
 		filterEl.hidden = !filter
 		if (filter) {
-			const who = state.agents.get(filter)?.name || "?"
+			const who = agentName(state.agents.get(filter)?.name) || "?"
 			filterEl.replaceChildren(`${t("samo")}: ${who} · `, h("button", { class: "link-btn", type: "button", onclick: () => setFilter("agentId", filter) }, t("prikaži sve")))
 		}
 	}
@@ -70,7 +70,7 @@ function render() {
 	for (const a of list) {
 		keep.add(a.id)
 		const status = effStatus(a)
-		const sig = `${status}|${a.ms}|${a.items}|${a.cachedAt}|${a.error}|${a.url}|${a.label}`
+		const sig = `${status}|${a.ms}|${a.items}|${a.cachedAt}|${a.error}|${a.url}|${tx(a.label)}`
 		let rec = rowsById.get(a.id)
 		if (!rec) {
 			rec = { el: buildRow(a, status), sig }
@@ -123,6 +123,7 @@ export function initSearch() {
 		if (newCase) rowsById.clear()
 		schedule()
 	})
+	onTx(schedule)
 	onLang(() => {
 		rowsById.clear()
 		filterEl.dataset.sig = "x"

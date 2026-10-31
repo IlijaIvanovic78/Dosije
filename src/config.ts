@@ -20,6 +20,10 @@ export interface Config {
 	humanAutoApproveMs: number
 	/** what happens to an unanswered approval when humanAutoApproveMs elapses: auto-approve (CLI, tests, explicit env) or expire (UI) */
 	approvalTimeoutAction: "approve" | "expire"
+	/** agents may ask the journalist for data no source has (ask_human); off by default: a missing fact is written as missing */
+	askHuman: boolean
+	/** sensitive signals wait for the journalist's approval; off by default: they go in on their sources (zvanično / nepotvrđeno) */
+	approvals: boolean
 	port: number
 	idleMs: number
 	questionGraceMs: number
@@ -71,6 +75,8 @@ function loadConfig(): Config {
 		demoSpeed: Math.max(0, num("DEMO_SPEED", 1)),
 		humanAutoApproveMs: Math.max(0, num("HUMAN_AUTO_APPROVE_MS", 180_000)),
 		approvalTimeoutAction: process.env.HUMAN_AUTO_APPROVE_MS === undefined ? "expire" : "approve",
+		askHuman: /^(1|true|da)$/i.test(process.env.DOSIJE_ASK_HUMAN?.trim() ?? ""),
+		approvals: /^(1|true|da)$/i.test(process.env.DOSIJE_APPROVALS?.trim() ?? ""),
 		port: num("PORT", 3000),
 		idleMs: num("DOSIJE_IDLE_MS", 2500),
 		questionGraceMs: Math.max(0, num("DOSIJE_QUESTION_GRACE_MS", 30_000)),

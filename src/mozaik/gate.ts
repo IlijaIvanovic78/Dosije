@@ -92,7 +92,7 @@ export class UrednikGate implements InterceptionHandler {
 				const rawSources = Array.isArray(args.sources) ? args.sources : []
 				if (!rawSources.some((s) => s && typeof s === "object" && isHttpUrl((s as { url?: unknown }).url))) return true
 				const code = args.signalCode as string | undefined
-				if (args.severity === "signal" && code && APPROVAL_CODES.includes(code as never)) return true
+				if (config.approvals && args.severity === "signal" && code && APPROVAL_CODES.includes(code as never)) return true
 			}
 			this.countCall()
 			return false
@@ -192,9 +192,10 @@ export class UrednikGate implements InterceptionHandler {
 				return this.skip(t, `ODBIJENO: nalaz „${title}“ ne sme u Dosije. ${reason}`)
 			}
 
-			// (4) blocking approval of sensitive signals
+			// (4) blocking approval of sensitive signals (only with DOSIJE_APPROVALS=1; otherwise the signal goes in on its sources:
+			// official sources make it "zvanično", anything else stays "nepotvrđeno")
 			const code = args.signalCode as string | undefined
-			if (args.severity === "signal" && code && APPROVAL_CODES.includes(code as never)) {
+			if (config.approvals && args.severity === "signal" && code && APPROVAL_CODES.includes(code as never)) {
 				const title = typeof args.title === "string" ? clip(args.title, 160) : "Signal"
 				const key = `${code}:${title}`
 				if (this.rejected.has(key)) return this.skip(t, "Novinar je već odbio ovaj signal: ne ubacuj ga ponovo. Nastavi sa ostalim zadacima.")

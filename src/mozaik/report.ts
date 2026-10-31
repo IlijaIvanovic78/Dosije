@@ -22,6 +22,7 @@ const SOURCE_LABEL: Partial<Record<SourceKind, string>> = {
 	zakon: "propis",
 	opensanctions: "OpenSanctions",
 	krik: "KRIK",
+	companywall: "CompanyWall",
 	novinar: "unos novinarke",
 }
 
@@ -29,7 +30,7 @@ const SOURCE_LABEL: Partial<Record<SourceKind, string>> = {
 function sourceName(s: SourceRef): string {
 	return SOURCE_LABEL[s.kind] ?? (s.title.includes(":") ? s.title.split(":")[0].trim() : hostOf(s.url))
 }
-const SEVERITY_LABEL: Record<Severity, string> = { signal: "signal za proveru", paznja: "pažnja", info: "informacija" }
+const SEVERITY_LABEL: Record<Severity, string> = { signal: "signal", paznja: "pažnja", info: "informacija" }
 const SECTIONS: [Section, string][] = [
 	["rukovodstvo", "Rukovodstvo"],
 	["novac", "Novac i nabavke"],
@@ -77,7 +78,7 @@ export function buildReport(state: DosijeState, summary: Summary): DosijeReport 
 	const lines: string[] = []
 	lines.push(`# Dosije: ${inst?.name ?? "institucija"}`, "")
 	lines.push(
-		"> **Ovo su signali za proveru, ne zaključci.** Dosije je napravio tim AI agenata iz javno dostupnih izvora (ACAS, Portal javnih nabavki, APR, DRI, mediji, Integrity Watch). Svaki nalaz ima izvor i status; ništa ovde nije optužba niti dokaz nepravilnosti. Pre objavljivanja proveri izvore i traži odgovor institucije. Odluku donosi novinar.",
+		"> **Ovo su signali, ne zaključci.** Dosije je napravio tim AI agenata iz javno dostupnih izvora (ACAS, Portal javnih nabavki, APR, DRI, mediji, Integrity Watch, CompanyWall). Svaki nalaz ima izvor i status: zvanično (zvaničan registar ili dokument), potvrđeno (dva nezavisna izvora) ili nepotvrđeno. Ništa ovde nije optužba niti dokaz nepravilnosti.",
 		"",
 	)
 	const ids = [inst?.pib ? `PIB ${inst.pib}` : "", inst?.mb ? `MB ${inst.mb}` : "", inst?.acasId ? `ACAS ID ${inst.acasId}` : "", inst?.jnId ? `JN ID ${inst.jnId}` : ""].filter(Boolean).join(" · ")
@@ -112,7 +113,12 @@ export function buildReport(state: DosijeState, summary: Summary): DosijeReport 
 		lines.push("")
 	}
 
-	lines.push("## Šta još treba proveriti", "", ...summary.toVerify.map((t) => `- [ ] ${t}`), "")
+	// what rests on a single unofficial source (one article, a commercial register copy)
+	const unconfirmed = findings.filter((f) => f.status === "nepotvrdjeno")
+	lines.push("## Nepotvrđeno", "")
+	if (!unconfirmed.length) lines.push("_Svi nalazi imaju zvaničan izvor ili potvrdu iz dva nezavisna izvora._")
+	for (const f of unconfirmed) lines.push(`- ${f.title}${f.sources[0] ? ` (izvor: ${sourceName(f.sources[0])})` : ""}`)
+	lines.push("")
 
 	const seen = new Map<string, SourceRef>()
 	for (const f of findings) for (const s of f.sources) if (!seen.has(`${normUrl(s.url)}|${s.title}`)) seen.set(`${normUrl(s.url)}|${s.title}`, s)
@@ -127,16 +133,16 @@ export function buildReport(state: DosijeState, summary: Summary): DosijeReport 
 	const reactions = agents.flatMap((a) => (a.reactions ?? []).map((r) => `${a.name} ← ${r.fromAgent} (${r.signalCode})`))
 	lines.push("## Kako je nastao", "")
 	lines.push(
-		`U izradi dosijea radilo je **${n(agents.length, "agent")}** na zajedničkoj Mozaik sabirnici događaja (${agents.length - dynamic.length} stalnih + ${n(dynamic.length, "pokrenutAgent")}${dynamic.length ? `: ${[...byGroup].map(([g, c]) => `${g} ×${c}`).join(", ")}` : ""}), uz novinara kao člana tima.`,
+		`U izradi dosijea radilo je **${n(agents.length, "agent")}** na zajedničkoj Mozaik sabirnici događaja (${agents.length - dynamic.length} stalnih + ${n(dynamic.length, "pokrenutAgent")}${dynamic.length ? `: ${[...byGroup].map(([g, c]) => `${g} ×${c}`).join(", ")}` : ""}), bez čekanja na korisnika.`,
 		"",
 		`- vrhunac istovremenih petlji: **${stats.peakConcurrentLoops}** (${n(stats.peakConcurrentLoops, "petlja")} u isto vreme); ukupno petlji: ${stats.totalLoops}; zaključivanja: ${stats.inferences}; pozivi alata: ${stats.toolCalls}`,
 		`- interceptor Urednika: ${n(stats.interceptions, "presretanje")}, ${n(stats.blockedClaims, "blokiranaTvrdnja")} bez izvora; rešeno konflikata izvora: ${stats.conflicts}`,
 		...(reactions.length ? [`- agenti koji reaguju na nalaze drugih agenata: ${reactions.join("; ")}`] : []),
 		`- Mozaik događaja: ${stats.events}; trajanje: ${formatDuration(stats.elapsedMs)}`,
 		`- režim: ${config.mode === "llm" ? `LLM (${config.model}, urednik ${config.editorModel}), ${state.budget.tokens} tokena` : "skriptovani agenti (bez ključa): isti Mozaik runtime, alati, interceptor i stanje; zaključivanje je deterministično"}; podaci: ${config.dataMode === "cache" ? "keš" : config.dataMode === "live" ? "uživo" : "keš pa uživo"}`,
-		`- pravni oblik za proveru roka v.d.: ${inst ? (LEGAL_LABELS[state.institutionRef?.legalType ?? "ostalo"] ?? inst.legalType) : ""}`,
+		`- pravni oblik po kom se računa rok v.d.: ${inst ? (LEGAL_LABELS[state.institutionRef?.legalType ?? "ostalo"] ?? inst.legalType) : ""}`,
 		"",
-		"*Sistem ne presuđuje: prikazuje signale za proveru, odluka ostaje na čoveku.*",
+		"*Sistem ne presuđuje: svaki nalaz nosi izvor i status (zvanično, potvrđeno ili nepotvrđeno).*",
 		"",
 	)
 

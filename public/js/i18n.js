@@ -1,5 +1,6 @@
 // UI language (SR default, EN optional). One dictionary: the key is the Serbian text, the value its English version.
-// Data content (findings, agent names, server messages) is not translated. Missing keys fall back to the Serbian key.
+// Missing keys fall back to the Serbian key. Text written by the server (findings, agent messages, map reasons, errors) is
+// Serbian: in English tx() shows its machine translation (see the end of this file), and agentName() the agents' English names.
 
 const STORAGE_KEY = "dosije.lang"
 let lang = "sr"
@@ -65,6 +66,110 @@ export function setLang(next) {
 	}
 }
 
+// ─── server text ─────────────────────────────────────────────────────────────
+// POST /api/translate, batched and cached for the page. Until a translation arrives the Serbian text is shown; when a batch
+// lands the onTx listeners run (a light repaint: langKey() changes, so render signatures see it; a language switch is onLang).
+
+const txListeners = new Set()
+
+export function onTx(fn) {
+	txListeners.add(fn)
+	return () => txListeners.delete(fn)
+}
+
+const txDone = new Map()
+const txQueued = new Set()
+const txInflight = new Set()
+let txTimer = null
+let txNotifyTimer = null
+let txVersion = 0
+let txOff = false
+
+const hasWords = (s) => /[A-Za-zА-Яа-яčćšžđČĆŠŽĐ]{2}/.test(s)
+
+/** Signature part for anything that shows translated text: changes with the language and with every translation batch. */
+export const langKey = () => (lang === "en" ? `en${txVersion}` : "sr")
+
+/** Server text in the page language (English: the machine translation once it is there, the Serbian text until then). */
+export function tx(s) {
+	if (lang !== "en" || txOff || typeof s !== "string" || !hasWords(s)) return s
+	const hit = txDone.get(s)
+	if (hit !== undefined) return hit
+	if (!txInflight.has(s) && !txQueued.has(s)) {
+		txQueued.add(s)
+		txTimer ??= setTimeout(txFlush, 60)
+	}
+	return s
+}
+
+/** The same, awaited: for one-off messages (an error under a form) that are not re-rendered. */
+export async function txNow(s) {
+	if (lang !== "en" || txOff || typeof s !== "string" || !hasWords(s)) return s
+	if (txDone.has(s)) return txDone.get(s)
+	const [out] = await txFetch([s])
+	return out
+}
+
+async function txFetch(batch) {
+	try {
+		const r = await fetch("/api/translate", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ texts: batch }) })
+		const j = await r.json()
+		if (j.available === false) txOff = true
+		batch.forEach((s, i) => txDone.set(s, typeof j.texts?.[i] === "string" && j.texts[i] ? j.texts[i] : s))
+	} catch {
+		// the Serbian text stays; a later render asks again
+	}
+	return batch.map((s) => txDone.get(s) ?? s)
+}
+
+async function txFlush() {
+	txTimer = null
+	const batch = [...txQueued].slice(0, 40)
+	for (const s of batch) {
+		txQueued.delete(s)
+		txInflight.add(s)
+	}
+	if (txQueued.size) txTimer = setTimeout(txFlush, 60)
+	await txFetch(batch)
+	for (const s of batch) txInflight.delete(s)
+	// many batches land close together during a live case: one repaint for them
+	txNotifyTimer ??= setTimeout(() => {
+		txNotifyTimer = null
+		txVersion++
+		for (const fn of txListeners) {
+			try {
+				fn()
+			} catch (e) {
+				console.error("[i18n]", e)
+			}
+		}
+	}, 150)
+}
+
+const AGENT_EN = {
+	Kadrovik: "Personnel",
+	Nabavke: "Procurement",
+	Revizor: "Auditor",
+	Mediji: "Media",
+	Urednik: "Editor",
+	Novinar: "Journalist",
+	Firme: "Companies",
+	Imovina: "Assets",
+	Provera: "Check",
+	Trijaža: "Triage",
+	Fabrika: "Factory",
+	"SSE most": "Live bridge",
+	Zapisničar: "Recorder",
+}
+
+/** "Kadrovik" -> "Personnel", "Firme · ZGOP" -> "Companies · ZGOP" in English; the entity part is a name and stays. */
+export function agentName(name) {
+	if (lang !== "en" || typeof name !== "string") return name
+	const [head, ...rest] = name.split(" · ")
+	const en = AGENT_EN[head.trim()]
+	return en ? [en, ...rest].join(" · ") : name
+}
+
 function reflect() {
 	document.documentElement.lang = lang
 	applyStatic()
@@ -73,6 +178,25 @@ function reflect() {
 }
 
 const EN = {
+	// automated flow: no decisions asked of the user, statuses instead of a "to verify" list
+	"Od vesti do dosijea sa izvorima za nekoliko minuta": "From a news story to a sourced dossier in minutes",
+	"Upiši naziv javne institucije. Tim agenata istovremeno pretražuje javne registre i sam slaže dosije. Svaka tvrdnja ima izvor, datum i status: zvanično, potvrđeno ili nepotvrđeno.":
+		"Type the name of a public institution. A team of agents searches the public registers at the same time and assembles the dossier on its own. Every claim has a source, a date and a status: official, confirmed or unconfirmed.",
+	"Urednik sam određuje status": "The Editor sets the status",
+	"Tvrdnja bez izvora ne ulazi u dosije. Kad se izvori razlikuju, prednost ima zvanični registar; šta stoji samo na jednom nezvaničnom izvoru, označeno je kao nepotvrđeno.":
+		"A claim without a source does not get into the dossier. When sources disagree, the official register wins; whatever rests on a single unofficial source is marked unconfirmed.",
+	"Glavni signali, link za svaku tvrdnju i status svakog nalaza. Izvoz u PDF ili Markdown.": "Main signals, a link for every claim and the status of every finding. Export to PDF or Markdown.",
+	"Sistem ne presuđuje: pokazuje signale, svaki sa izvorom i statusom.": "The system does not pass judgement: it shows signals, each with its source and status.",
+	"Ocena sabira signale po fiksnim pravilima (v.d. preko roka, lanac v.d., postupci bez objave, Integrity Watch, DRI). To su signali, ne zaključak.":
+		"The score adds up signals by fixed rules (acting head past the limit, chain of acting heads, procedures without publication, Integrity Watch, State Audit). These are signals, not a conclusion.",
+	"najvažniji nalazi": "the most important findings",
+	"Signali nisu zaključci. Svaka tvrdnja ima izvor i status: zvanično, potvrđeno ili nepotvrđeno.": "Signals are not conclusions. Every claim has a source and a status: official, confirmed or unconfirmed.",
+	"Agenti traže prve signale…": "The agents are looking for the first signals…",
+	"Nema nepotvrđenih nalaza: svi imaju zvaničan izvor ili potvrdu iz dva izvora.": "No unconfirmed findings: all have an official source or confirmation from two sources.",
+	"Istraga": "Investigation",
+	"Prevodim izveštaj…": "Translating the report…",
+	"čeka novinara": "waiting for the journalist",
+	"Trag koji dodaš odmah dobija svog agenta.": "A lead you add gets its own agent right away.",
 	// redesigned start screen, run bar, decisions and the done card
 	"Preskoči na sadržaj": "Skip to content",
 	"Dosije: početna": "Dosije: home",
@@ -80,7 +204,7 @@ const EN = {
 	"Od vesti do proverenog dosijea za nekoliko minuta": "From a news story to a verified dossier in minutes",
 	"Upiši javnu instituciju ili nalepi link vesti. Tim agenata istovremeno pretražuje javne registre, a ti odlučuješ o osetljivim nalazima. Svaka tvrdnja u dosijeu ima izvor, datum i status.":
 		"Enter a public institution or paste a news link. A team of agents searches the public registers at the same time, and you decide on the sensitive findings. Every claim in the dossier has a source, a date and a status.",
-	"Institucija ili link vesti, npr. Srbijavoz": "Institution or news link, e.g. Srbijavoz",
+	"Naziv institucije, npr. Srbijavoz ili RTS": "Institution name, e.g. Srbijavoz or RTS",
 	"Pokreni istragu": "Start the investigation",
 	"+ Dodaj fokus istrage (opciono)": "+ Add an investigation focus (optional)",
 	"Fokus, npr. javne nabavke 2024. ili imenovanje direktora": "Focus, e.g. 2024 procurement or the director's appointment",
@@ -92,7 +216,7 @@ const EN = {
 	"Lokalna samouprava": "Local government",
 	"Vrati se na dosije": "Back to the dossier",
 	"Upišeš instituciju": "You enter an institution",
-	"Naziv ili link vesti. Sistem pronalazi instituciju u registrima (PIB, matični broj, ACAS).": "A name or a news link. The system finds the institution in the registers (tax ID, company number, ACAS).",
+	"Pun naziv ili skraćenica (npr. RTS, EPS). Sistem pronalazi instituciju u registrima (PIB, matični broj, ACAS).": "The full name or an acronym (e.g. RTS, EPS). The system finds the institution in the registers (tax ID, registration number, ACAS).",
 	"Tim agenata radi istovremeno": "A team of agents works at the same time",
 	"Kadrovik, Nabavke, Revizor i Mediji kreću u istom trenutku. Za svaku firmu i osobu koju nađu pokreće se novi agent.":
 		"Kadrovik, Nabavke, Revizor and Mediji start at the same moment. Every company and person they find gets a new agent.",
@@ -147,7 +271,8 @@ const EN = {
 	// top bar, hero
 	"Preskoči na dosije": "Skip to dossier",
 	"istraživački tim agenata": "investigative agent team",
-	"Institucija ili link vesti": "Institution or news link",
+	"Naziv institucije": "Institution name",
+	"Upiši naziv institucije (ključne reči). Linkovi se ne prihvataju.": "Type the institution’s name (key words). Links are not accepted.",
 	"Fokus (opciono)": "Focus (optional)",
 	"Fokus istrage (opciono)": "Investigation focus (optional)",
 	"Napravi dosije": "Create dossier",

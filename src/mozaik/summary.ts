@@ -137,12 +137,12 @@ export function leadHeads(titles: string[]): string[] {
 
 /** Plain Serbian lede. The institution's name is quoted after "o instituciji" so it never needs declension. */
 export function buildLede(p: { institution: string; findings: number; signals: number; attention: number; conflicts: number; heads: string[] }): string {
-	const counts = [p.signals ? `${n(p.signals, "signal")} za proveru` : "", p.attention ? `${p.attention} za pažnju` : ""].filter(Boolean).join(" i ")
+	const counts = [p.signals ? `${n(p.signals, "signal")}` : "", p.attention ? `${p.attention} za pažnju` : ""].filter(Boolean).join(" i ")
 	const parts = [`Tim agenata je o instituciji „${p.institution}“ prikupio ${n(p.findings, "nalaz")}${counts ? `: ${counts}` : ""}.`]
 	if (p.conflicts === 1) parts.push("Jedan konflikt između izvora rešen je u korist zvaničnog registra.")
 	else if (p.conflicts > 1) parts.push(`${n(p.conflicts, "konflikt")} između izvora ${pluralIndex(p.conflicts) === 1 ? "rešena su" : "rešeno je"} u korist zvaničnog registra.`)
-	if (p.heads.length) parts.push(`Najvažnije za proveru: ${p.heads.map((h, i) => `(${i + 1}) ${h.replace(/;\s*/g, ", ").replace(/[.\s]+$/u, "")}`).join("; ")}.`)
-	parts.push("To su signali za proveru, ne zaključci; odluku donosi novinar.")
+	if (p.heads.length) parts.push(`Najvažnije: ${p.heads.map((h, i) => `(${i + 1}) ${h.replace(/;\s*/g, ", ").replace(/[.\s]+$/u, "")}`).join("; ")}.`)
+	parts.push("To su signali, ne zaključci; svaki nalaz nosi izvor i status.")
 	return parts.join(" ")
 }
 

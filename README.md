@@ -30,8 +30,8 @@ The bar under the top bar walks you through the flow: **Tim istražuje → Tvoje
 
 **How it runs without a key, and with one:**
 - Without a key, a deterministic inference runner sits in Mozaik's official runner slot. Everything else is real: the
-  runtime, loops, tools, events, shared state, interception, and a committed cache of real public data. It works
-  offline.
+  runtime, loops, tools, events, shared state, interception, and real public data, cached locally in
+  `data/cache/` (gitignored) after the first lookup.
 - For real LLM agents, put `OPENAI_API_KEY` in `.env`. Workers use `gpt-5.4-mini` and the editor uses `gpt-5.4`.
 - Requires Node 20 or newer. npm may print `allow-scripts` warnings; they are harmless.
 

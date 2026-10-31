@@ -256,7 +256,7 @@ src/
 public/                     UI: plain HTML/CSS/JS modules, no build step, no CDN
 scripts/                    cli.ts, warm-cache.ts, probe-*.ts, mock-server.ts (UI dev)
 test/                       node:test via tsx
-data/cache/                 committed, PII-free cache of public data (the demo runs offline)
+data/cache/                 local cache of public data (gitignored, never committed)
 data/static/                APR index of 134k companies, institution aliases, curated supplier IDs
 docs/                       architecture, agent behavior, per-source notes, screenshots
 ```

@@ -169,7 +169,8 @@ async function onMapaStarted(p: { mapaId: string; institutions: { slug: string; 
 	const resolved = await Promise.all(
 		p.institutions.map(async (inst): Promise<Resolved> => {
 			try {
-				return { inst, ref: await withTimeout(data.resolveInstitution(inst.name), RESOLVE_TIMEOUT_MS, "Razrešavanje institucije") }
+				// a name that fits several bodies ("Elektroprivreda Srbije" and its branches) takes the most likely one, never fails the row
+				return { inst, ref: await withTimeout(data.resolveInstitution(inst.name, { pickBest: true }), RESOLVE_TIMEOUT_MS, "Razrešavanje institucije") }
 			} catch (err) {
 				return { inst, error: err instanceof Error ? err.message : String(err) }
 			}
@@ -194,7 +195,7 @@ function spawnTrijaza(mapaId: string, slug: string, ref: ResolvedInstitution): v
 		state.agents.set(info.id, agent)
 		state.mapa.refs.set(slug, ref)
 		join(agent)
-		startRow(slug, info.id, ref.name)
+		startRow(slug, info.id, ref.name, ref.chosen?.alternatives)
 		if (!startAgentLoop(agent, trijazaMessage(ref))) failRow(slug, "Trijaža se nije pokrenula (budžet petlji).", ids.fabrika)
 	} catch (err) {
 		logError(`fabrika trijaža ${slug}`, err)

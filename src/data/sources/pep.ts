@@ -3,7 +3,7 @@
 //
 // OpenSanctions bulk data is free for non-commercial use under CC BY-NC 4.0 (attribution required):
 // https://www.opensanctions.org/licensing/. The full "peps" CSV is ~180 MB, so it is streamed once, filtered to
-// country "rs", written to data/raw/ (gitignored) and reduced to a compact list under data/cache/pep/ (committed).
+// country "rs", written to data/raw/ (gitignored) and reduced to a compact list under data/cache/pep/ (local cache).
 // Phone, e-mail and address columns are never read into the compact list.
 // Notes: docs/data-sources/legal.md
 
@@ -164,7 +164,7 @@ async function matchPepLists(fullName: string): Promise<PepMatch[]> {
 		matches.push({
 			name: e.name,
 			dataset: "opensanctions",
-			detail: `Srpski PEP prema OpenSanctions${e.birthYear ? ` (rođen/a ${e.birthYear}.)` : ""}; izvori: ${datasets || "nepoznato"}. Podudaranje samo po imenu: proveriti identitet.`,
+			detail: `Srpski PEP prema OpenSanctions${e.birthYear ? ` (rođen/a ${e.birthYear}.)` : ""}; izvori: ${datasets || "nepoznato"}. Podudaranje samo po imenu: identitet nije potvrđen.`,
 			url: OS_ENTITY_URL(e.id),
 			score: best,
 			source: {
@@ -183,7 +183,7 @@ async function matchPepLists(fullName: string): Promise<PepMatch[]> {
 		matches.push({
 			name: p.slugName,
 			dataset: "krik",
-			detail: `Profil u KRIK bazi imovine političara${p.label ? `: ${p.label}` : ""}. Podudaranje samo po imenu: proveriti identitet.`,
+			detail: `Profil u KRIK bazi imovine političara${p.label ? `: ${p.label}` : ""}. Podudaranje samo po imenu: identitet nije potvrđen.`,
 			url: p.url,
 			score: best,
 			source: {

@@ -32,7 +32,8 @@ function caseSteps(st, clock) {
 	if (done) s3 = { state: "done", label: t("Dosije je spreman"), sub: t("otvori izveštaj"), onClick: () => openReport() }
 	else if (st === "finalizing") s3 = { state: "active", label: t("Dosije"), sub: t("urednik piše izveštaj") }
 	else s3 = { state: "todo", label: t("Dosije"), sub: t("posle istrage") }
-	return [s1, s2, s3]
+	// nothing waits for the user unless the server asks (config.asksUser): no "Tvoje odluke" step then
+	return state.config?.asksUser ? [s1, s2, s3] : [s1, s3]
 }
 
 function mapaSteps(clock) {

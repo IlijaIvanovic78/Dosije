@@ -8,6 +8,11 @@ process.env.DATA_MODE = "cache"
 process.env.DEMO_SPEED = "0.05"
 process.env.HUMAN_AUTO_APPROVE_MS = "0"
 process.env.DOSIJE_MODE = "scripted"
+// these cases test the owner question and the Provera cascade it starts (off in the app: owners come from CompanyWall)
+process.env.DOSIJE_ASK_HUMAN = "1"
+process.env.DOSIJE_COMPANYWALL = "0"
+// and the blocking approval of a sensitive signal (off in the app: signals go in on their sources)
+process.env.DOSIJE_APPROVALS = "1"
 
 const { applyEntryDefaults } = await import("../src/config")
 applyEntryDefaults("test")
@@ -124,8 +129,11 @@ describe("full scripted case (IŽS, cached data)", () => {
 		assert.ok(snap.findings.some((f) => f.signalCode === "VD_LANAC"), "chain of acting heads reported")
 
 		assert.ok(report.topSignals.length >= 3, `topSignals ${report.topSignals.length}`)
-		assert.ok(report.markdown.includes("Šta još treba proveriti") && report.markdown.includes("Kako je nastao"))
-		assert.ok(report.markdown.includes("signali za proveru"), "disclaimer present")
+		assert.ok(report.markdown.includes("## Nepotvrđeno") && report.markdown.includes("Kako je nastao"))
+		assert.ok(report.markdown.includes("Ovo su signali, ne zaključci"), "disclaimer present")
+		// link targets aside (URLs), the report never tells the reader to verify anything
+		const prose = report.markdown.replace(/\]\([^)]*\)/g, "]")
+		assert.ok(!/proveriti|za proveru/i.test(prose), `the report tells the reader to verify: ${/.{0,60}(proveriti|za proveru).{0,40}/i.exec(prose)?.[0]}`)
 		assert.equal(events.at(-1)?.type === "dosije.zavrsen" || events.some((e) => e.type === "dosije.zavrsen"), true)
 	})
 

@@ -2,13 +2,14 @@
 // an LLM would emit for one step) and receives that tool's output as the next input, so a policy only uses what an LLM
 // would see in its context. The scripted runner turns each yield into a Mozaik FunctionCallItem.
 
+import { config } from "../../config"
 import { formatRsd } from "../../data/analysis/procurement"
 import { formatDate, isHeadPosition } from "../../data/analysis/vd"
 import { asciiFold } from "../../data/translit"
 import { n } from "../../shared/plural"
 import { clauseHeadline } from "../../shared/text"
 import { entityIdFor } from "../domain"
-import { describeOwners, parseOwnerAnswer } from "../owners"
+import { describeOwners, MAX_OWNERS, parseOwnerAnswer } from "../owners"
 import { buildLede, leadHeads } from "../summary"
 import { clip } from "../util"
 
@@ -61,7 +62,7 @@ async function* sourceGap(which: keyof typeof SOURCE_PAGES, what: string, failur
 	yield call("add_finding", {
 		section: s.section,
 		title: `${UNAVAILABLE_PREFIX}: ${s.title}`,
-		text: `${what} nije dobijeno: izvor trenutno ne odgovara (${why}). Ovo nije nalaz o instituciji, nego praznina u pretrazi: ponoviti pretragu ili ručno proveriti na stranici izvora.`,
+		text: `${what} nije dobijeno: izvor trenutno ne odgovara (${why}). Ovo nije nalaz o instituciji, nego praznina u pretrazi: podatak iz ovog izvora nedostaje.`,
 		severity: "paznja",
 		sources: [{ kind: s.kind, title: s.title, url: s.url }],
 	})
@@ -78,7 +79,7 @@ async function* kadrovik(): AsyncGenerator<Step, string, ToolResult> {
 		yield call("add_finding", {
 			section: "rukovodstvo",
 			title: "U registru ACAS nema funkcionera za ovu instituciju",
-			text: "Pretraga registra funkcionera ACAS nije vratila nijednog funkcionera za ovu instituciju. To ne znači da čelnika nema: registar sadrži samo funkcionere koji su podneli prijavu, a institucija može biti upisana pod drugim nazivom. Proveriti ručno u registru.",
+			text: "Pretraga registra funkcionera ACAS nije vratila nijednog funkcionera za ovu instituciju. To ne znači da čelnika nema: registar sadrži samo funkcionere koji su podneli prijavu, a institucija može biti upisana pod drugim nazivom. Podatak nedostaje.",
 			severity: "paznja",
 			signalCode: "IMENOVANJE_NEPOZNATO",
 			sources: [{ kind: "acas", title: "ACAS registar funkcionera", url: "https://publicacas.acas.rs/#/acas/funkcioner" }],
@@ -107,7 +108,7 @@ async function* kadrovik(): AsyncGenerator<Step, string, ToolResult> {
 		yield call("add_finding", {
 			section: "rukovodstvo",
 			title: "Čelnik institucije nije pronađen u registru ACAS",
-			text: `U registru ACAS (${n(off.count, "zapis")}) nema funkcionera sa funkcijom direktora, predsednika ili ministra koji je trenutno na funkciji${people.length ? `; u registru su tekući: ${people.map((p) => `${p.name} (${p.position})`).join(", ")}` : ""}. Registar sadrži samo funkcionere koji su podneli prijavu, pa čelnika treba proveriti na sajtu institucije ili u APR.`,
+			text: `U registru ACAS (${n(off.count, "zapis")}) nema funkcionera sa funkcijom direktora, predsednika ili ministra koji je trenutno na funkciji${people.length ? `; u registru su tekući: ${people.map((p) => `${p.name} (${p.position})`).join(", ")}` : ""}. Registar sadrži samo funkcionere koji su podneli prijavu, pa čelnik nije utvrđen iz registra.`,
 			severity: "paznja",
 			signalCode: "IMENOVANJE_NEPOZNATO",
 			sources: acas.slice(0, 1),
@@ -158,7 +159,7 @@ async function* kadrovik(): AsyncGenerator<Step, string, ToolResult> {
 		yield call("add_finding", {
 			section: "rukovodstvo",
 			title: `Akt o imenovanju ${head.name} nije pronađen`,
-			text: `U sadržajima brojeva Službenog glasnika nije pronađen akt o imenovanju za ${head.name}; to ne znači da akt ne postoji. Proveriti kod osnivača ili u pretplati.`,
+			text: `U sadržajima brojeva Službenog glasnika nije pronađen akt o imenovanju za ${head.name}; to ne znači da akt ne postoji (puni tekstovi akata nisu javno dostupni). Nepotvrđeno.`,
 			severity: "paznja",
 			signalCode: "IMENOVANJE_NEPOZNATO",
 			sources: srcs(acts.sources).slice(0, 1),
@@ -185,7 +186,7 @@ async function* kadrovik(): AsyncGenerator<Step, string, ToolResult> {
 			yield call("add_finding", {
 				section: "rukovodstvo",
 				title: `${head.name} je v.d. ${n(vd.months, "mesec")}; zakonski rok (${vd.rule.maxMonths + (vd.rule.extensionMonths ?? 0)} mes.) ističe ${formatDate(vd.limitDate)}`,
-				text: `${String(vd.explanation)} Pravni oblik za proveru roka: ${legalLabel}.`,
+				text: `${String(vd.explanation)} Rok je računat za pravni oblik: ${legalLabel}.`,
 				severity: vd.nearLimit ? "paznja" : "info",
 				signalCode: vd.nearLimit ? "VD_BLIZU_ROKA" : undefined,
 				sources: srcs(vd.sources),
@@ -195,7 +196,7 @@ async function* kadrovik(): AsyncGenerator<Step, string, ToolResult> {
 			yield call("add_finding", {
 				section: "rukovodstvo",
 				title: `${head.name} je v.d.: za ovaj pravni oblik rok nije proveren`,
-				text: `${String(vd.explanation)} Pravni oblik: ${legalLabel}. Za njega tabela propisa nema automatskog roka za vršioca dužnosti, pa sistem ne tvrdi da je rok prekoračen; proveriti statut i odluku osnivača.`,
+				text: `${String(vd.explanation)} Pravni oblik: ${legalLabel}. Za njega tabela propisa nema automatskog roka za vršioca dužnosti, pa sistem ne tvrdi da je rok prekoračen.`,
 				severity: "info",
 				sources: srcs(vd.sources).slice(0, 1),
 				entityIds: [entityId],
@@ -223,7 +224,7 @@ async function* kadrovik(): AsyncGenerator<Step, string, ToolResult> {
 		yield call("add_finding", {
 			section: "rukovodstvo",
 			title: `Ranije: v.d. na čelu institucije duže od zakonskog roka (${past[0].name}, ${n(past[0].months, "mesec")})`,
-			text: `Prema datumima u registru ACAS, ranije mandate vršioca dužnosti na čelu institucije: ${list}. ${past[0].law}, ${past[0].article}, propisuje najviše ${n(past[0].maxMonths, "mesec")}. Činjenični obrazac za proveru, ne zaključak o kršenju propisa: propis je naveden u današnjem tekstu (za mandate koji su počeli pre njegovog stupanja na snagu proveriti tadašnji zakon), a registar može imati nepotpune ili kasno unete datume.`,
+			text: `Prema datumima u registru ACAS, ranije mandate vršioca dužnosti na čelu institucije: ${list}. ${past[0].law}, ${past[0].article}, propisuje najviše ${n(past[0].maxMonths, "mesec")}. Činjenični obrazac, ne zaključak o kršenju propisa: propis je naveden u današnjem tekstu (za mandate koji su počeli pre njegovog stupanja na snagu važio je tadašnji zakon), a registar može imati nepotpune ili kasno unete datume.`,
 			severity: "paznja",
 			sources: [...acas.slice(0, 1), ...srcs(off.ranijiVdIzvori)],
 			entityIds: [entityId],
@@ -320,7 +321,7 @@ async function* nabavke(): AsyncGenerator<Step, string, ToolResult> {
 		yield call("add_finding", {
 			section: "novac",
 			title: `${n(nwp.count, "pregovarackiPostupak")} bez objavljivanja javnog poziva (${money(nwp.valueRsd)})`,
-			text: `Portal javnih nabavki beleži ${n(nwp.count, "postupak")} bez objavljivanja javnog poziva (sa objavljenim ugovorom ukupne vrednosti ${money(nwp.valueRsd)}: ${nwp.saUgovorom}; bez objavljenog ugovora: ${nwp.bezUgovora}), što je ${dec(nwp.sharePct)}% ukupne vrednosti ugovora.${big ? ` Najveći: „${clip(big.title, 110)}“, ${big.supplier}, ${money(big.valueRsd)} (${formatDate(big.signedAt)}); pravni osnov naveden u postupku: ${big.procedure ?? "nije naveden"}.` : ""} Ovaj postupak je zakonski dozvoljen u propisanim slučajevima; razloge treba proveriti u odluci o pokretanju postupka.${capped ? ` Brojevi se odnose na analizirani period od ${formatDate(cov.from)}, ne na celu istoriju naručioca.` : ""}${partial}`,
+			text: `Portal javnih nabavki beleži ${n(nwp.count, "postupak")} bez objavljivanja javnog poziva (sa objavljenim ugovorom ukupne vrednosti ${money(nwp.valueRsd)}: ${nwp.saUgovorom}; bez objavljenog ugovora: ${nwp.bezUgovora}), što je ${dec(nwp.sharePct)}% ukupne vrednosti ugovora.${big ? ` Najveći: „${clip(big.title, 110)}“, ${big.supplier}, ${money(big.valueRsd)} (${formatDate(big.signedAt)}); pravni osnov naveden u postupku: ${big.procedure ?? "nije naveden"}.` : ""} Ovaj postupak je zakonski dozvoljen u propisanim slučajevima; razlozi su navedeni u odluci o pokretanju postupka, koja nije deo ovih podataka.${capped ? ` Brojevi se odnose na analizirani period od ${formatDate(cov.from)}, ne na celu istoriju naručioca.` : ""}${partial}`,
 			severity: nwp.sharePct > 10 ? "signal" : "paznja",
 			signalCode: "BEZ_OBJAVE",
 			sources: srcs(pr.sources).slice(0, 2),
@@ -333,7 +334,7 @@ async function* nabavke(): AsyncGenerator<Step, string, ToolResult> {
 		yield call("add_finding", {
 			section: "novac",
 			title: `Koncentracija: ${k.topName} učestvuje u ${dec(k.topSharePct)}% vrednosti ugovora (bez državnih preduzeća)`,
-			text: `Bez državnih preduzeća i javnih sistema (EPS, NIS, fakulteti; izuzeto ${money(pr.javniSistemi?.iskljuceno)}) firma ${k.topName} učestvuje, samostalno ili u zajedničkim ponudama, u ugovorima vrednosti ${money(k.topValueRsd)}, što je ${dec(k.topSharePct)}% preostale vrednosti (${money(k.vrednostBezJavnihSistema)}); HHI po ponuđačima: ${k.hhiBezJavnihSistema}. Vrednost zajedničke ponude nije vrednost jedne firme. Koncentracija sama po sebi nije nepravilnost, ali je razlog za dalju proveru.${capped ? ` Odnosi se na poslednjih ${num(cov.analyzed)} ugovora (od ${formatDate(cov.from)}).` : ""}`,
+			text: `Bez državnih preduzeća i javnih sistema (EPS, NIS, fakulteti; izuzeto ${money(pr.javniSistemi?.iskljuceno)}) firma ${k.topName} učestvuje, samostalno ili u zajedničkim ponudama, u ugovorima vrednosti ${money(k.topValueRsd)}, što je ${dec(k.topSharePct)}% preostale vrednosti (${money(k.vrednostBezJavnihSistema)}); HHI po ponuđačima: ${k.hhiBezJavnihSistema}. Vrednost zajedničke ponude nije vrednost jedne firme. Koncentracija sama po sebi nije nepravilnost, ali je signal.${capped ? ` Odnosi se na poslednjih ${num(cov.analyzed)} ugovora (od ${formatDate(cov.from)}).` : ""}`,
 			severity: "paznja",
 			signalCode: "KONCENTRACIJA",
 			sources: jnSource,
@@ -348,14 +349,14 @@ async function* nabavke(): AsyncGenerator<Step, string, ToolResult> {
 		yield call("add_finding", {
 			section: "firme",
 			title: `${l.supplierName}: označen u bazi Integrity Watch Srbija`,
-			text: `Baza Integrity Watch Srbija (Transparentnost Srbija) označava firmu ${l.supplierName} kao: ${kinds}. Označenih ugovora kod ove institucije: ${l.contracts}${l.valueRsd ? `, vrednost samostalnih ugovora ${money(l.valueRsd)}` : ""}. Otvoreni podaci ne imenuju funkcionera ni stranku; podatak zahteva proveru.`,
+			text: `Baza Integrity Watch Srbija (Transparentnost Srbija) označava firmu ${l.supplierName} kao: ${kinds}. Označenih ugovora kod ove institucije: ${l.contracts}${l.valueRsd ? `, vrednost samostalnih ugovora ${money(l.valueRsd)}` : ""}. Otvoreni podaci ne imenuju funkcionera ni stranku; podatak nije potvrđen iz drugog izvora.`,
 			severity: "signal",
 			signalCode: "POLITICKA_VEZA",
 			sources: srcs(l.sources),
 			entityIds: cand ? [entityIdFor("firma", cand.name, { mb: cand.mb, pib: cand.pib })] : [],
 		})
 	}
-	return `Nabavke: ${n(pr.totalContracts, "ugovor", num(pr.totalContracts))}; za proveru izdvojeno ${n(cands.length, "dobavljac")}; oznaka Integrity Watch: ${(iw?.links ?? []).length}.`
+	return `Nabavke: ${n(pr.totalContracts, "ugovor", num(pr.totalContracts))}; za analizu izdvojeno ${n(cands.length, "dobavljac")}; oznaka Integrity Watch: ${(iw?.links ?? []).length}.`
 }
 
 // ─── Revizor ─────────────────────────────────────────────────────────────────
@@ -562,7 +563,7 @@ async function* medijiInstitucija(c: PolicyCtx): AsyncGenerator<Step, string, To
 		yield call("add_finding", {
 			section: "mediji",
 			title: clip(i.title, 150),
-			text: `${i.outlet ?? "Medij"} (${formatDate(i.publishedAt)}) piše: ${i.snippet ? clip(i.snippet, 220) : clip(i.title, 220)}${important ? " Navod nije potvrđen u zvaničnom izvoru; proveriti." : ""}`,
+			text: `${i.outlet ?? "Medij"} (${formatDate(i.publishedAt)}) piše: ${i.snippet ? clip(i.snippet, 220) : clip(i.title, 220)}${important ? " Navod nije potvrđen u zvaničnom izvoru." : ""}`,
 			severity: important ? "paznja" : "info",
 			signalCode: important ? "MEDIJSKI_NAVOD" : undefined,
 			sources: [itemSource(i)],
@@ -740,6 +741,40 @@ async function* firme(c: PolicyCtx): AsyncGenerator<Step, string, ToolResult> {
 			sources: s.code === "POLITICKA_VEZA" && iw.length ? iw : jn.length ? jn : srcs(fs.sources),
 		})
 	}
+	// owners of the firms that matter (top 3 or a signal): CompanyWall by matični broj (or PIB); the people among them are
+	// then checked (PEP, ACAS). The site allows ~5 requests a minute, so the other suppliers are not looked up.
+	const firmMb = p?.mb ?? mb
+	const firmPib = fs.pib ?? pib
+	const matters = rank <= 3 || (fs.signals ?? []).length > 0
+	const own = matters && (firmMb || firmPib) ? (yield call("firma_vlasnici", { mb: firmMb, pib: firmMb ? undefined : firmPib, name: shown })).json : undefined
+	const owners = (own?.found ? own.owners : []) as { name: string; share?: string; kind: "osoba" | "firma" }[]
+	if (owners.length) {
+		const who = owners.map((o) => `${o.name}${o.share ? ` (${o.share})` : ""}`).join(", ")
+		const ownSources = srcs(own.sources)
+		yield call("add_finding", {
+			section: "firme",
+			title: `${shown}: ${owners.length > 1 ? "vlasnici" : "vlasnik"} ${clip(who, 110)}`,
+			text: `Prema CompanyWall (komercijalni pregled podataka iz APR registra), ${owners.length > 1 ? "vlasnici firme su" : "vlasnik firme je"} ${shown}: ${who}${own.director ? `; direktor: ${own.director}` : ""}. CompanyWall nije zvanični registar, pa vlasništvo nije potvrđeno iz zvaničnog izvora.`,
+			severity: "info",
+			sources: ownSources,
+		})
+		if (matters) {
+			for (const o of owners.filter((x) => x.kind === "osoba").slice(0, MAX_OWNERS)) {
+				yield call("add_entity", { kind: "osoba", name: o.name, role: "vlasnik", attrs: { firma: shown, ...(o.share ? { udeo: o.share } : {}) }, sources: ownSources })
+			}
+		}
+		return `Firme: provereno ${name}, ${n((fs.signals ?? []).length, "signal")}, vlasnici: ${clip(who, 80)}.`
+	}
+	if (rank <= 2 && !config.askHuman) {
+		yield call("add_finding", {
+			section: "firme",
+			title: `${shown}: vlasnici nisu pronađeni u javnim izvorima`,
+			text: `Vlasnici firme ${shown}${firmMb ? ` (MB ${firmMb})` : firmPib ? ` (PIB ${firmPib})` : ""} nisu dostupni ni u APR otvorenim podacima ni na CompanyWall${own && own.ok === false ? " (izvor trenutno ne odgovara)" : ""}. Podatak nedostaje.`,
+			severity: "info",
+			sources: [{ kind: "apr", title: "APR pretraga privrednih subjekata", url: APR_SEARCH }],
+		})
+		return `Firme: provereno ${name}, ${n((fs.signals ?? []).length, "signal")}; vlasnici nisu pronađeni.`
+	}
 	if (rank <= 2) {
 		yield call("ask_human", {
 			question: `Ko su vlasnici firme ${name} (${mb ? `MB ${mb}` : pib ? `PIB ${pib}` : "MB nepoznat"})? Nema automatskog izvora.`,
@@ -790,7 +825,7 @@ async function* imovina(c: PolicyCtx): AsyncGenerator<Step, string, ToolResult> 
 		yield call("add_finding", {
 			section: "rukovodstvo",
 			title: `${name}: izveštaj o imovini nije pronađen`,
-			text: `Nije pronađen izveštaj o imovini i prihodima funkcionera ${name} u registru ACAS${r?.ok === false ? " (izvor trenutno nije dostupan)" : ""}. Proveriti ručno u registru.`,
+			text: `Nije pronađen izveštaj o imovini i prihodima funkcionera ${name} u registru ACAS${r?.ok === false ? " (izvor trenutno nije dostupan)" : ""}. Podatak nedostaje.`,
 			severity: "paznja",
 			signalCode: "IMOVINA",
 			sources: [acasRegister],
@@ -809,7 +844,7 @@ async function* imovina(c: PolicyCtx): AsyncGenerator<Step, string, ToolResult> 
 		yield call("add_finding", {
 			section: "rukovodstvo",
 			title: `${name}: nema izveštaja o imovini posle stupanja na funkciju`,
-			text: `Nije pronađen izveštaj o imovini nakon stupanja na funkciju (${formatDate(from)}); najnoviji u registru je od ${formatDate(latest.reportDate)} Proveriti.`,
+			text: `Nije pronađen izveštaj o imovini nakon stupanja na funkciju (${formatDate(from)}); najnoviji u registru je od ${formatDate(latest.reportDate)}.`,
 			severity: "paznja",
 			signalCode: "IMOVINA",
 			sources: srcs(r.sources).slice(0, 1),
@@ -821,9 +856,9 @@ async function* imovina(c: PolicyCtx): AsyncGenerator<Step, string, ToolResult> 
 // ─── Provera ─────────────────────────────────────────────────────────────────
 
 async function* provera(c: PolicyCtx): AsyncGenerator<Step, string, ToolResult> {
-	const m = /Provera: (.+?) \(vlasnik firme (.+?), prema/.exec(c.message)
+	const m = /Provera: (.+?) \(vlasnik firme (.+?), prema (.+?)\)\./.exec(c.message)
 	if (!m) return "Provera: nema imena osobe."
-	const [, name, firm] = m
+	const [, name, firm, origin] = m
 	yield call("dosije_pregled")
 	const a = (yield call("acas_pretraga_osobe", { name })).json
 	const p = (yield call("pep_provera", { name })).json
@@ -840,7 +875,7 @@ async function* provera(c: PolicyCtx): AsyncGenerator<Step, string, ToolResult> 
 		yield call("add_finding", {
 			section: "firme",
 			title: `Ime vlasnika firme ${clip(firm, 40)} poklapa se sa registrom: ${name}`,
-			text: `Ime „${name}“ (vlasnik firme ${firm}, prema unosu novinarke) poklapa se sa: ${parts.join("; ")}. Poklapanje imena nije dokaz identiteta: potrebno je utvrditi da li je to ista osoba.`,
+			text: `Ime „${name}“ (vlasnik firme ${firm}, prema ${origin}) poklapa se sa: ${parts.join("; ")}. Poklapanje imena nije dokaz identiteta: potrebno je utvrditi da li je to ista osoba.`,
 			severity: "signal",
 			signalCode: "VLASNIK_FUNKCIONER",
 			sources: sources.length ? sources : [registerSource],
@@ -850,7 +885,7 @@ async function* provera(c: PolicyCtx): AsyncGenerator<Step, string, ToolResult> 
 	yield call("add_finding", {
 		section: "firme",
 		title: `Vlasnik ${name}: nema poklapanja u registru funkcionera ni na PEP listama`,
-		text: `Pretraga imena „${name}“ (vlasnik firme ${firm}, prema unosu novinarke) nije dala poklapanje na PEP listama${acasOk ? " ni u registru funkcionera ACAS" : "; pretraga registra ACAS nije dostupna u ovom režimu podataka"}. Odsustvo poklapanja nije dokaz da veza ne postoji.`,
+		text: `Pretraga imena „${name}“ (vlasnik firme ${firm}, prema ${origin}) nije dala poklapanje na PEP listama${acasOk ? " ni u registru funkcionera ACAS" : "; pretraga registra ACAS nije dostupna u ovom režimu podataka"}. Odsustvo poklapanja nije dokaz da veza ne postoji.`,
 		severity: "info",
 		sources: [registerSource, { kind: "opensanctions", title: "OpenSanctions – Politically Exposed Persons (Srbija)", url: "https://www.opensanctions.org/datasets/peps/" }],
 	})
@@ -894,7 +929,7 @@ async function* trijaza(): AsyncGenerator<Step, string, ToolResult> {
 			: !r.head
 				? "U registru ACAS nema tekućeg čelnika"
 				: r.head.acting && r.vd?.months !== undefined
-					? `Prema ACAS, čelnik je v.d. ${n(r.vd.months, "mesec")} (zakonski rok ${n(r.vd.limitMonths, "mesec")})${r.vd.overLimit ? ", signal za proveru" : ""}${r.chain ? `; institucijom rukovode samo v.d. već ${n(r.chain.totalMonths, "mesec")} (${n(r.chain.actingCount, "uzastopniVd")})` : ""}`
+					? `Prema ACAS, čelnik je v.d. ${n(r.vd.months, "mesec")} (zakonski rok ${n(r.vd.limitMonths, "mesec")})${r.vd.overLimit ? ", signal" : ""}${r.chain ? `; institucijom rukovode samo v.d. već ${n(r.chain.totalMonths, "mesec")} (${n(r.chain.actingCount, "uzastopniVd")})` : ""}`
 					: "Prema ACAS, čelnik nije vođen kao v.d."
 	const buy =
 		nb?.ok === false || !nb

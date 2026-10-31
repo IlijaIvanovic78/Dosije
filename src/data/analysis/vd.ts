@@ -115,7 +115,7 @@ export function checkVd(official: Official, inst: { legalType: LegalType }, toda
 	const daysOver = overLimit ? Math.max(0, daysBetween(limitDate, today)) : 0
 	const nearLimit = !official.to && !overLimit && months >= rule.maxMonths - 2
 	const explanation = overLimit
-		? `Prema ACAS, ${official.fullName} je ${official.position.toLowerCase().startsWith("v.d.") ? "" : "na funkciji "}${official.position} od ${formatDate(official.from)}, što je ${monthsLabel(months)} i ${daysLabel(days)}. ${rule.law}, ${rule.article}, propisuje najviše ${monthsLabel(rule.maxMonths + (rule.extensionMonths ?? 0))}; rok je istekao ${formatDate(limitDate)} (pre ${daysLabel(daysOver)}). Signal za proveru: treba utvrditi koji propis važi za ovu instituciju i postoji li novo rešenje o imenovanju.`
+		? `Prema ACAS, ${official.fullName} je ${official.position.toLowerCase().startsWith("v.d.") ? "" : "na funkciji "}${official.position} od ${formatDate(official.from)}, što je ${monthsLabel(months)} i ${daysLabel(days)}. ${rule.law}, ${rule.article}, propisuje najviše ${monthsLabel(rule.maxMonths + (rule.extensionMonths ?? 0))}; rok je istekao ${formatDate(limitDate)} (pre ${daysLabel(daysOver)}). Signal: iz dostupnih izvora nije utvrđeno koji propis važi za ovu instituciju ni da li postoji li novo rešenje o imenovanju.`
 		: `${official.fullName} je v.d. od ${formatDate(official.from)} (${monthsLabel(months)} i ${daysLabel(days)}); ${rule.law}, ${rule.article}, propisuje najviše ${monthsLabel(rule.maxMonths + (rule.extensionMonths ?? 0))}.`
 	return {
 		...withTime,
@@ -276,7 +276,7 @@ export function analyzeVdChain(officials: Official[], today = todayIso(), legalT
 	const current = rows.find((r) => !r.to)
 	const list = rows.map((r) => `${r.name} (${formatDate(r.from)} do ${r.to ? formatDate(r.to) : "danas"}${r.endInferred ? ", kraj nije upisan u registru: uzet je početak sledećeg v.d." : ""})`).join("; ")
 	const gapText = gaps.length ? ` U registru postoje prekidi duži od 30 dana: ${gaps.map((g) => `${daysLabel(g.days)} (${formatDate(g.from)} do ${formatDate(g.to)})`).join("; ")}.` : ""
-	const explanation = `Prema ACAS registru, od ${formatDate(since)} (${monthsLabel(total.months)}) instituciju vode isključivo vršioci dužnosti: ${n(rows.length, "uzastopniVd")} na čelu institucije, ${list}.${gapText} Činjenični obrazac za proveru, ne zaključak o kršenju propisa: ${legalType === "drustvo_kapitala_drzavno" ? "Zakon o upravljanju privrednim društvima u vlasništvu RS (76/2023) primenjuje se tek od 15.09.2024, a registar" : "registar"} sadrži samo funkcionere koji su podneli prijavu.`
+	const explanation = `Prema ACAS registru, od ${formatDate(since)} (${monthsLabel(total.months)}) instituciju vode isključivo vršioci dužnosti: ${n(rows.length, "uzastopniVd")} na čelu institucije, ${list}.${gapText} Činjenični obrazac, ne zaključak o kršenju propisa: ${legalType === "drustvo_kapitala_drzavno" ? "Zakon o upravljanju privrednim društvima u vlasništvu RS (76/2023) primenjuje se tek od 15.09.2024, a registar" : "registar"} sadrži samo funkcionere koji su podneli prijavu.`
 	return {
 		heads: rows,
 		actingCount: rows.length,

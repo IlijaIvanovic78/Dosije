@@ -91,7 +91,7 @@ export function trijazaTools(ctx: ToolCtx): Tool[] {
 								? { months: check.months, days: check.days, limitMonths: signals.vdLimitMonths, overLimit: check.overLimit, nearLimit: check.nearLimit, rule: `${check.rule?.law}, ${check.rule?.article}` }
 								: { applicable: false, reason: clip(check.explanation, 160) },
 							chain: chain ? { actingCount: chain.actingCount, since: chain.since, totalMonths: chain.totalMonths } : null,
-							napomena: heads > 1 ? "U registru ima više tekućih zapisa za direktora: proveriti ažurnost podataka." : undefined,
+							napomena: heads > 1 ? "U registru ima više tekućih zapisa za direktora: podaci možda nisu ažurni." : undefined,
 						},
 						signals,
 						sources,
@@ -185,7 +185,7 @@ export function trijazaTools(ctx: ToolCtx): Tool[] {
 			max: 600,
 			description:
 				"Upiši red institucije u Mapu prioriteta. Poziva se tek posle sva tri alata (trijaza_rukovodstvo, trijaza_nabavke, trijaza_revizija). Brojke i ocenu računa kod iz podataka alata; ti dodaješ samo sažetak od 1-2 rečenice.",
-			properties: { summary: { type: "string", description: "1-2 neutralne rečenice (signali za proveru, bez optužbi, bez imena osoba)" } },
+			properties: { summary: { type: "string", description: "1-2 neutralne rečenice (signali, bez optužbi, bez imena osoba)" } },
 			required: ["summary"],
 			handler: (args) => {
 				const { slug } = target(ctx)

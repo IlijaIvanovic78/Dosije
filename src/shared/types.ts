@@ -15,6 +15,7 @@ export type SourceKind =
 	| "zakon" // fixed legal rule table
 	| "opensanctions" // PEP lists
 	| "krik" // KRIK baza imovine političara
+	| "companywall" // CompanyWall: owners and director (commercial copy of the APR register, not official)
 	| "novinar"; // information entered by the human journalist
 
 export interface SourceRef {
@@ -313,6 +314,7 @@ export interface MapaRow {
 	slug: string;
 	name: string;
 	resolvedName?: string; // what the resolver matched (official name)
+	alternatives?: string[]; // the name fitted several bodies: the others (resolvedName is the one picked)
 	status: MapaRowStatus;
 	agentId?: string;
 	score: number; // deterministic, see src/data/analysis/priority.ts
@@ -339,6 +341,8 @@ export interface RuntimeConfigView {
 	searchProviders: string[]; // e.g. ["google-news-rss", "gdelt", "serper"]
 	demoInstitutions: { slug: string; name: string }[];
 	mapaPreset?: { slug: string; name: string }[]; // default list of "Mapa prioriteta"
+	translation?: boolean; // the server can machine-translate its Serbian text (POST /api/translate, report.md?lang=en)
+	asksUser?: boolean; // agents may ask the user (DOSIJE_ASK_HUMAN / DOSIJE_APPROVALS); off: no journalist lane, no decisions step
 }
 
 export interface DosijeSnapshot {

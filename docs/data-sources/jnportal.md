@@ -3,7 +3,7 @@
 Adapter: `src/data/sources/jnportal.ts` · probe: `scripts/probe-jn.ts` · cache: `data/cache/jnportal/`
 
 Status: **unofficial, undocumented API** used by the portal's own public pages (no login). It can change or be
-rate limited without notice. Everything the demo needs is committed to the cache, so the demo never depends on it.
+rate limited without notice. Answers are cached locally (data/cache/, gitignored), so a repeated query does not depend on it.
 
 ## How the API was found
 

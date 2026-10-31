@@ -4,7 +4,7 @@
 import { state, on, laneEnd, activeCount, peakCount, isRunning } from "./store.js"
 import { laneRows } from "./lanes.js"
 import { h, s, parseIso, fmtDur, truncate } from "./format.js"
-import { t, pl, getLang, onLang } from "./i18n.js"
+import { t, tx, agentName, pl, getLang, onLang } from "./i18n.js"
 
 const RULER_H = 22
 const PAD_L = 1
@@ -193,7 +193,7 @@ function drawRow(lane, r, ax, end) {
 			const w = Math.max(3, X(b) - x1)
 			ctx.fillStyle = stripe || C.wait
 			ctx.fillRect(x1, cy - BAR_H / 2, w, BAR_H)
-			hits.push({ x: x1, y: cy - 7, w, h: 14, title: `${tk.kind === "odobrenje" ? t("Odobrenje") : t("Pitanje")}: ${truncate(tk.title, 60)}`, sub: `${tk.status === "open" ? t("čeka odgovor") : t("odgovoreno")} · ${fmtDur(b - a)}` })
+			hits.push({ x: x1, y: cy - 7, w, h: 14, title: `${tk.kind === "odobrenje" ? t("Odobrenje") : t("Pitanje")}: ${truncate(tx(tk.title), 60)}`, sub: `${tk.status === "open" ? t("čeka odgovor") : t("odgovoreno")} · ${fmtDur(b - a)}` })
 		}
 	}
 
@@ -229,7 +229,7 @@ function drawRow(lane, r, ax, end) {
 		if (m.k === "finding") {
 			ctx.fillStyle = C.tick
 			ctx.fillRect(Math.round(x) - 1, cy - 9, 2, 18)
-			hits.push({ x: x - 4, y: cy - 10, w: 8, h: 20, title: t("Nalaz"), sub: m.label })
+			hits.push({ x: x - 4, y: cy - 10, w: 8, h: 20, title: t("Nalaz"), sub: tx(m.label) })
 		} else if (m.k === "spawn") {
 			ctx.beginPath()
 			ctx.arc(x, cy, 4, 0, Math.PI * 2)
@@ -238,7 +238,7 @@ function drawRow(lane, r, ax, end) {
 			ctx.strokeStyle = C.spawn
 			ctx.lineWidth = 1.25
 			ctx.stroke()
-			hits.push({ x: x - 6, y: cy - 6, w: 12, h: 12, title: t("Pokrenut agent"), sub: lane.info.name })
+			hits.push({ x: x - 6, y: cy - 6, w: 12, h: 12, title: t("Pokrenut agent"), sub: agentName(lane.info.name) })
 		} else if (m.k === "block") {
 			ctx.strokeStyle = C.signal
 			ctx.lineWidth = 1.5
@@ -248,17 +248,17 @@ function drawRow(lane, r, ax, end) {
 			ctx.moveTo(x + 3, cy - 3)
 			ctx.lineTo(x - 3, cy + 3)
 			ctx.stroke()
-			hits.push({ x: x - 6, y: cy - 6, w: 12, h: 12, title: t("Blokiran nalaz"), sub: m.label })
+			hits.push({ x: x - 6, y: cy - 6, w: 12, h: 12, title: t("Blokiran nalaz"), sub: tx(m.label) })
 		} else if (m.k === "edit") {
 			ctx.fillStyle = C.axis
 			ctx.fillRect(Math.round(x) - 1, y0 - 1, 2, 3)
-			hits.push({ x: x - 4, y: y0 - 2, w: 8, h: 6, title: t("Urednik"), sub: m.label })
+			hits.push({ x: x - 4, y: y0 - 2, w: 8, h: 6, title: agentName("Urednik"), sub: tx(m.label) })
 		} else if (m.k === "answer") {
 			ctx.fillStyle = C.tool
 			ctx.beginPath()
 			ctx.arc(x, cy, 3, 0, Math.PI * 2)
 			ctx.fill()
-			hits.push({ x: x - 6, y: cy - 6, w: 12, h: 12, title: t("Novinar"), sub: m.label })
+			hits.push({ x: x - 6, y: cy - 6, w: 12, h: 12, title: agentName("Novinar"), sub: tx(m.label) })
 		}
 	}
 

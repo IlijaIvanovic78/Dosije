@@ -166,6 +166,35 @@ function institutionPhrases(nameCyr: string): string[][] {
 	return levels
 }
 
+let allMemo: Promise<{ id: string; name: string }[]> | undefined
+
+/**
+ * Every organisation in the register (about 10,000 names, five pages of 2,000), cached. The resolver reads it to expand an
+ * acronym: the register search is a substring search, so "РТС" finds "Галерија РТС" but never "Радио телевизија Србије".
+ */
+export function allInstitutions(): Promise<{ id: string; name: string }[]> {
+	allMemo ??= cached(
+		SOURCE,
+		"organizations-all",
+		async () => {
+			const out: { id: string; name: string }[] = []
+			for (let page = 1; page <= 10; page++) {
+				const p = await api<SearchPage<RawOrganization>>("/organizacija/search", { page, limit: 2000 })
+				for (const o of p.results ?? []) out.push({ id: String(o.id), name: latin(str(o.naziv)) })
+				if (!p.results?.length || out.length >= (p.total ?? 0)) break
+			}
+			return out
+		},
+		{ skipWrite: (d) => d.length < 1000 },
+	)
+		.then((env) => env.data)
+		.catch((err) => {
+			allMemo = undefined
+			throw err
+		})
+	return allMemo
+}
+
 export async function findInstitution(name: string): Promise<{ id: string; name: string; nameCyr: string; source: SourceRef }[]> {
 	const nameCyr = latToCyr(name).replace(/\s+/g, " ").trim()
 	if (!nameCyr) return []

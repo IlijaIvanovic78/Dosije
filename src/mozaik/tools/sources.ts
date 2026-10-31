@@ -299,7 +299,7 @@ export function nabavkeTools(ctx: ToolCtx): Tool[] {
 		}),
 		buildTool(ctx, {
 			name: "iw_veze",
-			description: "Dobavljači institucije koje baza Integrity Watch Srbija označava kao povezane sa javnim funkcionerom ili političkim subjektom (podatak zahteva proveru).",
+			description: "Dobavljači institucije koje baza Integrity Watch Srbija označava kao povezane sa javnim funkcionerom ili političkim subjektom (podatak nije potvrđen iz drugog izvora).",
 			properties: {},
 			handler: async () => {
 				const inst = jnInst()
@@ -643,7 +643,7 @@ export function firmeTools(ctx: ToolCtx): Tool[] {
 	return [
 		buildTool(ctx, {
 			name: "apr_firma",
-			description: "Profil firme iz APR otvorenih podataka (osnovana, opština, šifra delatnosti, prihod, zaposleni). Vlasnici i direktori nisu u otvorenim podacima.",
+			description: "Profil firme iz APR otvorenih podataka (osnovana, opština, šifra delatnosti, prihod, zaposleni). Vlasnici i direktori nisu u otvorenim podacima (za njih: firma_vlasnici).",
 			properties: { mb: { type: "string" }, pib: { type: "string" }, name: { type: "string" } },
 			handler: async (args) => {
 				const m = await findFirmProfile({ mb: str(args.mb), pib: str(args.pib), name: str(args.name) })
@@ -652,7 +652,7 @@ export function firmeTools(ctx: ToolCtx): Tool[] {
 					basis: m.basis,
 					profile: m.profile ? profileOut(m.profile) : undefined,
 					candidates: m.candidates,
-					napomena: "Vlasnici i direktori nisu dostupni iz otvorenih podataka (APR pretraga je iza reCAPTCHA).",
+					napomena: "Vlasnici i direktori nisu u APR otvorenim podacima (APR pretraga je iza reCAPTCHA); za njih pozovi firma_vlasnici.",
 					sources: m.profile ? [srcOut(m.profile.source)] : [],
 				}
 			},
@@ -684,8 +684,33 @@ export function firmeTools(ctx: ToolCtx): Tool[] {
 						biggest: biggest ? { title: clip(biggest.title, 100), valueRsd: biggest.valueRsd, signedAt: biggest.signedAt, url: biggest.url } : undefined,
 					},
 					signals: a.signals.map((s) => ({ code: s.code, label: s.label, severity: s.severity, detail: clip(s.detail, 430) })),
-					napomena: "Prihod je 'ukupni prihodi' iz finansijskog izveštaja (APR, hiljade RSD x 1000). Signali su činjenice za proveru, ne zaključci.",
+					napomena: "Prihod je 'ukupni prihodi' iz finansijskog izveštaja (APR, hiljade RSD x 1000). Signali su činjenice, ne zaključci.",
 					sources: a.sources.map(srcOut),
+				}
+			},
+		}),
+		buildTool(ctx, {
+			name: "firma_vlasnici",
+			description:
+				"Vlasnici firme (ime, udeo, osoba ili firma) i direktor sa CompanyWall stranice firme, po matičnom broju ili PIB-u. CompanyWall je komercijalni pregled podataka iz APR registra, nije zvanični izvor: vlasništvo nije potvrđeno iz zvaničnog registra.",
+			properties: {
+				mb: { type: "string", description: "matični broj firme (iz firma_signali.profile.mb)" },
+				pib: { type: "string", description: "PIB firme, kad matični broj nije poznat" },
+				name: { type: "string" },
+			},
+			handler: async (args) => {
+				const mb = str(args.mb)?.replace(/\D/g, "")
+				const pib = str(args.pib)?.replace(/\D/g, "")
+				if (!mb && !pib) return { ok: false, error: "Potreban je matični broj ili PIB (vlasnici se traže samo po broju, da se ne pomeša firma sa sličnim nazivom)." }
+				const r = await data.companywall.getOwners({ mb, pib, name: str(args.name) })
+				if (!r) return { found: false, owners: [], napomena: "Firma sa ovim brojem nije pronađena na CompanyWall; vlasnici nisu pronađeni (podatak nedostaje)." }
+				return {
+					found: r.owners.length > 0,
+					company: clip(r.companyName, 90),
+					owners: r.owners.slice(0, 6),
+					director: r.director,
+					napomena: "CompanyWall nije zvanični registar (preuzima podatke iz APR): vlasništvo je nepotvrđeno.",
+					sources: [srcOut(r.source)],
 				}
 			},
 		}),
@@ -760,7 +785,7 @@ export function proveraTools(ctx: ToolCtx): Tool[] {
 					name,
 					count: matches.length,
 					matches: matches.slice(0, 6).map((m) => ({ name: m.name, dataset: m.dataset, detail: clip(m.detail, 200), score: m.score, url: m.url })),
-					napomena: "Poklapanje samo po imenu: proveriti identitet.",
+					napomena: "Poklapanje samo po imenu: identitet nije potvrđen.",
 					sources: uniqueSources(matches.slice(0, 4).map((m) => m.source)).map(srcOut),
 				}
 			},

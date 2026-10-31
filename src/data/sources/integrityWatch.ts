@@ -4,7 +4,7 @@
 //   data/downloadable_csv_xls/contracts_full.csv   ~100 MB, one row per contract lot, 19 columns
 //   data/companies_close_to_parties.csv            pib, company_name, source (media article used for the link)
 //   data/companies_income.json                     MBR (matični broj) + PIB for companies with party links
-// The big CSV is downloaded to data/raw/iw/ (gitignored) and reduced to a compact index that is committed to data/cache/integrity_watch/.
+// The big CSV is downloaded to data/raw/iw/ (gitignored) and reduced to a compact index in data/cache/integrity_watch/ (local cache).
 
 import fs from "node:fs"
 import fsp from "node:fs/promises"

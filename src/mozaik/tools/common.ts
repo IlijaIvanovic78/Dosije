@@ -1,6 +1,7 @@
 // Tools every worker agent has (add_finding, add_entity, ask_human, dosije_pregled) and the Urednik's napisi_sazetak.
 
 import type { Tool } from "@mozaik-ai/core"
+import { config } from "../../config"
 import type { Finding } from "../../shared/types"
 import * as domain from "../domain"
 import { fixPunct, S, type ToolCtx } from "../domain"
@@ -15,7 +16,7 @@ const SOURCE_SCHEMA = {
 	items: {
 		type: "object",
 		properties: {
-			kind: { type: "string", description: "acas | jnportal | integrity_watch | apr | dri | vesti | paragraf | zakon | opensanctions | krik | novinar" },
+			kind: { type: "string", description: "acas | jnportal | integrity_watch | apr | dri | vesti | paragraf | zakon | opensanctions | krik | companywall | novinar" },
 			title: { type: "string" },
 			url: { type: "string", description: "javni http(s) URL" },
 			publishedAt: { type: "string" },
@@ -30,7 +31,7 @@ function brief(f: Finding) {
 }
 
 export function commonTools(ctx: ToolCtx): Tool[] {
-	return [
+	const tools = [
 		buildTool(ctx, {
 			name: "add_finding",
 			local: true,
@@ -114,7 +115,7 @@ export function commonTools(ctx: ToolCtx): Tool[] {
 				// the inbox must stay readable: at most 3 open questions per case, whatever the model decides
 				const state = S()
 				const asked = [...state.tasks.values()].filter((t) => t.caseId === ctx.caseId && t.kind === "pitanje").length
-				if (asked >= 3) return { ok: false, error: "Limit pitanja za ovaj dosije je dostignut (3). Ne postavljaj novo pitanje; navedi u nalazu da podatak treba ručno proveriti." }
+				if (asked >= 3) return { ok: false, error: "Limit pitanja za ovaj dosije je dostignut (3). Ne postavljaj novo pitanje; navedi u nalazu da podatak nedostaje." }
 				return domain.askHuman(ctx, args)
 			},
 		}),
@@ -156,6 +157,8 @@ export function commonTools(ctx: ToolCtx): Tool[] {
 			},
 		}),
 	]
+	// without DOSIJE_ASK_HUMAN the journalist is never asked for data: a missing fact is written into the dossier as missing
+	return config.askHuman ? tools : tools.filter((t) => t.name !== "ask_human")
 }
 
 export function urednikTools(ctx: ToolCtx): Tool[] {

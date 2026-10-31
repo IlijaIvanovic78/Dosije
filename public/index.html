@@ -41,17 +41,16 @@
 				<div class="hero-inner">
 					<div class="hero-grid">
 						<div class="hero-main">
-							<div class="eyebrow"><span class="eyebrow-dot" aria-hidden="true"></span><span data-i18n>Istraživački alat za novinare</span></div>
-							<h1 data-i18n>Od vesti do proverenog dosijea za nekoliko minuta</h1>
-							<p class="hero-lede" data-i18n>Upiši javnu instituciju ili nalepi link vesti. Tim agenata istovremeno pretražuje javne registre, a ti odlučuješ o osetljivim nalazima. Svaka tvrdnja u dosijeu ima izvor, datum i status.</p>
+							<h1 data-i18n>Od vesti do dosijea sa izvorima za nekoliko minuta</h1>
+							<p class="hero-lede" data-i18n>Upiši naziv javne institucije. Tim agenata istovremeno pretražuje javne registre i sam slaže dosije. Svaka tvrdnja ima izvor, datum i status: zvanično, potvrđeno ili nepotvrđeno.</p>
 
 							<div id="heroResume" class="resume" hidden></div>
 
 							<form id="caseForm" class="start-form" autocomplete="off">
-								<label class="sr-only" for="inInst" data-i18n>Institucija ili link vesti</label>
+								<label class="sr-only" for="inInst" data-i18n>Naziv institucije</label>
 								<div class="start-row">
 									<svg class="start-icon" viewBox="0 0 20 20" aria-hidden="true"><circle cx="8.5" cy="8.5" r="5.5" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M12.6 12.6 17 17" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
-									<input id="inInst" name="institution" type="text" placeholder="Institucija ili link vesti, npr. Srbijavoz" data-i18n-attr="placeholder" spellcheck="false">
+									<input id="inInst" name="institution" type="text" placeholder="Naziv institucije, npr. Srbijavoz ili RTS" data-i18n-attr="placeholder" spellcheck="false">
 									<button id="btnStart" class="btn primary lg" type="submit"><span data-i18n>Pokreni istragu</span></button>
 								</div>
 								<div class="start-extra">
@@ -71,19 +70,19 @@
 							<ol class="flow">
 								<li>
 									<span class="flow-n">1</span>
-									<div><b data-i18n>Upišeš instituciju</b><p data-i18n>Naziv ili link vesti. Sistem pronalazi instituciju u registrima (PIB, matični broj, ACAS).</p></div>
+									<div><b data-i18n>Upišeš instituciju</b><p data-i18n>Pun naziv ili skraćenica (npr. RTS, EPS). Sistem pronalazi instituciju u registrima (PIB, matični broj, ACAS).</p></div>
 								</li>
 								<li>
 									<span class="flow-n">2</span>
 									<div><b data-i18n>Tim agenata radi istovremeno</b><p data-i18n>Kadrovik, Nabavke, Revizor i Mediji kreću u istom trenutku. Za svaku firmu i osobu koju nađu pokreće se novi agent.</p></div>
 								</li>
-								<li class="you">
+								<li>
 									<span class="flow-n">3</span>
-									<div><b data-i18n>Ti odlučuješ</b><p data-i18n>Kad agent naiđe na osetljiv signal ili ne može sam do podatka, pita tebe. Čeka samo on, ostali nastavljaju.</p></div>
+									<div><b data-i18n>Urednik sam određuje status</b><p data-i18n>Tvrdnja bez izvora ne ulazi u dosije. Kad se izvori razlikuju, prednost ima zvanični registar; šta stoji samo na jednom nezvaničnom izvoru, označeno je kao nepotvrđeno.</p></div>
 								</li>
 								<li>
 									<span class="flow-n">4</span>
-									<div><b data-i18n>Dobijaš dosije sa izvorima</b><p data-i18n>Glavni signali, link za svaku tvrdnju i lista šta još treba proveriti. Izvoz u PDF ili Markdown.</p></div>
+									<div><b data-i18n>Dobijaš dosije sa izvorima</b><p data-i18n>Glavni signali, link za svaku tvrdnju i status svakog nalaza. Izvoz u PDF ili Markdown.</p></div>
 								</li>
 							</ol>
 						</aside>
@@ -111,7 +110,7 @@
 						<button id="btnHeroMapa" class="btn" type="button"><span data-i18n>Otvori mapu prioriteta</span> <span aria-hidden="true">→</span></button>
 					</div>
 
-					<p class="hero-note" data-i18n>Sistem ne presuđuje: pokazuje signale za proveru, a odluka ostaje na čoveku.</p>
+					<p class="hero-note" data-i18n>Sistem ne presuđuje: pokazuje signale, svaki sa izvorom i statusom.</p>
 				</div>
 			</section>
 
@@ -141,7 +140,7 @@
 							<div class="mhead" role="row"><span>#</span><span data-i18n>Institucija</span><span data-i18n>Ocena</span><span data-i18n>Signali</span><span data-i18n>Status</span><span></span></div>
 							<div id="mapaRows" class="mrows"></div>
 						</div>
-						<p class="disclaimer" data-i18n>Ocena sabira signale po fiksnim pravilima (v.d. preko roka, lanac v.d., postupci bez objave, Integrity Watch, DRI). To su signali za proveru, ne zaključak.</p>
+						<p class="disclaimer" data-i18n>Ocena sabira signale po fiksnim pravilima (v.d. preko roka, lanac v.d., postupci bez objave, Integrity Watch, DRI). To su signali, ne zaključak.</p>
 					</div>
 				</section>
 
@@ -170,7 +169,7 @@
 						<section class="card signals">
 							<header class="card-head">
 								<h3 class="sec-title"><span data-i18n>Glavni signali</span><span id="signalsCount" class="count">0</span></h3>
-								<span class="card-hint" data-i18n>najvažnije za proveru</span>
+								<span class="card-hint" data-i18n>najvažniji nalazi</span>
 							</header>
 							<div id="signalsBody"></div>
 						</section>
@@ -187,9 +186,8 @@
 								<div id="filterBar" class="filter-bar" hidden></div>
 							</div>
 							<div id="findList" class="find-list"></div>
-							<div id="verifyPanel" class="verify-panel" hidden></div>
 						</section>
-						<p class="disclaimer" data-i18n>Signali su polazna tačka za proveru, ne zaključak. Svaka tvrdnja ima izvor; konačnu odluku donosi novinar.</p>
+						<p class="disclaimer" data-i18n>Signali nisu zaključci. Svaka tvrdnja ima izvor i status: zvanično, potvrđeno ili nepotvrđeno.</p>
 					</div>
 				</section>
 
@@ -209,7 +207,6 @@
 						<div class="legend" aria-hidden="true">
 							<span><i class="sw inf"></i><span data-i18n>razmišlja</span></span>
 							<span><i class="sw tool"></i><span data-i18n>pretražuje izvor</span></span>
-							<span><i class="sw wait"></i><span data-i18n>čeka tebe</span></span>
 							<span><i class="sw tick"></i><span data-i18n>nalaz</span></span>
 							<span><i class="sw spawn"></i><span data-i18n>novi agent</span></span>
 						</div>
@@ -235,7 +232,8 @@
 			</div>
 		</main>
 
-		<footer id="drawer" class="drawer collapsed">
+		<!-- raw Mozaik event log: kept for debugging, hidden from users -->
+		<footer id="drawer" class="drawer collapsed" hidden>
 			<button class="drawer-toggle" type="button" aria-expanded="false">
 				<span id="evLine" class="d-line"></span>
 				<span id="evHint" class="d-hint">prikaži</span>

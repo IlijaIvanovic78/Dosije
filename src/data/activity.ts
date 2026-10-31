@@ -50,6 +50,7 @@ export const SRC = {
 	dri: { source: "DRI", kind: "dri" },
 	sg: { source: "Službeni glasnik", kind: "paragraf" },
 	pep: { source: "OpenSanctions / KRIK", kind: "opensanctions" },
+	cw: { source: "CompanyWall", kind: "companywall" },
 } as const satisfies Record<string, Pick<ActivityDescriptor, "source" | "kind">>
 
 /** Institution name as people say it, for labels: "Infrastruktura železnice Srbije a.d." -> "Infrastruktura železnice Srbije". */

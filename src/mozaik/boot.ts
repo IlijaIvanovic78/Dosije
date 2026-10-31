@@ -13,6 +13,7 @@ import { CORE_AGENTS, OBSERVERS, createCoreAgent } from "./agents"
 import { bus } from "./bus"
 import * as domain from "./domain"
 import { ids, S } from "./domain"
+import { translationAvailable } from "../translate"
 import { ResilientInferenceRunner } from "./inference/resilient"
 import { ScriptedInferenceRunner } from "./inference/scripted"
 import { loadMapaPreset, normalizeInstitutions, startMapaWatch } from "./mapa"
@@ -62,6 +63,8 @@ export function configView(): RuntimeConfigView {
 		searchProviders: providers,
 		demoInstitutions: listStaticInstitutions(),
 		mapaPreset: loadMapaPreset(),
+		translation: translationAvailable(),
+		asksUser: config.askHuman || config.approvals,
 	}
 }
 
@@ -246,6 +249,17 @@ export function closeCase(): void {
 	const state = S()
 	if (!state.caseId || state.status === "done" || state.status === "idle") throw new ApiError(409, "Nema aktivnog dosijea.")
 	domain.emit("dosije.zatvori", ids.novinar, { caseId: state.caseId })
+}
+
+/** Nobody is looking any more (the page was closed): stop the case or map in progress and forget it. */
+export function discardRun(): void {
+	const state = S()
+	if (state.caseId === null && !state.mapa.id) return
+	const what = state.caseId ? `dosije ${state.institution?.name ?? state.caseId}` : "mapa prioriteta"
+	teardownCase()
+	state.resetIdle()
+	bus.emitSnapshot(state.snapshot(configView()))
+	log("server", `stranica je zatvorena: ${what} je odbačen(a)`)
 }
 
 export function getSnapshot(): DosijeSnapshot {

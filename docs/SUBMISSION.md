@@ -34,7 +34,7 @@ On real data it finds:
 
 "Mapa prioriteta" runs a list of institutions in parallel and ranks where a transition team should look first.
 
-It runs with no API key (`npm install && npm start`) on a committed cache of real public data, with a deterministic
+It runs with no API key (`npm install && npm start`) on real public data (cached locally after the first lookup), with a deterministic
 inference runner in Mozaik's official runner slot. With `OPENAI_API_KEY`, the same agents run on gpt-5.4-mini and
 gpt-5.4.
 

@@ -266,8 +266,44 @@ function resetDerived(keepAgents = false) {
 	seen.clear()
 }
 
+// Searches are one-time: a case or map that is still running survives a page reload, a finished one does not. The first
+// snapshot of a page marks a finished run "stale": it is shown as the empty start state, and its replayed events are dropped,
+// until the server starts another run.
+let firstSnapshot = true
+let staleRun = null
+let serverRun = null
+const runKeyOf = (snap) => snap.caseId || snap.mapa?.id || null
+const isFinished = (snap) => (snap.caseId ? snap.status === "done" : snap.mapa?.id ? snap.mapa.status === "done" : false)
+const isStale = () => !!staleRun && serverRun === staleRun
+
+function withoutRun(snap) {
+	return {
+		...snap,
+		caseId: null,
+		status: "idle",
+		input: "",
+		focus: "",
+		institution: null,
+		findings: [],
+		entities: [],
+		conflicts: [],
+		tasks: [],
+		report: null,
+		mapa: undefined,
+		stats: undefined,
+		budget: undefined,
+		agents: (snap.agents || []).filter((a) => !a.dynamic),
+	}
+}
+
 export function applySnapshot(snap) {
 	if (!snap) return
+	serverRun = runKeyOf(snap)
+	if (firstSnapshot) {
+		firstSnapshot = false
+		if (serverRun && isFinished(snap)) staleRun = serverRun
+	}
+	if (isStale()) snap = withoutRun(snap)
 	syncUntil = Date.now() + 2500
 	const prevMapa = state.mapa.id
 	const newCase = snap.caseId !== state.caseId || (!snap.caseId && (snap.mapa?.id || null) !== prevMapa)
@@ -362,6 +398,7 @@ export function clearFilters() {
 
 export function applyEvent(ev) {
 	if (!ev || typeof ev.seq !== "number" || seen.has(ev.seq)) return
+	if (isStale()) return
 	seen.add(ev.seq)
 	// right after a snapshot the server replays history: those events must never raise toasts
 	state.replay = Date.now() < syncUntil
@@ -537,7 +574,7 @@ export function applyEvent(ev) {
 			state.mapa.rows.set(row.slug, row)
 			const lane = row.agentId ? state.lanes.get(row.agentId) : null
 			if (lane && row.status === "done") {
-				lane.marks.push({ k: "finding", t, id: row.slug, label: `${row.name}: ocena ${row.score}`, sev: row.score >= 60 ? "signal" : "info" })
+				lane.marks.push({ k: "finding", t, id: row.slug, label: `${row.name}: ${row.score}`, sev: row.score >= 60 ? "signal" : "info" })
 				lane.findings++
 			}
 			emit("mapa", { slug: row.slug })

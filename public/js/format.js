@@ -1,6 +1,6 @@
 // Small shared helpers: DOM builder, escaping, formatting, labels.
 
-import { t, getLang } from "./i18n.js"
+import { t, tx, agentName, getLang } from "./i18n.js"
 
 const ESC = { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }
 
@@ -187,6 +187,7 @@ export const SOURCE_LABEL = translated({
 	zakon: "Zakon",
 	opensanctions: "OpenSanctions",
 	krik: "KRIK",
+	companywall: "CompanyWall",
 	novinar: "Novinar",
 })
 
@@ -234,11 +235,11 @@ const expandedSources = new Set() // keys (finding ids) whose full list is open
 
 function sourceItem(src) {
 	const url = safeUrl(src.url)
-	const title = `${src.title}${src.official ? ` (${t("zvanični izvor")})` : ""}`
+	const title = `${tx(src.title)}${src.official ? ` (${t("zvanični izvor")})` : ""}`
 	const { outlet, headline } = src.kind === "vesti" ? splitSourceTitle(src) : { outlet: SOURCE_LABEL[src.kind] || src.kind, headline: src.title }
 	const date = fmtDate(src.publishedAt || src.retrievedAt)
 	const meta = [truncate(outlet, 26), date].filter(Boolean).join(" · ")
-	const text = h("span", { class: "sl-text" }, h("span", { class: "sl-meta" }, meta), " · ", headline)
+	const text = h("span", { class: "sl-text" }, h("span", { class: "sl-meta" }, meta), " · ", tx(headline))
 	return h("li", null, url ? h("a", { class: `src${src.official ? " official" : ""}`, href: url, target: "_blank", rel: "noopener noreferrer", title }, text) : h("span", { class: "src", title }, text))
 }
 
@@ -252,7 +253,7 @@ export function sourceLinks(sources, key) {
 			list.map((src) => {
 				const url = safeUrl(src.url)
 				const label = sourceLine(src)
-				const title = `${src.title}${src.official ? ` (${t("zvanični izvor")})` : ""}`
+				const title = `${tx(src.title)}${src.official ? ` (${t("zvanični izvor")})` : ""}`
 				return url ? h("a", { class: `src${src.official ? " official" : ""}`, href: url, target: "_blank", rel: "noopener noreferrer", title }, label) : h("span", { class: "src", title }, label)
 			}),
 		)
@@ -314,6 +315,6 @@ export function initials(name) {
 
 /** Round initials avatar; the tint comes from the agent group (see styles.css). */
 export function avatar(info, cls = "") {
-	const name = info?.name || ""
+	const name = agentName(info?.name || "")
 	return h("span", { class: `av ${cls}`.trim(), dataset: { g: info?.group || "sistem" }, "aria-hidden": "true" }, initials(name))
 }

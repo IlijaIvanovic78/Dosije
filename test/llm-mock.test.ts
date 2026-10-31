@@ -9,6 +9,8 @@ import { after, before, test } from "node:test"
 import type { AddressInfo } from "node:net"
 
 process.env.DOSIJE_MODE = "llm"
+// this case also tests the blocking approval of a sensitive signal (off in the app)
+process.env.DOSIJE_APPROVALS = "1"
 process.env.OPENAI_API_KEY = "sk-test-fake"
 process.env.DATA_MODE = "cache"
 process.env.HUMAN_AUTO_APPROVE_MS = "0"

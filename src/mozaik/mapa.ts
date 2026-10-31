@@ -69,13 +69,14 @@ export function rowOfAgent(agentId: string): MapaRow | undefined {
 const isTerminal = (r: MapaRow) => r.status === "done" || r.status === "error"
 
 /** The Fabrika has resolved the institution and spawned its triage agent. */
-export function startRow(slugOf: string, agentId: string, resolvedName: string): void {
+export function startRow(slugOf: string, agentId: string, resolvedName: string, alternatives?: string[]): void {
 	const m = S().mapa
 	const row = m.rows.get(slugOf)
 	if (!row || isTerminal(row)) return
 	row.status = "running"
 	row.agentId = agentId
 	row.resolvedName = resolvedName
+	if (alternatives?.length) row.alternatives = alternatives
 	m.agentSlug.set(agentId, slugOf)
 	m.triage.set(slugOf, { called: new Set(), ok: new Set(), signals: {}, gaps: [] })
 	publish(row, ids.fabrika)

@@ -7,7 +7,7 @@ import { state, on, openTasks, applySnapshot, resumeCase, setView } from "./stor
 import { api } from "./api.js"
 import { toast, dismissToasts } from "./toast.js"
 import { showNotice, clearNotice } from "./notice.js"
-import { t, pl, getLang, onLang } from "./i18n.js"
+import { t, tx, agentName, pl, getLang, onLang } from "./i18n.js"
 
 let root, backdrop, listEl, historyEl, historyCount, openCountEl, countEl, emptyEl, inboxBtn, dock, dockList, dockTitle
 const cardCache = new Map() // taskId -> { el }
@@ -91,7 +91,7 @@ function draftBlock(draft) {
 			draft.signalCode ? h("span", { class: `code ${sev}` }, SIGNAL_LABEL[draft.signalCode] || draft.signalCode) : null,
 			h("span", { class: "appr pending" }, t("nacrt")),
 		),
-		draft.text ? h("p", { class: "f-text" }, draft.text) : null,
+		draft.text ? h("p", { class: "f-text" }, tx(draft.text)) : null,
 		draft.sources?.length ? sourceLinks(draft.sources) : null,
 	)
 }
@@ -114,19 +114,19 @@ function buildTaskCard(task) {
 			},
 		},
 		avatar(agent),
-		h("b", null, task.fromAgentName),
+		h("b", null, agentName(task.fromAgentName)),
 		h("span", { class: `kind ${task.kind}` }, approval ? t("traži odobrenje") : t("ima pitanje")),
 		h("span", { class: "task-time" }, created ? fmtClock(created) : ""),
 		h("span", { class: "task-chev", "aria-hidden": "true" }),
 	)
 	// an approval shows the draft's own title here; the draft below carries its text and sources
-	const title = h("h4", { class: "task-title" }, approval ? task.findingDraft?.title || `${t("Urednik predlaže signal")}: ${task.title}` : task.title)
+	const title = h("h4", { class: "task-title" }, approval ? tx(task.findingDraft?.title) || `${t("Urednik predlaže signal")}: ${tx(task.title)}` : tx(task.title))
 
 	const body = []
-	if (task.blocking) body.push(h("p", { class: "hold-line" }, h("b", null, `${t("{agent} je pauziran dok ne odlučiš", { agent: task.fromAgentName })}.`)))
+	if (task.blocking) body.push(h("p", { class: "hold-line" }, h("b", null, `${t("{agent} je pauziran dok ne odlučiš", { agent: agentName(task.fromAgentName) })}.`)))
 	if (approval && task.findingDraft) body.push(draftBlock(task.findingDraft))
-	if (task.question) body.push(h("p", { class: "task-q" }, task.question))
-	if (task.hint) body.push(h("p", { class: "task-hint" }, h("b", null, `${t("Savet")}: `), task.hint))
+	if (task.question) body.push(h("p", { class: "task-q" }, tx(task.question)))
+	if (task.hint) body.push(h("p", { class: "task-hint" }, h("b", null, `${t("Savet")}: `), tx(task.hint)))
 	if (task.links?.length) {
 		body.push(
 			h(
@@ -169,7 +169,7 @@ function openRow(task) {
 		"div",
 		{ class: `open-row${task.blocking ? " blocking" : ""}` },
 		avatar(agent),
-		h("div", { class: "or-main" }, h("div", { class: "or-title" }, truncate(task.title, 90)), h("div", { class: "or-sub" }, `${task.fromAgentName} · ${task.kind === "odobrenje" ? t("traži odobrenje") : t("ima pitanje")}`)),
+		h("div", { class: "or-main" }, h("div", { class: "or-title" }, truncate(tx(task.title), 90)), h("div", { class: "or-sub" }, `${agentName(task.fromAgentName)} · ${task.kind === "odobrenje" ? t("traži odobrenje") : t("ima pitanje")}`)),
 		h("button", { class: "btn small primary", type: "button", onclick: () => focusDecisions(task.id) }, task.kind === "odobrenje" ? t("Odluči") : t("Odgovori")),
 	)
 }
@@ -182,14 +182,14 @@ function historyItem(task) {
 	return h(
 		"div",
 		{ class: `hist ${cls}` },
-		h("div", { class: "h-title" }, truncate(task.title, 90)),
-		h("div", { class: "h-sub" }, `${task.fromAgentName} · ${label}${at ? ` · ${fmtClock(at)}` : ""}`, task.answer ? ` · „${truncate(task.answer, 80)}“` : ""),
+		h("div", { class: "h-title" }, truncate(tx(task.title), 90)),
+		h("div", { class: "h-sub" }, `${agentName(task.fromAgentName)} · ${label}${at ? ` · ${fmtClock(at)}` : ""}`, task.answer ? ` · „${truncate(task.answer, 80)}“` : ""),
 	)
 }
 
 function dockHeading(open) {
 	const n = open.length
-	if (n === 1) return open[0].kind === "odobrenje" ? t("{agent} traži tvoje odobrenje", { agent: open[0].fromAgentName }) : t("{agent} ima pitanje za tebe", { agent: open[0].fromAgentName })
+	if (n === 1) return open[0].kind === "odobrenje" ? t("{agent} traži tvoje odobrenje", { agent: agentName(open[0].fromAgentName) }) : t("{agent} ima pitanje za tebe", { agent: agentName(open[0].fromAgentName) })
 	return getLang() === "en" ? `${n} decisions are waiting for you` : `${n} ${pl(n, ["odluka čeka", "odluke čekaju", "odluka čeka"])} na tebe`
 }
 
@@ -218,6 +218,15 @@ function render() {
 	reconcile(listEl, open.map(openRow))
 	emptyEl.hidden = open.length > 0
 	openCountEl.textContent = String(open.length)
+	// agents ask nothing unless the server is set to (config.asksUser): the panel is then only for adding a lead
+	const asks = !!state.config?.asksUser || open.length > 0
+	root.querySelector(".inbox-open").hidden = !asks
+	const sub = asks ? "Pitanja agenata, tvoje odluke i tragovi koje dodaješ timu." : "Trag koji dodaš odmah dobija svog agenta."
+	const subEl = root.querySelector(".inbox-sub")
+	if (subEl.dataset.sr !== sub) {
+		subEl.dataset.sr = sub
+		subEl.textContent = t(sub)
+	}
 
 	historyEl.replaceChildren(...done.map(historyItem))
 	historyCount.textContent = String(done.length)
@@ -291,8 +300,8 @@ export function initInbox() {
 			const approval = task.kind === "odobrenje"
 			toast({
 				kind: approval ? "approve" : "ask",
-				title: approval ? t("{agent} čeka tvoje odobrenje", { agent: task.fromAgentName }) : t("{agent} ima pitanje za tebe", { agent: task.fromAgentName }),
-				text: truncate(task.title, 110),
+				title: approval ? t("{agent} čeka tvoje odobrenje", { agent: agentName(task.fromAgentName) }) : t("{agent} ima pitanje za tebe", { agent: agentName(task.fromAgentName) }),
+				text: truncate(tx(task.title), 110),
 				ttl: approval ? 12000 : 6000,
 				actions: [{ label: approval ? t("Odluči") : t("Odgovori"), onClick: () => focusDecisions(task.id) }],
 			})

@@ -1,6 +1,5 @@
-// File cache for every public-data response. The committed cache under data/cache/
-// is what makes the demo run without internet and without the state websites
-// being up. Only normalized, PII-free data is cached.
+// File cache for every public-data response, under data/cache/ (local, gitignored: it fills up as the app runs and is
+// never committed). A repeated query is then answered without the state websites. Only normalized data is cached.
 //
 // DATA_MODE:
 //   auto  (default) cache first; on a miss fetch live and write the cache
@@ -65,7 +64,7 @@ export async function readCache<T>(source: string, key: string): Promise<CacheEn
 
 export async function writeCache<T>(source: string, key: string, data: T, meta?: Record<string, unknown>): Promise<CacheEnvelope<T>> {
 	const envelope: CacheEnvelope<T> = { source, key, retrievedAt: new Date().toISOString(), meta, data }
-	// DATA_MODE=cache is read-only: tests, `npm run qa` and demos must never change the committed cache
+	// DATA_MODE=cache is read-only: tests, `npm run qa` and demos must never change the cache
 	if (getDataMode(source) === "cache") return envelope
 	const file = filePath(source, key)
 	await fs.mkdir(path.dirname(file), { recursive: true })

@@ -117,7 +117,7 @@ function resolveConflict(a: Finding, b: Finding): void {
 			? `${officialLabel(winner)} navodi «${wv}»; ${describe(loser)} navodi «${lv}». Prednost ima zvanični registar.`
 			: rule === "vise_izvora"
 				? `Nijedan ili oba nalaza imaju zvanični izvor. Navod «${wv}» ima više izvora (${winner.sources.length} prema ${loser.sources.length}) od navoda «${lv}»; prednost ima navod sa više izvora.`
-				: `Izvori su izjednačeni po zvaničnosti i broju. Noviji navod «${wv}» ima prednost nad starijim «${lv}»; proveriti ručno.`
+				: `Izvori su izjednačeni po zvaničnosti i broju. Noviji navod «${wv}» ima prednost nad starijim «${lv}»; stariji navod nije potvrđen.`
 	const conflict: Conflict = {
 		id: state.nextConflictId(),
 		caseId: winner.caseId,

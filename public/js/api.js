@@ -1,4 +1,6 @@
-// Thin REST helpers.
+// Thin REST helpers. Error messages come from the server in Serbian: in English they are translated before they are shown.
+
+import { getLang, txNow } from "./i18n.js"
 
 async function request(method, url, body) {
 	const res = await fetch(url, {
@@ -10,7 +12,7 @@ async function request(method, url, body) {
 		let msg = `${res.status} ${res.statusText}`
 		try {
 			const j = await res.json()
-			if (j?.error) msg = j.error
+			if (j?.error) msg = await txNow(j.error)
 		} catch {}
 		const err = new Error(msg)
 		err.status = res.status
@@ -28,5 +30,6 @@ export const api = {
 	lead: (name, kind) => request("POST", "/api/trag", { name, kind }),
 	mapa: (institutions) => request("POST", "/api/mapa", institutions?.length ? { institutions } : {}),
 	finish: () => request("POST", "/api/zavrsi", {}),
-	reportMd: () => request("GET", "/api/report.md"),
+	// the report as Markdown; in English the server machine-translates it (the agents write in Serbian)
+	reportMd: () => request("GET", `/api/report.md${getLang() === "en" ? "?lang=en" : ""}`),
 }

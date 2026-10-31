@@ -1,4 +1,5 @@
-// Razrešavač: what the journalist typed (institution name, alias such as "IŽS", or a news URL) -> InstitutionRef.
+// Razrešavač: what the journalist typed (institution name, alias such as "IŽS", acronym such as "RTS") -> InstitutionRef.
+// Names only: a news link is refused.
 // Static tables (data/static/institutions.json + aliases.json) cover the demo institution offline; everything else is
 // resolved from ACAS + Portal javnih nabavki + APR (cached, so a repeated query is free).
 
@@ -13,7 +14,6 @@ import { mediaName } from "./newsPlan"
 import * as acas from "./sources/acas"
 import * as apr from "./sources/apr"
 import * as jn from "./sources/jnportal"
-import * as news from "./sources/news"
 import { asciiFold, GENERIC_WORDS, latToCyr, nameSimilarity, normalizeName, sameWord, slugify } from "./translit"
 import type { InstitutionRef, LegalType, Official } from "./types"
 
@@ -48,6 +48,8 @@ export interface ResolvedInstitution extends InstitutionRef {
 	officialName?: string
 	article?: { url: string; title: string; outlet: string; publishedAt?: string }
 	mentionedOfficials?: MentionedOfficial[]
+	/** the typed name matched several bodies and this one was picked (resolveInstitution with pickBest) */
+	chosen?: { from: string; alternatives: string[] }
 }
 
 export const LEGAL_LABELS: Record<LegalType, string> = {
@@ -63,13 +65,6 @@ function key(s: string): string {
 	return asciiFold(s)
 		.replace(/[^a-z0-9]+/g, " ")
 		.trim()
-}
-
-function stem(s: string): string {
-	return key(s)
-		.split(" ")
-		.map((t) => (t.length > 5 ? t.slice(0, 5) : t))
-		.join(" ")
 }
 
 function readJson<T>(file: string, fallback: T): T {
@@ -187,7 +182,17 @@ async function findCompanyForInstitution(query: string) {
 // words that describe the body or its legal form, not which body it is: "Univerzitetski klinicki centar Vojvodine" is "Klinicki centar Vojvodine"
 const DESCRIPTORS = new Set(["univerzitetski", "opsta", "javno", "komunalno", "preduzece", "jkp", "jp", "ad", "doo", "drustvo", "akcionarsko", "drzavna"])
 // organisational parts of a body, never the body itself (unless the query asks for them)
-const UNIT = /\b(ogranak|ogranka|pogon|filijala|odeljenje|sektor|telo za centralizovane|radna jedinica|podruznica|sluzba)\b/
+const UNIT = /\b(ogranak|ogranka|pogon|filijala|odeljenje|sektor|telo za centralizovane|radna jedinica|podruznica|sluzba|ekspozitura|regionalni centar|podrucna jedinica|odsek)\b/
+
+const POSITION_FIRST = /^(direktor|predsednik|clan|zamenik|sekretar|v\.?\s?d\.?|vrsilac)\b/
+
+/** "Ministarstvo zdravlja - Uprava za biomedicinu": a part of the body the query names, written after a dash. */
+function isSubUnit(name: string, qt: string[]): boolean {
+	const dash = name.split(/\s[-–—]\s/)
+	if (dash.length < 2) return false
+	const head = coreTokens(dash[0])
+	return qt.every((q) => head.some((x) => sameWord(q, x)))
+}
 
 const coreTokens = (name: string): string[] => {
 	const t = nameTokens(name)
@@ -208,8 +213,13 @@ function matchAll<T extends { name: string }>(hits: T[], query: string): Match<T
 	for (const hit of hits) {
 		const t = coreTokens(hit.name)
 		if (qt.length === 0 || !qt.every((q) => t.some((x) => sameWord(q, x)))) continue
-		if (!unitWanted && (UNIT.test(asciiFold(hit.name)) || (/ - /.test(hit.name) && t.length > qt.length + 3))) continue
-		const extra = t.filter((x) => !qt.some((q) => sameWord(q, x)))
+		// a function, not a body ("Direktor Republičkog fonda ..." is a stray register entry)
+		if (POSITION_FIRST.test(asciiFold(hit.name))) continue
+		if (!unitWanted && (UNIT.test(asciiFold(hit.name)) || isSubUnit(hit.name, qt) || (/ - /.test(hit.name) && t.length > qt.length + 3))) continue
+		// "MINISTARSTVO FINANSIJA - PORESKA UPRAVA": the body itself, filed under its parent; the part after the dash is its name
+		const tail = coreTokens(hit.name.split(/\s[-–—]\s/).pop() ?? "")
+		const own = /\s[-–—]\s/.test(hit.name) && qt.every((q) => tail.some((x) => sameWord(q, x))) ? tail : t
+		const extra = own.filter((x) => !qt.some((q) => sameWord(q, x)))
 		out.push({ hit, extra, identity: extra.sort().join(" ") })
 	}
 	return out
@@ -241,6 +251,73 @@ function abbreviationsFor(name: string): string[] {
 	return [...loadAbbreviations().entries()].filter(([k, v]) => !k.includes(" ") && coreTokens(v).sort().join(" ") === want).map(([k]) => k)
 }
 
+// ─── acronyms ("RTS", "NBS", "RGZ") ──────────────────────────────────────────
+
+// words an acronym skips ("Republički fond za penzijsko i invalidsko osiguranje" = PIO)
+const ACRONYM_SKIP = new Set(["i", "u", "za", "na", "od", "sa", "o", "a", "iz", "pri"])
+
+/** "RTS", "rts", "RFZO": one word, 2-6 letters, typed in capitals (or short and nearly vowel-less, like "rts"). */
+export function looksLikeAcronym(q: string): boolean {
+	const s = q.trim()
+	if (!/^\p{L}{2,6}$/u.test(s)) return false
+	if (s === s.toUpperCase() && s !== s.toLowerCase()) return true
+	return s.length <= 4 && (asciiFold(s).match(/[aeiou]/g) ?? []).length <= 1
+}
+
+export interface AcronymPhrase {
+	/** the words the acronym stands for, as written in the register ("Radio Televizija Srbije") */
+	phrase: string
+	/** register entries that contain it (the same body is often entered several times) */
+	entries: number
+	/** a national or provincial body ("... Srbije", "Republički ...", "... Vojvodine") */
+	national: boolean
+}
+
+// what may stand before the spelled-out name (its legal form) and after it (legal form, seat)
+const ACRONYM_PREFIX = new Set(["jp", "jkp", "jmu", "rdu", "javno", "javna", "javni", "komunalno", "preduzece", "ustanova", "medijska", "radiodifuzna", "zdravstvena", "akcionarsko", "drustvo", "ad", "doo", "d", "o"])
+const ACRONYM_SUFFIX = new Set(["ad", "doo", "d", "o", "jp", "beograd", "novi", "sad", "nis", "kragujevac", "subotica", "pancevo", "zrenjanin", "cacak", "kraljevo", "leskovac", "valjevo", "vranje", "sabac", "uzice", "smederevo", "sombor", "pozarevac", "kikinda", "krusevac", "jagodina", "zemun", "vracar", "savski", "venac", "stari", "grad"])
+// a body of the whole country or province: what a journalist means by a bare acronym
+const NATIONAL = /\b(srbije|srbija|republick\w*|republike|vojvodine|nacionaln\w*|drzavn\w*|ministarstv\w*|vlad[ae]|narodn\w*|skupstin\w*|agencij\w*)\b/
+
+/**
+ * Names whose initials, over consecutive words, spell the acronym: "Radiodifuzna ustanova Radio Televizija Srbije" -> "Radio
+ * Televizija Srbije" for RTS. The spelled-out words must be the name itself: only a legal form may stand before them and
+ * only a legal form or the seat after them ("Medicinska škola Požarevac" is not "Ministarstvo spoljnih poslova" for MSP just
+ * because both spell it, but a word in the middle of a longer name never counts). Units (ogranak, služba) are skipped.
+ * Most likely first: national bodies, then the phrase that the most register entries share, then the shortest.
+ */
+export function acronymPhrases(acr: string, names: string[]): AcronymPhrase[] {
+	const want = asciiFold(acr).toLowerCase()
+	const found = new Map<string, AcronymPhrase>()
+	for (const name of names) {
+		if (UNIT.test(asciiFold(name))) continue
+		const words = name.split(/[\s\-–—,.;:"„“”'()/]+/).filter((w) => /\p{L}/u.test(w))
+		const folded = words.map((w) => asciiFold(w).toLowerCase())
+		const sig = words.map((w, i) => ({ i, c: folded[i][0], w: folded[i] })).filter((x) => x.c && !ACRONYM_SKIP.has(x.w))
+		for (let s = 0; s + want.length <= sig.length; s++) {
+			if (sig.slice(s, s + want.length).map((x) => x.c).join("") !== want) continue
+			const from = sig[s].i
+			const to = sig[s + want.length - 1].i
+			if (!folded.slice(0, from).every((w) => ACRONYM_PREFIX.has(w)) || !folded.slice(to + 1).every((w) => ACRONYM_SUFFIX.has(w))) continue
+			// the legal form and the seat are not part of an acronym ("Srbijagas Novi Sad" is no SNS)
+			if (ACRONYM_PREFIX.has(folded[from]) || ACRONYM_SUFFIX.has(folded[to])) continue
+			const phrase = words.slice(from, to + 1).join(" ")
+			const k = key(phrase)
+			const hit = found.get(k) ?? { phrase, entries: 0, national: NATIONAL.test(k) }
+			hit.entries++
+			found.set(k, hit)
+		}
+	}
+	const proper = (p: AcronymPhrase) => Number(/^\p{Lu}/u.test(p.phrase))
+	return [...found.values()].sort((a, b) => Number(b.national) - Number(a.national) || proper(b) - proper(a) || b.entries - a.entries || a.phrase.length - b.phrase.length)
+}
+
+/** The phrase an acronym most likely stands for, from the whole ACAS register; undefined when nothing spells it. */
+async function expandAcronym(acr: string): Promise<string | undefined> {
+	const all = await acas.allInstitutions().catch(() => [] as { id: string; name: string }[])
+	return acronymPhrases(acr, all.map((o) => o.name))[0]?.phrase
+}
+
 async function latestHeadStart(id: string, name: string): Promise<{ id: string; head?: string; last: string }> {
 	const officials = await acas.getOfficials({ acasId: id, name }).catch(() => [] as Official[])
 	const head = pickHead(officials)
@@ -250,7 +327,8 @@ async function latestHeadStart(id: string, name: string): Promise<{ id: string; 
 
 async function resolveDynamic(query: string): Promise<ResolvedInstitution> {
 	const env = await cached<ResolvedInstitution | null>("resolver", cacheKey("institution", key(query)), async () => {
-		const expanded = loadAbbreviations().get(key(query)) ?? query
+		// a known short name, else an acronym spelled out from the register ("RTS" -> "Radio Televizija Srbije", not "Galerija RTS")
+		const expanded = loadAbbreviations().get(key(query)) ?? (looksLikeAcronym(query) ? await expandAcronym(query) : undefined) ?? query
 		const restored = await apr.restoreDiacritics(expanded).catch(() => expanded)
 		const variants = [...new Set([restored, expanded, query])]
 		const primary = restored
@@ -260,6 +338,12 @@ async function resolveDynamic(query: string): Promise<ResolvedInstitution> {
 		const soft = <T,>(p: Promise<T[]>): Promise<T[]> => p.catch(() => (failed++, [] as T[]))
 		const acasAll = new Map<string, Awaited<ReturnType<typeof acas.findInstitution>>[number]>()
 		for (const hits of await Promise.all(variants.map((v) => soft(acas.findInstitution(v))))) for (const h of hits) acasAll.set(h.id, h)
+		// the register search stops at 100 rows: a body named exactly like the query can be cut off behind its own branches
+		// ("Poreska uprava" behind its hundred filijale), so the full register list is asked for that exact name too
+		const wantCore = coreTokens(primary).sort().join(" ")
+		for (const o of await acas.allInstitutions().catch(() => [] as { id: string; name: string }[])) {
+			if (!acasAll.has(o.id) && coreTokens(o.name).sort().join(" ") === wantCore) acasAll.set(o.id, { id: o.id, name: o.name, nameCyr: latToCyr(o.name), source: acasSource(o.name) })
+		}
 		const acasMatches = contenders(matchAll([...acasAll.values()], primary))
 		// the same body filed under its abbreviation ("JP EPS Beograd"): its records join the history and may hold the current head
 		for (const abbr of abbreviationsFor(primary)) {
@@ -267,9 +351,14 @@ async function resolveDynamic(query: string): Promise<ResolvedInstitution> {
 			const exact = contenders(matchAll(hits, abbr)).top.filter((m) => m.identity === "")
 			for (const m of exact) if (!acasMatches.top.some((x) => x.hit.id === m.hit.id)) acasMatches.top.push({ ...m, fromAbbreviation: true } as (typeof acasMatches.top)[number])
 		}
-		// a query made only of generic words ("Dom zdravlja", "Opsta bolnica") names hundreds of bodies: never pick one
+		// a query made only of generic words ("Dom zdravlja", "Opsta bolnica") names hundreds of bodies: never pick one, unless
+		// every match is that very name and its own branches were already dropped ("Ministarstvo zdravlja", "Poreska uprava")
 		const queryWords = nameTokens(primary)
-		if (queryWords.length > 0 && queryWords.every((w) => GENERIC_WORDS.has(w))) {
+		const onlyItself = (() => {
+			const all = matchAll([...acasAll.values()], primary)
+			return all.length > 0 && all.every((m) => m.identity === "")
+		})()
+		if (queryWords.length > 0 && queryWords.every((w) => GENERIC_WORDS.has(w)) && !onlyItself) {
 			const names = [...new Set(matchAll([...acasAll.values()], primary).map((m) => m.hit.name))].sort((a, b) => a.length - b.length)
 			throw new AmbiguousInstitutionError(query, (names.length ? names : [...new Set([...acasAll.values()].map((h) => h.name))]).slice(0, 6))
 		}
@@ -315,6 +404,8 @@ async function resolveDynamic(query: string): Promise<ResolvedInstitution> {
 			return null
 		}
 		const name = nameHit?.name ?? jnBest?.name ?? aprHit?.name ?? query
+		// an acronym nothing spelled out is taken only by a body that carries it as a word of its name
+		if (expanded === query && looksLikeAcronym(query) && !nameTokens(name).includes(asciiFold(query).toLowerCase())) return null
 		const sources: SourceRef[] = []
 		if (nameHit ?? acasBest) sources.push((nameHit ?? acasBest)!.source)
 		if (jnBest) sources.push(jnBest.source)
@@ -352,92 +443,97 @@ async function resolveDynamic(query: string): Promise<ResolvedInstitution> {
 		}
 	}, { skipWrite: (d) => d === null })
 	if (!env.data) {
-		throw new Error(`Institucija ,${query}" nije pronađena u ACAS, na Portalu javnih nabavki ni u APR. Proveri naziv (probaj i sa č, ć, š, ž, đ) ili probaj link vesti.`)
+		throw new Error(`Institucija ,${query}" nije pronađena u ACAS, na Portalu javnih nabavki ni u APR. Proveri naziv (probaj i sa č, ć, š, ž, đ).`)
 	}
 	return { ...env.data, query }
 }
+const CITIES: Record<string, string> = {
+	beograd: "Beograd", "novi sad": "Novi Sad", nis: "Niš", kragujevac: "Kragujevac", subotica: "Subotica", pancevo: "Pančevo", zrenjanin: "Zrenjanin",
+	cacak: "Čačak", kraljevo: "Kraljevo", leskovac: "Leskovac", valjevo: "Valjevo", vranje: "Vranje", sabac: "Šabac", uzice: "Užice",
+	smederevo: "Smederevo", sombor: "Sombor", pozarevac: "Požarevac", kikinda: "Kikinda", krusevac: "Kruševac", jagodina: "Jagodina",
+}
+
+/** A bare city name is the city: "Beograd" -> "Grad Beograd", "Niš" -> "Grad Niš" (but "NIS" in capitals is the oil company). */
+function cityBody(query: string): string | undefined {
+	const q = query.trim()
+	const city = CITIES[key(q)]
+	if (!city || (q.length <= 4 && q === q.toUpperCase())) return undefined
+	return `Grad ${city}`
+}
+
 export async function resolveByName(query: string): Promise<ResolvedInstitution> {
-	const s = matchStatic(query)
-	if (s) return fromStatic(s, query)
-	return resolveDynamic(query.trim())
+	const name = cityBody(query) ?? query
+	const s = matchStatic(name)
+	if (s) return { ...(await fromStatic(s, query)), query }
+	return { ...(await resolveDynamic(name.trim())), query }
 }
 
-function ngrams(title: string): string[] {
-	const words = title
-		.replace(/[„“”"',:;()–—-]/g, " ")
-		.split(/\s+/)
-		.filter(Boolean)
-	const out: string[] = []
-	for (let n = Math.min(5, words.length); n >= 2; n--) {
-		for (let i = 0; i + n <= words.length; i++) {
-			const gram = words.slice(i, i + n)
-			if (gram.some((w) => /^\p{Lu}/u.test(w))) out.push(gram.join(" "))
-		}
-	}
-	return out
+/** "Elektroprivreda Srbije (EPS)": the name without the bracket first, then as typed, then the bracket alone (an abbreviation). */
+function nameVariants(q: string): string[] {
+	const m = /^(.+?)\s*\(([^()]+)\)\s*$/.exec(q)
+	if (!m) return [q]
+	return [...new Set([m[1].trim(), q, m[2].trim()])].filter((v) => v.length >= 2)
 }
 
-function mentionedIn(text: string, officials: Official[]): MentionedOfficial[] {
-	const hay = ` ${stem(text)} `
-	const seen = new Set<string>()
-	const out: MentionedOfficial[] = []
-	for (const o of officials) {
-		if (seen.has(o.id)) continue
-		const parts = stem(o.fullName).split(" ").filter(Boolean)
-		if (parts.length >= 2 && parts.every((p) => hay.includes(` ${p}`))) {
-			seen.add(o.id)
-			out.push({ name: o.fullName, personId: o.id, position: o.position, current: !o.to })
-		}
-	}
-	return out.sort((a, b) => Number(b.current) - Number(a.current))
-}
-
-async function resolveUrl(url: string): Promise<ResolvedInstitution> {
-	const article = await news.fetchArticle(url)
-	const text = `${article.title}\n${article.text}`
-	const hay = ` ${stem(text)} `
-	let ref: ResolvedInstitution | undefined
-
-	for (const i of institutions()) {
-		const names = [i.name, searchName(i.name), i.shortName, i.officialName].filter((x): x is string => !!x)
-		const aliasKeys = [...aliases().entries()].filter(([, slug]) => slug === i.slug).map(([k]) => k)
-		const hit = [...names, ...aliasKeys].some((n) => {
-			const st = stem(n)
-			return st.length >= 8 && hay.includes(` ${st} `)
-		})
-		if (hit || (i.shortName && new RegExp(`\\b${i.shortName}\\b`).test(text))) {
-			ref = await fromStatic(i, url)
-			break
-		}
-	}
-	if (!ref) {
-		let tries = 0
-		for (const gram of ngrams(article.title)) {
-			if (tries++ >= 6) break
-			const hits = await acas.findInstitution(gram).catch(() => [])
-			if (hits[0] && nameSimilarity(hits[0].name, gram) >= 0.6) {
-				ref = await resolveDynamic(hits[0].name).catch(() => undefined)
-				if (ref) break
+/**
+ * Several bodies match the name: the most likely one is the body itself (not a branch, a unit or "Telo za centralizovane
+ * nabavke"), named with the fewest words beyond the query; a candidate that is itself ambiguous is skipped.
+ */
+async function pickAmong(query: string, err: AmbiguousInstitutionError, opts: { nationalOnly?: boolean } = {}): Promise<ResolvedInstitution> {
+	const base = nameVariants(query)[0]
+	const qt = coreTokens(base)
+	const whole = err.candidates.filter((c) => !UNIT.test(asciiFold(c)) && !isSubUnit(c, qt) && !/ - /.test(c))
+	// a generic name ("Klinički centar", "Pošta") means the national body first ("Klinički centar Srbije", "Pošta Srbije")
+	const isNational = (c: string) => NATIONAL.test(key(c))
+	const national = (c: string) => Number(isNational(c) && !isNational(base))
+	const ranked = (whole.length ? whole : err.candidates)
+		.map((c) => ({ c, extra: coreTokens(c).filter((x) => !qt.some((q) => sameWord(q, x))).length, sim: nameSimilarity(c, base) }))
+		.sort((a, b) => a.extra - b.extra || national(b.c) - national(a.c) || b.sim - a.sim || a.c.length - b.c.length)
+	// the dossier takes only a clear giant (a national body on top); anything less stays the list of candidates
+	if (opts.nationalOnly && !(ranked[0] && isNational(ranked[0].c))) throw err
+	for (const { c } of ranked.slice(0, opts.nationalOnly ? 1 : 4)) {
+		try {
+			const ref = await resolveByName(c)
+			const same = new Set([qt.join(" "), coreTokens(c).join(" "), coreTokens(ref.name).join(" ")])
+			const alternatives = new Map<string, string>()
+			for (const x of err.candidates) {
+				const k = coreTokens(x).join(" ")
+				if (!same.has(k) && !alternatives.has(k)) alternatives.set(k, x)
 			}
+			return { ...ref, query, chosen: { from: query, alternatives: [...alternatives.values()].slice(0, 5) } }
+		} catch {
+			// this candidate is ambiguous or unknown too: try the next one
 		}
 	}
-	if (!ref) throw new Error("U članku nije pronađena poznata institucija. Upiši naziv institucije ručno.")
+	throw err
+}
 
-	const officials = await acas.getOfficials({ acasId: ref.acasId, altIds: ref.acasAltIds, name: ref.name, nameCyr: ref.nameCyr }).catch(() => [] as Official[])
-	return {
-		...ref,
-		query: url,
-		article: { url: article.url, title: article.title, outlet: article.outlet, publishedAt: article.publishedAt },
-		mentionedOfficials: mentionedIn(text, officials),
+async function resolveNamed(q: string, pickBest: boolean): Promise<ResolvedInstitution> {
+	let first: unknown
+	let ambiguous: AmbiguousInstitutionError | undefined
+	for (const v of nameVariants(q)) {
+		try {
+			return { ...(await resolveByName(v)), query: q }
+		} catch (err) {
+			first ??= err
+			if (err instanceof AmbiguousInstitutionError) ambiguous ??= err
+		}
 	}
+	if (pickBest && ambiguous) return pickAmong(q, ambiguous)
+	// the dossier too takes the national body when the name clearly means it ("Pošta" -> "Pošta Srbije")
+	if (ambiguous) return pickAmong(q, ambiguous, { nationalOnly: true }).catch(() => Promise.reject(first))
+	throw first
 }
 
 const RESOLVE_TIMEOUT_MS = 75_000
 
-export async function resolveInstitution(query: string): Promise<ResolvedInstitution> {
+/** pickBest: a name that matches several bodies resolves to the most likely one instead of failing (Mapa prioriteta). */
+export async function resolveInstitution(query: string, opts: { pickBest?: boolean } = {}): Promise<ResolvedInstitution> {
 	const q = query.trim()
-	if (!q) throw new Error("Upiši instituciju ili link vesti.")
-	const work = /^https?:\/\//i.test(q) ? resolveUrl(q) : resolveByName(q)
+	if (!q) throw new Error("Upiši naziv institucije.")
+	// names only: a news link is not taken (the article text is not searched for institutions)
+	if (/^(https?:\/\/|www\.)|\.(rs|com|net|org|info)(\/|$)/i.test(q)) throw new Error("Upiši naziv institucije (ključne reči). Linkovi se ne prihvataju.")
+	const work = resolveNamed(q, !!opts.pickBest)
 	// the registers must answer: a hung lookup is an error message, not a frozen page
 	let timer: NodeJS.Timeout | undefined
 	const limit = new Promise<never>((_, reject) => {

@@ -118,6 +118,14 @@ async function startCase(inputValue) {
 		inst.classList.add("invalid")
 		return
 	}
+	// names only: a pasted link is refused here, before any request
+	if (/^(https?:\/\/|www\.)|\.(rs|com|net|org|info)(\/|$)/i.test(value)) {
+		inst.focus()
+		inst.classList.add("invalid")
+		showNotice($("topNotice"), { text: t("Upiši naziv institucije (ključne reči). Linkovi se ne prihvataju.") })
+		return
+	}
+	clearNotice($("topNotice"))
 	inst.classList.remove("invalid")
 	if (starting) return
 	starting = true

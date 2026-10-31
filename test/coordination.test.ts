@@ -9,6 +9,9 @@ process.env.DATA_MODE = "cache"
 process.env.DEMO_SPEED = "0.05"
 process.env.HUMAN_AUTO_APPROVE_MS = "0"
 process.env.DOSIJE_MODE = "scripted"
+// these cases test the owner question and the Provera cascade it starts (off in the app: owners come from CompanyWall)
+process.env.DOSIJE_ASK_HUMAN = "1"
+process.env.DOSIJE_COMPANYWALL = "0"
 
 const { applyEntryDefaults } = await import("../src/config")
 applyEntryDefaults("test")
@@ -63,7 +66,8 @@ describe("full case: owner answer 'Marko Marković, 100%', Mediji <- Revizor, ne
 		assert.ok(await waitForDone(100_000), "the dossier finished")
 		const snap = getSnapshot()
 		assert.ok(answered, "an owner question was asked")
-		const owners = snap.entities.filter((e) => e.kind === "osoba" && e.role === "vlasnik")
+		// owners the journalist entered (CompanyWall owners from a local cache may sit next to them)
+		const owners = snap.entities.filter((e) => e.kind === "osoba" && e.role === "vlasnik" && e.sources.some((src) => src.kind === "novinar"))
 		assert.deepEqual(owners.map((e) => e.name), ["Marko Marković"])
 		assert.equal(owners[0].attrs.udeo, "100%")
 		assert.ok(snap.entities.every((e) => !/\d|%/.test(e.name) || e.kind === "firma" || e.kind === "institucija"), "no entity named after a share")

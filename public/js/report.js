@@ -4,16 +4,29 @@ import { renderMarkdown } from "./markdown.js"
 import { state } from "./store.js"
 import { api } from "./api.js"
 import { toast, dismissToasts } from "./toast.js"
-import { t } from "./i18n.js"
+import { t, getLang } from "./i18n.js"
 
 let modal, body, copyBtn, titleEl
+// the Markdown on screen: the report itself, or its English translation
+let shown = ""
 
 export function openReport() {
 	if (!state.report) {
 		toast({ kind: "info", title: t("Izveštaj još nije spreman"), text: t("Pojaviće se kad agenti završe dosije.") })
 		return
 	}
-	body.innerHTML = renderMarkdown(state.report.markdown)
+	shown = state.report.markdown
+	if (getLang() === "en") {
+		body.replaceChildren(Object.assign(document.createElement("p"), { className: "empty-line", textContent: t("Prevodim izveštaj…") }))
+		const caseId = state.caseId
+		api.reportMd()
+			.then((en) => {
+				if (modal.hidden || state.caseId !== caseId || typeof en !== "string") return
+				shown = en
+				body.innerHTML = renderMarkdown(en)
+			})
+			.catch(() => !modal.hidden && (body.innerHTML = renderMarkdown(shown)))
+	} else body.innerHTML = renderMarkdown(shown)
 	titleEl.textContent = state.institution?.name ? `${t("Izveštaj")} · ${state.institution.name}` : t("Izveštaj")
 	modal.hidden = false
 	dismissToasts(".toast.done")
@@ -36,7 +49,7 @@ export async function downloadReport() {
 	const blob = new Blob([text], { type: "text/markdown;charset=utf-8" })
 	const a = document.createElement("a")
 	a.href = URL.createObjectURL(blob)
-	a.download = `dosije-${state.caseId || "izvestaj"}.md`
+	a.download = `dosije-${state.caseId || "izvestaj"}${getLang() === "en" ? "-en" : ""}.md`
 	document.body.appendChild(a)
 	a.click()
 	a.remove()
@@ -44,7 +57,7 @@ export async function downloadReport() {
 }
 
 async function copy() {
-	const text = state.report?.markdown || ""
+	const text = shown || state.report?.markdown || ""
 	try {
 		await navigator.clipboard.writeText(text)
 	} catch {

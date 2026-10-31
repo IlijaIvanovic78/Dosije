@@ -72,7 +72,7 @@ scripts/probe-<source>.ts      live probes that warm the cache              (dat
 scripts/mock-server.ts         fake SSE/REST server for UI development      (frontend)
 scripts/warm-cache.ts cli.ts   cache warmer, headless run                   (core)
 test/*.test.ts                 node:test via tsx                            (core)
-data/cache/<source>/*.json     committed demo cache (normalized, PII-free)
+data/cache/<source>/*.json     local cache of public data (normalized; gitignored, never committed)
 docs/data-sources/<source>.md  endpoint notes written by each data agent
 ```
 
@@ -137,7 +137,7 @@ Dynamic agents (spawned by the **Fabrika** participant on `entity.added`, budget
 
 | agent | trigger | tools |
 |---|---|---|
-| Firme · *firma* | `entity.added` kind=firma | `apr_firma`, `firma_signali`, `iw_veze_dobavljaca` + common (`ask_human` for owners) |
+| Firme · *firma* | `entity.added` kind=firma | `apr_firma`, `firma_signali`, `firma_vlasnici` (owners from CompanyWall by MB), `iw_veze_dobavljaca` + common (`ask_human` only with `DOSIJE_ASK_HUMAN=1`) |
 | Imovina · *osoba* | `entity.added` kind=osoba, role=funkcioner | `acas_imovina` + common |
 | Mediji · *osoba* | `entity.added` kind=osoba | `vesti_pretraga`, `vest_tekst` + common |
 | Provera · *osoba* | `entity.added` kind=osoba, role=vlasnik (usually from the journalist's answer) | `acas_pretraga_osobe`, `pep_provera` + common |

@@ -1,4 +1,4 @@
-﻿// npm test: "Mapa prioriteta" in-process (real Mozaik runtime, committed cache, no key): one Trijaža agent per institution of
+﻿// npm test: "Mapa prioriteta" in-process (real Mozaik runtime, local cache, no key): one Trijaža agent per institution of
 // the preset, all at the same time; plus the deterministic scoring and the case/map mutual exclusion.
 // Run with DATA_MODE=cache, DEMO_SPEED=0.05.
 

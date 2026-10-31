@@ -5,7 +5,7 @@ import { h, createScheduler, sourceLinks, truncate, fmtNum, fmtElapsed } from ".
 import { state, on, setView, activeCount, peakCount, elapsedMs } from "./store.js"
 import { api } from "./api.js"
 import { showNotice, clearNotice, finishCaseThen, caseBusy } from "./notice.js"
-import { t, pl, getLang, onLang } from "./i18n.js"
+import { t, tx, pl, getLang, langKey, onLang, onTx } from "./i18n.js"
 
 const MAX_SCORE = 100 // bar scale: at least 100 points, or the highest score on screen
 const rows = new Map() // slug -> { root, parts, sig }
@@ -82,9 +82,11 @@ function buildRow(slug) {
 
 function detailNodes(r) {
 	const nodes = []
-	if (r.status === "error") nodes.push(h("p", { class: "m-err" }, `${t("Greška")}: ${r.error || t("trijaža nije uspela")}`))
-	if (r.summary) nodes.push(h("p", { class: "m-sum" }, r.summary))
-	if (r.reasons?.length) nodes.push(h("ul", { class: "m-reasons" }, r.reasons.map((x) => h("li", null, x))))
+	if (r.status === "error") nodes.push(h("p", { class: "m-err" }, `${t("Greška")}: ${tx(r.error) || t("trijaža nije uspela")}`))
+	if (r.alternatives?.length && r.resolvedName)
+		nodes.push(h("p", { class: "m-sum" }, t("Naziv odgovara i drugim ustanovama ({list}); izabrana je {name}.", { list: r.alternatives.join("; "), name: r.resolvedName })))
+	if (r.summary) nodes.push(h("p", { class: "m-sum" }, tx(r.summary)))
+	if (r.reasons?.length) nodes.push(h("ul", { class: "m-reasons" }, r.reasons.map((x) => h("li", null, tx(x)))))
 	else if (r.status !== "error") nodes.push(h("p", { class: "m-none" }, r.status === "done" ? t("Nijedan signal nije prešao prag; ocena 0.") : t("Agent još proverava izvore…")))
 	if (r.sources?.length) nodes.push(sourceLinks(r.sources))
 	const busy = mapaRunning()
@@ -102,7 +104,7 @@ function detailNodes(r) {
 async function openDosije(r) {
 	clearNotice(el.notice)
 	try {
-		await api.start(r.name)
+		await api.start(r.resolvedName || r.name)
 		setView("dosije")
 	} catch (e) {
 		showNotice(el.notice, { text: `${t("Dosije nije pokrenut.")} ${e.message}` })
@@ -137,7 +139,7 @@ function vezaLine(v) {
 
 function updateRow(rec, r, rank, max, shared) {
 	const busy = mapaRunning()
-	const sig = JSON.stringify([getLang(), r, rank, max, open.has(r.slug), busy, shared.map((v) => v.key)])
+	const sig = JSON.stringify([langKey(), r, rank, max, open.has(r.slug), busy, shared.map((v) => v.key)])
 	if (rec.sig === sig) return
 	rec.sig = sig
 	const p = rec.parts
@@ -148,7 +150,8 @@ function updateRow(rec, r, rank, max, shared) {
 	p.rk.textContent = rank ? String(rank) : "·"
 	p.rk.classList.toggle("prov", !!rank && r.status !== "done")
 	p.name.textContent = r.name
-	p.sub.textContent = r.status === "error" ? "" : r.summary ? "" : r.status === "running" ? t("agent proverava izvore") : r.status === "queued" ? t("u redu") : ""
+	const picked = r.alternatives?.length && r.resolvedName ? `→ ${r.resolvedName}` : ""
+	p.sub.textContent = r.status === "error" ? "" : picked || (r.summary ? "" : r.status === "running" ? t("agent proverava izvore") : r.status === "queued" ? t("u redu") : "")
 	p.num.textContent = fmtNum(r.score)
 	p.bar.style.width = `${Math.min(100, (r.score / max) * 100)}%`
 	const chips = chipsOf(r.signals)
@@ -312,6 +315,7 @@ export function initMapa() {
 		}
 		schedule()
 	})
+	onTx(schedule)
 	onLang(() => {
 		for (const rec of rows.values()) rec.sig = ""
 		schedule()

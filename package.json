@@ -24,10 +24,12 @@
     "csv-parse": "^7.0.3",
     "dotenv": "^18.0.9",
     "fast-xml-parser": "^5.11.2",
-    "unpdf": "^2.1.0"
+    "unpdf": "^2.1.0",
+    "ws": "^8.22.0"
   },
   "devDependencies": {
     "@types/node": "^26.6.6",
+    "@types/ws": "^8.18.2",
     "tsx": "^4.23.15",
     "typescript": "^7.0.2"
   }

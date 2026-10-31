@@ -4,7 +4,7 @@
 import { h, reconcile, createScheduler, avatar, truncate } from "./format.js"
 import { state, on, now, openTasks, setFilter, CORE_ORDER } from "./store.js"
 import { focusDecisions } from "./inbox.js"
-import { t, pl, getLang, onLang } from "./i18n.js"
+import { t, pl, getLang, onLang, onTx, tx, agentName } from "./i18n.js"
 
 const DYN_GROUPS = [
 	{ id: "trijaza", label: "Trijaža" },
@@ -39,7 +39,7 @@ export function laneStatus(lane, now_) {
 	if (lane.blockedUntil > now_) return { k: "blocked", label: t("blokirano") }
 	let req = null
 	for (const r of lane.reqs.values()) req = r
-	if (req) return { k: "tool", label: `${req.source} · ${req.label} …` }
+	if (req) return { k: "tool", label: `${req.source} · ${tx(req.label)} …` }
 	let tool = null
 	for (const seg of lane.tools.values()) tool = seg
 	if (tool) return { k: "tool", label: `${t("alat")}: ${truncate(tool.label, 28)}` }
@@ -51,11 +51,11 @@ export function laneStatus(lane, now_) {
 }
 
 function spawnerName(info) {
-	return (info.spawnedBy && state.agents.get(info.spawnedBy)?.name) || ""
+	return agentName((info.spawnedBy && state.agents.get(info.spawnedBy)?.name) || "")
 }
 
 function spawnText(info) {
-	return t("pokrenuo: {ev} · {by}", { ev: info.group === "trijaza" ? "mapa.started" : "entity.added", by: spawnerName(info) || "Fabrika" })
+	return t("pokrenuo: {ev} · {by}", { ev: info.group === "trijaza" ? "mapa.started" : "entity.added", by: spawnerName(info) || agentName("Fabrika") })
 }
 
 function buildLane(lane) {
@@ -68,7 +68,7 @@ function buildLane(lane) {
 		{
 			class: `lane ${kind}${info.dynamic ? " is-dyn" : ""}`,
 			dataset: { lane: info.id },
-			title: [info.description || info.name, info.dynamic ? spawnText(info) : ""].filter(Boolean).join("\n"),
+			title: [tx(info.description) || agentName(info.name), info.dynamic ? spawnText(info) : ""].filter(Boolean).join("\n"),
 			tabindex: "0",
 			role: "button",
 			"aria-pressed": "false",
@@ -80,7 +80,7 @@ function buildLane(lane) {
 				}
 			},
 		},
-		h("div", { class: "lane-top" }, h("i", { class: "adot" }), avatar(info), h("span", { class: "lane-name" }, info.name), spawn, status),
+		h("div", { class: "lane-top" }, h("i", { class: "adot" }), avatar(info), h("span", { class: "lane-name" }, agentName(info.name)), spawn, status),
 		h("div", { class: "lane-track" }),
 	)
 	const rec = { root, status, spawn, sig: "", spawnSig: "" }
@@ -101,14 +101,14 @@ function updateLane(lane, tm) {
 	}
 	const recent = state.live && lane.info.dynamic && lane.spawnT && tm - lane.spawnT < 10000
 	const reacting = state.live && lane.reactT && tm - lane.reactT < 10000
-	const note = reacting ? `${t("reaguje na nalaz")}${lane.reactFrom ? ` · ${lane.reactFrom}` : ""}` : recent ? spawnText(lane.info) : ""
+	const note = reacting ? `${t("reaguje na nalaz")}${lane.reactFrom ? ` · ${agentName(lane.reactFrom)}` : ""}` : recent ? spawnText(lane.info) : ""
 	if (rec.spawnSig !== note) {
 		rec.spawnSig = note
 		rec.spawn.textContent = note
 	}
 	rec.root.classList.toggle("selected", state.filters.agentId === lane.id)
 	rec.root.setAttribute("aria-pressed", String(state.filters.agentId === lane.id))
-	const label = `${lane.info.name}: ${st.label}`
+	const label = `${agentName(lane.info.name)}: ${st.label}`
 	if (rec.label !== label) {
 		rec.label = label
 		rec.root.setAttribute("aria-label", label)
@@ -149,11 +149,12 @@ function render() {
 	// during a map only the agents that took part are shown (the case agents would sit idle)
 	const idleInMap = (l) => state.runKind === "mapa" && !l.segs.length && !l.loopsOpen
 	const all = [...state.lanes.values()]
-	const human = all.filter((l) => classify(l.info) === "human" && !idleInMap(l))
+	// the journalist's lane only shows waits for the user: nothing waits for the user unless the server asks (config.asksUser)
+	const human = state.config?.asksUser ? all.filter((l) => classify(l.info) === "human" && !idleInMap(l)) : []
 	const core = all.filter((l) => classify(l.info) === "core" && !idleInMap(l)).sort(laneSort)
 	const dyn = all.filter((l) => classify(l.info) === "dyn")
 
-	for (const l of all) if (!rows.has(l.id) && classify(l.info) !== "obs") buildLane(l)
+	for (const l of [...human, ...core, ...dyn]) if (!rows.has(l.id)) buildLane(l)
 
 	reconcile(coreEl, [...human, ...core].map((l) => rows.get(l.id).root))
 
@@ -175,7 +176,7 @@ function render() {
 	dynEmptyEl.hidden = dynEls.length > 0
 	dynEl.hidden = dynEls.length === 0
 
-	for (const l of all) updateLane(l, tm)
+	for (const l of all) if (rows.has(l.id)) updateLane(l, tm)
 	wrapEl.classList.toggle("is-mapa", state.runKind === "mapa")
 	renderBanner()
 }
@@ -200,6 +201,8 @@ export function initLanes() {
 		}
 		schedule()
 	})
+	// a translation batch: status lines show the translated source labels (their signature is the text itself)
+	onTx(schedule)
 	onLang(() => {
 		for (const r of rows.values()) r.root.remove()
 		rows.clear()

@@ -113,11 +113,11 @@ async function matchFirmProfile(q: { pib?: string; mb?: string; name?: string })
 		const p = await apr.getCompany({ name: q.name })
 		const hint = legalFormOf(q.name)
 		if (p && (!hint || !p.legalForm || p.legalForm === hint)) {
-			return { profile: p, basis: "jasno poklapanje naziva u APR (PIB nije u otvorenim podacima APR); proveriti MB" }
+			return { profile: p, basis: "jasno poklapanje naziva u APR (PIB nije u otvorenim podacima APR); MB nije potvrđen" }
 		}
 		const wide = await apr.searchCompanies(q.name, 12)
 		const seat = pickBySeat(q.name, hint, wide)
-		if (seat) return { profile: seat.profile, basis: "naziv, pravni oblik i sedište poklapaju se samo sa jednom firmom u APR (PIB nije u otvorenim podacima APR); proveriti MB" }
+		if (seat) return { profile: seat.profile, basis: "naziv, pravni oblik i sedište poklapaju se samo sa jednom firmom u APR (PIB nije u otvorenim podacima APR); MB nije potvrđen" }
 		const cands = wide.slice(0, 3)
 		return {
 			profile: null,
@@ -182,14 +182,14 @@ export async function analyzeFirm(inst: InstLike, query: { pib?: string; mb?: st
 				code: "UGOVOR_VECI_OD_PRIHODA",
 				label: "Ugovor veći od godišnjeg prihoda",
 				severity: "paznja",
-				detail: `Najveći samostalni ugovor sa institucijom (${formatDate(bigSole.signedAt)}) vredi ${formatRsd(bigSole.valueRsd)}, više od ukupnih prihoda firme za ${year}. godinu prema APR (${formatRsd(profile.revenueRsd)}). Ugovor može trajati više godina; signal za proveru.`,
+				detail: `Najveći samostalni ugovor sa institucijom (${formatDate(bigSole.signedAt)}) vredi ${formatRsd(bigSole.valueRsd)}, više od ukupnih prihoda firme za ${year}. godinu prema APR (${formatRsd(profile.revenueRsd)}). Ugovor može trajati više godina; signal.`,
 			})
 		} else if (inYear > profile.revenueRsd) {
 			signals.push({
 				code: "UGOVOR_VECI_OD_PRIHODA",
 				label: "Ugovori u jednoj godini veći od prihoda",
 				severity: "paznja",
-				detail: `Samostalni ugovori potpisani ${year}. godine vrede ${formatRsd(inYear)}, više od ukupnih prihoda firme za ${year}. prema APR (${formatRsd(profile.revenueRsd)}). Signal za proveru.`,
+				detail: `Samostalni ugovori potpisani ${year}. godine vrede ${formatRsd(inYear)}, više od ukupnih prihoda firme za ${year}. prema APR (${formatRsd(profile.revenueRsd)}). Signal.`,
 			})
 		}
 	}
@@ -235,7 +235,7 @@ export async function analyzeFirm(inst: InstLike, query: { pib?: string; mb?: st
 			code: "POLITICKA_VEZA",
 			label: "Označen u bazi Integrity Watch Srbija",
 			severity: "signal",
-			detail: `Baza Integrity Watch Srbija (Transparentnost Srbija) označava firmu kao: ${kinds}. Označenih ugovora kod ove institucije: ${contractsHere}${soleValue > 0 ? `, vrednost samostalnih ugovora ${formatRsd(soleValue)}` : ""}. ${basis ? `Osnov povezivanja koji navodi baza (članak pominje firmu): ${basis}. ` : ""}Otvoreni podaci ne imenuju funkcionera ni stranku; podatak zahteva proveru.`,
+			detail: `Baza Integrity Watch Srbija (Transparentnost Srbija) označava firmu kao: ${kinds}. Označenih ugovora kod ove institucije: ${contractsHere}${soleValue > 0 ? `, vrednost samostalnih ugovora ${formatRsd(soleValue)}` : ""}. ${basis ? `Osnov povezivanja koji navodi baza (članak pominje firmu): ${basis}. ` : ""}Otvoreni podaci ne imenuju funkcionera ni stranku; podatak nije potvrđen iz drugog izvora.`,
 		})
 	} else if (elsewhere.length > 0) {
 		const kinds = [...new Set(elsewhere.map((l) => l.linkType))].join(" i ")
@@ -243,7 +243,7 @@ export async function analyzeFirm(inst: InstLike, query: { pib?: string; mb?: st
 			code: "POLITICKA_VEZA",
 			label: "Označen u bazi Integrity Watch Srbija kod drugih naručilaca",
 			severity: "paznja",
-			detail: `Baza Integrity Watch Srbija označava firmu kao: ${kinds}, ali kod drugih naručilaca (${[...new Set(elsewhere.map((l) => l.contractingAuthority).filter(Boolean))].slice(0, 2).join("; ")}), ne kod ove institucije. Podatak zahteva proveru.`,
+			detail: `Baza Integrity Watch Srbija označava firmu kao: ${kinds}, ali kod drugih naručilaca (${[...new Set(elsewhere.map((l) => l.contractingAuthority).filter(Boolean))].slice(0, 2).join("; ")}), ne kod ove institucije. Podatak nije potvrđen iz drugog izvora.`,
 		})
 	}
 	const sources: SourceRef[] = []

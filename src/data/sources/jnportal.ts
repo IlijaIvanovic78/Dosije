@@ -360,18 +360,24 @@ export async function findAuthority(nameOrPib: string): Promise<AuthorityRef[]> 
 		const cyr = latToCyr(q)
 		const run = (filter: unknown) =>
 			grid<RawContractor>("ContractorsPublic", { filter: JSON.stringify(filter), skip: "0", take: "50", requireTotalCount: "true" })
-		let rows: RawContractor[]
+		let rows: RawContractor[] = []
 		if (isPib) rows = (await run(["IdentificationNumber", "=", q])).data
 		else {
-			rows = (await run(["Name", "contains", cyr])).data
-			if (rows.length === 0) {
-				const words = cyr.split(/\s+/).filter((w) => w.length > 3)
-				if (words.length > 1) {
-					const f: unknown[] = []
-					for (const w of words) f.push(["Name", "contains", w], "and")
-					f.pop()
-					rows = (await run(f)).data
+			// most authorities are registered in Cyrillic, some in Latin ("AKCIONARSKO DRUŠTVO ELEKTROMREŽA SRBIJE"): both scripts,
+			// first the whole name, then every longer word
+			const lat = cyrToLat(q)
+			for (const script of [cyr, lat]) {
+				rows = (await run(["Name", "contains", script])).data
+				if (rows.length === 0) {
+					const words = script.split(/\s+/).filter((w) => w.length > 3)
+					if (words.length > 1) {
+						const f: unknown[] = []
+						for (const w of words) f.push(["Name", "contains", w], "and")
+						f.pop()
+						rows = (await run(f)).data
+					}
 				}
+				if (rows.length) break
 			}
 		}
 		return rows

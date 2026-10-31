@@ -197,6 +197,20 @@ export class DosijeState extends RuntimeState {
 		}
 	}
 
+	/** Drop the case and the map (a one-time search whose page was closed): back to the empty start state. */
+	resetIdle(): void {
+		this.generation++
+		this.caseId = null
+		this.status = "idle"
+		this.input = undefined
+		this.focus = undefined
+		this.institution = undefined
+		this.institutionRef = undefined
+		this.mentioned = []
+		this.clearRun()
+		this.mapa = new MapaState()
+	}
+
 	// ─── map lifecycle ("Mapa prioriteta") ─────────────────────────────────
 
 	/** A map replaces whatever case is on screen (the two are mutually exclusive); the previous map's rows are dropped. */

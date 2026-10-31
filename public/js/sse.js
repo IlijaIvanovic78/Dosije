@@ -1,63 +1,105 @@
-// EventSource with auto-reconnect; re-fetches /api/state after every reconnect.
-// Browsers allow about six connections per server over HTTP/1.1 and every open tab keeps one stream open, so a tab
-// that stays in the background gives its stream back and reconnects (snapshot + replay) when it is shown again.
+// Live stream from the server: a WebSocket (/api/ws), with SSE (/api/events) only as a fallback when WebSockets cannot
+// connect. Browsers keep at most six HTTP/1.1 connections per server; SSE streams of a few open tabs used to take all six,
+// so every other request (start a case, a map, the state) waited forever ("povezujem…"). A WebSocket does not count
+// toward those six. The server sends the snapshot and the replay of the current run on every (re)connect.
 
-import { api } from "./api.js"
 import { applyEvent, applySnapshot, applyStats, setConn } from "./store.js"
 
-const HIDDEN_GRACE_MS = 15000
+const RETRY_MS = 1500
+const WS_FAILS_BEFORE_SSE = 3
+const SSE_HIDDEN_GRACE_MS = 15000
 
+let ws = null
 let es = null
-let hadError = false
+let wsFails = 0
+let retryTimer = null
 let hiddenTimer = null
 
-function parse(e) {
+function parse(text) {
 	try {
-		return JSON.parse(e.data)
+		return JSON.parse(text)
 	} catch {
 		return null
 	}
 }
 
-export function startStream() {
-	if (es) es.close()
+function dispatch(event, data) {
+	if (data == null) return
+	if (event === "snapshot") applySnapshot(data)
+	else if (event === "ev") applyEvent(data)
+	else if (event === "evs") for (const ev of data) applyEvent(ev)
+	else if (event === "stats") applyStats(data)
+}
+
+function retry() {
+	clearTimeout(retryTimer)
+	retryTimer = setTimeout(startStream, RETRY_MS)
+}
+
+function startWs() {
+	const sock = new WebSocket(`${location.protocol === "https:" ? "wss" : "ws"}://${location.host}/api/ws`)
+	ws = sock
+	let opened = false
+	sock.addEventListener("open", () => {
+		if (sock !== ws) return
+		opened = true
+		wsFails = 0
+		setConn("up")
+	})
+	sock.addEventListener("message", (m) => {
+		if (sock !== ws) return
+		const msg = parse(m.data)
+		if (msg) dispatch(msg.e, msg.d)
+	})
+	sock.addEventListener("close", () => {
+		if (sock !== ws) return
+		ws = null
+		if (!opened) wsFails++
+		setConn("down")
+		retry()
+	})
+}
+
+function startSse() {
 	const src = new EventSource("/api/events")
 	es = src
-
-	src.addEventListener("open", async () => {
-		if (src !== es) return
-		setConn("up")
-		if (hadError) {
-			hadError = false
-			try {
-				applySnapshot(await api.state())
-			} catch (e) {
-				console.warn("state re-fetch failed", e)
-			}
-		}
-	})
+	src.addEventListener("open", () => src === es && setConn("up"))
 	src.addEventListener("error", () => {
 		if (src !== es) return
-		hadError = true
 		setConn("down")
-		// a hidden tab reconnects when it is shown again
-		if (src.readyState === EventSource.CLOSED && !document.hidden) setTimeout(() => src === es && startStream(), 2000)
+		if (src.readyState === EventSource.CLOSED) {
+			es = null
+			if (!document.hidden) retry()
+		}
 	})
-	src.addEventListener("snapshot", (e) => applySnapshot(parse(e)))
-	src.addEventListener("ev", (e) => applyEvent(parse(e)))
-	src.addEventListener("stats", (e) => applyStats(parse(e)))
+	for (const event of ["snapshot", "ev", "stats"]) src.addEventListener(event, (e) => src === es && dispatch(event, parse(e.data)))
 }
 
-function pause() {
-	if (!es) return
-	es.close()
-	es = null
-	hadError = true // the reconnect re-fetches the state
-	setConn("paused")
+export function startStream() {
+	clearTimeout(retryTimer)
+	if (ws) {
+		const old = ws
+		ws = null
+		old.close()
+	}
+	if (es) {
+		es.close()
+		es = null
+	}
+	if (typeof WebSocket !== "undefined" && wsFails < WS_FAILS_BEFORE_SSE) startWs()
+	else startSse()
 }
 
+// only the SSE fallback holds one of the six HTTP connections: a hidden tab gives it back and reconnects when shown
 document.addEventListener("visibilitychange", () => {
 	clearTimeout(hiddenTimer)
-	if (document.hidden) hiddenTimer = setTimeout(pause, HIDDEN_GRACE_MS)
-	else if (!es || es.readyState === EventSource.CLOSED) startStream()
+	if (document.hidden) {
+		if (es)
+			hiddenTimer = setTimeout(() => {
+				if (!es) return
+				es.close()
+				es = null
+				setConn("paused")
+			}, SSE_HIDDEN_GRACE_MS)
+	} else if (!ws && !es) startStream()
 })
