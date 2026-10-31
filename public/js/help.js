@@ -62,12 +62,14 @@ export function initSources() {
 	}
 
 	const strip = track.parentElement
-	let onScreen = false
 	let heldUntil = 0
-	new IntersectionObserver(([entry]) => (onScreen = entry.isIntersecting)).observe(strip)
 	for (const ev of ["pointerdown", "touchstart", "wheel"]) strip.addEventListener(ev, () => (heldUntil = Date.now() + AFTER_TOUCH_MS), { passive: true })
+	const onScreen = () => {
+		const r = strip.getBoundingClientRect()
+		return r.height > 0 && r.bottom > 0 && r.top < window.innerHeight
+	}
 	setInterval(() => {
-		if (!PHONE.matches || STILL.matches || !onScreen || document.hidden || Date.now() < heldUntil) return
+		if (!PHONE.matches || STILL.matches || document.hidden || Date.now() < heldUntil || !onScreen()) return
 		const card = track.querySelector(".src-card")
 		const atEnd = strip.scrollLeft + strip.clientWidth >= strip.scrollWidth - 4
 		if (atEnd) strip.scrollTo({ left: 0, behavior: "smooth" })
