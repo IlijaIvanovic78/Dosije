@@ -1,0 +1,11 @@
+node_modules
+.git
+.env
+.claude
+out
+scratch
+data/cache
+data/raw
+docs
+test
+*.log

@@ -824,6 +824,15 @@ body[data-view="case"] #hero {
 	grid-column: 2;
 	grid-row: 1;
 }
+/* one column only (see the 1020px block): the switch between the dossier and the team (js/panes.js) */
+.pane-switch {
+	display: none;
+}
+@keyframes ps-pulse {
+	50% {
+		opacity: 0.35;
+	}
+}
 
 /* ─── start screen ──────────────────────────────────────────────────────── */
 
@@ -3476,11 +3485,85 @@ body[data-view="case"] #hero {
 	}
 	.team {
 		border-right: 0;
-		border-top: 1px solid var(--rule);
 		padding: 18px;
 	}
 	.live {
 		max-height: 60vh;
+	}
+	/* one pane at a time: the dossier (or the comparison) or the team, chosen with the switch under the run bar */
+	body[data-view="case"] .pane-switch {
+		position: sticky;
+		top: 0;
+		z-index: 6;
+		display: flex;
+		gap: 6px;
+		padding: 8px 14px;
+		background: var(--surface);
+		border-bottom: 1px solid var(--rule);
+	}
+	body[data-pane="team"] .board > .doc,
+	body[data-pane="doc"] .board > .team {
+		display: none;
+	}
+	.ps-btn {
+		flex: 1 1 0;
+		min-width: 0;
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		gap: 7px;
+		height: 38px;
+		padding: 0 10px;
+		border: 1px solid var(--rule-strong);
+		border-radius: 8px;
+		background: var(--surface);
+		color: var(--ink-2);
+		font: 600 14.5px/1 var(--sans);
+		white-space: nowrap;
+		cursor: pointer;
+		transition: background 0.15s, color 0.15s, border-color 0.15s;
+	}
+	.ps-btn[aria-selected="true"] {
+		background: var(--ink);
+		border-color: var(--ink);
+		color: #fbf8f2;
+	}
+	.ps-lbl {
+		min-width: 0;
+		overflow: hidden;
+		text-overflow: ellipsis;
+	}
+	.ps-badge {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		min-width: 20px;
+		height: 20px;
+		padding: 0 6px;
+		border-radius: 10px;
+		background: var(--sunk);
+		color: var(--ink-2);
+		font-size: 11.5px;
+		font-weight: 700;
+	}
+	.ps-btn[aria-selected="true"] .ps-badge {
+		background: rgba(255, 255, 255, 0.16);
+		color: #fbf8f2;
+	}
+	.ps-dot {
+		display: none;
+		width: 7px;
+		height: 7px;
+		border-radius: 50%;
+		background: var(--accent-soft);
+	}
+	.ps-btn.is-live .ps-dot {
+		display: inline-block;
+		animation: ps-pulse 1.4s ease-in-out infinite;
+	}
+	/* the findings tabs stick under the switch */
+	body[data-view="case"] .tabs-bar {
+		top: 55px;
 	}
 	.mhead {
 		display: none;
@@ -3662,6 +3745,18 @@ body[data-view="case"] #hero {
 	.step:not(.is-active) .step-txt {
 		display: none;
 	}
+	/* a card's hint goes under its title instead of squeezing it onto two lines */
+	.card-head {
+		flex-wrap: wrap;
+		row-gap: 2px;
+	}
+	/* an agent's lane keeps room for its name: no "new" badge, a shorter status */
+	.lane-spawn {
+		display: none;
+	}
+	.lane-status {
+		max-width: 38%;
+	}
 	/* a signal's status goes under its title, so the title keeps the width */
 	.sig-row {
 		grid-template-columns: 26px minmax(0, 1fr);
@@ -3718,6 +3813,30 @@ body[data-view="case"] #hero {
 	.srow .rs {
 		grid-column: 2;
 		justify-self: start;
+	}
+}
+
+/* the smallest phones (320–400 px): the top bar stays on one line (the logo starts a new dossier, like "+") */
+@media (max-width: 400px) {
+	#btnNew {
+		display: none;
+	}
+	.topbar {
+		padding: 0 8px;
+	}
+	.nav-tab {
+		padding: 0 6px;
+	}
+	.top-right {
+		gap: 6px;
+	}
+	.ps-btn {
+		gap: 6px;
+		padding: 0 8px;
+		font-size: 14px;
+	}
+	.ps-unit {
+		display: none;
 	}
 }
 

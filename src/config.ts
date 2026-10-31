@@ -27,6 +27,24 @@ export interface Config {
 	port: number
 	idleMs: number
 	questionGraceMs: number
+	/** the server gives every visitor a session of their own: a complete engine in its own worker thread (src/session/) */
+	sessions: {
+		/** most sessions at once (each is a worker with its own memory); a visitor past the limit sees the "server is full" page */
+		max: number
+		/** booted, unclaimed workers kept ready so a new visitor does not wait for the engine to start */
+		warm: number
+		/** heap limit of one session's worker: a runaway session ends alone instead of taking the server down */
+		memoryMb: number
+		/** a session whose last page closed is dropped after this many ms (a reload keeps it) */
+		abandonMs: number
+		/** when the server is full, a session with no activity for this many ms makes room for a new visitor */
+		idleEvictMs: number
+	}
+	/** limits shared by all sessions (per-session limits stay as they are: LLM_CONCURRENCY, 4 requests per host) */
+	shared: {
+		llmConcurrency: number
+		requestsPerHost: number
+	}
 	budget: {
 		maxFirme: number
 		maxOsobe: number
@@ -80,6 +98,17 @@ function loadConfig(): Config {
 		port: num("PORT", 3000),
 		idleMs: num("DOSIJE_IDLE_MS", 2500),
 		questionGraceMs: Math.max(0, num("DOSIJE_QUESTION_GRACE_MS", 30_000)),
+		sessions: {
+			max: Math.max(1, num("DOSIJE_MAX_SESSIONS", 24)),
+			warm: Math.max(0, num("DOSIJE_WARM_SESSIONS", 1)),
+			memoryMb: Math.max(128, num("DOSIJE_SESSION_MEMORY_MB", 768)),
+			abandonMs: Math.max(1000, num("DOSIJE_ABANDON_MS", 60_000)),
+			idleEvictMs: Math.max(10_000, num("DOSIJE_IDLE_EVICT_MS", 10 * 60_000)),
+		},
+		shared: {
+			llmConcurrency: Math.max(1, num("LLM_CONCURRENCY_TOTAL", 32)),
+			requestsPerHost: Math.max(1, num("HTTP_PER_HOST_TOTAL", 8)),
+		},
 		budget: {
 			maxFirme: num("DOSIJE_MAX_FIRME", 8),
 			maxOsobe: num("DOSIJE_MAX_OSOBE", 6),

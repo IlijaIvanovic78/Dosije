@@ -108,6 +108,11 @@
 			</section>
 
 			<div id="board" class="board">
+				<!-- one column (phones): the dossier or the agent team, one at a time (js/panes.js); hidden on wide screens -->
+				<div id="paneSwitch" class="pane-switch" role="tablist" aria-label="Dosije ili tim agenata" data-i18n-attr="aria-label">
+					<button type="button" class="ps-btn" role="tab" data-pane="doc" aria-selected="true" aria-controls="dosijePanel"><span class="ps-lbl">Dosije</span><span class="ps-badge" hidden></span></button>
+					<button type="button" class="ps-btn" role="tab" data-pane="team" aria-selected="false" aria-controls="teamPanel" tabindex="-1"><span class="ps-dot" aria-hidden="true"></span><span class="ps-lbl" data-i18n>Tim agenata</span><span class="ps-badge" hidden></span></button>
+				</div>
 				<section id="mapaPanel" class="col doc mapa" aria-label="Poređenje institucija" data-i18n-attr="aria-label" hidden>
 					<div id="mapaScroll" class="doc-scroll">
 						<header class="doc-head mapa-head">

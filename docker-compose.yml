@@ -1,0 +1,32 @@
+# Dosije for a public demo: up to 24 visitors at once, each with an engine of their own (see src/session/).
+#   docker compose up -d --build        then nginx in front (deploy/server-setup.sh, deploy/domain-setup.sh)
+# Keys and models come from .env (OPENAI_API_KEY, ...); without a key the agents run in scripted mode.
+services:
+  dosije:
+    build: .
+    image: dosije:latest
+    restart: unless-stopped
+    init: true
+    env_file: .env
+    environment:
+      PORT: "3000"
+      DOSIJE_MAX_SESSIONS: "24"
+      DOSIJE_WARM_SESSIONS: "2"
+      DOSIJE_SESSION_MEMORY_MB: "768"
+      LLM_CONCURRENCY_TOTAL: "32"
+      HTTP_PER_HOST_TOTAL: "8"
+      TZ: Europe/Belgrade
+    ports:
+      - "127.0.0.1:3100:3000"
+    volumes:
+      - ./data/cache:/app/data/cache
+    # the whole app, every session included, stays inside this; the rest of the server keeps its memory
+    mem_limit: 5g
+    cpus: 3.5
+    security_opt:
+      - no-new-privileges:true
+    logging:
+      driver: json-file
+      options:
+        max-size: "20m"
+        max-file: "5"

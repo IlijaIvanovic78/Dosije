@@ -9,6 +9,7 @@ import zlib from "node:zlib"
 import type { SourceRef } from "../../shared/types"
 import type { CompanyProfile } from "../types"
 import { asciiFold, cyrToLat, nameSimilarity } from "../translit"
+import { viaDataWorker } from "../../session/shared"
 import { aprNormalize } from "./aprNames"
 
 export const APR_INDEX_FILE = path.resolve(process.cwd(), "data", "static", "apr-index.json.gz")
@@ -216,7 +217,7 @@ function findByName(idx: Loaded, name: string, lenient: boolean): string | null 
  * (token similarity >= 0.8). A PIB alone returns null: the open data has no PIB and there is no legal
  * PIB -> MB mapping.
  */
-export async function getCompany(q: { mb?: string; pib?: string; name?: string }): Promise<CompanyProfile | null> {
+async function getCompanyHere(q: { mb?: string; pib?: string; name?: string }): Promise<CompanyProfile | null> {
 	const idx = await loadIndex()
 	if (!idx) return null
 	if (q.mb) {
@@ -242,7 +243,7 @@ export interface CompanyCandidate {
  * Ranking: normalized-name equality, then "every query token is in the name", then token similarity >= 0.6.
  * Small tie-breaks: same municipality as `opts.municipality`, active status.
  */
-export async function searchCompanies(name: string, limit = 5, opts: { municipality?: string } = {}): Promise<CompanyCandidate[]> {
+async function searchCompaniesHere(name: string, limit = 5, opts: { municipality?: string } = {}): Promise<CompanyCandidate[]> {
 	const idx = await loadIndex()
 	if (!idx) return []
 	const qn = aprNormalize(name)
@@ -287,7 +288,7 @@ export async function searchCompanies(name: string, limit = 5, opts: { municipal
 }
 
 /** Like getCompany by name, but also accepts a shorter name contained in the official one (active companies only). */
-export async function findInstitutionCompany(name: string): Promise<CompanyProfile | null> {
+async function findInstitutionCompanyHere(name: string): Promise<CompanyProfile | null> {
 	const idx = await loadIndex()
 	if (!idx) return null
 	const mb = findByName(idx, name, true)
@@ -331,7 +332,7 @@ function loadVocabulary(): Promise<Map<string, string> | null> {
 }
 
 /** Restores č ć š ž đ in ASCII-only words that the registers spell with them. Words that already have diacritics or Cyrillic stay. */
-export async function restoreDiacritics(text: string): Promise<string> {
+async function restoreDiacriticsHere(text: string): Promise<string> {
 	const vocab = await loadVocabulary()
 	if (!vocab) return text
 	return text.replace(/\p{L}+/gu, (w) => {
@@ -342,3 +343,12 @@ export async function restoreDiacritics(text: string): Promise<string> {
 		return w[0] === w[0].toUpperCase() ? form[0].toUpperCase() + form.slice(1) : form
 	})
 }
+// ─── one index for every session ─────────────────────────────────────────────
+// On the server each visitor's engine is a worker of its own; the index is kept once, in the data worker, and these
+// calls go there (src/session/shared.ts). In the CLI and the tests they run here.
+
+export const getCompany = (...a: Parameters<typeof getCompanyHere>) => viaDataWorker("apr.getCompany", a, () => getCompanyHere(...a))
+export const searchCompanies = (...a: Parameters<typeof searchCompaniesHere>) => viaDataWorker("apr.searchCompanies", a, () => searchCompaniesHere(...a))
+export const findInstitutionCompany = (...a: Parameters<typeof findInstitutionCompanyHere>) =>
+	viaDataWorker("apr.findInstitutionCompany", a, () => findInstitutionCompanyHere(...a))
+export const restoreDiacritics = (...a: Parameters<typeof restoreDiacriticsHere>) => viaDataWorker("apr.restoreDiacritics", a, () => restoreDiacriticsHere(...a))

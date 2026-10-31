@@ -342,6 +342,7 @@ const EN = {
 	"Propis": "Regulation",
 	// ─── team and timeline ───
 	"Tim agenata": "Agent team",
+	"Dosije ili tim agenata": "Dossier or agent team",
 	"Broj agenata koji rade u istom trenutku, kroz vreme": "How many agents work at the same moment, over time",
 	"Kako čitati vremensku osu": "How to read the timeline",
 	"Razmišlja": "Thinking",

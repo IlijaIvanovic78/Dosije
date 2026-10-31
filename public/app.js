@@ -16,6 +16,7 @@ import { initSearch } from "./js/search.js"
 import { showNotice, clearNotice, finishCaseThen, caseBusy } from "./js/notice.js"
 import { t, setLang, onLang, applyStatic } from "./js/i18n.js"
 import { initHelp, initSources } from "./js/help.js"
+import { initPanes } from "./js/panes.js"
 
 const $ = (id) => document.getElementById(id)
 
@@ -240,6 +241,7 @@ async function boot() {
 	initEventLog()
 	initReport()
 	initMapa()
+	initPanes()
 
 	on("conn", renderMode)
 	on("snapshot", () => {

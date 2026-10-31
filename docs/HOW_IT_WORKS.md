@@ -181,7 +181,7 @@ typical run has 2 interventions, not one per call.
 
 ### Two inference modes, one runtime
 - **LLM mode (OpenAI recommended).** `ResilientInferenceRunner` wraps Mozaik's bundled model endpoints:
-  - a global semaphore (`LLM_CONCURRENCY`);
+  - a semaphore per session (`LLM_CONCURRENCY`), under one shared by every session on the server (`LLM_CONCURRENCY_TOTAL`);
   - retries on 429, 5xx and timeouts;
   - a 90 s timeout;
   - it **never throws**. `runLoop` does not catch errors, so an exception there would be an unhandled rejection that
@@ -194,7 +194,7 @@ typical run has 2 interventions, not one per call.
 
 | Mozaik concept | Where in Dosije |
 |---|---|
-| `defineRuntime<State>()`, one runtime per process | `src/mozaik/runtime.ts`, `src/mozaik/boot.ts` |
+| `defineRuntime<State>()`, one runtime per process (on the server: per visitor, each in its own worker thread) | `src/mozaik/runtime.ts`, `src/mozaik/boot.ts`, `src/session/` |
 | Typed shared state (`RuntimeState`) | `src/mozaik/state.ts` (`DosijeState`), `src/mozaik/domain.ts` |
 | `createAgent` (5 core + 4 dynamic kinds) | `src/mozaik/agents.ts` |
 | `createHuman` (journalist, factory, 2 observers) | `src/mozaik/participants.ts` |
@@ -254,7 +254,8 @@ src/
   data/                     public-data layer: sources/*, analysis/*, resolver, cache, http, translit
   mozaik/                   runtime, state, agents, participants, gate, loop, urednik, tools, inference, report
 public/                     UI: plain HTML/CSS/JS modules, no build step, no CDN
-scripts/                    cli.ts, warm-cache.ts, probe-*.ts, mock-server.ts (UI dev)
+  session/                  one engine per visitor: worker threads, shared limits, the shared APR index
+scripts/                    cli.ts, warm-cache.ts, load-test.ts, probe-*.ts, mock-server.ts (UI dev)
 test/                       node:test via tsx
 data/cache/                 local cache of public data (gitignored, never committed)
 data/static/                APR index of 134k companies, institution aliases, curated supplier IDs
@@ -268,7 +269,14 @@ docs/                       architecture, agent behavior, per-source notes, scre
 | `OPENAI_API_KEY` | (none) | enables LLM mode (otherwise scripted) |
 | `DOSIJE_MODEL` / `DOSIJE_EDITOR_MODEL` | `gpt-5.4-mini` / `gpt-5.4` | worker / editor models (any Mozaik bundled model) |
 | `DOSIJE_REASONING` | `low` | reasoning effort for models that support it |
-| `LLM_CONCURRENCY` | `8` | maximum parallel LLM calls |
+| `LLM_CONCURRENCY` | `8` | maximum parallel LLM calls of one session |
+| `LLM_CONCURRENCY_TOTAL` | `32` | maximum parallel LLM calls of all sessions together |
+| `HTTP_PER_HOST_TOTAL` | `8` | requests to one public register at once, all sessions together (each session: 4) |
+| `DOSIJE_MAX_SESSIONS` | `24` | visitors at once; each has a complete engine in its own worker thread |
+| `DOSIJE_WARM_SESSIONS` | `1` | booted sessions kept ready, so a new visitor does not wait |
+| `DOSIJE_SESSION_MEMORY_MB` | `768` | heap limit of one session (a runaway session ends alone) |
+| `DOSIJE_ABANDON_MS` | `60000` | a session whose last page closed is dropped after this long (a reload keeps it) |
+| `DOSIJE_IDLE_EVICT_MS` | `600000` | when the server is full, a session idle this long makes room for a new visitor |
 | `DATA_MODE` | `auto` | `auto`: cache first, then live; `cache`: offline only; `live`: always refetch |
 | `DEMO_SPEED` | `1` | scripted-mode pacing (`0.3` is fast) |
 | `SERPER_API_KEY` / `BRAVE_API_KEY` | (none) | optional extra news and web search |

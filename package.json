@@ -14,6 +14,7 @@
     "mapa": "tsx scripts/mapa.ts",
     "warm-cache": "tsx scripts/warm-cache.ts",
     "qa": "tsx scripts/qa.ts",
+    "load": "tsx scripts/load-test.ts",
     "test": "tsx --test test/*.test.ts",
     "typecheck": "tsc --noEmit",
     "check-keys": "tsx scripts/check-keys.ts"

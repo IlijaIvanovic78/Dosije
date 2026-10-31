@@ -88,6 +88,20 @@ The concept-by-concept map to the code is in [docs/HOW_IT_WORKS.md](docs/HOW_IT_
 | `npm run cli -- "Srbijavoz"` | a headless dossier with an ASCII Gantt of the agents |
 | `npm run mapa` | the institution comparison from the terminal |
 | `npm run qa` | checks every finding's source, link and attribution |
+| `npm run load -- --url <server> --users 20` | N visitors at once, each with their own cookie and dossier; checks nobody sees another's case |
+
+## Many visitors at once (Docker)
+
+Every visitor (a cookie) gets a session of their own: a complete engine in its own worker thread, so twenty people can
+each run a dossier at the same time. The APR index is kept once for all of them, and limits shared by every session
+cap the parallel LLM calls (`LLM_CONCURRENCY_TOTAL`) and the requests to each public register (`HTTP_PER_HOST_TOTAL`).
+When every place is taken (`DOSIJE_MAX_SESSIONS`, 24), a new visitor sees a page that says so and retries on its own.
+
+```bash
+docker compose up -d --build          # listens on 127.0.0.1:3100, keys from .env
+sudo bash deploy/server-setup.sh      # once: the docker group, and nginx sends the bare IP to the domain
+sudo bash deploy/domain-setup.sh      # dosije.online: its own nginx site, Let's Encrypt, http and www -> https
+```
 
 ## Docs
 

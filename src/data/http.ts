@@ -5,6 +5,7 @@
 import fs from "node:fs"
 import https from "node:https"
 import tls from "node:tls"
+import { sharedPermit } from "../session/permits"
 
 export const USER_AGENT =
 	"Mozilla/5.0 (compatible; DosijeBot/0.1; investigative research tool for journalists; +https://github.com/)"
@@ -139,6 +140,8 @@ export async function httpRequest(url: string, opts: HttpOptions = {}): Promise<
 	let lastError: unknown
 	for (let attempt = 0; attempt <= retries; attempt++) {
 		await acquire(host)
+		// on the server the per-host limit of this session sits under one shared by all sessions (HTTP_PER_HOST_TOTAL)
+		const releaseShared = await sharedPermit(`host:${host}`)
 		try {
 			const res = await once(url, opts)
 			if (res.status >= 200 && res.status < 300) return res
@@ -149,6 +152,7 @@ export async function httpRequest(url: string, opts: HttpOptions = {}): Promise<
 			lastError = err
 			if (err instanceof HttpError && !(err.status === 429 || err.status >= 500)) throw err
 		} finally {
+			releaseShared()
 			release(host)
 		}
 		if (attempt < retries) await new Promise((r) => setTimeout(r, 600 * 2 ** attempt + Math.random() * 300))

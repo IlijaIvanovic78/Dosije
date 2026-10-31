@@ -26,6 +26,8 @@ const ERRORS_EN: [RegExp, string][] = [
 	[/^Nepoznata ruta\.$/, "Unknown route."],
 	[/^Metod nije dozvoljen\.$/, "Method not allowed."],
 	[/^Interna greška servera\.$/, "Internal server error."],
+	[/^Server je pun: svih (\d+) mesta za istovremeno korišćenje je zauzeto\. Pokušajte ponovo za minut\.$/, "The server is full: all $1 places for simultaneous use are taken. Try again in a minute."],
+	[/^Sesija je prekinuta\. Osvežite stranicu\.$/, "The session ended. Reload the page."],
 	[/^Institucija nije pronađena\.$/, "Institution not found."],
 	[/^Nijedan izvor nije odgovorio \(rukovodstvo, nabavke, revizija\)\.$/, "No source responded (leadership, procurement, audit)."],
 	[/^Trijaža nije završena: agent je prekinuo rad pre nego što je proverio sve izvore\.$/, "Triage not finished: the agent stopped before it checked every source."],

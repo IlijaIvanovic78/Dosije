@@ -1,10 +1,11 @@
-// ResilientInferenceRunner: the LLM mode runner. Wraps Mozaik's supportedModels (endpoint.infer), adds a global
-// concurrency semaphore (LLM_CONCURRENCY), retries on 429/5xx/timeouts (3 attempts, backoff), a 90 s timeout and token
+// ResilientInferenceRunner: the LLM mode runner. Wraps Mozaik's supportedModels (endpoint.infer), adds a concurrency
+// semaphore (LLM_CONCURRENCY per session, under LLM_CONCURRENCY_TOTAL shared by all sessions on the server), retries on 429/5xx/timeouts (3 attempts, backoff), a 90 s timeout and token
 // accounting. It NEVER throws: Mozaik's runLoop does not catch errors, so an exception here would be an unhandled
 // rejection that kills the process. On final failure the loop ends with a "Agent nije uspeo: ..." message.
 
 import { ModelMessageItem, SemanticEvent, supportedModels, type InferenceInput, type InferenceOutput, type InferenceRunner } from "@mozaik-ai/core"
 import { config } from "../../config"
+import { sharedPermit } from "../../session/permits"
 import type { DosijeState } from "../state"
 import { clip, errorMessage, log, sleep } from "../util"
 
@@ -98,6 +99,8 @@ export class ResilientInferenceRunner implements InferenceRunner {
 		let lastErr: unknown
 		for (let attempt = 0; attempt < ATTEMPTS; attempt++) {
 			await this.semaphore.acquire()
+			// on the server the limit of this session sits under one shared by all sessions (LLM_CONCURRENCY_TOTAL)
+			const releaseShared = await sharedPermit("llm")
 			try {
 				const out = await withTimeout(entry.endpoint.infer(request), TIMEOUT_MS)
 				const usage = out.tokenUsage
@@ -110,6 +113,7 @@ export class ResilientInferenceRunner implements InferenceRunner {
 				if (!retryable(err) || attempt === ATTEMPTS - 1) break
 				log("llm", `pokušaj ${attempt + 1}/${ATTEMPTS} nije uspeo (${clip(errorMessage(err), 120)}), ponavljam`)
 			} finally {
+				releaseShared()
 				this.semaphore.release()
 			}
 			await sleep(BACKOFF_MS[attempt] * (0.8 + Math.random() * 0.4))
