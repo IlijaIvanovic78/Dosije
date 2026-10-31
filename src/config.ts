@@ -102,11 +102,14 @@ function loadConfig(): Config {
 			max: Math.max(1, num("DOSIJE_MAX_SESSIONS", 24)),
 			warm: Math.max(0, num("DOSIJE_WARM_SESSIONS", 1)),
 			memoryMb: Math.max(128, num("DOSIJE_SESSION_MEMORY_MB", 768)),
-			abandonMs: Math.max(1000, num("DOSIJE_ABANDON_MS", 60_000)),
+			// a dossier with Claude takes about 2 minutes: a phone that locks while it runs comes back to the finished dossier
+			abandonMs: Math.max(1000, num("DOSIJE_ABANDON_MS", 180_000)),
 			idleEvictMs: Math.max(10_000, num("DOSIJE_IDLE_EVICT_MS", 10 * 60_000)),
 		},
 		shared: {
-			llmConcurrency: Math.max(1, num("LLM_CONCURRENCY_TOTAL", 32)),
+			// under the provider's limit of requests in flight (about 25 for this Anthropic organization): the rest wait here
+			// instead of failing with 429
+			llmConcurrency: Math.max(1, num("LLM_CONCURRENCY_TOTAL", 20)),
 			requestsPerHost: Math.max(1, num("HTTP_PER_HOST_TOTAL", 8)),
 		},
 		budget: {

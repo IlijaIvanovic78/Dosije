@@ -13,7 +13,8 @@ services:
       DOSIJE_MAX_SESSIONS: "24"
       DOSIJE_WARM_SESSIONS: "2"
       DOSIJE_SESSION_MEMORY_MB: "768"
-      LLM_CONCURRENCY_TOTAL: "32"
+      # under the Anthropic organization's limit of concurrent requests (about 25); the rest wait in the app
+      LLM_CONCURRENCY_TOTAL: "20"
       HTTP_PER_HOST_TOTAL: "8"
       TZ: Europe/Belgrade
     ports:

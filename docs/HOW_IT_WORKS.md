@@ -272,12 +272,12 @@ docs/                       architecture, agent behavior, per-source notes, scre
 | `DOSIJE_MODEL` / `DOSIJE_EDITOR_MODEL` | Claude `claude-sonnet-5-5` / `claude-opus-5-5`, OpenAI `gpt-5.4-mini` / `gpt-5.4` | worker / editor models (any Mozaik bundled model) |
 | `DOSIJE_REASONING` | `low` | reasoning effort for models that support it |
 | `LLM_CONCURRENCY` | `8` | maximum parallel LLM calls of one session |
-| `LLM_CONCURRENCY_TOTAL` | `32` | maximum parallel LLM calls of all sessions together |
+| `LLM_CONCURRENCY_TOTAL` | `20` | maximum parallel LLM calls of all sessions together; keep it under the provider's limit of concurrent requests |
 | `HTTP_PER_HOST_TOTAL` | `8` | requests to one public register at once, all sessions together (each session: 4) |
 | `DOSIJE_MAX_SESSIONS` | `24` | visitors at once; each has a complete engine in its own worker thread |
 | `DOSIJE_WARM_SESSIONS` | `1` | booted sessions kept ready, so a new visitor does not wait |
 | `DOSIJE_SESSION_MEMORY_MB` | `768` | heap limit of one session (a runaway session ends alone) |
-| `DOSIJE_ABANDON_MS` | `60000` | a session whose last page closed is dropped after this long (a reload keeps it) |
+| `DOSIJE_ABANDON_MS` | `180000` | a session whose last page closed is dropped after this long (a reload keeps it) |
 | `DOSIJE_IDLE_EVICT_MS` | `600000` | when the server is full, a session idle this long makes room for a new visitor |
 | `DATA_MODE` | `auto` | `auto`: cache first, then live; `cache`: offline only; `live`: always refetch |
 | `DEMO_SPEED` | `1` | scripted-mode pacing (`0.3` is fast) |
