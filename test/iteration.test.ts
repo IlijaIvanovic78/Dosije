@@ -10,6 +10,7 @@ process.env.DATA_MODE = "cache"
 process.env.DOSIJE_MODE = "scripted"
 
 const { pickTop, orderTop, rankTier } = await import("../src/mozaik/summary")
+const { outOfCredits } = await import("../src/mozaik/inference/resilient")
 const { fixPunct } = await import("../src/mozaik/domain")
 const { auditedPeriod, reportSourceTitle } = await import("../src/data/sources/dri")
 const { driLabels, driTitle } = await import("../src/mozaik/inference/policies")
@@ -74,6 +75,46 @@ describe("ranking of the top signals", () => {
 		const ordered = orderTop(proposed, 5)
 		assert.equal(ordered[0].title, "v.d. preko roka")
 		assert.ok(ordered.indexOf(list[0]) > ordered.indexOf(list[5]), "official before the unconfirmed flag")
+	})
+
+	test("a name match with the register of officials ranks by how well it is backed, not as an official fact", () => {
+		const src = (kind: string) => ({ kind, title: kind, url: "https://x", retrievedAt: "2026-10-31", official: kind === "acas" }) as Finding["sources"][number]
+		const onlyRegister = finding({ title: "Ime vlasnika se poklapa", section: "firme", signalCode: "VLASNIK_FUNKCIONER", sources: [src("acas")] })
+		const alsoPep = finding({ title: "Ime vlasnika se poklapa, PEP", section: "firme", signalCode: "VLASNIK_FUNKCIONER", sources: [src("acas"), src("opensanctions")] })
+		assert.equal(rankTier(onlyRegister), 2, "a namesake is possible: ranked with unconfirmed findings")
+		assert.equal(rankTier(alsoPep), 1, "named on a PEP list too: ranked with confirmed findings")
+		const vd = finding({ title: "v.d. preko roka", section: "rukovodstvo", signalCode: "VD_PREKO_ROKA" })
+		const top = pickTop(stateOf([vd, onlyRegister, alsoPep]), 5)
+		assert.ok(!top.includes(onlyRegister), "a register-only name match stays out of the summary")
+		assert.ok(top.includes(alsoPep), "a name match backed by a PEP list may be in it")
+		assert.ok(!orderTop([vd, onlyRegister], 5).includes(onlyRegister), "also when the editor model proposes it")
+	})
+
+	test("a kind of red flag is not left out of a full summary because its source is unconfirmed", () => {
+		// PIO Fond: five official findings fill the summary, six Integrity Watch flags would not show at all
+		const official = [
+			finding({ title: "Ugovor veći od prihoda", section: "firme", signalCode: "UGOVOR_VECI_OD_PRIHODA" }),
+			finding({ title: "Bez objave", section: "novac", severity: "paznja", signalCode: "BEZ_OBJAVE" }),
+			finding({ title: "Koncentracija", section: "novac", severity: "paznja", signalCode: "KONCENTRACIJA" }),
+			finding({ title: "DRI nalaz", section: "revizija", severity: "paznja", signalCode: "DRI_NALAZ" }),
+			finding({ title: "Nema izveštaja o imovini", section: "rukovodstvo", severity: "paznja", signalCode: "IMOVINA" }),
+		]
+		const flags = [1, 2, 3].map((k) => finding({ title: `IW ${k}`, section: "firme", signalCode: "POLITICKA_VEZA", status: "nepotvrdjeno" }))
+		const top = pickTop(stateOf([...official, ...flags]), 5)
+		assert.equal(top.length, 5)
+		assert.equal(top.filter((f) => f.signalCode === "POLITICKA_VEZA").length, 1, `one flag in: ${top.map((f) => f.title).join(", ")}`)
+		assert.equal(top.at(-1)?.signalCode, "POLITICKA_VEZA", "it still comes after the official findings")
+		assert.ok(top.some((f) => f.signalCode === "UGOVOR_VECI_OD_PRIHODA"), "a red official finding keeps its place")
+	})
+})
+
+describe("LLM provider without credits", () => {
+	test("an account without credits is told apart from a rate limit that passes", () => {
+		const err = (status: number, message: string) => Object.assign(new Error(message), { status })
+		assert.equal(outOfCredits(err(429, "You have no credits remaining. Add credits to continue using the API")), true)
+		assert.equal(outOfCredits(err(429, "You exceeded your current quota, please check your plan and billing details.")), true)
+		assert.equal(outOfCredits(err(429, "Rate limit reached for requests")), false, "a rate limit is retried, not given up")
+		assert.equal(outOfCredits(err(500, "billing service unavailable")), false)
 	})
 })
 

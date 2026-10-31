@@ -6,7 +6,7 @@ import type { Finding } from "../../shared/types"
 import * as domain from "../domain"
 import { fixPunct, S, type ToolCtx } from "../domain"
 import type { Summary } from "../state"
-import { defaultSummary, defaultToVerify, orderTop, pickTop, rankable } from "../summary"
+import { defaultSummary, defaultToVerify, orderTop, pickTop, rankable, summaryWorthy, withRedFlag } from "../summary"
 import { clip } from "../util"
 import { buildTool, str } from "./helpers"
 
@@ -191,14 +191,20 @@ export function urednikTools(ctx: ToolCtx): Tool[] {
 					proposed.push({ f, headline })
 				}
 				const headlineOf = new Map(proposed.map((p) => [p.f.id, p.headline]))
-				const top: Summary["topSignals"] = orderTop(
+				const chosen = orderTop(
 					proposed.map((p) => p.f),
 					5,
-				).map((f) => ({ findingId: f.id, headline: headlineOf.get(f.id) ?? f.title }))
+				)
 				for (const f of pickTop(state, 5)) {
-					if (top.length >= 3) break
-					if (!top.some((t) => t.findingId === f.id)) top.push({ findingId: f.id, headline: f.title })
+					if (chosen.length >= 3) break
+					if (!chosen.includes(f)) chosen.push(f)
 				}
+				// a kind of red flag the model left out gets its place by the same rule as the deterministic summary
+				const top: Summary["topSignals"] = withRedFlag(
+					chosen,
+					rankable(state).filter(summaryWorthy),
+					5,
+				).map((f) => ({ findingId: f.id, headline: headlineOf.get(f.id) ?? f.title }))
 				const verify = (Array.isArray(args.toVerify) ? args.toVerify : []).filter((v): v is string => typeof v === "string" && v.trim().length > 3 && v.length <= 260).map(fixPunct)
 				state.summary = { lede, topSignals: top, toVerify: verify.length ? verify.slice(0, 14) : fallback.toVerify }
 				return { ok: true, topSignals: top.length, toVerify: state.summary.toVerify.length }

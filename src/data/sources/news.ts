@@ -73,8 +73,23 @@ function plain(html: string): string {
 
 function toIso(s: string | undefined): string | undefined {
 	if (!s) return undefined
-	const t = Date.parse(s)
-	return Number.isNaN(t) ? undefined : new Date(t).toISOString()
+	// Serbian pages write the day first (12.06.2026.); Date.parse would read that as 6 December
+	const dmy = /^\s*(\d{1,2})\.\s*(\d{1,2})\.\s*(\d{4})\.?(?:\s+(\d{1,2}):(\d{2}))?/.exec(s)
+	const t = dmy ? new Date(+dmy[3], +dmy[2] - 1, +dmy[1], +(dmy[4] ?? 0), +(dmy[5] ?? 0)).getTime() : Date.parse(s)
+	return Number.isNaN(t) ? undefined : notFuture(new Date(t).toISOString())
+}
+
+/**
+ * A date in the future was misread: day and month swapped (12.06.2026. read as 6 December). Swapped back when that gives
+ * a past date, otherwise dropped. Also mends dates already in the cache from before this check.
+ */
+function notFuture(iso: string | undefined, now = Date.now()): string | undefined {
+	if (!iso) return iso
+	const t = Date.parse(iso)
+	if (Number.isNaN(t) || t <= now + 86400e3) return iso
+	const d = new Date(t)
+	const swapped = new Date(d.getFullYear(), d.getDate() - 1, d.getMonth() + 1, d.getHours(), d.getMinutes())
+	return d.getDate() <= 12 && swapped.getTime() <= now ? swapped.toISOString() : undefined
 }
 
 function relativeDate(s: string | undefined, now = Date.now()): string | undefined {
@@ -585,8 +600,9 @@ export function cleanOutlet(outlet: string): string {
 
 function tidyItem(i: NewsItem): NewsItem {
 	const outlet = cleanOutlet(i.outlet)
-	if (outlet === i.outlet && !/^raspadsistema\.com \(/i.test(i.source.title)) return i
-	return { ...i, outlet, source: { ...i.source, title: i.source.title.replace(/^raspadsistema\.com \((.+?)\):/i, "$1:") } }
+	const publishedAt = notFuture(i.publishedAt)
+	if (outlet === i.outlet && publishedAt === i.publishedAt && !/^raspadsistema\.com \(/i.test(i.source.title)) return i
+	return { ...i, outlet, publishedAt, source: { ...i.source, publishedAt: notFuture(i.source.publishedAt), title: i.source.title.replace(/^raspadsistema\.com \((.+?)\):/i, "$1:") } }
 }
 
 export async function searchNews(query: string, opts: NewsSearchOptions = {}): Promise<NewsItem[]> {
@@ -762,5 +778,6 @@ export async function fetchArticle(url: string): Promise<ArticleText> {
 			after: (d, h) => h.label(`članak: ${cyrToLat(d.outlet)} – ${cyrToLat(shortTitle(d.title))}`),
 		},
 	})
-	return env.data
+	const publishedAt = notFuture(env.data.publishedAt)
+	return publishedAt === env.data.publishedAt ? env.data : { ...env.data, publishedAt, source: { ...env.data.source, publishedAt } }
 }

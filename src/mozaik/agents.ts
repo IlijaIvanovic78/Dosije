@@ -19,6 +19,7 @@ Pravila:
 - Nikad ne piši čitaocu šta treba da proveri („proveriti“, „treba potvrditi“): napiši šta je utvrđeno i šta nije potvrđeno („nije potvrđeno iz zvaničnog izvora“, „podatak nedostaje“).
 - Nikad ne upisuj lične kontakt podatke (telefon, e-mail, adresa stanovanja).
 - severity: "signal" = ozbiljan signal; "paznja" = neuobičajeno; "info" = činjenica.
+- Naslov (title) nosi ključnu činjenicu sa brojkom ili imenom iz alata, npr. „161 pregovarački postupak bez objavljivanja poziva (2,03 mlrd RSD)“ ili „Zoran Drobnjak je v.d. 155 meseci; zakonski maksimum je 12“, a ne opšte „Postupci bez objavljivanja poziva“.
 - Pre nego što počneš možeš pozvati dosije_pregled da vidiš šta su drugi već našli i ne dupliraš.
 - Kad završiš, odgovori jednom kratkom rečenicom šta si uradio.
 `
@@ -80,12 +81,13 @@ Kad stigne odgovor novinarke ("Novinarka je odgovorila na pitanje ..."): iz slob
 2) add_finding (section "rukovodstvo", "info"): datum poslednjeg izveštaja i kratak pregled (bez adresa). Ako nema izveštaja posle stupanja na funkciju: add_finding ("paznja", signalCode "IMOVINA"): "Nije pronađen izveštaj o imovini nakon stupanja na funkciju."`,
 	provera: `Zadatak: proveri da li je osoba (vlasnik firme, prema CompanyWall ili unosu novinarke) javni funkcioner ili politički izložena osoba.
 1) acas_pretraga_osobe. 2) pep_provera.
-3) Ako postoji poklapanje: add_finding (section "firme", signalCode "VLASNIK_FUNKCIONER") sa izvorima i napomenom da poklapanje imena nije dokaz identiteta; severity "signal" samo ako ime u ACAS ne nosi više osoba (distinctPersons najviše 1), a "paznja" ako isto ime nosi više osoba (tada i poklapanje na PEP listi može biti bilo ko od njih). Ako nema: add_finding ("info") "Nema poklapanja u registru funkcionera ni na PEP listama."`,
+3) Ako postoji poklapanje: add_finding (section "firme", signalCode "VLASNIK_FUNKCIONER", naslov tačno u obliku „Ime vlasnika firme <naziv firme> poklapa se sa registrom: <ime>“, da se ne pročita kao funkcija u ovoj instituciji) sa izvorima i napomenom da poklapanje imena nije dokaz identiteta; severity "signal" samo ako ime u ACAS ne nosi više osoba (distinctPersons najviše 1), a "paznja" ako isto ime nosi više osoba (tada i poklapanje na PEP listi može biti bilo ko od njih). Ako nema: add_finding ("info") "Nema poklapanja u registru funkcionera ni na PEP listama."`,
 }
 
 export const UREDNIK_INSTRUCTION = `[[agent:urednik]]
 Ti si Urednik. Zadatak: napiši sažetak dosijea za novinarku.
 1) dosije_pregled. 2) napisi_sazetak: lede (2-3 rečenice, neutralno), topSignals (3-5 nalaza najveće težine: findingId + kratak naslov), toVerify (šta je ostalo nepotvrđeno: podaci koji nedostaju ili počivaju na jednom nezvaničnom izvoru). Ne dodaj nove činjenice. Pozivaj jedan alat po koraku.
+Za topSignals pođi od preporucenTopSignala iz dosije_pregled (rangirano po pouzdanosti: zvaničan podatak pre poklapanja imena, koje nije dokaz identiteta). Naslov zadrži ključnu brojku ili ime iz nalaza (npr. „161 postupak bez objave poziva, 2,03 mlrd RSD“), ne opšte „Postupci bez objavljivanja poziva“. U lede navedi dve-tri konkretne činjenice sa brojkama.
 `
 
 // "Trijaža · <institucija>": spawned by the Fabrika on mapa.started, one per institution (Mapa prioriteta)

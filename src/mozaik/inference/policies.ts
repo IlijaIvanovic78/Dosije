@@ -330,7 +330,8 @@ async function* nabavke(): AsyncGenerator<Step, string, ToolResult> {
 		const big = nwp.najveci
 		yield call("add_finding", {
 			section: "novac",
-			title: `${n(nwp.count, "pregovarackiPostupak")} bez objavljivanja javnog poziva (${money(nwp.valueRsd)})`,
+			// no contract published yet is "no value yet", not "0 RSD"
+			title: `${n(nwp.count, "pregovarackiPostupak")} bez objavljivanja javnog poziva (${nwp.valueRsd > 0 ? money(nwp.valueRsd) : "vrednost ugovora još nije objavljena"})`,
 			text: `Portal javnih nabavki beleži ${n(nwp.count, "postupak")} bez objavljivanja javnog poziva (sa objavljenim ugovorom ukupne vrednosti ${money(nwp.valueRsd)}: ${nwp.saUgovorom}; bez objavljenog ugovora: ${nwp.bezUgovora}), što je ${dec(nwp.sharePct)}% ukupne vrednosti ugovora.${big ? ` Najveći: „${clip(big.title, 110)}“, ${big.supplier}, ${money(big.valueRsd)} (${formatDate(big.signedAt)}); pravni osnov naveden u postupku: ${big.procedure ?? "nije naveden"}.` : ""} Ovaj postupak je zakonski dozvoljen u propisanim slučajevima; razlozi su navedeni u odluci o pokretanju postupka, koja nije deo ovih podataka.${capped ? ` Brojevi se odnose na analizirani period od ${formatDate(cov.from)}, ne na celu istoriju naručioca.` : ""}${partial}`,
 			severity: nwp.sharePct > 10 ? "signal" : "paznja",
 			signalCode: "BEZ_OBJAVE",

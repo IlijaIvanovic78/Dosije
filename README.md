@@ -16,8 +16,10 @@ npm start          # open http://localhost:3000
 
 The bar under the top bar walks you through the flow: **Tim istražuje → Tvoje odluke → Dosije je spreman**.
 
-1. On the start screen, click the example **"Infrastruktura železnice Srbije"** (or type any institution or paste a
-   news link). Four agents start in the same instant. Every supplier and official they find spawns another agent.
+1. On the start screen, click one of the four current institutions, each chosen for a different kind of signal: **Putevi
+   Srbije** (an acting director since 2013), **PIO Fond** (suppliers flagged for political ties), **Skijališta Srbije**
+   (contracts larger than the suppliers' revenue) and **RFZO** (RSD 2 bn without a public call). Or type any institution. Four agents
+   start in the same instant. Every supplier and official they find spawns another agent.
 2. Watch the left column: one timeline lane per agent, and **"Pretraga uživo"**, where every request to a public
    register appears live with the agent that made it and a link.
 3. After about 10 s, **"Tvoje odluke"** lights up and the question appears at the top of the dossier: **"Kadrovik traži

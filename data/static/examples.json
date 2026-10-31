@@ -1,6 +1,6 @@
 [
-	{ "slug": "rts", "name": "Radio-televizija Srbije (RTS)", "kind": "Javni medijski servis" },
-	{ "slug": "pio-fond", "name": "PIO Fond", "kind": "Republički fond · penzijsko osiguranje" },
-	{ "slug": "ministarstvo-prosvete", "name": "Ministarstvo prosvete", "kind": "Ministarstvo · obrazovanje" },
-	{ "slug": "eps", "name": "Elektroprivreda Srbije", "kind": "Javno preduzeće · energetika" }
+	{ "slug": "putevi-srbije", "name": "Putevi Srbije", "kind": "Javno preduzeće · v.d. direktor od 2013." },
+	{ "slug": "pio-fond", "name": "PIO Fond", "kind": "Republički fond · dobavljači sa političkim vezama" },
+	{ "slug": "skijalista-srbije", "name": "Skijališta Srbije", "kind": "Javno preduzeće · ugovori veći od prihoda firmi" },
+	{ "slug": "rfzo", "name": "Republički fond za zdravstveno osiguranje (RFZO)", "kind": "Republički fond · 2 mlrd dinara bez javnog poziva" }
 ]

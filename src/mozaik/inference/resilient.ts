@@ -8,6 +8,7 @@ import { config } from "../../config"
 import { sharedPermit } from "../../session/permits"
 import type { DosijeState } from "../state"
 import { clip, errorMessage, log, sleep } from "../util"
+import { ScriptedInferenceRunner } from "./scripted"
 
 type GenerativeModelLike = (typeof supportedModels)[number]
 
@@ -47,7 +48,13 @@ function statusOf(err: unknown): number | undefined {
 	return m ? Number(m[1]) : undefined
 }
 
+/** The account has no credits or its quota is used up: a 429 that does not pass, so retrying only wastes time. */
+export function outOfCredits(err: unknown): boolean {
+	return statusOf(err) === 429 && /no credits|insufficient[_ ]quota|exceeded your current quota|billing/i.test(errorMessage(err))
+}
+
 function retryable(err: unknown): boolean {
+	if (outOfCredits(err)) return false
 	const status = statusOf(err)
 	if (status === 429 || (status !== undefined && status >= 500)) return true
 	const msg = errorMessage(err).toLowerCase()
@@ -68,6 +75,9 @@ async function withTimeout<T>(p: Promise<T>, ms: number): Promise<T> {
 
 export class ResilientInferenceRunner implements InferenceRunner {
 	private readonly semaphore: Semaphore
+	// once the provider says the account has no credits, the agents go on with the scripted policies: the same tools, the
+	// same public data and the same gate, only the model is replaced. A demo never ends with an empty dossier.
+	private scripted: ScriptedInferenceRunner | undefined
 
 	constructor(
 		private readonly state: DosijeState,
@@ -77,6 +87,7 @@ export class ResilientInferenceRunner implements InferenceRunner {
 	}
 
 	async run(input: InferenceInput): Promise<InferenceOutput> {
+		if (this.scripted) return this.scripted.run(input)
 		try {
 			return await this.runInner(input)
 		} catch (err) {
@@ -117,6 +128,11 @@ export class ResilientInferenceRunner implements InferenceRunner {
 				this.semaphore.release()
 			}
 			await sleep(BACKOFF_MS[attempt] * (0.8 + Math.random() * 0.4))
+		}
+		if (outOfCredits(lastErr)) {
+			if (!this.scripted) log("llm", `nalog nema kredita (${clip(errorMessage(lastErr), 80)}): agenti nastavljaju sa skriptovanim politikama`)
+			this.scripted ??= new ScriptedInferenceRunner()
+			return this.scripted.run(input)
 		}
 		return failure(errorMessage(lastErr))
 	}

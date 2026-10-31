@@ -48,6 +48,9 @@ export function isStaleDri(f: Finding, now = Date.now()): boolean {
  */
 export function rankTier(f: Finding): number {
 	if (f.signalCode === "IMENOVANJE_NEPOZNATO" || isStaleDri(f)) return 3
+	// an owner whose NAME is in the register of officials: the register is official, the identity is not (a namesake is
+	// possible). Named on a PEP list too, it ranks with confirmed findings; named only by the register, with unconfirmed ones.
+	if (f.signalCode === "VLASNIK_FUNKCIONER") return f.sources.some((s) => s.kind === "opensanctions" || s.kind === "krik") ? 1 : 2
 	return f.status === "zvanicno" ? 0 : f.status === "potvrdjeno" ? 1 : 2
 }
 
@@ -67,8 +70,32 @@ export function rankable(state: DosijeState): Finding[] {
  * At most one finding per signalCode (several Integrity Watch flags are one kind of signal) and at most 2 per section for
  * leadership/money and 1 for the rest; the caps are relaxed only to reach 3 entries.
  */
+/**
+ * Findings the executive summary may name. An owner whose name only the register of officials carries (no PEP list) stays
+ * in the dossier but not in the summary: next to it, a namesake is as likely as the official.
+ */
+export function summaryWorthy(f: Finding): boolean {
+	return f.severity !== "info" && !(f.signalCode === "VLASNIK_FUNKCIONER" && rankTier(f) === 2)
+}
+
 export function pickTop(state: DosijeState, n = 5): Finding[] {
-	return selectTop(rankable(state).filter((f) => f.severity !== "info"), n)
+	const candidates = rankable(state).filter(summaryWorthy)
+	return withRedFlag(selectTop(candidates, n), candidates, n)
+}
+
+/**
+ * A red flag (severity "signal") of a kind the summary does not name yet gets a free place, or takes the last place from
+ * a finding that is only "paznja": a serious kind of signal (six suppliers flagged by Integrity Watch) is not left out
+ * because its source is unconfirmed. The order still puts it after the official findings. Old DRI findings and "not
+ * found" findings never get in this way.
+ */
+export function withRedFlag(top: Finding[], candidates: Finding[], n = 5): Finding[] {
+	const codes = new Set(top.map((f) => f.signalCode))
+	const red = [...candidates].sort(byRank).find((f) => f.severity === "signal" && f.signalCode && !codes.has(f.signalCode) && rankTier(f) < 3 && !top.includes(f))
+	if (!red) return top
+	if (top.length < n) return [...top, red].sort(byRank)
+	const weakest = [...top].sort(byRank).reverse().find((f) => f.severity !== "signal")
+	return weakest ? [...top.filter((f) => f !== weakest), red].sort(byRank) : top
 }
 
 export function selectTop(ranked: Finding[], n = 5): Finding[] {
@@ -91,7 +118,7 @@ export function selectTop(ranked: Finding[], n = 5): Finding[] {
 
 /** The same ordering for a list somebody else (an LLM) chose: official before unconfirmed, one finding per signalCode, at most n. */
 export function orderTop(chosen: Finding[], n = 5): Finding[] {
-	return selectTop([...chosen].sort(byRank), n)
+	return selectTop(chosen.filter(summaryWorthy).sort(byRank), n)
 }
 
 /** A finding's title as a quotation inside a checklist sentence; a title that was shortened ("…") is not quoted at all. */

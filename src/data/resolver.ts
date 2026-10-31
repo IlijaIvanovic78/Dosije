@@ -216,13 +216,28 @@ interface Match<T> {
 	identity: string
 }
 
+// normalizeName drops a seat city at the end of a name ("Naučno tehnološki park Niš" -> "naucno tehnoloski park"), so two
+// bodies that differ only by their city would look like one entered twice. The city is kept aside to tell them apart.
+const SEAT = /\s(beograd|novi sad|nis|kragujevac|subotica)(?=\s)/g
+
+/** The seat city a name ends with, after at least one word of its own ("Grad Novi Sad" yes, "NIS" alone no). */
+function seatOf(name: string): string | undefined {
+	const s = ` ${asciiFold(name).toLowerCase().replace(/[^a-z0-9]+/g, " ").trim()} `
+	const all = [...s.matchAll(SEAT)].filter((m) => (m.index ?? 0) > 0)
+	return all.at(-1)?.[1]
+}
+
 function matchAll<T extends { name: string }>(hits: T[], query: string): Match<T>[] {
 	const qt = coreTokens(query)
 	const unitWanted = UNIT.test(asciiFold(query))
+	const qSeat = seatOf(query)
 	const out: Match<T>[] = []
 	for (const hit of hits) {
 		const t = coreTokens(hit.name)
 		if (qt.length === 0 || !qt.every((q) => t.some((x) => sameWord(q, x)))) continue
+		// "... Novi Sad" is not the body of the same name in Niš
+		const seat = seatOf(hit.name)
+		if (qSeat && seat && seat !== qSeat) continue
 		// a function, not a body ("Direktor Republičkog fonda ..." is a stray register entry)
 		if (POSITION_FIRST.test(asciiFold(hit.name))) continue
 		if (!unitWanted && (UNIT.test(asciiFold(hit.name)) || isSubUnit(hit.name, qt) || (/ - /.test(hit.name) && t.length > qt.length + 3))) continue
@@ -239,7 +254,10 @@ function contenders<T extends { name: string }>(matches: Match<T>[]): { top: Mat
 	if (matches.length === 0) return { top: [], identities: [] }
 	const best = Math.min(...matches.map((m) => (m.identity ? m.identity.split(" ").length : 0)))
 	const top = matches.filter((m) => (m.identity ? m.identity.split(" ").length : 0) === best)
-	return { top, identities: [...new Set(top.map((m) => m.identity))] }
+	// the same name in two cities is two bodies (the science parks of Niš and Beograd), not one body entered twice
+	const seats = new Set(top.map((m) => seatOf(m.hit.name)).filter(Boolean))
+	const identity = (m: Match<T>) => (seats.size > 1 ? `${m.identity} @${seatOf(m.hit.name) ?? ""}`.trim() : m.identity)
+	return { top, identities: [...new Set(top.map(identity))] }
 }
 
 export class AmbiguousInstitutionError extends Error {
@@ -336,7 +354,8 @@ async function latestHeadStart(id: string, name: string): Promise<{ id: string; 
 }
 
 async function resolveDynamic(query: string): Promise<ResolvedInstitution> {
-	const env = await cached<ResolvedInstitution | null>("resolver", cacheKey("institution", key(query)), async () => {
+	// v2: bodies that differ only by their seat city are no longer merged; answers cached before that are not reused
+	const env = await cached<ResolvedInstitution | null>("resolver", cacheKey("institution", "v2", key(query)), async () => {
 		// a known short name, else an acronym spelled out from the register ("RTS" -> "Radio Televizija Srbije", not "Galerija RTS")
 		const expanded = loadAbbreviations().get(key(query)) ?? (looksLikeAcronym(query) ? await expandAcronym(query) : undefined) ?? query
 		const restored = await apr.restoreDiacritics(expanded).catch(() => expanded)
