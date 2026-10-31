@@ -180,9 +180,11 @@ typical run has 2 interventions, not one per call.
 - **Blocking approvals** cover sensitive signals that name people.
 
 ### Two inference modes, one runtime
-- **LLM mode (OpenAI recommended).** `ResilientInferenceRunner` wraps Mozaik's bundled model endpoints:
+- **LLM mode (Claude or OpenAI).** `ResilientInferenceRunner` wraps Mozaik's bundled model endpoints:
+  - for Claude it adds `max_tokens` (16k, Mozaik's mapper leaves it out) and automatic prompt caching, so the
+    conversation a loop sends again on every step is read from the cache;
   - a semaphore per session (`LLM_CONCURRENCY`), under one shared by every session on the server (`LLM_CONCURRENCY_TOTAL`);
-  - retries on 429, 5xx and timeouts;
+  - retries on 429, 5xx and timeouts; an account without credits switches the session to the scripted policies;
   - a 90 s timeout;
   - it **never throws**. `runLoop` does not catch errors, so an exception there would be an unhandled rejection that
     kills the process.
@@ -266,8 +268,8 @@ docs/                       architecture, agent behavior, per-source notes, scre
 
 | variable | default | meaning |
 |---|---|---|
-| `OPENAI_API_KEY` | (none) | enables LLM mode (otherwise scripted) |
-| `DOSIJE_MODEL` / `DOSIJE_EDITOR_MODEL` | `gpt-5.4-mini` / `gpt-5.4` | worker / editor models (any Mozaik bundled model) |
+| `ANTHROPIC_API_KEY` / `OPENAI_API_KEY` | (none) | enables LLM mode (otherwise scripted); with both set, OpenAI is used |
+| `DOSIJE_MODEL` / `DOSIJE_EDITOR_MODEL` | Claude `claude-sonnet-5-5` / `claude-opus-5-5`, OpenAI `gpt-5.4-mini` / `gpt-5.4` | worker / editor models (any Mozaik bundled model) |
 | `DOSIJE_REASONING` | `low` | reasoning effort for models that support it |
 | `LLM_CONCURRENCY` | `8` | maximum parallel LLM calls of one session |
 | `LLM_CONCURRENCY_TOTAL` | `32` | maximum parallel LLM calls of all sessions together |
@@ -283,7 +285,8 @@ docs/                       architecture, agent behavior, per-source notes, scre
 | `PORT` | `3000` | web server port |
 
 ## Limitations and next steps
-- **LLM mode** is covered by a test against a fake OpenAI Responses server, including injected 429/500 errors.
+- **LLM mode** is covered by a test against a fake OpenAI Responses server, including injected 429/500 errors, and the
+  Claude request (max_tokens, caching, adaptive thinking) by one against a fake Messages API.
   Prompts are tuned for one tool call per step, because Mozaik 4.2 executes the first function call of each response.
 - **The procurement portal's API is unofficial.** DRI excerpt selection is heuristic. APR matching is by name, with
   curated PIB-to-MB pairs for the demo suppliers; the portal publishes PIB, while the registry has only MB.

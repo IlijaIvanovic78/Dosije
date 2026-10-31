@@ -12,6 +12,9 @@ process.env.DOSIJE_MODE = "llm"
 // this case also tests the blocking approval of a sensitive signal (off in the app)
 process.env.DOSIJE_APPROVALS = "1"
 process.env.OPENAI_API_KEY = "sk-test-fake"
+// the models of the fake, whatever a local .env sets (dotenv does not override variables that are already set)
+process.env.DOSIJE_MODEL = "gpt-5.4-mini"
+process.env.DOSIJE_EDITOR_MODEL = "gpt-5.4"
 process.env.DATA_MODE = "cache"
 process.env.HUMAN_AUTO_APPROVE_MS = "0"
 process.env.LLM_CONCURRENCY = "3"

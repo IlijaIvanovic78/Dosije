@@ -115,6 +115,9 @@ describe("LLM provider without credits", () => {
 		assert.equal(outOfCredits(err(429, "You exceeded your current quota, please check your plan and billing details.")), true)
 		assert.equal(outOfCredits(err(429, "Rate limit reached for requests")), false, "a rate limit is retried, not given up")
 		assert.equal(outOfCredits(err(500, "billing service unavailable")), false)
+		assert.equal(outOfCredits(err(400, "Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.")), true)
+		assert.equal(outOfCredits(err(402, "billing_error")), true)
+		assert.equal(outOfCredits(err(400, "max_tokens: Field required")), false, "a bad request is not a missing credit")
 	})
 })
 

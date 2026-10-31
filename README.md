@@ -34,7 +34,8 @@ The bar under the top bar walks you through the flow: **Tim istražuje → Tvoje
 - Without a key, a deterministic inference runner sits in Mozaik's official runner slot. Everything else is real: the
   runtime, loops, tools, events, shared state, interception, and real public data, cached locally in
   `data/cache/` (gitignored) after the first lookup.
-- For real LLM agents, put `OPENAI_API_KEY` in `.env`. Workers use `gpt-5.4-mini` and the editor uses `gpt-5.4`.
+- For real LLM agents, put `ANTHROPIC_API_KEY` or `OPENAI_API_KEY` in `.env`. With Claude the workers use
+  `claude-sonnet-5-5` and the editor `claude-opus-5-5`; with OpenAI, `gpt-5.4-mini` and `gpt-5.4`.
 - Requires Node 20 or newer. npm may print `allow-scripts` warnings; they are harmless.
 
 ## What it is
@@ -86,7 +87,7 @@ The concept-by-concept map to the code is in [docs/HOW_IT_WORKS.md](docs/HOW_IT_
 
 | command | what it does |
 |---|---|
-| `npm test` | the test suite: concurrency, the cascade, interception, conflicts, LLM mode against a fake OpenAI API |
+| `npm test` | the test suite: concurrency, the cascade, interception, conflicts, LLM mode against fake OpenAI and Claude APIs |
 | `npm run cli -- "Srbijavoz"` | a headless dossier with an ASCII Gantt of the agents |
 | `npm run mapa` | the institution comparison from the terminal |
 | `npm run qa` | checks every finding's source, link and attribution |

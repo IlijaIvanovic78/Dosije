@@ -1,6 +1,6 @@
 # Dosije for a public demo: up to 24 visitors at once, each with an engine of their own (see src/session/).
 #   docker compose up -d --build        then nginx in front (deploy/server-setup.sh, deploy/domain-setup.sh)
-# Keys and models come from .env (OPENAI_API_KEY, ...); without a key the agents run in scripted mode.
+# Keys and models come from .env (ANTHROPIC_API_KEY or OPENAI_API_KEY, ...); without a key the agents run in scripted mode.
 services:
   dosije:
     build: .

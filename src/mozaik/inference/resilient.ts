@@ -3,7 +3,7 @@
 // accounting. It NEVER throws: Mozaik's runLoop does not catch errors, so an exception here would be an unhandled
 // rejection that kills the process. On final failure the loop ends with a "Agent nije uspeo: ..." message.
 
-import { ModelMessageItem, SemanticEvent, supportedModels, type InferenceInput, type InferenceOutput, type InferenceRunner } from "@mozaik-ai/core"
+import { AnthropicMessages, ModelMessageItem, SemanticEvent, supportedModels, type Endpoint, type InferenceInput, type InferenceOutput, type InferenceRunner } from "@mozaik-ai/core"
 import { config } from "../../config"
 import { sharedPermit } from "../../session/permits"
 import type { DosijeState } from "../state"
@@ -48,9 +48,39 @@ function statusOf(err: unknown): number | undefined {
 	return m ? Number(m[1]) : undefined
 }
 
-/** The account has no credits or its quota is used up: a 429 that does not pass, so retrying only wastes time. */
+/** The account has no credits or its quota is used up, an error that does not pass, so retrying only wastes time.
+ *  OpenAI answers 429 (insufficient_quota), Anthropic 402 (billing_error) or 400 ("credit balance is too low"). */
 export function outOfCredits(err: unknown): boolean {
-	return statusOf(err) === 429 && /no credits|insufficient[_ ]quota|exceeded your current quota|billing/i.test(errorMessage(err))
+	const status = statusOf(err)
+	const msg = errorMessage(err)
+	if (status === 429) return /no credits|insufficient[_ ]quota|exceeded your current quota|billing/i.test(msg)
+	if (status === 402) return true
+	return status === 400 && /credit balance is too low/i.test(msg)
+}
+
+// Claude: the API requires max_tokens, which Mozaik's mapper sends only when the input sets it, and thinking counts
+// toward it. 16k stays under the SDK's limit for a request without streaming.
+const CLAUDE_MAX_TOKENS = 16_000
+const claudeEndpoints = new Map<string, Endpoint>()
+
+/** Mozaik's Anthropic endpoint with max_tokens and automatic prompt caching (one top-level cache_control): every
+ *  agent loop sends its whole conversation again on each step, and the repeated prefix is then read at a tenth of the price. */
+function claudeEndpoint(entry: GenerativeModelLike): Endpoint {
+	let endpoint = claudeEndpoints.get(entry.specification.name)
+	if (!endpoint) {
+		const mapper = entry.endpoint.endpointMapper
+		endpoint = new AnthropicMessages({
+			toRequest: (input) => {
+				const request = mapper.toRequest(input)
+				request.max_tokens ??= Math.min(CLAUDE_MAX_TOKENS, entry.specification.maxOutputTokens)
+				request.cache_control = { type: "ephemeral" }
+				return request
+			},
+			toResponse: (response) => mapper.toResponse(response),
+		})
+		claudeEndpoints.set(entry.specification.name, endpoint)
+	}
+	return endpoint
 }
 
 function retryable(err: unknown): boolean {
@@ -106,6 +136,7 @@ export class ResilientInferenceRunner implements InferenceRunner {
 		if (input.tools?.length && !spec.supportsFunctionCalling) return failure(`model „${spec.name}“ ne podržava pozive alata`)
 		const request: InferenceInput = { ...input }
 		if (request.reasoningEffort && !(spec.supportsReasoningEffort && spec.supportedReasoningEfforts.includes(request.reasoningEffort))) delete request.reasoningEffort
+		const endpoint = spec.provider === "anthropic" ? claudeEndpoint(entry) : entry.endpoint
 
 		let lastErr: unknown
 		for (let attempt = 0; attempt < ATTEMPTS; attempt++) {
@@ -113,7 +144,7 @@ export class ResilientInferenceRunner implements InferenceRunner {
 			// on the server the limit of this session sits under one shared by all sessions (LLM_CONCURRENCY_TOTAL)
 			const releaseShared = await sharedPermit("llm")
 			try {
-				const out = await withTimeout(entry.endpoint.infer(request), TIMEOUT_MS)
+				const out = await withTimeout(endpoint.infer(request), TIMEOUT_MS)
 				const usage = out.tokenUsage
 				if (usage) this.state.addTokens(usage.totalTokens ?? (usage.inputTokens ?? 0) + (usage.outputTokens ?? 0))
 				const usable = out.items?.some((i) => i.type === "function_call" || (i.type === "message" && (i as { role?: string }).role === "assistant"))

@@ -71,7 +71,7 @@ function detectProvider(): Provider {
 
 const DEFAULT_MODELS: Record<Provider, { worker: string; editor: string }> = {
 	openai: { worker: "gpt-5.4-mini", editor: "gpt-5.4" },
-	anthropic: { worker: "claude-haiku-4-5", editor: "claude-sonnet-4-6" },
+	anthropic: { worker: "claude-sonnet-5-5", editor: "claude-opus-5-5" },
 	gemini: { worker: "gemini-3.5-flash", editor: "gemini-3.1-pro-preview" },
 	none: { worker: "gpt-5.4-mini", editor: "gpt-5.4" },
 }
