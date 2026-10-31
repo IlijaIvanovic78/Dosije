@@ -1,6 +1,6 @@
 // The journalist's decisions. Open questions and approvals render inline at the top of the dossier ("Čeka tvoju
 // odluku", one card open at a time); the "Sanduče" side panel lists them compactly, keeps the history of decisions
-// and the "Dodaj trag" form.
+// and the "Dodajte trag" form.
 
 import { h, reconcile, createScheduler, parseIso, fmtClock, truncate, safeUrl, avatar, sourceLinks, SIGNAL_LABEL, SECTION_LABEL } from "./format.js"
 import { state, on, openTasks, applySnapshot, resumeCase, setView } from "./store.js"
@@ -123,7 +123,7 @@ function buildTaskCard(task) {
 	const title = h("h4", { class: "task-title" }, approval ? tx(task.findingDraft?.title) || `${t("Urednik predlaže signal")}: ${tx(task.title)}` : tx(task.title))
 
 	const body = []
-	if (task.blocking) body.push(h("p", { class: "hold-line" }, h("b", null, `${t("{agent} je pauziran dok ne odlučiš", { agent: agentName(task.fromAgentName) })}.`)))
+	if (task.blocking) body.push(h("p", { class: "hold-line" }, h("b", null, `${t("{agent} je pauziran dok ne odlučite", { agent: agentName(task.fromAgentName) })}.`)))
 	if (approval && task.findingDraft) body.push(draftBlock(task.findingDraft))
 	if (task.question) body.push(h("p", { class: "task-q" }, tx(task.question)))
 	if (task.hint) body.push(h("p", { class: "task-hint" }, h("b", null, `${t("Savet")}: `), tx(task.hint)))
@@ -145,18 +145,18 @@ function buildTaskCard(task) {
 			h(
 				"div",
 				{ class: "task-actions" },
-				h("button", { class: "btn primary", type: "button", onclick: () => send(task, { decision: "approve" }, card) }, t("Ubaci u izveštaj")),
-				h("button", { class: "btn", type: "button", onclick: () => send(task, { decision: "reject" }, card) }, t("Odbaci")),
+				h("button", { class: "btn primary", type: "button", onclick: () => send(task, { decision: "approve" }, card) }, t("Ubacite u izveštaj")),
+				h("button", { class: "btn", type: "button", onclick: () => send(task, { decision: "reject" }, card) }, t("Odbacite")),
 			),
 		)
 	} else {
-		const ta = h("textarea", { rows: "2", placeholder: t("Upiši odgovor (na primer ime vlasnika)"), "aria-label": t("Odgovor") })
-		const submit = h("button", { class: "btn primary", type: "button", disabled: true, onclick: () => send(task, { answer: ta.value.trim() }, card) }, t("Pošalji timu"))
+		const ta = h("textarea", { rows: "2", placeholder: t("Upišite odgovor (na primer ime vlasnika)"), "aria-label": t("Odgovor") })
+		const submit = h("button", { class: "btn primary", type: "button", disabled: true, onclick: () => send(task, { answer: ta.value.trim() }, card) }, t("Pošaljite timu"))
 		ta.addEventListener("input", () => (submit.disabled = !ta.value.trim()))
 		ta.addEventListener("keydown", (e) => {
 			if (e.key === "Enter" && (e.ctrlKey || e.metaKey) && ta.value.trim()) submit.click()
 		})
-		body.push(h("div", { class: "task-answer" }, ta, h("div", { class: "task-actions" }, submit, h("button", { class: "btn", type: "button", onclick: () => send(task, { decision: "reject" }, card) }, t("Preskoči")), h("span", { class: "task-kbd" }, t("Ctrl+Enter šalje")))))
+		body.push(h("div", { class: "task-answer" }, ta, h("div", { class: "task-actions" }, submit, h("button", { class: "btn", type: "button", onclick: () => send(task, { decision: "reject" }, card) }, t("Preskočite")), h("span", { class: "task-kbd" }, t("Ctrl+Enter šalje")))))
 	}
 	card.append(head, title, h("div", { class: "task-body" }, ...body))
 	return card
@@ -170,7 +170,7 @@ function openRow(task) {
 		{ class: `open-row${task.blocking ? " blocking" : ""}` },
 		avatar(agent),
 		h("div", { class: "or-main" }, h("div", { class: "or-title" }, truncate(tx(task.title), 90)), h("div", { class: "or-sub" }, `${agentName(task.fromAgentName)} · ${task.kind === "odobrenje" ? t("traži odobrenje") : t("ima pitanje")}`)),
-		h("button", { class: "btn small primary", type: "button", onclick: () => focusDecisions(task.id) }, task.kind === "odobrenje" ? t("Odluči") : t("Odgovori")),
+		h("button", { class: "btn small primary", type: "button", onclick: () => focusDecisions(task.id) }, task.kind === "odobrenje" ? t("Odlučite") : t("Odgovorite")),
 	)
 }
 
@@ -189,8 +189,8 @@ function historyItem(task) {
 
 function dockHeading(open) {
 	const n = open.length
-	if (n === 1) return open[0].kind === "odobrenje" ? t("{agent} traži tvoje odobrenje", { agent: agentName(open[0].fromAgentName) }) : t("{agent} ima pitanje za tebe", { agent: agentName(open[0].fromAgentName) })
-	return getLang() === "en" ? `${n} decisions are waiting for you` : `${n} ${pl(n, ["odluka čeka", "odluke čekaju", "odluka čeka"])} na tebe`
+	if (n === 1) return open[0].kind === "odobrenje" ? t("{agent} traži Vaše odobrenje", { agent: agentName(open[0].fromAgentName) }) : t("{agent} ima pitanje za Vas", { agent: agentName(open[0].fromAgentName) })
+	return getLang() === "en" ? `${n} decisions are waiting for you` : `${n} ${pl(n, ["odluka čeka", "odluke čekaju", "odluka čeka"])} na Vas`
 }
 
 function render() {
@@ -221,7 +221,7 @@ function render() {
 	// agents ask nothing unless the server is set to (config.asksUser): the panel is then only for adding a lead
 	const asks = !!state.config?.asksUser || open.length > 0
 	root.querySelector(".inbox-open").hidden = !asks
-	const sub = asks ? "Pitanja agenata, tvoje odluke i tragovi koje dodaješ timu." : "Trag koji dodaš odmah dobija svog agenta."
+	const sub = asks ? "Pitanja agenata, Vaše odluke i tragovi koje dodajete timu." : "Trag koji dodate odmah dobija svog agenta."
 	const subEl = root.querySelector(".inbox-sub")
 	if (subEl.dataset.sr !== sub) {
 		subEl.dataset.sr = sub
@@ -235,7 +235,7 @@ function render() {
 	countEl.textContent = open.length ? String(open.length) : ""
 	inboxBtn.classList.toggle("has-open", open.length > 0)
 	inboxBtn.setAttribute("aria-label", open.length ? t("Sanduče, {n} otvorenih zadataka", { n: open.length }) : t("Sanduče"))
-	document.title = `${open.length ? `(${open.length}) ` : ""}Dosije · ${t("istraživački tim agenata")}`
+	document.title = `${open.length ? `(${open.length}) ` : ""}Dosije · ${t("istraživanje javnih institucija")}`
 }
 
 /** Is the decision dock on screen right now? (then a toast would only repeat it) */
@@ -300,10 +300,10 @@ export function initInbox() {
 			const approval = task.kind === "odobrenje"
 			toast({
 				kind: approval ? "approve" : "ask",
-				title: approval ? t("{agent} čeka tvoje odobrenje", { agent: agentName(task.fromAgentName) }) : t("{agent} ima pitanje za tebe", { agent: agentName(task.fromAgentName) }),
+				title: approval ? t("{agent} čeka Vaše odobrenje", { agent: agentName(task.fromAgentName) }) : t("{agent} ima pitanje za Vas", { agent: agentName(task.fromAgentName) }),
 				text: truncate(tx(task.title), 110),
 				ttl: approval ? 12000 : 6000,
-				actions: [{ label: approval ? t("Odluči") : t("Odgovori"), onClick: () => focusDecisions(task.id) }],
+				actions: [{ label: approval ? t("Odlučite") : t("Odgovorite"), onClick: () => focusDecisions(task.id) }],
 			})
 		}, 150)
 	})

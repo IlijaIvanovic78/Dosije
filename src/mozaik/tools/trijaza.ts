@@ -59,14 +59,29 @@ export function trijazaTools(ctx: ToolCtx): Tool[] {
 			properties: {},
 			handler: () =>
 				step(ctx, "rukovodstvo", async (ref) => {
-					const officials = await data.acas.getOfficials({ acasId: ref.acasId, altIds: ref.acasAltIds, name: ref.name, nameCyr: ref.nameCyr })
+					const officials = await data.analysis.closeEndedHeads(await data.acas.getOfficials({ acasId: ref.acasId, altIds: ref.acasAltIds, name: ref.name, nameCyr: ref.nameCyr }))
 					const head = data.analysis.pickHead(officials)
 					const signals: MapaSignals = {}
 					const sources: SourceRef[] = []
 					const generic = officials[0] ? { ...officials[0].source, publishedAt: undefined } : undefined
 					if (!head) {
 						if (generic) sources.push(generic)
-						return { out: { institution: ref.name, officials: officials.length, head: null, napomena: "U registru nema tekućeg čelnika (direktor, predsednik, načelnik)." }, signals, sources }
+						// the register still shows a head whose own report on leaving says the function ended
+						const ended = officials.find((o) => o.endedBy && data.analysis.isHeadPosition(o.position))
+						if (ended?.endedBy) sources.push(ended.endedBy)
+						return {
+							out: {
+								institution: ref.name,
+								officials: officials.length,
+								head: null,
+								zavrseno: ended?.to ? { position: ended.position, to: ended.to, reportDate: ended.endedBy?.publishedAt } : undefined,
+								napomena: ended?.to
+									? `U registru nema tekućeg čelnika: zapis „${ended.position}“ nema datum kraja, ali izveštaj o imovini o prestanku funkcije navodi kraj ${ended.to}.`
+									: "U registru nema tekućeg čelnika (direktor, predsednik, načelnik).",
+							},
+							signals,
+							sources,
+						}
 					}
 					const check = data.analysis.checkVd(head, { legalType: ref.legalType })
 					const rule = data.rules.ruleFor(ref.legalType)
@@ -184,7 +199,7 @@ export function trijazaTools(ctx: ToolCtx): Tool[] {
 			local: true,
 			max: 600,
 			description:
-				"Upiši red institucije u Mapu prioriteta. Poziva se tek posle sva tri alata (trijaza_rukovodstvo, trijaza_nabavke, trijaza_revizija). Brojke i ocenu računa kod iz podataka alata; ti dodaješ samo sažetak od 1-2 rečenice.",
+				"Upiši red institucije u poređenje institucija. Poziva se tek posle sva tri alata (trijaza_rukovodstvo, trijaza_nabavke, trijaza_revizija). Brojke i ocenu računa kod iz podataka alata; ti dodaješ samo sažetak od 1-2 rečenice.",
 			properties: { summary: { type: "string", description: "1-2 neutralne rečenice (signali, bez optužbi, bez imena osoba)" } },
 			required: ["summary"],
 			handler: (args) => {

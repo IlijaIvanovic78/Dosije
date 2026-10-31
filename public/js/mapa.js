@@ -1,11 +1,11 @@
-// "Mapa prioriteta": a list of institutions triaged by parallel "Trijaža" agents, shown as a live ranking table
+// "Poređenje institucija": a list of institutions triaged by parallel "Trijaža" agents, shown as a live ranking table
 // ("gde prvo gledati"). Rows are re-sorted in place as scores arrive; the left "Tim" column shows the agents.
 
 import { h, createScheduler, sourceLinks, truncate, fmtNum, fmtElapsed } from "./format.js"
 import { state, on, setView, activeCount, peakCount, elapsedMs } from "./store.js"
 import { api } from "./api.js"
 import { showNotice, clearNotice, finishCaseThen, caseBusy } from "./notice.js"
-import { t, tx, pl, getLang, langKey, onLang, onTx } from "./i18n.js"
+import { t, tx, pl, getLang, langKey, onLang } from "./i18n.js"
 
 const MAX_SCORE = 100 // bar scale: at least 100 points, or the highest score on screen
 const rows = new Map() // slug -> { root, parts, sig }
@@ -24,20 +24,29 @@ function mapaRunning() {
 /** Signal chips of a row: [text, tone] (tone: signal = red, paznja = amber, info = gray). */
 export function chipsOf(s = {}) {
 	const out = []
-	if (s.vdMonths !== undefined && s.vdLimitMonths !== undefined) out.push([t("v.d. {m}/{lim} mes.", { m: s.vdMonths, lim: s.vdLimitMonths }), s.vdOver ? "signal" : "info"])
-	if (s.vdChainMonths !== undefined && s.vdChainMonths >= 24) out.push([t("lanac v.d. {m} mes.", { m: s.vdChainMonths }), "signal"])
-	if (s.nwpCount) out.push([`${t("bez objave")} ${s.nwpCount}${s.nwpShare !== undefined ? ` · ${pct(s.nwpShare)}` : ""}`, s.nwpShare > 0.05 ? "signal" : "paznja"])
-	if (s.iwFlags) out.push([`IW ${s.iwFlags}`, "paznja"])
-	if (s.driReports) out.push([`DRI ${s.driReports}${s.driQualified ? ` · ${t("{n} sa rezervom", { n: s.driQualified })}` : ""}`, s.driQualified ? "paznja" : "info"])
+	if (s.vdMonths !== undefined && s.vdLimitMonths !== undefined) out.push([t("v.d. {m} mes. (rok {lim})", { m: s.vdMonths, lim: s.vdLimitMonths }), s.vdOver ? "signal" : "info"])
+	if (s.vdChainMonths !== undefined && s.vdChainMonths >= 24) out.push([t("niz v.d. {m} mes.", { m: s.vdChainMonths }), "signal"])
+	if (s.nwpCount) out.push([`${t("bez objave")}: ${s.nwpCount}${s.nwpShare !== undefined ? ` (${pct(s.nwpShare)})` : ""}`, s.nwpShare > 0.05 ? "signal" : "paznja"])
+	if (s.iwFlags) out.push([`Integrity Watch: ${s.iwFlags}`, "paznja"])
+	if (s.driReports) out.push([`DRI: ${s.driReports}${s.driQualified ? `, ${t("{n} sa rezervom", { n: s.driQualified })}` : ""}`, s.driQualified ? "paznja" : "info"])
 	return out
 }
 
 const STATUS = {
 	queued: ["idle", "čeka"],
-	running: ["running", "radi"],
+	running: ["running", "proverava"],
 	done: ["done", "gotovo"],
-	error: ["error", "greška"],
+	error: ["error", "nije provereno"],
 }
+
+// the four areas of a score, in the order of the criteria strip above the table
+const AREAS = [
+	{ id: "rukovodstvo", label: "Rukovodstvo", re: /v\.d\.|lanac|acting head/i },
+	{ id: "nabavke", label: "Nabavke", re: /bez objave|dobavlja[čc]|integrity watch|ozna[čc]en|published call|supplier/i },
+	{ id: "revizija", label: "Revizija", re: /DRI|mi[šs]ljen|revizij|audit/i },
+	{ id: "veze", label: "Zajednički dobavljači", re: /isti dobavlja|same supplier/i },
+]
+const areaOf = (reason) => (AREAS.find((a) => a.id === "veze" && a.re.test(reason)) || AREAS.find((a) => a.re.test(reason)))?.id
 
 function sortedRows() {
 	const list = [...state.mapa.rows.values()]
@@ -52,7 +61,7 @@ function buildRow(slug) {
 		name: h("b", { class: "mn" }),
 		sub: h("small", { class: "ms" }),
 		num: h("span", { class: "num" }, "0"),
-		bar: h("i"),
+		bar: h("div", { class: "bar", role: "img" }, ...AREAS.map((a) => h("i", { dataset: { area: a.id } }))),
 		chips: h("div", { class: "mchips" }),
 		stat: h("span", { class: "stat idle" }, h("i"), t("čeka")),
 		toggle: h("button", { class: "link-btn mtoggle", type: "button", "aria-expanded": "false" }, t("Detalji")),
@@ -63,7 +72,7 @@ function buildRow(slug) {
 		{ class: "mrow-main" },
 		parts.rk,
 		h("div", { class: "mname" }, parts.name, parts.sub),
-		h("div", { class: "mscore" }, parts.num, h("div", { class: "bar" }, parts.bar)),
+		h("div", { class: "mscore" }, parts.num, parts.bar),
 		parts.chips,
 		parts.stat,
 		parts.toggle,
@@ -75,27 +84,50 @@ function buildRow(slug) {
 		rows.get(slug).sig = ""
 		schedule()
 	}
-	parts.toggle.addEventListener("click", toggle)
-	main.addEventListener("dblclick", toggle)
+	parts.toggle.addEventListener("click", (e) => {
+		e.stopPropagation()
+		toggle()
+	})
+	main.addEventListener("click", toggle)
 	return { root, parts, sig: "" }
 }
 
+/** The details of one institution: why it got its score, area by area, with the sources and a way into its full dossier. */
 function detailNodes(r) {
 	const nodes = []
-	if (r.status === "error") nodes.push(h("p", { class: "m-err" }, `${t("Greška")}: ${tx(r.error) || t("trijaža nije uspela")}`))
+	if (r.status === "error") nodes.push(h("p", { class: "m-err" }, `${t("Institucija nije proverena")}: ${tx(r.error) || t("provera nije uspela")}`))
 	if (r.alternatives?.length && r.resolvedName)
 		nodes.push(h("p", { class: "m-sum" }, t("Naziv odgovara i drugim ustanovama ({list}); izabrana je {name}.", { list: r.alternatives.join("; "), name: r.resolvedName })))
 	if (r.summary) nodes.push(h("p", { class: "m-sum" }, tx(r.summary)))
-	if (r.reasons?.length) nodes.push(h("ul", { class: "m-reasons" }, r.reasons.map((x) => h("li", null, tx(x)))))
-	else if (r.status !== "error") nodes.push(h("p", { class: "m-none" }, r.status === "done" ? t("Nijedan signal nije prešao prag; ocena 0.") : t("Agent još proverava izvore…")))
+	const reasons = r.reasons || []
+	if (reasons.length) {
+		const gaps = reasons.filter((x) => /^nema podataka/i.test(x))
+		nodes.push(
+			h(
+				"div",
+				{ class: "m-areas" },
+				AREAS.map((a) => {
+					const mine = reasons.filter((x) => !gaps.includes(x) && areaOf(x) === a.id)
+					const pts = r.parts?.[a.id] ?? 0
+					return h(
+						"div",
+						{ class: "m-area", dataset: { area: a.id } },
+						h("h5", null, t(a.label), h("span", null, t("{n} b.", { n: fmtNum(pts) }))),
+						mine.length ? h("ul", { class: "m-reasons" }, mine.map((x) => h("li", null, tx(x)))) : h("p", { class: "m-none" }, t("nijedan signal iznad praga")),
+					)
+				}),
+			),
+		)
+		if (gaps.length) nodes.push(h("p", { class: "m-none" }, gaps.map((g) => tx(g)).join(" · ")))
+	} else if (r.status !== "error") nodes.push(h("p", { class: "m-none" }, r.status === "done" ? t("Nijedan signal nije prešao prag: ocena je 0.") : t("Agent još proverava izvore…")))
 	if (r.sources?.length) nodes.push(sourceLinks(r.sources))
 	const busy = mapaRunning()
 	nodes.push(
 		h(
 			"div",
 			{ class: "m-actions" },
-			h("button", { class: "btn small primary", type: "button", disabled: busy, title: busy ? t("Sačekaj da se mapa završi") : t("Pokreće pun dosije za ovu instituciju"), onclick: () => openDosije(r) }, t("Otvori dosije")),
-			r.resolvedName && r.resolvedName !== r.name ? h("span", { class: "m-resolved" }, `${t("razrešeno kao")}: ${r.resolvedName}`) : null,
+			h("button", { class: "btn small primary", type: "button", disabled: busy, title: busy ? t("Sačekajte da se poređenje završi") : t("Pokreće pun dosije za ovu instituciju"), onclick: () => openDosije(r) }, t("Otvorite pun dosije")),
+			r.resolvedName && r.resolvedName !== r.name ? h("span", { class: "m-resolved" }, `${t("u registrima")}: ${r.resolvedName}`) : null,
 		),
 	)
 	return nodes
@@ -151,17 +183,21 @@ function updateRow(rec, r, rank, max, shared) {
 	p.rk.classList.toggle("prov", !!rank && r.status !== "done")
 	p.name.textContent = r.name
 	const picked = r.alternatives?.length && r.resolvedName ? `→ ${r.resolvedName}` : ""
-	p.sub.textContent = r.status === "error" ? "" : picked || (r.summary ? "" : r.status === "running" ? t("agent proverava izvore") : r.status === "queued" ? t("u redu") : "")
-	p.num.textContent = fmtNum(r.score)
-	p.bar.style.width = `${Math.min(100, (r.score / max) * 100)}%`
+	p.sub.textContent = r.status === "error" ? "" : picked || (r.summary ? "" : r.status === "running" ? t("agent proverava izvore") : r.status === "queued" ? t("čeka na red") : "")
+	p.num.replaceChildren(fmtNum(r.score), h("small", null, t("bodova")))
+	// the bar is the score split by area, on a common scale for all rows
+	const parts = r.parts || { rukovodstvo: r.score, nabavke: 0, revizija: 0, veze: 0 }
+	for (const seg of p.bar.children) seg.style.width = `${Math.min(100, ((parts[seg.dataset.area] || 0) / max) * 100)}%`
+	p.bar.setAttribute("aria-label", AREAS.map((a) => `${t(a.label)} ${parts[a.id] || 0}`).join(", "))
+	p.bar.title = AREAS.filter((a) => parts[a.id]).map((a) => `${t(a.label)}: ${parts[a.id]}`).join(" · ") || t("bez bodova")
 	const chips = chipsOf(r.signals)
-	for (const v of shared) chips.push([t("isti dobavljač: {name}", { name: truncate(v.name, 24) }), "paznja"])
+	for (const v of shared) chips.push([t("isti dobavljač: {name}", { name: truncate(v.name, 28) }), "paznja"])
 	p.chips.replaceChildren(...chips.map(([txt, tone]) => h("span", { class: `chip ${tone}`, title: txt }, txt)))
 	p.stat.className = `stat ${cls}`
 	p.stat.replaceChildren(h("i"), t(text))
-	p.toggle.textContent = open.has(r.slug) ? t("Sakrij") : t("Detalji")
+	p.toggle.textContent = open.has(r.slug) ? t("Sakrijte") : t("Detalji")
 	p.toggle.setAttribute("aria-expanded", String(open.has(r.slug)))
-	p.toggle.setAttribute("aria-label", `${open.has(r.slug) ? t("Sakrij detalje") : t("Detalji")}: ${r.name}`)
+	p.toggle.setAttribute("aria-label", `${open.has(r.slug) ? t("Sakrijte detalje") : t("Detalji")}: ${r.name}`)
 	p.detail.hidden = !open.has(r.slug)
 	if (open.has(r.slug)) p.detail.replaceChildren(...detailNodes(r))
 }
@@ -196,7 +232,7 @@ function renderTable() {
 		}
 	}
 	if (!els.length) {
-		el.rows.replaceChildren(h("div", { class: "empty-line" }, t("Još nema mape. Pokreni je dugmetom iznad: institucije se pojavljuju ovde, a Trijaža agenti rade u koloni „Tim“.")))
+		el.rows.replaceChildren(h("div", { class: "empty-line" }, t("Rang-lista se pojavljuje ovde. Pokrenite poređenje: institucije se rangiraju čim ih agenti provere, a njihov rad pratite u koloni „Tim agenata“.")))
 		return
 	}
 	const cur = [...el.rows.children]
@@ -217,24 +253,28 @@ function renderChrome() {
 	const live = mapaRunning()
 	const status = mapa.status === "idle" || !mapa.id ? "idle" : live ? "running" : "done"
 	el.status.className = `stat ${status}`
-	el.status.replaceChildren(h("i"), t({ idle: "čeka", running: "u toku", done: "završeno" }[status]))
+	el.status.replaceChildren(h("i"), t({ idle: "nije pokrenuto", running: "provera traje", done: "rang-lista je gotova" }[status]))
 
-	el.input.disabled = live
 	el.run.disabled = live
-	el.run.textContent = live ? t("Mapa radi…") : list.length ? t("Pokreni ponovo") : t("Pokreni mapu")
+	el.run.textContent = live ? t("Provera traje…") : list.length ? t("Pokrenite ponovo") : t("Pokrenite poređenje")
 	const compact = list.length > 0 && !editing
 	el.form.classList.toggle("compact", compact)
 	el.edit.hidden = !compact || live
-	if (!dirty && !live && document.activeElement !== el.input) {
-		const preset = (state.config?.mapaPreset || []).map((p) => p.name).join("\n")
-		if (preset && el.input.value !== preset) el.input.value = preset
+	// the list starts with the current institutions (the preset) until the user changes it
+	if (!dirty && !live && !names.length) {
+		names = (state.config?.mapaPreset || []).map((p) => p.name)
+		renderList()
 	}
+	for (const inp of el.list.querySelectorAll("input")) inp.disabled = live
+	const summary = compact ? t("Upoređuje se {n}: {list}", { n: `${list.length} ${pl(list.length, ["institucija", "institucije", "institucija"], ["institution", "institutions"])}`, list: list.map((r) => r.resolvedName || r.name).join(", ") }) : ""
+	if (el.summary.textContent !== summary) el.summary.textContent = summary
+	el.summary.hidden = !compact
 	let text = ""
 	if (list.length && state.runKind === "mapa") {
 		const n = activeCount()
 		const peak = peakCount()
-		if (live) text = getLang() === "en" ? `${done}/${list.length} done · ${n} ${pl(n, [], ["agent", "agents"])} working at once` : `${done}/${list.length} gotovo · ${n} ${pl(n, ["agent", "agenta", "agenata"])} ${pl(n, ["radi", "rade", "radi"])} istovremeno`
-		else text = getLang() === "en" ? `${done}/${list.length} done · peak: ${peak} ${pl(peak, [], ["agent", "agents"])} at once · ${fmtElapsed(elapsedMs())}` : `${done}/${list.length} gotovo · vrhunac: ${peak} ${pl(peak, ["agent", "agenta", "agenata"])} istovremeno · ${fmtElapsed(elapsedMs())}`
+		if (live) text = getLang() === "en" ? `${done} of ${list.length} checked · ${n} ${pl(n, [], ["agent", "agents"])} working now` : `${done} od ${list.length} provereno · ${n} ${pl(n, ["agent radi", "agenta rade", "agenata radi"])} sada`
+		else text = getLang() === "en" ? `${done} of ${list.length} checked · at most ${peak} ${pl(peak, [], ["agent", "agents"])} at once · ${fmtElapsed(elapsedMs())}` : `${done} od ${list.length} provereno · najviše ${peak} ${pl(peak, ["agent", "agenta", "agenata"])} istovremeno · ${fmtElapsed(elapsedMs())}`
 	}
 	el.progress.textContent = text
 }
@@ -245,17 +285,87 @@ function render() {
 }
 const schedule = createScheduler(render)
 
+// ─── the list of institutions: one field per name (at most 8), or one box to paste a whole list ───
+
+const MAX_INST = 8
+let names = []
+let pasting = false
+
+function cleanNames(list) {
+	return [...new Set(list.map((x) => x.trim()).filter(Boolean))].slice(0, MAX_INST)
+}
+
+function readList() {
+	return pasting ? el.input.value.split(/\r?\n/) : [...el.list.querySelectorAll("input")].map((i) => i.value)
+}
+
+function renderList(focusIndex) {
+	const shown = names.length ? names : [""]
+	el.list.replaceChildren(
+		...shown.map((name, i) => {
+			const input = h("input", { type: "text", value: name, title: name || null, placeholder: i === 0 ? t("npr. Srbijavoz") : t("još jedna institucija"), "aria-label": t("Institucija {n}", { n: i + 1 }), spellcheck: "false" })
+			input.addEventListener("input", () => {
+				dirty = true
+				names = readList()
+				input.title = input.value
+			})
+			input.addEventListener("keydown", (e) => {
+				// Enter in the last field adds the next one (Ctrl+Enter starts the map)
+				if (e.key !== "Enter" || e.ctrlKey || e.metaKey) return
+				e.preventDefault()
+				addRow(i + 1)
+			})
+			return h(
+				"li",
+				{ class: "inst-row" },
+				h("span", { class: "inst-n", "aria-hidden": "true" }, String(i + 1)),
+				input,
+				h("button", { class: "inst-x", type: "button", title: t("Uklonite"), "aria-label": t("Uklonite instituciju {n}", { n: i + 1 }), onclick: () => removeRow(i) }, "×"),
+			)
+		}),
+	)
+	el.add.hidden = pasting || shown.length >= MAX_INST
+	if (focusIndex !== undefined) el.list.querySelectorAll("input")[focusIndex]?.focus()
+}
+
+function addRow(at) {
+	names = readList()
+	if (names.length >= MAX_INST) return
+	names.splice(at ?? names.length, 0, "")
+	dirty = true
+	renderList(at ?? names.length - 1)
+}
+
+function removeRow(i) {
+	names = readList()
+	names.splice(i, 1)
+	dirty = true
+	renderList()
+}
+
+function togglePaste() {
+	if (pasting) {
+		names = cleanNames(el.input.value.split(/\r?\n/))
+		pasting = false
+	} else {
+		el.input.value = cleanNames(readList()).join("\n")
+		pasting = true
+	}
+	el.input.hidden = !pasting
+	el.list.hidden = pasting
+	el.paste.textContent = pasting ? t("Prikažite kao listu") : t("Nalepite listu")
+	renderList()
+	if (pasting) el.input.focus()
+}
+
 async function run(e) {
 	e?.preventDefault()
-	const names = el.input.value
-		.split(/\r?\n/)
-		.map((s) => s.trim())
-		.filter(Boolean)
-	if (!names.length) {
-		el.input.focus()
+	const list = cleanNames(readList())
+	if (!list.length) {
+		;(pasting ? el.input : el.list.querySelector("input"))?.focus()
 		return
 	}
-	await startMapa(names)
+	await startMapa(list)
 }
 
 /** POST /api/mapa; a refusal stays visible under the form, with a one-click way out when a case is still running. */
@@ -269,8 +379,8 @@ async function startMapa(names) {
 	} catch (err) {
 		el.run.disabled = false
 		const actions = []
-		if (err.status === 409 && caseBusy()) actions.push({ label: t("Završi dosije pa pokreni mapu"), onClick: () => finishCaseThen(el.notice, () => startMapa(names)) })
-		showNotice(el.notice, { text: `${t("Mapa nije pokrenuta.")} ${err.message}`, actions })
+		if (err.status === 409 && caseBusy()) actions.push({ label: t("Završite dosije pa pokrenite poređenje"), onClick: () => finishCaseThen(el.notice, () => startMapa(names)) })
+		showNotice(el.notice, { text: `${t("Poređenje nije pokrenuto.")} ${err.message}`, actions })
 	}
 }
 
@@ -281,6 +391,10 @@ export function initMapa() {
 		dosije: document.getElementById("dosijePanel"),
 		form: document.getElementById("mapaForm"),
 		input: document.getElementById("mapaInput"),
+		list: document.getElementById("mapaList"),
+		add: document.getElementById("btnMapaAdd"),
+		paste: document.getElementById("btnMapaPaste"),
+		summary: document.querySelector("#mapaForm .mapa-form-head").appendChild(h("span", { class: "mapa-summary", hidden: true })),
 		run: document.getElementById("btnMapaRun"),
 		preset: document.getElementById("btnMapaPreset"),
 		edit: document.getElementById("btnMapaEdit"),
@@ -295,15 +409,24 @@ export function initMapa() {
 	el.input.addEventListener("input", () => {
 		dirty = true
 	})
+	el.input.addEventListener("keydown", (e) => {
+		if (e.key === "Enter" && (e.ctrlKey || e.metaKey)) run(e)
+	})
+	el.add.addEventListener("click", () => addRow())
+	el.paste.addEventListener("click", togglePaste)
 	el.edit.addEventListener("click", () => {
 		editing = true
+		names = [...state.mapa.rows.values()].map((r) => r.name)
+		renderList(0)
 		schedule()
-		el.input.focus()
 	})
 	el.preset.addEventListener("click", () => {
 		editing = true
-		dirty = false
-		el.input.value = (state.config?.mapaPreset || []).map((p) => p.name).join("\n")
+		dirty = true
+		names = (state.config?.mapaPreset || []).map((p) => p.name)
+		if (pasting) el.input.value = names.join("\n")
+		renderList()
+		schedule()
 	})
 	for (const ev of ["mapa", "view", "snapshot", "meta", "agents"]) on(ev, schedule)
 	on("snapshot", ({ newCase }) => {
@@ -315,7 +438,6 @@ export function initMapa() {
 		}
 		schedule()
 	})
-	onTx(schedule)
 	onLang(() => {
 		for (const rec of rows.values()) rec.sig = ""
 		schedule()

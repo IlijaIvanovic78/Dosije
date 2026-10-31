@@ -95,7 +95,7 @@ const pct = (share: number) => Math.round(share * 1000) / 10
 
 async function officialsOfInstitution(): Promise<Official[]> {
 	const r = instRef()
-	return data.acas.getOfficials({ acasId: r.acasId, altIds: r.acasAltIds, name: r.name, nameCyr: r.nameCyr })
+	return data.analysis.closeEndedHeads(await data.acas.getOfficials({ acasId: r.acasId, altIds: r.acasAltIds, name: r.name, nameCyr: r.nameCyr }))
 }
 
 // ─── Kadrovik ────────────────────────────────────────────────────────────────
@@ -132,12 +132,31 @@ export function kadrovikTools(ctx: ToolCtx): Tool[] {
 						to: o.to,
 						current: inOffice.has(o),
 						appointedBy: o.appointedBy,
+						// the register has no end date; the official's report on leaving gives it
+						zavrsenoPoIzvestaju: o.endedBy ? { do: o.to, izvestajOd: o.endedBy.publishedAt, url: o.endedBy.url } : undefined,
 					})),
 					ponovljenVd: headOfficial?.isActing && ['javno_preduzece', 'drustvo_kapitala_drzavno', 'zdravstvena_ustanova'].includes(r.legalType) ? data.analysis.earlierActingTerms(officials, headOfficial) : [],
-					ranijiVd: pastVd.terms.slice(0, 3).map((x) => ({ name: x.name, position: x.position, from: x.from, to: x.to, months: x.months, days: x.days, maxMonths: x.maxMonths, law: x.law, article: x.article })),
+					ranijiVd: pastVd.terms.slice(0, 3).map((x) => ({
+						name: x.name,
+						position: x.position,
+						from: x.from,
+						to: x.to,
+						months: x.months,
+						days: x.days,
+						maxMonths: x.maxMonths,
+						law: x.law,
+						article: x.article,
+						krajIzIzvestaja: officials.some((o) => o.endedBy && o.fullName === x.name && o.from === x.from) || undefined,
+					})),
 					ranijiVdIzvori: pastVd.terms.length && pastVd.rule ? [srcOut(data.analysis.ruleSource(pastVd.rule))] : [],
-					napomena: stale.size ? `Bez datuma prestanka, ali zamenjeno kasnijim zapisom za istu funkciju (ne računa se kao tekuće): ${n(stale.size, "zapis")}.` : undefined,
-					sources: generic ? [srcOut(generic)] : [],
+					napomena:
+						[
+							stale.size ? `Bez datuma prestanka, ali zamenjeno kasnijim zapisom za istu funkciju (ne računa se kao tekuće): ${n(stale.size, "zapis")}.` : "",
+							officials.some((o) => o.endedBy) ? "Zapis sa poljem zavrsenoPoIzvestaju u registru nema datum kraja, ali izveštaj o imovini funkcionera o prestanku funkcije navodi kraj: funkcija se ne računa kao tekuća." : "",
+						]
+							.filter(Boolean)
+							.join(" ") || undefined,
+					sources: [...(generic ? [srcOut(generic)] : []), ...officials.filter((o) => o.endedBy).map((o) => srcOut(o.endedBy!))],
 				}
 			},
 		}),

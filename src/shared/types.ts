@@ -318,6 +318,7 @@ export interface MapaRow {
 	status: MapaRowStatus;
 	agentId?: string;
 	score: number; // deterministic, see src/data/analysis/priority.ts
+	parts?: { rukovodstvo: number; nabavke: number; revizija: number; veze: number }; // the score by area (sums to score)
 	signals: MapaSignals;
 	reasons: string[]; // short Serbian phrases, each with its points
 	summary?: string; // 1-2 neutral sentences from the triage agent
@@ -339,9 +340,8 @@ export interface RuntimeConfigView {
 	editorModel: string;
 	dataMode: "auto" | "cache" | "live";
 	searchProviders: string[]; // e.g. ["google-news-rss", "gdelt", "serper"]
-	demoInstitutions: { slug: string; name: string }[];
-	mapaPreset?: { slug: string; name: string }[]; // default list of "Mapa prioriteta"
-	translation?: boolean; // the server can machine-translate its Serbian text (POST /api/translate, report.md?lang=en)
+	demoInstitutions: { slug: string; name: string; kind?: string }[]; // the start screen's current institutions
+	mapaPreset?: { slug: string; name: string }[]; // default list of the institution comparison
 	asksUser?: boolean; // agents may ask the user (DOSIJE_ASK_HUMAN / DOSIJE_APPROVALS); off: no journalist lane, no decisions step
 }
 

@@ -1,30 +1,32 @@
 // Timeline (canvas, redrawn at most 4 times a second) on a shared time axis + concurrency chart (SVG).
 // Overlapping bars across lanes are the visual proof that agents run concurrently.
 
-import { state, on, laneEnd, activeCount, peakCount, isRunning } from "./store.js"
-import { laneRows } from "./lanes.js"
-import { h, s, parseIso, fmtDur, truncate } from "./format.js"
+import { state, on, laneEnd, activeCount, peakCount, isRunning, teamShown } from "./store.js"
+import { laneRows, spawnText } from "./lanes.js"
+import { h, s, parseIso, fmtDur, truncate, TOOL_LABEL } from "./format.js"
 import { t, tx, agentName, pl, getLang, onLang } from "./i18n.js"
 
 const RULER_H = 22
 const PAD_L = 1
 const PAD_R = 8
-const BAR_H = 10
+const BAR_H = 12
 const MIN_FRAME_MS = 250 // 4 fps at most
+// the same paper, ink and terracotta as styles.css
 const C = {
-	inf: "#D5DBE4",
-	tool: "#2563EB",
-	wait: "#D97706",
-	tick: "#111827",
-	spawn: "#64748B",
-	signal: "#DC2626",
-	axis: "#8B95A5",
-	grid: "#F0F2F5",
-	rule: "#E7E9EE",
-	paper: "#FFFFFF",
+	inf: "#DDD6C9",
+	tool: "#8F5944",
+	wait: "#A26511",
+	tick: "#1F2528",
+	spawn: "#454B4E",
+	signal: "#A8321F",
+	now: "#8F5944",
+	axis: "#686E70",
+	grid: "#EFEAE0",
+	rule: "#E3DDD1",
+	paper: "#FFFEFB",
 }
 const STEPS = [1, 2, 5, 10, 15, 30, 60, 120, 300, 600, 1200, 3600]
-const MONO = 'ui-monospace, "SF Mono", "Cascadia Mono", Consolas, monospace'
+const MONO = '"IBM Plex Mono", ui-monospace, "Cascadia Mono", Consolas, monospace'
 
 let wrap, canvas, ctx, dynEl, tip, teamEl
 let dirty = true
@@ -41,7 +43,7 @@ function makeStripePattern(c) {
 	const off = document.createElement("canvas")
 	off.width = off.height = 8
 	const x = off.getContext("2d")
-	x.fillStyle = "rgba(217,119,6,.16)"
+	x.fillStyle = "rgba(162,101,17,.16)"
 	x.fillRect(0, 0, 8, 8)
 	x.strokeStyle = C.wait
 	x.lineWidth = 1.5
@@ -90,7 +92,7 @@ function draw() {
 	ctx.clearRect(0, 0, W, H)
 	hits = []
 	const ax = axis(W)
-	if (!ax) return
+	if (!ax || !teamShown()) return
 	const { X, end, span, innerW, t0 } = ax
 	const running = isRunning()
 	if (!stripe) stripe = makeStripePattern(ctx)
@@ -104,7 +106,7 @@ function draw() {
 			break
 		}
 	}
-	ctx.font = `10px ${MONO}`
+	ctx.font = `10.5px ${MONO}`
 	ctx.textBaseline = "middle"
 	ctx.textAlign = "left"
 	const nowX = X(end)
@@ -117,7 +119,7 @@ function draw() {
 		ctx.fillRect(x, RULER_H - 5, 1, 5)
 	}
 	ax.nx = Math.round(nowX) + 0.5
-	ax.col = running ? C.signal : C.axis
+	ax.col = running ? C.now : C.axis
 	ctx.fillStyle = C.rule
 	ctx.fillRect(0, RULER_H - 1, W, 1)
 
@@ -155,7 +157,7 @@ function draw() {
 	ctx.fillStyle = col
 	ctx.fillRect(nx, RULER_H - 8, 1, 8)
 	const label = running ? t("sada") : t("kraj")
-	ctx.font = `10px system-ui, sans-serif`
+	ctx.font = `600 10.5px Inter, system-ui, sans-serif`
 	const lw = ctx.measureText(label).width + 6
 	const lx = Math.min(nx - lw - 2, W - lw - 2)
 	ctx.fillStyle = C.paper
@@ -218,8 +220,8 @@ function drawRow(lane, r, ax, end) {
 			y: cy - BAR_H / 2 - 3,
 			w,
 			h: BAR_H + 6,
-			title: seg.k === "inf" ? t("Razmišlja") : seg.k === "tool" ? `${t("Alat")}: ${seg.label}` : t("Čeka odluku novinara"),
-			sub: `${fmtDur((seg.t1 ?? end) - seg.t0)}${seg.t1 == null ? ` · ${t("u toku")}` : ""}${seg.detail ? `\n${seg.detail}` : ""}`,
+			title: `${agentName(lane.info.name)}: ${seg.k === "inf" ? t("bira sledeći korak") : seg.k === "tool" ? TOOL_LABEL[seg.label] || seg.label : t("čeka odluku novinara")}`,
+			sub: `${fmtDur((seg.t1 ?? end) - seg.t0)}${seg.t1 == null ? ` · ${t("u toku")}` : ""}${seg.k === "tool" && seg.detail ? `\n${truncate(seg.detail, 140)}` : ""}`,
 		})
 	}
 
@@ -227,9 +229,10 @@ function drawRow(lane, r, ax, end) {
 		const x = X(m.t)
 		if (x < PAD_L - 6) continue
 		if (m.k === "finding") {
-			ctx.fillStyle = C.tick
+			// a signal is a red tick, any other finding an ink one
+			ctx.fillStyle = m.sev === "signal" ? C.signal : C.tick
 			ctx.fillRect(Math.round(x) - 1, cy - 9, 2, 18)
-			hits.push({ x: x - 4, y: cy - 10, w: 8, h: 20, title: t("Nalaz"), sub: tx(m.label) })
+			hits.push({ x: x - 4, y: cy - 10, w: 8, h: 20, title: `${agentName(lane.info.name)}: ${m.sev === "signal" ? t("upisao signal") : t("upisao nalaz")}`, sub: tx(m.label) })
 		} else if (m.k === "spawn") {
 			ctx.beginPath()
 			ctx.arc(x, cy, 4, 0, Math.PI * 2)
@@ -238,7 +241,7 @@ function drawRow(lane, r, ax, end) {
 			ctx.strokeStyle = C.spawn
 			ctx.lineWidth = 1.25
 			ctx.stroke()
-			hits.push({ x: x - 6, y: cy - 6, w: 12, h: 12, title: t("Pokrenut agent"), sub: agentName(lane.info.name) })
+			hits.push({ x: x - 6, y: cy - 6, w: 12, h: 12, title: `${t("Pokrenut novi agent")}: ${agentName(lane.info.name)}`, sub: lane.info.dynamic ? spawnText(lane.info) : "" })
 		} else if (m.k === "block") {
 			ctx.strokeStyle = C.signal
 			ctx.lineWidth = 1.5
@@ -248,11 +251,11 @@ function drawRow(lane, r, ax, end) {
 			ctx.moveTo(x + 3, cy - 3)
 			ctx.lineTo(x - 3, cy + 3)
 			ctx.stroke()
-			hits.push({ x: x - 6, y: cy - 6, w: 12, h: 12, title: t("Blokiran nalaz"), sub: tx(m.label) })
+			hits.push({ x: x - 6, y: cy - 6, w: 12, h: 12, title: t("Urednik je odbio tvrdnju bez izvora"), sub: tx(m.label) })
 		} else if (m.k === "edit") {
 			ctx.fillStyle = C.axis
 			ctx.fillRect(Math.round(x) - 1, y0 - 1, 2, 3)
-			hits.push({ x: x - 4, y: y0 - 2, w: 8, h: 6, title: agentName("Urednik"), sub: tx(m.label) })
+			hits.push({ x: x - 4, y: y0 - 2, w: 8, h: 6, title: t("Urednik je spojio ili ispravio nalaz"), sub: tx(m.label) })
 		} else if (m.k === "answer") {
 			ctx.fillStyle = C.tool
 			ctx.beginPath()
@@ -285,19 +288,29 @@ function drawSpark() {
 	const live = isRunning()
 	const n = live ? now : peak
 	const en = getLang() === "en"
+	const total = [...state.lanes.values()].filter((l) => l.info.role !== "human" && l.info.group !== "sistem" && (state.runKind !== "mapa" || l.info.group === "trijaza")).length
 	const text = live
 		? en
-			? `${pl(n, [], ["agent", "agents"])} working right now`
-			: `${pl(n, ["agent radi", "agenta rade", "agenata radi"])} upravo sada`
+			? `${pl(n, [], ["agent", "agents"])} working`
+			: pl(n, ["agent radi", "agenta rade", "agenata radi"])
 		: en
-			? `${pl(n, [], ["agent", "agents"])} at once at the peak`
-			: `${pl(n, ["agent", "agenta", "agenata"])} istovremeno u vrhuncu`
-	const label = `${n}|${text}|${live ? peak : ""}`
-	if (label !== lastConc) {
+			? `${pl(n, [], ["agent", "agents"])} worked at once`
+			: pl(n, ["agent je radio istovremeno", "agenta su radila istovremeno", "agenata je radilo istovremeno"])
+	const detail = live
+		? en
+			? `at most ${peak} at once so far · ${total} launched in total`
+			: `do sada najviše ${peak} istovremeno · ${total} pokrenuto ukupno`
+		: en
+			? `${total} ${pl(total, [], ["agent", "agents"])} launched in total`
+			: `${total} ${pl(total, ["agent pokrenut", "agenta pokrenuta", "agenata pokrenuto"])} ukupno`
+	const shown = teamShown()
+	const label = shown ? `${n}|${text}|${detail}` : "none"
+	if (label !== lastConc && !shown) {
 		lastConc = label
-		const parts = [h("b", { class: `conc-n${live ? " is-live" : ""}` }, String(n)), h("span", { class: "conc-text" }, text)]
-		if (live) parts.push(h("span", { class: "conc-peak" }, `${en ? "peak" : "vrhunac"} ${peak}`))
-		concLabel.replaceChildren(...parts)
+		concLabel.replaceChildren(h("span", { class: "conc-text" }, t("Kad pokrenete poređenje, ovde radi po jedan agent za svaku instituciju sa liste.")))
+	} else if (label !== lastConc) {
+		lastConc = label
+		concLabel.replaceChildren(h("b", { class: `conc-n${live ? " is-live" : ""}` }, String(n)), h("span", { class: "conc-text" }, text), total ? h("span", { class: "conc-peak" }, detail) : null)
 	}
 	const W = sparkWrap.clientWidth
 	const H = sparkWrap.clientHeight
@@ -307,7 +320,7 @@ function drawSpark() {
 	sparkSvg.setAttribute("height", H)
 	const ax = axis(W)
 	const series = state.series
-	if (!ax || !series.length) {
+	if (!ax || !series.length || !shown) {
 		sparkLine.setAttribute("d", "")
 		sparkArea.setAttribute("d", "")
 		sparkGrid.setAttribute("d", "")
@@ -390,7 +403,7 @@ export function initGantt() {
 	window.addEventListener("resize", markDirty)
 	new ResizeObserver(markDirty).observe(wrap)
 	new ResizeObserver(markDirty).observe(teamEl)
-	for (const t of ["lane", "agents", "snapshot", "filters", "tasks", "meta", "done", "mapa"]) on(t, markDirty)
+	for (const t of ["lane", "agents", "snapshot", "filters", "tasks", "meta", "done", "mapa", "view"]) on(t, markDirty)
 
 	onLang(() => {
 		lastConc = ""

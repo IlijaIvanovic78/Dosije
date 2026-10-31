@@ -1,6 +1,6 @@
 // UI language (SR default, EN optional). One dictionary: the key is the Serbian text, the value its English version.
-// Missing keys fall back to the Serbian key. Text written by the server (findings, agent messages, map reasons, errors) is
-// Serbian: in English tx() shows its machine translation (see the end of this file), and agentName() the agents' English names.
+// Missing keys fall back to the Serbian key. Text written by the server (findings, reasons, the report) is in the language the
+// run was started in and is shown as it is; nothing is machine-translated. agentName() gives the agents' English names.
 
 const STORAGE_KEY = "dosije.lang"
 let lang = "sr"
@@ -67,83 +67,24 @@ export function setLang(next) {
 }
 
 // ─── server text ─────────────────────────────────────────────────────────────
-// POST /api/translate, batched and cached for the page. Until a translation arrives the Serbian text is shown; when a batch
-// lands the onTx listeners run (a light repaint: langKey() changes, so render signatures see it; a language switch is onLang).
+// The server writes in the language the run was started in. tx() only maps the few fixed labels the dictionary knows (legal
+// forms, source names); everything else is shown as written.
 
-const txListeners = new Set()
+/** Signature part for anything that shows server text: changes with the language. */
+export const langKey = () => lang
 
-export function onTx(fn) {
-	txListeners.add(fn)
-	return () => txListeners.delete(fn)
-}
-
-const txDone = new Map()
-const txQueued = new Set()
-const txInflight = new Set()
-let txTimer = null
-let txNotifyTimer = null
-let txVersion = 0
-let txOff = false
-
-const hasWords = (s) => /[A-Za-zА-Яа-яčćšžđČĆŠŽĐ]{2}/.test(s)
-
-/** Signature part for anything that shows translated text: changes with the language and with every translation batch. */
-export const langKey = () => (lang === "en" ? `en${txVersion}` : "sr")
-
-/** Server text in the page language (English: the machine translation once it is there, the Serbian text until then). */
+/** A fixed server label in the page language (the dictionary); other text as it is. */
 export function tx(s) {
-	if (lang !== "en" || txOff || typeof s !== "string" || !hasWords(s)) return s
-	const hit = txDone.get(s)
-	if (hit !== undefined) return hit
-	if (!txInflight.has(s) && !txQueued.has(s)) {
-		txQueued.add(s)
-		txTimer ??= setTimeout(txFlush, 60)
-	}
-	return s
+	return typeof s === "string" && lang === "en" ? EN[s] ?? s : s
 }
 
-/** The same, awaited: for one-off messages (an error under a form) that are not re-rendered. */
-export async function txNow(s) {
-	if (lang !== "en" || txOff || typeof s !== "string" || !hasWords(s)) return s
-	if (txDone.has(s)) return txDone.get(s)
-	const [out] = await txFetch([s])
-	return out
-}
-
-async function txFetch(batch) {
-	try {
-		const r = await fetch("/api/translate", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ texts: batch }) })
-		const j = await r.json()
-		if (j.available === false) txOff = true
-		batch.forEach((s, i) => txDone.set(s, typeof j.texts?.[i] === "string" && j.texts[i] ? j.texts[i] : s))
-	} catch {
-		// the Serbian text stays; a later render asks again
-	}
-	return batch.map((s) => txDone.get(s) ?? s)
-}
-
-async function txFlush() {
-	txTimer = null
-	const batch = [...txQueued].slice(0, 40)
-	for (const s of batch) {
-		txQueued.delete(s)
-		txInflight.add(s)
-	}
-	if (txQueued.size) txTimer = setTimeout(txFlush, 60)
-	await txFetch(batch)
-	for (const s of batch) txInflight.delete(s)
-	// many batches land close together during a live case: one repaint for them
-	txNotifyTimer ??= setTimeout(() => {
-		txNotifyTimer = null
-		txVersion++
-		for (const fn of txListeners) {
-			try {
-				fn()
-			} catch (e) {
-				console.error("[i18n]", e)
-			}
-		}
-	}, 150)
+/** A request label of the live search ("funkcioneri: RTS"): the fixed part before the colon from the dictionary, the name as it is. */
+export function txLabel(s) {
+	if (typeof s !== "string" || lang !== "en") return s
+	if (EN[s]) return EN[s]
+	const i = s.indexOf(": ")
+	const head = i > 0 ? s.slice(0, i) : ""
+	return head && EN[head] ? `${EN[head]}${s.slice(i)}` : s
 }
 
 const AGENT_EN = {
@@ -174,10 +115,372 @@ function reflect() {
 	document.documentElement.lang = lang
 	applyStatic()
 	for (const b of document.querySelectorAll(".lang-btn")) b.setAttribute("aria-pressed", String(b.dataset.lang === lang))
-	document.title = `Dosije · ${t("istraživački tim agenata")}`
+	document.title = `Dosije · ${t("istraživanje javnih institucija")}`
 }
 
 const EN = {
+	// ─── fixed server labels: legal forms, agent descriptions, live-search requests (no machine translation) ───
+	"Javno preduzeće": "Public enterprise",
+	"Društvo kapitala u državnom vlasništvu (a.d./d.o.o.)": "State-owned company (a.d./d.o.o.)",
+	"Zdravstvena ustanova": "Health care institution",
+	"Organ državne uprave": "State administration body",
+	"Lokalna samouprava": "Local self-government",
+	"Ostalo (pravni oblik nije utvrđen)": "Other (legal form not established)",
+	"Ko vodi instituciju, od kada i da li je v.d. u zakonskom roku": "Who runs the institution, since when, and whether an acting head is within the legal limit",
+	"Javne nabavke, koncentracija i dobavljači": "Public procurement, concentration and suppliers",
+	"Nalazi Državne revizorske institucije": "Findings of the State Audit Institution",
+	"Šta pišu mediji o instituciji": "What the media write about the institution",
+	"Spaja nalaze, rešava konflikte, odobrava signale, piše sažetak": "Merges findings, resolves conflicts, approves signals, writes the summary",
+	"Proverava dobavljača: APR, ugovori, signali": "Checks a supplier: APR, contracts, signals",
+	"Izveštaji o imovini funkcionera": "Asset reports of officials",
+	"Pomeni osobe u medijima": "Mentions of the person in the media",
+	"Da li je osoba funkcioner ili PEP": "Whether the person is an official or a PEP",
+	"Trijaža": "Triage",
+	"funkcioneri": "officials",
+	"DRI izveštaji": "State Audit Institution reports",
+	"povezani dobavljači": "linked suppliers",
+	"pretraga osobe": "person search",
+	"veze dobavljača": "supplier links",
+	"naručilac": "contracting authority",
+	"izveštaji o imovini": "asset reports",
+	"vesti": "news",
+	"ugovori naručioca": "contracts of the authority",
+	"ugovori dobavljača": "supplier contracts",
+	"članak": "article",
+	"dobavljač u APR": "supplier in APR",
+	"PEP liste": "PEP lists",
+	"vlasnici": "owners",
+	"akti o imenovanju": "appointment acts",
+	"pretraga ustanove": "institution search",
+	"OpenSanctions: lista PEP za Srbiju": "OpenSanctions: PEP list for Serbia",
+	"KRIK: spisak profila političara": "KRIK: profiles of politicians",
+	"baza ugovora 2021–2026 (CSV, preuzimanje)": "contract database 2021–2026 (CSV download)",
+	"APR pretraga privrednih subjekata": "APR business register search",
+	"Portal javnih nabavki: najveći ugovor": "Public Procurement Portal: the biggest contract",
+	"Označen u bazi Integrity Watch Srbija": "Flagged in the Integrity Watch Serbia database",
+	"Označen u bazi Integrity Watch Srbija kod drugih naručilaca": "Flagged in Integrity Watch Serbia with other contracting authorities",
+	"Ugovor veći od godišnjeg prihoda": "Contract larger than the annual revenue",
+	"Ugovori u jednoj godini veći od prihoda": "Contracts in one year larger than the revenue",
+	"Firma mlađa od godinu dana pri prvom ugovoru": "Company less than a year old at its first contract",
+	"Malo zaposlenih, veliki ugovori": "Few employees, large contracts",
+	"pregovaračkim postupcima bez objavljivanja javnog poziva": "negotiated procedures without a published call",
+	"dodeli ugovora i broju ponuđača": "contract awards and the number of bidders",
+
+	// ─── round 2: start screen, guide, sources, current institutions ───
+	"Dosije istovremeno pretražuje javne registre, podatke o nabavkama, revizorske izveštaje i medije, a rezultate objedinjuje u pregledan dosije sa izvorom, datumom i statusom svakog nalaza.": "Dosije searches public registers, procurement data, audit reports and the media at the same time, and brings the results together in one clear dossier, with the source, date and status of every finding.",
+	"opciono": "optional",
+	"Zvanični izvor": "Official source",
+	"Javni izvor": "Public source",
+	"Izvori podataka": "Data sources",
+	"Zaustavite pomeranje": "Pause the scrolling",
+	"Pokrenite pomeranje": "Resume the scrolling",
+	"Vodič": "Guide",
+	"Kako radi Dosije": "How Dosije works",
+	"Kako radi Dosije i kako se čita dosije": "How Dosije works and how to read a dossier",
+	"Više institucija po istim pravilima, u jednoj rang-listi": "Several institutions by the same rules, in one ranking",
+	"Javni medijski servis": "Public broadcaster",
+	"Republički fond · penzijsko osiguranje": "National fund · pension insurance",
+	"Ministarstvo · obrazovanje": "Ministry · education",
+	"Javno preduzeće · energetika": "Public enterprise · energy",
+	"Poređenje": "Comparison",
+	"Preuzmite PDF": "Download PDF",
+	"Pravim PDF…": "Making the PDF…",
+	"PDF nije napravljen": "The PDF was not made",
+	"Proverite internet vezu i pokušajte ponovo. Izveštaj možete i da odštampate iz pregledača.": "Check the internet connection and try again. You can also print the report from the browser.",
+	// ─── redesign (editorial): start page ───
+	"Istražite javnu instituciju.": "Research a public institution.",
+	"Dobijte dosije sa izvorima.": "Get a sourced dossier.",
+	"Dosije istovremeno pretražuje registar funkcionera, Portal javnih nabavki, privredni registar, izveštaje Državne revizorske institucije i medije, a nalaze slaže u pregledan dosije. Uz svaki nalaz stoje izvor, datum i status.":
+		"Dosije searches the register of public officials, the Public Procurement Portal, the business register, State Audit Institution reports and the media at the same time, then assembles what it finds into a clear dossier. Every finding comes with its source, date and status.",
+	"Koju instituciju istražujete?": "Which institution are you investigating?",
+	"npr. RTS, Srbijavoz ili PIO Fond": "e.g. RTS, Srbijavoz or PIO Fond",
+	"Upišite pun naziv ili skraćenicu. Dosije sam pronalazi instituciju u registrima.": "Type the full name or an acronym. Dosije finds the institution in the registers itself.",
+	"Pokrenite istraživanje": "Start investigation",
+	"Usmerite istraživanje": "Set a focus",
+	"Fokus istraživanja": "Investigation focus",
+	"npr. javne nabavke 2024. ili imenovanje direktora": "e.g. procurement in 2024 or the director's appointment",
+	"Fokus dobija svaki agent kao smernicu i stoji u zaglavlju dosijea. Sve oblasti se i dalje proveravaju.":
+		"Every agent receives the focus as guidance, and it appears in the dossier header. All areas are still checked.",
+	"Aktuelne institucije": "Current institutions",
+	"Istražite: {name}": "Investigate: {name}",
+	"Istražite": "Investigate",
+	"Javna institucija": "Public institution",
+	"Javno preduzeće · železnička infrastruktura": "Public enterprise · railway infrastructure",
+	"Javno preduzeće · prevoz putnika": "Public enterprise · passenger rail",
+	"Zdravstvena ustanova · Novi Sad": "Hospital · Novi Sad",
+	"Kako radi": "How it works",
+	"Izaberite instituciju": "Choose an institution",
+	"Upišite naziv ili skraćenicu. Dosije je pronalazi u registrima po matičnom broju, PIB-u i ACAS oznaci.":
+		"Type its name or acronym. Dosije finds it in the registers by its registration number, tax ID and ACAS ID.",
+	"Agenti proveravaju izvore": "Agents check the sources",
+	"Specijalizovani agenti istovremeno pretražuju svoje izvore. Kad pronađu firmu ili osobu povezanu sa institucijom, za nju se pokreće nova provera.":
+		"Specialised agents search their sources at the same time. When they find a company or person linked to the institution, a new check starts for it.",
+	"Dobijate dosije": "You get a dossier",
+	"Nalazi su složeni po oblastima, a glavni signali stoje na vrhu. Svaki nalaz ima izvor, datum i status. Izveštaj možete da preuzmete ili odštampate.":
+		"Findings are grouped by area, with the main signals at the top. Every finding has a source, date and status. You can download or print the report.",
+	"Kako čitati dosije": "How to read a dossier",
+	"Nalaz": "Finding",
+	"Podatak iz izvora upisan u dosije: činjenica, broj ili navod.": "A piece of information from a source, recorded in the dossier: a fact, a figure or a claim.",
+	"Signal": "Signal",
+	"Nalaz koji pravila ističu kao vredan dalje provere, na primer v.d. direktor duže od zakonskog roka. Signal nije dokaz nepravilnosti.":
+		"A finding the rules flag as worth a closer look, such as an acting director in office beyond the legal limit. A signal is not proof of wrongdoing.",
+	"Zvanično": "Official",
+	"Potiče iz zvaničnog registra ili dokumenta. Tumačenje tog podatka time nije potvrđeno.": "Comes from an official register or document. That does not confirm any interpretation of it.",
+	"Potvrđeno": "Confirmed",
+	"Isti podatak navode bar dva nezavisna izvora.": "At least two independent sources report the same thing.",
+	"Nepotvrđeno": "Unconfirmed",
+	"Stoji na jednom nezvaničnom izvoru, na primer u medijskom članku ili komercijalnoj bazi.": "Rests on a single unofficial source, such as a news article or a commercial database.",
+	"Odstupa od registra": "Differs from the register",
+	"Navod se razlikuje od zvaničnog registra. Prednost ima registar.": "The claim differs from the official register. The register takes precedence.",
+	"Odakle dolaze podaci": "Where the data comes from",
+	"Zvanični izvori": "Official sources",
+	"registar funkcionera i izveštaji o imovini": "register of public officials and asset declarations",
+	"Portal javnih nabavki": "Public Procurement Portal",
+	"ugovori i postupci": "contracts and procedures",
+	"privredni registar, otvoreni podaci": "business register, open data",
+	"izveštaji Državne revizorske institucije": "State Audit Institution reports",
+	"Službeni glasnik": "Official Gazette",
+	"sadržaji brojeva, akti o imenovanju": "issue contents, appointment acts",
+	"Ostali javni izvori": "Other public sources",
+	"veze dobavljača sa funkcionerima i strankama": "suppliers' links to officials and parties",
+	"politički izložene osobe": "politically exposed persons",
+	"vlasnici firmi, komercijalni pregled podataka iz APR": "company owners, a commercial copy of business register data",
+	"Mediji": "Media",
+	"RSS izvori, Google News, GDELT": "RSS feeds, Google News, GDELT",
+	"Nalaz koji stoji samo na nezvaničnom izvoru označen je kao nepotvrđen. Dosije pretražuje samo navedene izvore: ako podatak nije pronađen, to ne znači da ne postoji.":
+		"A finding that rests only on an unofficial source is marked unconfirmed. Dosije searches only the sources listed here: if something was not found, that does not mean it does not exist.",
+	"Poredi više institucija": "Compare several institutions",
+	"Mapa prioriteta proverava do osam institucija istovremeno, po istim pravilima, i pravi rang-listu sa objašnjenjem svake ocene.":
+		"The priority map checks up to eight institutions at once, by the same rules, and ranks them with an explanation for every score.",
+	"Otvori mapu prioriteta": "Open the priority map",
+	"Dosije ne donosi zaključke o krivici. Prikazuje šta piše u javnim izvorima, sa izvorom i statusom svakog nalaza.":
+		"Dosije draws no conclusions about guilt. It shows what public sources say, with the source and status of every finding.",
+	"Dosije: početna": "Dosije: home",
+	"Istraživanje jedne institucije": "Investigate one institution",
+	"Poređenje više institucija po istim pravilima": "Compare several institutions by the same rules",
+	"Naziv institucije": "Institution name",
+	"Upišite naziv institucije (ključne reči). Linkovi se ne prihvataju.": "Type the institution's name (key words). Links are not accepted.",
+	"Dodajte trag": "Add a lead",
+	"istraživanje javnih institucija": "investigating public institutions",
+	// ─── connection, start, resume ───
+	"veza je prekinuta, ponovo se povezujem…": "connection lost, reconnecting…",
+	"povezujem se…": "connecting…",
+	"Proverite da li server radi (npm start).": "Check that the server is running (npm start).",
+	"Veza sa serverom": "Connection to the server",
+	"istraživanje traje": "investigation in progress",
+	"Pratite istraživanje": "Follow the investigation",
+	"Pronalazim instituciju…": "Finding the institution…",
+	// ─── run bar ───
+	"Tok istraživanja": "Investigation progress",
+	"Prikupljanje podataka": "Collecting data",
+	"Agenti istovremeno pretražuju izvore i upisuju nalaze.": "The agents search their sources at the same time and record findings.",
+	"Sažetak urednika": "Editor's summary",
+	"napisan": "written",
+	"Urednik spaja nalaze, rangira signale i piše sažetak.": "The Editor merges findings, ranks the signals and writes the summary.",
+	"posle prikupljanja": "after collection",
+	"na kraju": "at the end",
+	"Provera institucija": "Checking institutions",
+	"Za svaku instituciju poseban agent proverava rukovodstvo, nabavke i reviziju.": "A separate agent checks leadership, procurement and audits for each institution.",
+	"Rang-lista": "Ranking",
+	"gotova": "ready",
+	"posle provere": "after the checks",
+	"Agenti koji u ovom trenutku pretražuju izvor ili biraju sledeći korak.": "Agents that are searching a source or choosing their next step right now.",
+	"Svi agenti pokrenuti u ovom istraživanju, uključujući one za pronađene firme i osobe.": "All agents launched in this investigation, including those for companies and people found along the way.",
+	"Najveći broj agenata koji su radili u istom trenutku.": "The largest number of agents working at the same moment.",
+	"Institucije u kojima je v.d. direktor duže od zakonskog roka.": "Institutions where an acting director has served beyond the legal limit.",
+	"Podaci iz izvora upisani u dosije.": "Information from sources recorded in the dossier.",
+	"Nalazi koje pravila ističu kao vredne dalje provere. Signal nije dokaz nepravilnosti.": "Findings the rules flag as worth a closer look. A signal is not proof of wrongdoing.",
+	// ─── dossier ───
+	"urednik piše sažetak": "the Editor is writing the summary",
+	"Pronalazim instituciju u registrima…": "Finding the institution in the registers…",
+	"Upisano": "Typed",
+	"signal nije dokaz nepravilnosti": "a signal is not proof of wrongdoing",
+	"Prikažite nalaz sa svim izvorima": "Show the finding with all its sources",
+	"Pravila nisu istakla nijedan signal. Svi nalazi su u listi ispod.": "The rules flagged no signals. All findings are in the list below.",
+	"Osobe i firme": "People and companies",
+	"Osobe": "People",
+	"Firme": "Companies",
+	"funkcioner u instituciji": "official at the institution",
+	"vlasnik firme": "company owner",
+	"dobavljač institucije": "supplier to the institution",
+	"pomenut u izvorima": "mentioned in sources",
+	"Prikažite samo nalaze o: {name}": "Show only findings about: {name}",
+	"bez nalaza": "no findings",
+	"Veza je onakva kakva je zabeležena u izvoru i sama po sebi nije nalaz o nepravilnosti. Klik prikazuje nalaze o toj osobi ili firmi.":
+		"Each link is shown as the source records it and is not, in itself, a finding of wrongdoing. Click to see the findings about that person or company.",
+	"+ Dodajte trag": "+ Add a lead",
+	"Nalazi": "Findings",
+	"Šta znače statusi?": "What do the statuses mean?",
+	"iz zvaničnog registra ili dokumenta; tumačenje nije time potvrđeno": "from an official register or document; that does not confirm any interpretation",
+	"isti podatak navode bar dva nezavisna izvora": "at least two independent sources report it",
+	"samo jedan nezvaničan izvor": "a single unofficial source",
+	"navod se razlikuje od zvaničnog registra": "the claim differs from the official register",
+	"Dosije ne donosi zaključke o krivici. Signal ističe podatak vredan dalje provere; svaki nalaz ima izvor i status.":
+		"Dosije draws no conclusions about guilt. A signal flags something worth a closer look; every finding has a source and a status.",
+	"Pouzdanost": "Reliability",
+	"upisao: {a}": "recorded by {a}",
+	"za pažnju": "notable",
+	"Nabavke i novac": "Procurement and money",
+	"Preuzmite Markdown": "Download Markdown",
+	"Pogledajte nepotvrđene nalaze ({n})": "See unconfirmed findings ({n})",
+	"Završite sada": "Finish now",
+	"Agenti završavaju trenutni korak, a urednik piše sažetak": "The agents finish their current step and the Editor writes the summary",
+	"Kopirajte tekst": "Copy text",
+	"Odštampajte ili sačuvajte PDF": "Print or save as PDF",
+	"Znate osobu ili firmu koju tim još nije pronašao? Dodajte je: odmah dobija svog agenta, kao i entiteti koje tim sam pronađe.":
+		"Know a person or company the team has not found yet? Add it: it gets its own agent right away, just like the ones the team finds itself.",
+	"Kad agent ne može sam da dođe do podatka ili naiđe na osetljiv signal, pitanje se pojavljuje na vrhu dosijea i ovde.":
+		"When an agent cannot reach a piece of information on its own or comes across a sensitive signal, the question appears at the top of the dossier and here.",
+	// status explanations, labels
+	"podatak iz zvaničnog registra ili dokumenta; tumačenje nije time potvrđeno": "information from an official register or document; that does not confirm any interpretation",
+	"stoji na jednom nezvaničnom izvoru": "rests on a single unofficial source",
+	"navod se razlikuje od zvaničnog registra; prednost ima registar": "the claim differs from the official register; the register takes precedence",
+	"informacija": "information",
+	"udeo najvećih dobavljača": "top suppliers' share",
+	"nova firma": "newly founded company",
+	"neslaganje izvora": "sources disagree",
+	"Propis": "Regulation",
+	// ─── team and timeline ───
+	"Tim agenata": "Agent team",
+	"Broj agenata koji rade u istom trenutku, kroz vreme": "How many agents work at the same moment, over time",
+	"Kako čitati vremensku osu": "How to read the timeline",
+	"Razmišlja": "Thinking",
+	"bira sledeći korak": "choosing its next step",
+	"Pretražuje izvor": "Searching a source",
+	"upit registru, bazi ili medijima": "a query to a register, database or the media",
+	"upisan u dosije": "recorded in the dossier",
+	"Novi agent": "New agent",
+	"pokrenut zbog pronađene firme ili osobe": "launched for a company or person that was found",
+	"Pređite mišem preko trake da vidite šta je agent radio; klik na agenta prikazuje samo njegove nalaze.":
+		"Hover over a bar to see what the agent was doing; click an agent to show only its findings.",
+	"Vremenska osa rada agenata": "Timeline of the agents' work",
+	"Dodatni agenti se pokreću kad tim pronađe firmu ili osobu povezanu sa institucijom.": "More agents start when the team finds a company or person linked to the institution.",
+	"Pretraga izvora uživo": "Live source searches",
+	"čeka odluku novinara": "waiting for the journalist's decision",
+	"upisao signal": "recorded a signal",
+	"upisao nalaz": "recorded a finding",
+	"Pokrenut novi agent": "New agent launched",
+	"Urednik je odbio tvrdnju bez izvora": "The Editor rejected a claim without a source",
+	"Urednik je spojio ili ispravio nalaz": "The Editor merged or corrected a finding",
+	"Kad pokrenete poređenje, ovde radi po jedan agent za svaku instituciju sa liste.": "Once you start the comparison, one agent per institution on the list works here.",
+	"pokrenut za instituciju sa liste": "launched for an institution on the list",
+	"povod: {as} · pronašli: {by}": "reason: {as} · found by {by}",
+	"nov": "new",
+	"Sakrijte ili prikažite ovu grupu agenata": "Hide or show this group of agents",
+	"po jedan agent za svaku instituciju sa liste": "one agent per institution on the list",
+	"po jedan agent za svakog pronađenog dobavljača": "one agent per supplier found",
+	"izveštaji o imovini svakog funkcionera": "asset declarations of each official",
+	"medijske objave o svakoj osobi iz dosijea": "media coverage of each person in the dossier",
+	"da li je vlasnik firme funkcioner ili PEP": "whether a company owner is an official or a PEP",
+	"Mediji · osobe": "Media · people",
+	"firma": "company",
+	"osoba": "person",
+	// what each agent does
+	"rukovodstvo, imenovanja i rok za v.d.": "leadership, appointments, acting-head limits",
+	"javne nabavke, ugovori i dobavljači": "public procurement, contracts, suppliers",
+	"izveštaji Državne revizorske institucije": "State Audit Institution reports",
+	"medijske objave i navodi": "media coverage and claims",
+	"spaja nalaze, proverava izvore, piše sažetak": "merges findings, checks sources, writes the summary",
+	"profil firme, ugovori, vlasnici, veze": "company profile, contracts, owners, links",
+	"imovina i prihodi funkcionera (ACAS)": "officials' assets and income (ACAS)",
+	"da li je vlasnik funkcioner ili PEP": "whether an owner is an official or a PEP",
+	"rukovodstvo, nabavke i revizija za poređenje": "leadership, procurement and audits for the comparison",
+	"Vi, kad agent nešto pita": "you, when an agent asks something",
+	// what each tool does
+	"proverava funkcionere u registru ACAS": "checks officials in the ACAS register",
+	"čita izveštaje o imovini (ACAS)": "reads asset declarations (ACAS)",
+	"traži osobu u registru ACAS": "looks up a person in the ACAS register",
+	"računa rok za vršioca dužnosti": "works out the acting-head time limit",
+	"traži akt o imenovanju u Službenom glasniku": "looks for the appointment act in the Official Gazette",
+	"preuzima ugovore sa Portala javnih nabavki": "downloads contracts from the Public Procurement Portal",
+	"preuzima ugovore dobavljača": "downloads the supplier's contracts",
+	"proverava dobavljače u Integrity Watch": "checks suppliers in Integrity Watch",
+	"proverava firmu u Integrity Watch": "checks the company in Integrity Watch",
+	"traži izveštaje DRI": "looks for State Audit reports",
+	"čita izveštaj DRI": "reads a State Audit report",
+	"traži srodne nalaze DRI": "looks for related State Audit findings",
+	"pretražuje medije": "searches the media",
+	"čita članak": "reads an article",
+	"traži medijske objave o imenovanju": "looks for coverage of the appointment",
+	"traži medijske objave o temi revizije": "looks for coverage of the audit topic",
+	"čita profil firme u APR": "reads the company profile in the business register",
+	"proverava profil firme i ugovore": "checks the company profile and contracts",
+	"traži vlasnike firme (CompanyWall)": "looks up the company's owners (CompanyWall)",
+	"proverava liste politički izloženih osoba": "checks lists of politically exposed persons",
+	"proverava rukovodstvo": "checks the leadership",
+	"proverava javne nabavke": "checks public procurement",
+	"proverava izveštaje DRI": "checks State Audit reports",
+	"upisuje red u rang-listu": "writes its row in the ranking",
+	"upisuje nalaz": "records a finding",
+	"dodaje osobu ili firmu": "adds a person or company",
+	"pregleda dosije": "reviews the dossier",
+	"piše sažetak": "writes the summary",
+	"postavlja pitanje novinaru": "asks the journalist a question",
+	// ─── live source searches ───
+	"preuzimanje podataka": "data download",
+	"Zahtev nije završen pre kraja istraživanja.": "The request did not finish before the investigation ended.",
+	"izvor nije odgovorio": "source did not respond",
+	"Ranije preuzet odgovor izvora, od {d}.": "An earlier answer from the source, saved on {d}.",
+	"Ranije preuzet odgovor izvora.": "An earlier answer from the source.",
+	"{n}, sačuvano": "{n}, saved",
+	"sačuvano": "saved",
+	"Odgovor za {d}": "Answered in {d}",
+	"Čekam prve upite agenata prema izvorima…": "Waiting for the agents' first source queries…",
+	"Ovde se vidi svaki upit koji agenti šalju javnim izvorima: ko pita, koji izvor i šta je vraćeno.":
+		"Every query the agents send to public sources shows up here: who asks, which source, and what came back.",
+	// ─── priority map ───
+	"Gde prvo gledati": "Where to look first",
+	"Uporedite do osam institucija po istim pravilima. Za svaku instituciju poseban agent istovremeno proverava rukovodstvo, javne nabavke i izveštaje DRI, a rezultati se slažu u rang-listu.":
+		"Compare up to eight institutions by the same rules. A separate agent checks each one's leadership, public procurement and State Audit reports at the same time, and the results form a ranking.",
+	"Kako se računa ocena": "How the score is calculated",
+	"Rukovodstvo": "Leadership",
+	"v.d. direktor duže od zakonskog roka, niz uzastopnih v.d.": "acting director beyond the legal limit, a run of acting heads",
+	"Nabavke": "Procurement",
+	"postupci bez objave, udeo najvećeg dobavljača, Integrity Watch": "procedures without a published call, top supplier's share, Integrity Watch",
+	"Revizija": "Audit",
+	"mišljenja DRI sa rezervom, broj izveštaja": "qualified State Audit opinions, number of reports",
+	"Zajednički dobavljači": "Shared suppliers",
+	"isti dobavljač u više institucija sa liste": "the same supplier at several institutions on the list",
+	"Institucije za poređenje": "Institutions to compare",
+	"jedna po redu, najviše 8": "one per line, up to 8",
+	"+ Dodajte instituciju": "+ Add an institution",
+	"Nalepite listu": "Paste a list",
+	"Prikažite kao listu": "Show as a list",
+	"Vratite aktuelne institucije": "Restore the current institutions",
+	"Spisak institucija, jedna po redu": "List of institutions, one per line",
+	"Izmenite listu": "Edit the list",
+	"Rang-lista institucija": "Ranking of institutions",
+	"Ocena i oblasti": "Score by area",
+	"Signali": "Signals",
+	"Ocena je zbir bodova po fiksnim pravilima. Visoka ocena ne znači da je institucija prekršila zakon, već da je pronađeno više signala koje vredi proveriti.":
+		"The score is a sum of points under fixed rules. A high score does not mean the institution broke the law, only that more signals worth checking were found.",
+	"nije pokrenuto": "not started",
+	"provera traje": "checks in progress",
+	"rang-lista je gotova": "ranking ready",
+	"Provera traje…": "Checking…",
+	"Upoređuje se {n}: {list}": "Comparing {n}: {list}",
+	"npr. Srbijavoz": "e.g. Srbijavoz",
+	"još jedna institucija": "another institution",
+	"Institucija {n}": "Institution {n}",
+	"Uklonite": "Remove",
+	"Uklonite instituciju {n}": "Remove institution {n}",
+	"proverava": "checking",
+	"nije provereno": "not checked",
+	"čeka na red": "queued",
+	"bodova": "points",
+	"bez bodova": "no points",
+	"{n} b.": "{n} pts",
+	"v.d. {m} mes. (rok {lim})": "acting {m} mo. (limit {lim})",
+	"niz v.d. {m} mes.": "acting heads for {m} mo.",
+	"Institucija nije proverena": "Institution not checked",
+	"provera nije uspela": "the check failed",
+	"nijedan signal iznad praga": "no signal above the threshold",
+	"Nijedan signal nije prešao prag: ocena je 0.": "No signal crossed a threshold: the score is 0.",
+	"Otvorite pun dosije": "Open the full dossier",
+	"u registrima": "in the registers",
+	"Rang-lista se pojavljuje ovde. Pokrenite poređenje: institucije se rangiraju čim ih agenti provere, a njihov rad pratite u koloni „Tim agenata“.":
+		"The ranking appears here. Start the comparison: institutions are ranked as soon as the agents check them, and you can follow their work in the Agent team column.",
+
 	// automated flow: no decisions asked of the user, statuses instead of a "to verify" list
 	"Od vesti do dosijea sa izvorima za nekoliko minuta": "From a news story to a sourced dossier in minutes",
 	"Upiši naziv javne institucije. Tim agenata istovremeno pretražuje javne registre i sam slaže dosije. Svaka tvrdnja ima izvor, datum i status: zvanično, potvrđeno ili nepotvrđeno.":
@@ -196,10 +499,9 @@ const EN = {
 	"Istraga": "Investigation",
 	"Prevodim izveštaj…": "Translating the report…",
 	"čeka novinara": "waiting for the journalist",
-	"Trag koji dodaš odmah dobija svog agenta.": "A lead you add gets its own agent right away.",
+	"Trag koji dodate odmah dobija svog agenta.": "A lead you add gets its own agent right away.",
 	// redesigned start screen, run bar, decisions and the done card
-	"Preskoči na sadržaj": "Skip to content",
-	"Dosije: početna": "Dosije: home",
+	"Preskočite na sadržaj": "Skip to content",
 	"Tok istrage": "Investigation flow",
 	"Od vesti do proverenog dosijea za nekoliko minuta": "From a news story to a verified dossier in minutes",
 	"Upiši javnu instituciju ili nalepi link vesti. Tim agenata istovremeno pretražuje javne registre, a ti odlučuješ o osetljivim nalazima. Svaka tvrdnja u dosijeu ima izvor, datum i status.":
@@ -212,8 +514,6 @@ const EN = {
 	"najbolji demo": "best demo",
 	"Državno preduzeće · železnička infrastruktura": "State company · railway infrastructure",
 	"Državno preduzeće · putnički prevoz": "State company · passenger rail",
-	"Zdravstvena ustanova": "Health institution",
-	"Lokalna samouprava": "Local government",
 	"Vrati se na dosije": "Back to the dossier",
 	"Upišeš instituciju": "You enter an institution",
 	"Pun naziv ili skraćenica (npr. RTS, EPS). Sistem pronalazi instituciju u registrima (PIB, matični broj, ACAS).": "The full name or an acronym (e.g. RTS, EPS). The system finds the institution in the registers (tax ID, registration number, ACAS).",
@@ -227,40 +527,35 @@ const EN = {
 	"Glavni signali, link za svaku tvrdnju i lista šta još treba proveriti. Izvoz u PDF ili Markdown.": "The main signals, a link for every claim and a list of what still needs checking. Export to PDF or Markdown.",
 	"Javni izvori koje agenti pretražuju": "Public sources the agents search",
 	"funkcioneri i imovina": "officials and assets",
-	"Portal javnih nabavki": "Public procurement portal",
 	"privredni registar": "business register",
 	"revizorski izveštaji": "audit reports",
-	"Službeni glasnik": "Official Gazette",
 	"Imaš više institucija?": "Several institutions?",
 	"Mapa prioriteta ih proverava paralelno, po jedan agent za svaku, i rangira gde prvo gledati.": "The priority map checks them in parallel, one agent each, and ranks where to look first.",
-	"Otvori mapu prioriteta": "Open the priority map",
 	"Agenti završavaju trenutni korak i urednik piše izveštaj": "The agents finish their current step and the editor writes the report",
 	"Čeka samo agent koji pita. Ostali nastavljaju.": "Only the asking agent waits. The others carry on.",
-	"+ Dodaj trag": "+ Add a lead",
-	"Tim agenata": "Agent team",
 	"najvažnije za proveru": "the most important to verify",
 	"nema veze sa serverom": "no connection to the server",
 	"Proveri da li server radi (npm start) i zatvori višak tabova sa Dosijeom: pregledač drži najviše 6 veza ka istom serveru.":
 		"Check that the server is running (npm start) and close extra Dosije tabs: the browser keeps at most 6 connections to one server.",
 	"pretražuje izvor": "searching a source",
 	"novi agent": "new agent",
-	"Pitanja agenata, tvoje odluke i tragovi koje dodaješ timu.": "The agents' questions, your decisions and the leads you add to the team.",
-	"Čeka tvoju odluku": "Waiting for your decision",
+	"Pitanja agenata, Vaše odluke i tragovi koje dodajete timu.": "The agents' questions, your decisions and the leads you add to the team.",
+	"Čeka Vašu odluku": "Waiting for your decision",
 	"Kad agent ne može sam da dođe do podatka (na primer vlasnik firme iza reCAPTCHA) ili naiđe na osetljiv signal, pitanje se pojavljuje na vrhu dosijea i ovde.":
 		"When an agent cannot reach a fact on its own (for example a company owner behind reCAPTCHA) or hits a sensitive signal, the question appears at the top of the dossier and here.",
 	"Istorija odluka": "Decision history",
 	"traži odobrenje": "asks for approval",
 	"ima pitanje": "has a question",
-	"{agent} je pauziran dok ne odlučiš": "{agent} is paused until you decide",
-	"{agent} traži tvoje odobrenje": "{agent} asks for your approval",
+	"{agent} je pauziran dok ne odlučite": "{agent} is paused until you decide",
+	"{agent} traži Vaše odobrenje": "{agent} asks for your approval",
 	"Ctrl+Enter šalje": "Ctrl+Enter sends",
 	odluči: "decide",
 	"Tim istražuje": "Team investigating",
 	Istraga: "Investigation",
-	"Tvoje odluke": "Your decisions",
+	"Vaše odluke": "Your decisions",
 	"nije bilo pitanja": "no questions",
 	"kad agent pita": "when an agent asks",
-	"otvori izveštaj": "open the report",
+	"otvorite izveštaj": "open the report",
 	"urednik piše izveštaj": "the editor writes the report",
 	"posle istrage": "after the investigation",
 	"Trijaža institucija": "Institution triage",
@@ -271,14 +566,12 @@ const EN = {
 	// top bar, hero
 	"Preskoči na dosije": "Skip to dossier",
 	"istraživački tim agenata": "investigative agent team",
-	"Naziv institucije": "Institution name",
-	"Upiši naziv institucije (ključne reči). Linkovi se ne prihvataju.": "Type the institution’s name (key words). Links are not accepted.",
 	"Fokus (opciono)": "Focus (optional)",
 	"Fokus istrage (opciono)": "Investigation focus (optional)",
 	"Napravi dosije": "Create dossier",
 	"Pokrećem…": "Starting…",
 	"Glavni meni": "Main menu",
-	"Mapa prioriteta": "Priority map",
+	"Poređenje institucija": "Institution Comparison",
 	"Lista institucija prolazi kroz isti tim agenata paralelno: gde prvo gledati": "A list of institutions goes through the same agent team in parallel: where to look first",
 	"Sanduče": "Inbox",
 	"Istraživački alat za novinare": "Research tool for journalists",
@@ -286,7 +579,6 @@ const EN = {
 	"Upiši naziv javne institucije ili nalepi link vesti. Tim agenata istovremeno proverava registar funkcionera, javne nabavke, izveštaje Državne revizorske institucije i medije. Svaka tvrdnja ima izvor, datum i status. Ti si deo tima: odgovaraš na pitanja i odobravaš osetljive signale.":
 		"Enter the name of a public institution or paste a news link. A team of agents checks the officials’ register, public procurement, State Audit Institution reports and the media at the same time. Every claim has a source, a date and a status. You are part of the team: you answer questions and approve sensitive signals.",
 	"Primer": "Example",
-	"Kako radi": "How it works",
 	"Upiši instituciju ili link. Agenti kreću u istom trenutku, svaki sa svojim izvorima.": "Enter an institution or a link. The agents start at the same moment, each with its own sources.",
 	"Na vremenskoj osi i u listi „Pretraga uživo“ vidiš šta svaki agent trenutno radi.": "On the timeline and in the “Live search” list you see what each agent is doing right now.",
 	"Odlučuješ ti: odobrenje pauzira samo jednog agenta, ostali nastavljaju.": "You decide: an approval pauses only one agent, the others carry on.",
@@ -318,7 +610,7 @@ const EN = {
 	"Tim": "Team",
 	"razmišlja": "thinking",
 	"alat": "tool",
-	"čeka tebe": "waiting for you",
+	"čeka Vas": "waiting for you",
 	"nalaz": "finding",
 	"pokrenut agent": "spawned agent",
 	"Vremenska osa agenata": "Agent timeline",
@@ -331,13 +623,10 @@ const EN = {
 	"čeka": "waiting",
 	"pokrenuo: {ev} · {by}": "spawned by {ev} · {by}",
 	"reaguje na nalaz": "reacting to finding",
-	"{agent} čeka tvoju odluku": "{agent} is waiting for your decision",
+	"{agent} čeka Vašu odluku": "{agent} is waiting for your decision",
 	"Ostali agenti nastavljaju.": "The others keep working.",
 	"Odluči u sandučetu": "Decide in inbox",
-	"Trijaža": "Triage",
-	"Firme": "Companies",
 	"Imovina": "Assets",
-	"Mediji · osobe": "Media · people",
 	"Provera": "Check",
 	"istovremeno aktivnih: {n} (vrhunac {peak})": "active at the same time: {n} (peak {peak})",
 	"sada": "now",
@@ -347,11 +636,9 @@ const EN = {
 	"Pitanje": "Question",
 	"čeka odgovor": "waiting for an answer",
 	"odgovoreno": "answered",
-	"Razmišlja": "Thinking",
 	"Alat": "Tool",
 	"Čeka odluku novinara": "Waiting for the journalist’s decision",
 	"u toku": "in progress",
-	"Nalaz": "Finding",
 	"Pokrenut agent": "Spawned agent",
 	"Blokiran nalaz": "Blocked finding",
 	"Urednik": "Editor",
@@ -366,7 +653,7 @@ const EN = {
 	"iz keša, preuzeto": "from cache, fetched",
 	"iz keša": "from cache",
 	"samo": "only",
-	"prikaži sve": "show all",
+	"prikažite sve": "show all",
 	"Nema upita za izabranog agenta.": "No requests for the selected agent.",
 	"Čekam prve upite agenata prema javnim izvorima.": "Waiting for the agents’ first requests to public sources.",
 	"Upiti prema javnim izvorima pojaviće se ovde dok agenti rade.": "Requests to public sources will appear here while the agents work.",
@@ -374,10 +661,8 @@ const EN = {
 	"Dosije": "Dossier",
 	"Novi dosije": "New dossier",
 	"Vraća prazan ekran; server zadržava dosije": "Returns to the empty screen; the server keeps the dossier",
-	"Završi sada": "Finish now",
 	"Izveštaj": "Report",
 	"Glavni signali": "Main signals",
-	"Osobe i firme": "People and companies",
 	"Signali su polazna tačka za proveru, ne zaključak. Svaka tvrdnja ima izvor; konačnu odluku donosi novinar.": "Signals are a starting point for verification, not a conclusion. Every claim has a source; the final decision is the journalist’s.",
 	"čeka odobrenje novinara": "waiting for the journalist’s approval",
 	"odobrio novinar": "approved by the journalist",
@@ -408,13 +693,11 @@ const EN = {
 	"Nema aktivnog dosijea.": "No active dossier.",
 	"Agenti traže prve signale za proveru…": "The agents are looking for the first signals to verify…",
 	"klik filtrira nalaze": "click to filter findings",
-	"firma": "company",
-	"osoba": "person",
 	"Sve": "All",
 	"Šta još proveriti": "Still to verify",
 	"Agent": "Agent",
 	"Filter": "Filter",
-	"ukloni sve": "clear all",
+	"uklonite sve": "clear all",
 	"Nema nalaza za izabrani filter.": "No findings for the selected filter.",
 	"Nalazi će se pojaviti ovde čim ih agenti dodaju, svaki sa izvorom i statusom.": "Findings will appear here as soon as the agents add them, each with a source and a status.",
 	"Otvorena pitanja za tebe": "Open questions for you",
@@ -430,18 +713,11 @@ const EN = {
 	"Nema dodatnih preporuka.": "No further recommendations.",
 	"Dosije nije završen.": "The dossier was not finished.",
 	"Dosije nije pokrenut.": "The dossier was not started.",
-	"Završi dosije pa pokreni novi": "Finish the dossier, then start a new one",
+	"Završite dosije pa pokrenite novi": "Finish the dossier, then start a new one",
 	"Završavam dosije…": "Finishing the dossier…",
-	"Dosije se još završava. Pokušaj ponovo za nekoliko sekundi.": "The dossier is still finishing. Try again in a few seconds.",
+	"Dosije se još završava. Pokušajte ponovo za nekoliko sekundi.": "The dossier is still finishing. Try again in a few seconds.",
 	// labels
-	"Rukovodstvo": "Leadership",
 	"Novac": "Money",
-	"Revizija": "Audit",
-	"Mediji": "Media",
-	"Zvanično": "Official",
-	"Potvrđeno": "Confirmed",
-	"Nepotvrđeno": "Unconfirmed",
-	"Odstupa od registra": "Differs from register",
 	"v.d. preko roka": "acting head past the limit",
 	"v.d. blizu roka": "acting head near the limit",
 	"lanac v.d.": "chain of acting heads",
@@ -472,15 +748,14 @@ const EN = {
 	"pomenut": "mentioned",
 	"zvanični izvor": "official source",
 	"Izvori ({n})": "Sources ({n})",
-	"prikaži manje": "show less",
-	"prikaži još {n}": "show {n} more",
+	"prikažite manje": "show less",
+	"prikažite još {n}": "show {n} more",
 	// inbox
 	"Ti si deo tima: agenti ti šalju pitanja i traže odobrenje.": "You are part of the team: agents send you questions and ask for approval.",
-	"Zatvori": "Close",
+	"Zatvorite": "Close",
 	"Sanduče je prazno.": "The inbox is empty.",
 	"Kad agent ne može sam da dođe do podatka (na primer vlasnik firme iza reCAPTCHA) ili naiđe na osetljiv signal, pojaviće se ovde.": "When an agent cannot get a piece of data on its own (for example a company owner behind a reCAPTCHA) or runs into a sensitive signal, it will show up here.",
 	"Istorija": "History",
-	"Dodaj trag": "Add a lead",
 	"Znaš nešto što agenti ne znaju? Dodaj osobu ili firmu: odmah dobija svog agenta.": "Do you know something the agents don’t? Add a person or a company: it gets its own agent right away.",
 	"Ime i prezime ili naziv firme": "Full name or company name",
 	"Ime ili naziv": "Name",
@@ -489,24 +764,24 @@ const EN = {
 	"Urednik predlaže signal za izveštaj": "The editor proposes a signal for the report",
 	"Urednik predlaže signal": "The editor proposes a signal",
 	"Savet": "Hint",
-	"Ubaci u izveštaj": "Add to report",
-	"Odbaci": "Reject",
-	"Upiši odgovor (na primer ime vlasnika)": "Type an answer (for example the owner’s name)",
+	"Ubacite u izveštaj": "Add to report",
+	"Odbacite": "Reject",
+	"Upišite odgovor (na primer ime vlasnika)": "Type an answer (for example the owner’s name)",
 	"Odgovor": "Answer",
-	"Pošalji timu": "Send to the team",
-	"Preskoči": "Skip",
+	"Pošaljite timu": "Send to the team",
+	"Preskočite": "Skip",
 	"odobreno": "approved",
 	"odbijeno": "rejected",
 	"isteklo": "expired",
 	"Sanduče, {n} otvorenih zadataka": "Inbox, {n} open tasks",
 	"Trag dodat: {name}. Tim ga već proverava.": "Lead added: {name}. The team is already checking it.",
 	"Trag nije dodat.": "The lead was not added.",
-	"{agent} čeka tvoje odobrenje": "{agent} is waiting for your approval",
-	"{agent} ima pitanje za tebe": "{agent} has a question for you",
-	"Odluči": "Decide",
-	"Odgovori": "Answer",
+	"{agent} čeka Vaše odobrenje": "{agent} is waiting for your approval",
+	"{agent} ima pitanje za Vas": "{agent} has a question for you",
+	"Odlučite": "Decide",
+	"Odgovorite": "Answer",
 	// report
-	"Kopiraj": "Copy",
+	"Kopirajte": "Copy",
 	"Kopirano": "Copied",
 	"Preuzmi .md": "Download .md",
 	"Štampaj / PDF": "Print / PDF",
@@ -514,23 +789,21 @@ const EN = {
 	"Pojaviće se kad agenti završe dosije.": "It will appear when the agents finish the dossier.",
 	"Dosije je spreman": "The dossier is ready",
 	"Izveštaj generisan u {time}. Pregledaj signale i šta još treba proveriti.": "Report generated at {time}. Review the signals and what still needs verifying.",
-	"Otvori izveštaj": "Open report",
+	"Otvorite izveštaj": "Open report",
 	// map
-	"Gde prvo gledati": "Where to look first",
 	"← Nazad na dosije": "← Back to dossier",
 	"Lista institucija prolazi kroz isti tim agenata istovremeno: po jedan agent „Trijaža“ za svaku instituciju proverava rukovodstvo (ACAS, v.d. i zakonski rok), javne nabavke i izveštaje DRI. Ocena je zbir fiksnih pravila, a ne mišljenje: pokazuje gde prvo gledati, ne ko je kriv.":
 		"A list of institutions goes through the same agent team at once: one “Triage” agent per institution checks the leadership (ACAS, acting head and the legal limit), public procurement and DRI reports. The score is the sum of fixed rules, not an opinion: it shows where to look first, not who is to blame.",
 	"Institucije (jedna po redu, najviše 8)": "Institutions (one per line, at most 8)",
 	"Spisak institucija": "List of institutions",
-	"Pokreni mapu": "Run the map",
-	"Pokreni ponovo": "Run again",
+	"Pokrenite poređenje": "Run the comparison",
+	"Pokrenite ponovo": "Run again",
 	"Mapa radi…": "The map is running…",
 	"izmeni listu": "edit the list",
 	"vrati preset: transportni sektor": "restore preset: transport sector",
 	"Rang lista institucija": "Institution ranking",
 	"Institucija": "Institution",
 	"Ocena": "Score",
-	"Signali": "Signals",
 	"Status": "Status",
 	"Ocena sabira signale po fiksnim pravilima (v.d. preko roka, lanac v.d., postupci bez objave, Integrity Watch, DRI). To su signali za proveru, ne zaključak.": "The score adds up signals under fixed rules (acting head past the legal limit, chain of acting heads, procedures without publication, Integrity Watch, DRI). These are signals to verify, not a conclusion.",
 	"v.d. {m}/{lim} mes.": "acting {m}/{lim} mo.",
@@ -541,19 +814,19 @@ const EN = {
 	"trijaža nije uspela": "triage failed",
 	"Nijedan signal nije prešao prag; ocena 0.": "No signal passed the threshold; score 0.",
 	"Agent još proverava izvore…": "The agent is still checking sources…",
-	"Sačekaj da se mapa završi": "Wait for the map to finish",
+	"Sačekajte da se poređenje završi": "Wait for the comparison to finish",
 	"Pokreće pun dosije za ovu instituciju": "Starts a full dossier for this institution",
-	"Otvori dosije": "Open dossier",
+	"Otvorite dosije": "Open dossier",
 	"razrešeno kao": "resolved as",
 	"Naziv odgovara i drugim ustanovama ({list}); izabrana je {name}.": "The name also fits other bodies ({list}); {name} was picked.",
 	"agent proverava izvore": "agent is checking sources",
 	"u redu": "queued",
-	"Sakrij": "Hide",
-	"Sakrij detalje": "Hide details",
+	"Sakrijte": "Hide",
+	"Sakrijte detalje": "Hide details",
 	"Detalji": "Details",
 	"Još nema mape. Pokreni je dugmetom iznad: institucije se pojavljuju ovde, a Trijaža agenti rade u koloni „Tim“.": "No map yet. Start it with the button above: institutions appear here, and the Triage agents work in the Team column.",
-	"Završi dosije pa pokreni mapu": "Finish the dossier, then run the map",
-	"Mapa nije pokrenuta.": "The map was not started.",
+	"Završite dosije pa pokrenite poređenje": "Finish the dossier, then run the comparison",
+	"Poređenje nije pokrenuto.": "The comparison was not started.",
 	// bottom drawer
 	"Ispod haube: {n} Mozaik događaja": "Under the hood: {n} Mozaik events",
 	"sakrij": "hide",

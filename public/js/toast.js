@@ -46,7 +46,7 @@ export function toast({ kind = "info", title, text, actions = [], ttl = 7000 } =
 					)
 				: null,
 		),
-		h("button", { class: "t-x", type: "button", "aria-label": t("Zatvori"), onclick: () => close() }, "×"),
+		h("button", { class: "t-x", type: "button", "aria-label": t("Zatvorite"), onclick: () => close() }, "×"),
 	)
 	host.appendChild(el)
 	while (host.children.length > MAX) (host.querySelector(".toast:not(.approve)") || host.firstChild).remove()

@@ -240,7 +240,7 @@ export class UrednikGate implements InterceptionHandler {
 			kind: "odobrenje",
 			title,
 			question: `Urednik predlaže signal: „${title}“. Ubaciti u izveštaj?`,
-			hint: "Signal imenuje osobu ili tvrdi da je rok prekoračen. Proveri tekst i izvore pre odluke; sistem ne presuđuje.",
+			hint: "Signal imenuje osobu ili tvrdi da je rok prekoračen. Proverite tekst i izvore pre odluke; sistem ne presuđuje.",
 			fromAgentId: this.ctx.agentId,
 			fromAgentName: this.ctx.agentName,
 			entityId: entityIds[0] ?? this.ctx.entityId,

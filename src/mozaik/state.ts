@@ -25,6 +25,7 @@ import type {
 	SourceRef,
 } from "../shared/types"
 import type { ResolvedInstitution } from "../data/resolver"
+import type { Lang } from "../shared/lang"
 import { clipWords } from "../shared/text"
 import { hostOf, isHttpUrl, normUrl } from "./util"
 
@@ -118,6 +119,8 @@ export class DosijeState extends RuntimeState {
 	status: CaseStatus = "idle"
 	input?: string
 	focus?: string
+	/** the language of the run (case or map), chosen when it started: the agents write in it, the report follows it */
+	lang: Lang = "sr"
 	institution?: InstitutionView
 	institutionRef?: ResolvedInstitution
 	mentioned: string[] = []
@@ -153,9 +156,10 @@ export class DosijeState extends RuntimeState {
 
 	// ─── case lifecycle ────────────────────────────────────────────────────
 
-	resetCase(args: { caseId: string; input: string; focus?: string; institution: InstitutionView; ref: ResolvedInstitution; mentioned?: string[] }): void {
+	resetCase(args: { caseId: string; input: string; focus?: string; institution: InstitutionView; ref: ResolvedInstitution; mentioned?: string[]; lang?: Lang }): void {
 		this.generation++
 		this.caseId = args.caseId
+		this.lang = args.lang ?? "sr"
 		this.status = "running"
 		this.input = args.input
 		this.focus = args.focus
@@ -207,6 +211,7 @@ export class DosijeState extends RuntimeState {
 		this.institution = undefined
 		this.institutionRef = undefined
 		this.mentioned = []
+		this.lang = "sr"
 		this.clearRun()
 		this.mapa = new MapaState()
 	}
@@ -214,8 +219,9 @@ export class DosijeState extends RuntimeState {
 	// ─── map lifecycle ("Mapa prioriteta") ─────────────────────────────────
 
 	/** A map replaces whatever case is on screen (the two are mutually exclusive); the previous map's rows are dropped. */
-	resetMapa(mapaId: string, institutions: { slug: string; name: string }[]): void {
+	resetMapa(mapaId: string, institutions: { slug: string; name: string }[], lang: Lang = "sr"): void {
 		this.generation++
+		this.lang = lang
 		this.caseId = null
 		this.status = "idle"
 		this.input = undefined

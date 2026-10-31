@@ -2,10 +2,13 @@
 // event before anyone reacts to it) and the core agents, then startCase() for every new dossier. "New case" resets the
 // case inside DosijeState: initializeRuntime cannot run twice.
 
+import fs from "node:fs"
+import path from "node:path"
 import { type Agent } from "@mozaik-ai/core"
 import { config, editorModelLabel, modelLabel } from "../config"
 import * as data from "../data"
-import { LEGAL_LABELS, listStaticInstitutions, type ResolvedInstitution } from "../data/resolver"
+import { LEGAL_LABELS, LEGAL_LABELS_EN, type ResolvedInstitution } from "../data/resolver"
+import type { Lang } from "../shared/lang"
 import { n } from "../shared/plural"
 import type { AgentInfo, DosijeReport, DosijeSnapshot, InstitutionView, MapaView, RuntimeConfigView } from "../shared/types"
 import { finalizeActivities, forgetActivities, installActivityBridge } from "./activity"
@@ -13,7 +16,6 @@ import { CORE_AGENTS, OBSERVERS, createCoreAgent } from "./agents"
 import { bus } from "./bus"
 import * as domain from "./domain"
 import { ids, S } from "./domain"
-import { translationAvailable } from "../translate"
 import { ResilientInferenceRunner } from "./inference/resilient"
 import { ScriptedInferenceRunner } from "./inference/scripted"
 import { loadMapaPreset, normalizeInstitutions, startMapaWatch } from "./mapa"
@@ -48,6 +50,20 @@ function installSafetyNet(): void {
 	process.on("uncaughtException", (err) => logError("uncaughtException", err))
 }
 
+const EXAMPLES_FILE = path.resolve(process.cwd(), "data", "static", "examples.json")
+
+/** The institutions offered on the start screen ("Aktuelne institucije"): name as typed, plus what kind of body it is. */
+function loadExamples(): RuntimeConfigView["demoInstitutions"] {
+	try {
+		const raw = JSON.parse(fs.readFileSync(EXAMPLES_FILE, "utf8")) as { slug?: string; name?: string; kind?: string }[]
+		return raw
+			.filter((r) => typeof r?.name === "string" && r.name.trim())
+			.map((r) => ({ slug: r.slug || slug(r.name as string), name: (r.name as string).trim(), ...(r.kind ? { kind: r.kind } : {}) }))
+	} catch {
+		return []
+	}
+}
+
 export function configView(): RuntimeConfigView {
 	let providers: string[] = []
 	try {
@@ -61,9 +77,8 @@ export function configView(): RuntimeConfigView {
 		editorModel: editorModelLabel(),
 		dataMode: config.dataMode,
 		searchProviders: providers,
-		demoInstitutions: listStaticInstitutions(),
+		demoInstitutions: loadExamples(),
 		mapaPreset: loadMapaPreset(),
-		translation: translationAvailable(),
 		asksUser: config.askHuman || config.approvals,
 	}
 }
@@ -122,12 +137,12 @@ async function doBoot(): Promise<void> {
 	log("boot", `Mozaik runtime spreman: ${n(state.participants.size, "ucesnik")}, režim ${config.mode}${config.mode === "llm" ? ` (${config.provider}, ${config.model})` : ""}, podaci ${config.dataMode}`)
 }
 
-function institutionView(ref: ResolvedInstitution): InstitutionView {
+function institutionView(ref: ResolvedInstitution, lang: Lang): InstitutionView {
 	return {
 		name: ref.name,
 		nameCyr: ref.nameCyr,
 		slug: ref.slug,
-		legalType: LEGAL_LABELS[ref.legalType],
+		legalType: (lang === "en" ? LEGAL_LABELS_EN : LEGAL_LABELS)[ref.legalType],
 		pib: ref.pib,
 		mb: ref.mb,
 		acasId: ref.acasId,
@@ -147,10 +162,10 @@ function teardownCase(): void {
 	leaveAllDynamic(true)
 }
 
-const MAPA_RUNNING = "Mapa prioriteta je u toku: sačekaj da se završi pre nego što napraviš dosije."
-const CASE_RUNNING = "Dosije je u toku: sačekaj da se završi (ili ga zatvori) pre nego što pokreneš Mapu prioriteta."
+const MAPA_RUNNING = "Poređenje institucija je u toku: sačekajte da se završi pre nego što pokrenete dosije."
+const CASE_RUNNING = "Dosije je u toku: sačekajte da se završi (ili ga zatvorite) pre nego što pokrenete poređenje institucija."
 
-export async function startCase(input: string, focus?: string): Promise<{ caseId: string; institution: InstitutionView }> {
+export async function startCase(input: string, focus?: string, lang: Lang = "sr"): Promise<{ caseId: string; institution: InstitutionView }> {
 	await boot()
 	const state = S()
 	if (state.mapaRunning()) throw new ApiError(409, MAPA_RUNNING)
@@ -158,9 +173,9 @@ export async function startCase(input: string, focus?: string): Promise<{ caseId
 	if (state.mapaRunning()) throw new ApiError(409, MAPA_RUNNING)
 	teardownCase()
 	const caseId = `dos-${Date.now().toString(36)}${Math.random().toString(36).slice(2, 5)}`
-	const view = institutionView(ref)
+	const view = institutionView(ref, lang)
 	const mentioned = (ref.mentionedOfficials ?? []).map((m) => m.name)
-	state.resetCase({ caseId, input, focus: focus?.trim() || undefined, institution: view, ref, mentioned })
+	state.resetCase({ caseId, input, focus: focus?.trim() || undefined, institution: view, ref, mentioned, lang })
 	state.registerSources(ref.sources)
 	bus.emitSnapshot(state.snapshot(configView()))
 
@@ -185,11 +200,11 @@ export async function startCase(input: string, focus?: string): Promise<{ caseId
  * "Mapa prioriteta": the Novinar publishes mapa.started; the Fabrika reacts by resolving every institution and spawning one
  * Trijaža agent each (see participants.ts). There is no orchestrator here: this function only opens the run.
  */
-export async function startMapa(input?: unknown): Promise<{ mapaId: string; institutions: { slug: string; name: string }[] }> {
+export async function startMapa(input?: unknown, lang: Lang = "sr"): Promise<{ mapaId: string; institutions: { slug: string; name: string }[] }> {
 	await boot()
 	const state = S()
 	if (state.status === "running" || state.status === "finalizing") throw new ApiError(409, CASE_RUNNING)
-	if (state.mapaRunning()) throw new ApiError(409, "Mapa prioriteta je već u toku.")
+	if (state.mapaRunning()) throw new ApiError(409, "Poređenje institucija je već u toku.")
 	let institutions: { slug: string; name: string }[]
 	try {
 		institutions = normalizeInstitutions(input)
@@ -198,7 +213,7 @@ export async function startMapa(input?: unknown): Promise<{ mapaId: string; inst
 	}
 	teardownCase()
 	const mapaId = `map-${Date.now().toString(36)}${Math.random().toString(36).slice(2, 5)}`
-	state.resetMapa(mapaId, institutions)
+	state.resetMapa(mapaId, institutions, lang)
 	bus.emitSnapshot(state.snapshot(configView()))
 	domain.emit("mapa.started", ids.novinar, { mapaId, institutions })
 	startMapaWatch()
@@ -228,7 +243,7 @@ export function submitAnswer(body: { taskId?: unknown; decision?: unknown; answe
 	const decision = body.decision === "approve" || body.decision === "reject" ? body.decision : undefined
 	const answer = typeof body.answer === "string" && body.answer.trim() ? body.answer.trim().slice(0, 300) : undefined
 	if (task.kind === "odobrenje" && !decision) throw new ApiError(400, "Za odobrenje pošalji decision: approve ili reject.")
-	if (task.kind === "pitanje" && !decision && !answer) throw new ApiError(400, "Upiši odgovor ili klikni Preskoči.")
+	if (task.kind === "pitanje" && !decision && !answer) throw new ApiError(400, "Upišite odgovor ili kliknite „Preskočite“.")
 	domain.emit("odgovor.coveka", ids.novinar, { taskId, decision, answer })
 }
 
@@ -236,7 +251,7 @@ export function addLead(body: { name?: unknown; kind?: unknown }): void {
 	const state = S()
 	if (state.status !== "running" || !state.caseId) throw new ApiError(409, "Nema aktivnog dosijea.")
 	const name = typeof body.name === "string" ? body.name.trim().slice(0, 80) : ""
-	if (name.length < 2) throw new ApiError(400, "Upiši ime ili naziv.")
+	if (name.length < 2) throw new ApiError(400, "Upišite ime ili naziv.")
 	const kind = body.kind === "firma" ? "firma" : "osoba"
 	const r = domain.addEntity(
 		{ agentId: ids.novinar, agentName: "Novinar", caseId: state.caseId },

@@ -187,12 +187,12 @@ describe("Mapa prioriteta: the same supplier among the top suppliers of 2+ insti
 	})
 
 	test("the Urednik publishes mapa.veza and the affected rows show the shared supplier and its points", { timeout: 120_000 }, async () => {
-		const { mapaId } = await startMapa()
+		const { mapaId } = await startMapa(["Infrastruktura železnice Srbije", "Srbijavoz", "Srbija Kargo", "Železnice Srbije", "JP Putevi Srbije", "Koridori Srbije"])
 		const view = await waitForMapa(100_000)
 		assert.equal(view.status, "done")
 
 		const veze = events.filter((e) => e.type === "mapa.veza")
-		assert.ok(veze.length >= 1, "at least one supplier is a top supplier of 2+ institutions of the preset")
+		assert.ok(veze.length >= 1, "at least one supplier is a top supplier of 2+ institutions of the transport sector")
 		assert.ok(veze.every((e) => e.producerName === "Urednik"))
 		for (const e of veze) {
 			const p = e.payload as { mapaId: string; veza: MapaVeza }

@@ -14,10 +14,10 @@ concurrency: one **"Trijaža · <institucija>"** agent per institution, all runn
 
 ![Mapa prioriteta: six Trijaža agents, one live ranking](img/06-mapa.png)
 
-- **From the UI:** click **"Mapa prioriteta"** in the header, edit the list (one institution per line, at most 8; the
-  default is the transport-sector preset in `data/static/mapa-preset.json`) and click **"Pokreni mapu"**. Rows slide into
-  rank order as scores arrive; each row expands into its reasons, sources and **"Otvori dosije"** (a full case for that
-  institution). A map and a case exclude each other: `POST /api/mapa` answers 409 while a case runs, and vice versa.
+- **From the UI:** click **"Poređenje institucija"** in the header, edit the list (one field per institution, or paste a
+  list; at most 8; it starts with the current institutions in `data/static/mapa-preset.json`) and click **"Pokrenite
+  poređenje"**. Rows slide into rank order as scores arrive; each row expands into its reasons, sources and **"Otvorite
+  pun dosije"** (a full case for that institution). A map and a case exclude each other: `POST /api/mapa` answers 409 while a case runs, and vice versa.
 - **Headless:** `npm run mapa` (or `npm run mapa -- "Srbijavoz" "Koridori Srbije"`) prints the live log, the final ranking
   and the ASCII Gantt. REST: `POST /api/mapa {institutions?: string[]}`, `GET /api/mapa`.
 - **No orchestrator:** the Novinar publishes `mapa.started`; the **Fabrika** reacts by resolving every institution and

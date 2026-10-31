@@ -8,7 +8,7 @@ import { formatDate, isHeadPosition } from "../../data/analysis/vd"
 import { asciiFold } from "../../data/translit"
 import { n } from "../../shared/plural"
 import { clauseHeadline } from "../../shared/text"
-import { entityIdFor } from "../domain"
+import { entityIdFor, S } from "../domain"
 import { describeOwners, MAX_OWNERS, parseOwnerAnswer } from "../owners"
 import { buildLede, leadHeads } from "../summary"
 import { clip } from "../util"
@@ -69,6 +69,22 @@ async function* sourceGap(which: keyof typeof SOURCE_PAGES, what: string, failur
 }
 // ─── Kadrovik ────────────────────────────────────────────────────────────────
 
+/** Earlier acting heads whose term ran past the limit of this legal form (closed terms: the register's dates, or the end
+ * from the official's own report on leaving when the register left the term open). */
+async function* pastActing(off: Record<string, any>, acas: Src[], entityId?: string): AsyncGenerator<Step, void, ToolResult> {
+	const past = (off.ranijiVd ?? []) as { name: string; position: string; from: string; to: string; months: number; days: number; maxMonths: number; law: string; article: string; krajIzIzvestaja?: boolean }[]
+	if (!past.length) return
+	const list = past.map((x) => `${x.name} (${x.position}) od ${formatDate(x.from)} do ${formatDate(x.to)}${x.krajIzIzvestaja ? " (kraj prema izveštaju o imovini o prestanku funkcije)" : ""}: ${n(x.months, "mesec")} i ${n(x.days, "dan")}`).join("; ")
+	yield call("add_finding", {
+		section: "rukovodstvo",
+		title: `Ranije: v.d. na čelu institucije duže od zakonskog roka (${past[0].name}, ${n(past[0].months, "mesec")})`,
+		text: `Prema datumima u registru ACAS, ranije mandate vršioca dužnosti na čelu institucije: ${list}. ${past[0].law}, ${past[0].article}, propisuje najviše ${n(past[0].maxMonths, "mesec")}. Činjenični obrazac, ne zaključak o kršenju propisa: propis je naveden u današnjem tekstu (za mandate koji su počeli pre njegovog stupanja na snagu važio je tadašnji zakon), a registar može imati nepotpune ili kasno unete datume.`,
+		severity: "paznja",
+		sources: [...acas.slice(0, 1), ...(past.some((x) => x.krajIzIzvestaja) ? acas.filter((s) => /Izveštaj o imovini/.test(String(s.title ?? ""))) : []), ...srcs(off.ranijiVdIzvori)],
+		...(entityId ? { entityIds: [entityId] } : {}),
+	})
+}
+
 async function* kadrovik(): AsyncGenerator<Step, string, ToolResult> {
 	const off = (yield call("acas_funkcioneri")).json
 	if (off?.ok === false) {
@@ -86,7 +102,7 @@ async function* kadrovik(): AsyncGenerator<Step, string, ToolResult> {
 		})
 		return "ACAS nije vratio funkcionere za ovu instituciju."
 	}
-	type O = { personId: string; name: string; position: string; acting: boolean; from?: string; to?: string; current: boolean; appointedBy?: string }
+	type O = { personId: string; name: string; position: string; acting: boolean; from?: string; to?: string; current: boolean; appointedBy?: string; zavrsenoPoIzvestaju?: { do?: string; izvestajOd?: string } }
 	const officials = off.officials as O[]
 	const acas = srcs(off.sources)
 	const current = officials.filter((o) => o.current)
@@ -105,14 +121,20 @@ async function* kadrovik(): AsyncGenerator<Step, string, ToolResult> {
 		})
 	}
 	if (!head) {
+		// a head the register still shows, whose own report on leaving says the function ended
+		const ended = officials.find((o) => o.zavrsenoPoIzvestaju?.do && isHeadTitle(o.position))
+		const endedText = ended
+			? ` Zapis „${ended.position}“ (${ended.name}, od ${formatDate(ended.from)}) u registru nema datum kraja, ali prema izveštaju o imovini od ${formatDate(ended.zavrsenoPoIzvestaju?.izvestajOd)} (prestanak javne funkcije) funkcija je prestala ${formatDate(ended.zavrsenoPoIzvestaju?.do)}.`
+			: ""
 		yield call("add_finding", {
 			section: "rukovodstvo",
 			title: "Čelnik institucije nije pronađen u registru ACAS",
-			text: `U registru ACAS (${n(off.count, "zapis")}) nema funkcionera sa funkcijom direktora, predsednika ili ministra koji je trenutno na funkciji${people.length ? `; u registru su tekući: ${people.map((p) => `${p.name} (${p.position})`).join(", ")}` : ""}. Registar sadrži samo funkcionere koji su podneli prijavu, pa čelnik nije utvrđen iz registra.`,
+			text: `U registru ACAS (${n(off.count, "zapis")}) nema funkcionera sa funkcijom direktora, predsednika ili ministra koji je trenutno na funkciji${people.length ? `; u registru su tekući: ${people.map((p) => `${p.name} (${p.position})`).join(", ")}` : ""}.${endedText} Registar sadrži samo funkcionere koji su podneli prijavu, pa čelnik nije utvrđen iz registra.`,
 			severity: "paznja",
 			signalCode: "IMENOVANJE_NEPOZNATO",
-			sources: acas.slice(0, 1),
+			sources: ended ? [...acas.slice(0, 1), ...acas.filter((s) => /Izveštaj o imovini/.test(String(s.title ?? "")))] : acas.slice(0, 1),
 		})
+		yield* pastActing(off, acas)
 		return "Kadrovik: u registru nema tekućeg čelnika; uneti funkcioneri."
 	}
 
@@ -217,19 +239,7 @@ async function* kadrovik(): AsyncGenerator<Step, string, ToolResult> {
 		})
 	}
 
-	// earlier acting heads whose term ran past the limit of this legal form (closed terms, computed from the register's dates)
-	const past = (off.ranijiVd ?? []) as { name: string; position: string; from: string; to: string; months: number; days: number; maxMonths: number; law: string; article: string }[]
-	if (past.length) {
-		const list = past.map((x) => `${x.name} (${x.position}) od ${formatDate(x.from)} do ${formatDate(x.to)}: ${n(x.months, "mesec")} i ${n(x.days, "dan")}`).join("; ")
-		yield call("add_finding", {
-			section: "rukovodstvo",
-			title: `Ranije: v.d. na čelu institucije duže od zakonskog roka (${past[0].name}, ${n(past[0].months, "mesec")})`,
-			text: `Prema datumima u registru ACAS, ranije mandate vršioca dužnosti na čelu institucije: ${list}. ${past[0].law}, ${past[0].article}, propisuje najviše ${n(past[0].maxMonths, "mesec")}. Činjenični obrazac, ne zaključak o kršenju propisa: propis je naveden u današnjem tekstu (za mandate koji su počeli pre njegovog stupanja na snagu važio je tadašnji zakon), a registar može imati nepotpune ili kasno unete datume.`,
-			severity: "paznja",
-			sources: [...acas.slice(0, 1), ...srcs(off.ranijiVdIzvori)],
-			entityIds: [entityId],
-		})
-	}
+	yield* pastActing(off, acas, entityId)
 
 	// the same person acting again: public-enterprise and health-care laws allow one acting mandate
 	const again = (off.ponovljenVd ?? []) as { from: string; to?: string }[]
@@ -779,7 +789,7 @@ async function* firme(c: PolicyCtx): AsyncGenerator<Step, string, ToolResult> {
 		yield call("ask_human", {
 			question: `Ko su vlasnici firme ${name} (${mb ? `MB ${mb}` : pib ? `PIB ${pib}` : "MB nepoznat"})? Nema automatskog izvora.`,
 			title: `Vlasnici firme ${clip(name, 40)}`,
-			hint: "APR pretraga je iza reCAPTCHA pa je agenti ne mogu koristiti. Otvori APR pretragu, nađi firmu po nazivu ili matičnom broju i prepiši ime vlasnika. Ako nije dostupno, klikni Preskoči.",
+			hint: "APR pretraga je iza reCAPTCHA pa je agenti ne mogu koristiti. Otvorite APR pretragu, nađite firmu po nazivu ili matičnom broju i prepišite ime vlasnika. Ako nije dostupno, kliknite „Preskočite“.",
 			links: [
 				{ label: "APR pretraga privrednih subjekata", url: APR_SEARCH },
 				...(ct.biggest?.url ? [{ label: "Portal javnih nabavki: najveći ugovor", url: ct.biggest.url }] : []),
@@ -869,14 +879,17 @@ async function* provera(c: PolicyCtx): AsyncGenerator<Step, string, ToolResult> 
 	const registerSource = { kind: "acas", title: `ACAS registar – pretraga: ${name}`, url: "https://publicacas.acas.rs/#/acas/funkcioner" }
 
 	if (acasMatches.length || pepMatches.length) {
+		// a name that several officials carry is a namesake hint, not a signal (common names: Petrović, Đukić...); a PEP hit on such
+		// a name could be any of them
+		const unique = (a?.distinctPersons ?? 0) <= 1
 		const parts: string[] = []
 		if (acasMatches.length) parts.push(`${n(a.distinctPersons, "osoba")} u registru funkcionera ACAS (npr. ${acasMatches[0].position}, ${clip(acasMatches[0].institution, 60)})`)
 		if (pepMatches.length) parts.push(`${n(pepMatches.length, "unos")} na PEP listama (${[...new Set(pepMatches.map((x) => x.dataset))].join(", ")})`)
 		yield call("add_finding", {
 			section: "firme",
 			title: `Ime vlasnika firme ${clip(firm, 40)} poklapa se sa registrom: ${name}`,
-			text: `Ime „${name}“ (vlasnik firme ${firm}, prema ${origin}) poklapa se sa: ${parts.join("; ")}. Poklapanje imena nije dokaz identiteta: potrebno je utvrditi da li je to ista osoba.`,
-			severity: "signal",
+			text: `Ime „${name}“ (vlasnik firme ${firm}, prema ${origin}) poklapa se sa: ${parts.join("; ")}. Poklapanje imena nije dokaz identiteta${unique ? "" : ", a isto ime nosi više osoba u registru"}.`,
+			severity: unique ? "signal" : "paznja",
 			signalCode: "VLASNIK_FUNKCIONER",
 			sources: sources.length ? sources : [registerSource],
 		})
@@ -907,6 +920,7 @@ async function* urednik(): AsyncGenerator<Step, string, ToolResult> {
 		attention: Number(c.pazni) || 0,
 		conflicts: conflicts.length,
 		heads: leadHeads(top.map((t) => t.title)),
+		lang: S().lang,
 	})
 	yield call("napisi_sazetak", {
 		lede,
@@ -927,7 +941,9 @@ async function* trijaza(): AsyncGenerator<Step, string, ToolResult> {
 		r?.ok === false || !r
 			? "Registar ACAS nije odgovorio"
 			: !r.head
-				? "U registru ACAS nema tekućeg čelnika"
+				? r.zavrseno?.to
+					? `U registru ACAS nema tekućeg čelnika (zapis „${r.zavrseno.position}“ nema datum kraja, ali prema izveštaju o imovini funkcija je prestala ${formatDate(r.zavrseno.to)})`
+					: "U registru ACAS nema tekućeg čelnika"
 				: r.head.acting && r.vd?.months !== undefined
 					? `Prema ACAS, čelnik je v.d. ${n(r.vd.months, "mesec")} (zakonski rok ${n(r.vd.limitMonths, "mesec")})${r.vd.overLimit ? ", signal" : ""}${r.chain ? `; institucijom rukovode samo v.d. već ${n(r.chain.totalMonths, "mesec")} (${n(r.chain.actingCount, "uzastopniVd")})` : ""}`
 					: "Prema ACAS, čelnik nije vođen kao v.d."
@@ -939,8 +955,9 @@ async function* trijaza(): AsyncGenerator<Step, string, ToolResult> {
 		d?.ok === false || !d
 			? "DRI nije odgovorio."
 			: `DRI: ${n(d.total, "izvestaj")} o reviziji${d.saRezervomIliNegativna ? `; među poznatim mišljenjima: ${d.saRezervomIliNegativna} sa rezervom ili negativnih` : ""}.`
-	yield call("upisi_red", { summary: `${lead}. ${buy}; ${audit}` })
-	return "Trijaža završena: red je upisan u Mapu prioriteta."
+	// "v.d." already ends with a period
+	yield call("upisi_red", { summary: `${lead}${lead.endsWith(".") ? "" : "."} ${buy}; ${audit}` })
+	return "Trijaža završena: red je upisan u poređenje institucija."
 }
 
 const POLICIES: Record<string, Policy> = { kadrovik, nabavke, revizor, mediji, firme, imovina, provera, urednik, trijaza }

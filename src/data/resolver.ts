@@ -61,6 +61,16 @@ export const LEGAL_LABELS: Record<LegalType, string> = {
 	ostalo: "Ostalo (pravni oblik nije utvrđen)",
 }
 
+/** The same in English, for a run started in English. */
+export const LEGAL_LABELS_EN: Record<LegalType, string> = {
+	javno_preduzece: "Public enterprise",
+	drustvo_kapitala_drzavno: "State-owned company (a.d./d.o.o.)",
+	zdravstvena_ustanova: "Health care institution",
+	organ_drzavne_uprave: "State administration body",
+	lokalna_samouprava: "Local self-government",
+	ostalo: "Other (legal form not established)",
+}
+
 function key(s: string): string {
 	return asciiFold(s)
 		.replace(/[^a-z0-9]+/g, " ")
@@ -237,7 +247,7 @@ export class AmbiguousInstitutionError extends Error {
 		public readonly query: string,
 		public readonly candidates: string[],
 	) {
-		super(`Naziv „${query}“ odgovara većem broju ustanova: ${candidates.join("; ")}. Upiši pun naziv ustanove.`)
+		super(`Naziv „${query}“ odgovara većem broju ustanova: ${candidates.join("; ")}. Upišite pun naziv ustanove.`)
 	}
 }
 
@@ -398,7 +408,7 @@ async function resolveDynamic(query: string): Promise<ResolvedInstitution> {
 		const aprHit = (await findCompanyForInstitution(canonical)) ?? (canonical !== primary ? await findCompanyForInstitution(primary) : null)
 
 		if (!acasBest && !jnBest && !aprHit) {
-			if (failed >= variants.length + jnQueries.length) throw new Error("Izvori (ACAS, Portal javnih nabavki) nisu odgovorili; pokušaj ponovo za nekoliko minuta.")
+			if (failed >= variants.length + jnQueries.length) throw new Error("Izvori (ACAS, Portal javnih nabavki) nisu odgovorili; pokušajte ponovo za nekoliko minuta.")
 			const near = [...acasAll.values(), ...jnAll.values()].filter((h) => nameSimilarity(h.name, primary) >= 0.34).slice(0, 5).map((h) => h.name)
 			if (near.length) throw new AmbiguousInstitutionError(query, [...new Set(near)])
 			return null
@@ -443,7 +453,7 @@ async function resolveDynamic(query: string): Promise<ResolvedInstitution> {
 		}
 	}, { skipWrite: (d) => d === null })
 	if (!env.data) {
-		throw new Error(`Institucija ,${query}" nije pronađena u ACAS, na Portalu javnih nabavki ni u APR. Proveri naziv (probaj i sa č, ć, š, ž, đ).`)
+		throw new Error(`Institucija „${query}“ nije pronađena u ACAS, na Portalu javnih nabavki ni u APR. Proverite naziv (probajte i sa č, ć, š, ž, đ).`)
 	}
 	return { ...env.data, query }
 }
@@ -530,14 +540,14 @@ const RESOLVE_TIMEOUT_MS = 75_000
 /** pickBest: a name that matches several bodies resolves to the most likely one instead of failing (Mapa prioriteta). */
 export async function resolveInstitution(query: string, opts: { pickBest?: boolean } = {}): Promise<ResolvedInstitution> {
 	const q = query.trim()
-	if (!q) throw new Error("Upiši naziv institucije.")
+	if (!q) throw new Error("Upišite naziv institucije.")
 	// names only: a news link is not taken (the article text is not searched for institutions)
-	if (/^(https?:\/\/|www\.)|\.(rs|com|net|org|info)(\/|$)/i.test(q)) throw new Error("Upiši naziv institucije (ključne reči). Linkovi se ne prihvataju.")
+	if (/^(https?:\/\/|www\.)|\.(rs|com|net|org|info)(\/|$)/i.test(q)) throw new Error("Upišite naziv institucije (ključne reči). Linkovi se ne prihvataju.")
 	const work = resolveNamed(q, !!opts.pickBest)
 	// the registers must answer: a hung lookup is an error message, not a frozen page
 	let timer: NodeJS.Timeout | undefined
 	const limit = new Promise<never>((_, reject) => {
-		timer = setTimeout(() => reject(new Error("Registri (ACAS, Portal javnih nabavki) ne odgovaraju na vreme. Pokušaj ponovo za nekoliko minuta.")), RESOLVE_TIMEOUT_MS)
+		timer = setTimeout(() => reject(new Error("Registri (ACAS, Portal javnih nabavki) ne odgovaraju na vreme. Pokušajte ponovo za nekoliko minuta.")), RESOLVE_TIMEOUT_MS)
 	})
 	work.catch(() => undefined)
 	return Promise.race([work, limit]).finally(() => clearTimeout(timer))

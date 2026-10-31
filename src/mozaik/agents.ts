@@ -31,7 +31,8 @@ const TASKS: Record<string, string> = {
 2) add_entity za čelnika (kind "osoba", role "funkcioner", attrs: position, from, personId) i za najviše 2 druga ključna funkcionera iste institucije.
 3) add_finding (section "rukovodstvo", severity "info") sa činjenicom iz ACAS: ime, funkcija, od kada, ko je imenovao; dodaj claim {subject: ime, predicate: "funkcija", value: funkcija tačno kako stoji u ACAS}.
 4) Ako je čelnik v.d.: vd_provera. Ako je overLimit: add_finding severity "signal", signalCode "VD_PREKO_ROKA", tekst: koliko dugo traje v.d. status, koji je zakonski maksimum i po kom propisu, i da iz dostupnih izvora nije utvrđeno koji propis važi za ovu instituciju ni da li postoji novo rešenje. Izvori: ACAS + propis. Ako alat vrati lanac (chain) uzastopnih v.d.: add_finding severity "signal", signalCode "VD_LANAC", kao činjenični obrazac (ne kao kršenje).
-5) paragraf_akti za akt o imenovanju. Ako akt nije pronađen: add_finding severity "paznja", signalCode "IMENOVANJE_NEPOZNATO" (izvor: stranica pretrage).`,
+5) paragraf_akti za akt o imenovanju. Ako akt nije pronađen: add_finding severity "paznja", signalCode "IMENOVANJE_NEPOZNATO" (izvor: stranica pretrage).
+6) Ako acas_funkcioneri ne vrati čelnika (headPersonId prazan): JEDAN add_finding severity "paznja", signalCode "IMENOVANJE_NEPOZNATO" da čelnik nije utvrđen iz registra; ako neki zapis ima zavrsenoPoIzvestaju, navedi da registar nema datum kraja, a da izveštaj o imovini o prestanku funkcije navodi kraj (izvor: taj izveštaj). Ako alat vrati ranijiVd: add_finding severity "paznja" o ranijim v.d. mandatima dužim od zakonskog roka (izvori: ACAS + propis iz ranijiVdIzvori).`,
 	nabavke: `Zadatak: gde idu pare.
 1) jn_pregled.
 2) Odmah add_entity (kind "firma", role "dobavljac", attrs: pib, mb, valueRsd, contracts, share, rank) za svaku firmu iz polja kandidatiZaProveru, redom. Svaki novi dobavljač automatski pokreće zasebnog agenta Firme.
@@ -79,7 +80,7 @@ Kad stigne odgovor novinarke ("Novinarka je odgovorila na pitanje ..."): iz slob
 2) add_finding (section "rukovodstvo", "info"): datum poslednjeg izveštaja i kratak pregled (bez adresa). Ako nema izveštaja posle stupanja na funkciju: add_finding ("paznja", signalCode "IMOVINA"): "Nije pronađen izveštaj o imovini nakon stupanja na funkciju."`,
 	provera: `Zadatak: proveri da li je osoba (vlasnik firme, prema CompanyWall ili unosu novinarke) javni funkcioner ili politički izložena osoba.
 1) acas_pretraga_osobe. 2) pep_provera.
-3) Ako postoji poklapanje: add_finding (section "firme", "signal", signalCode "VLASNIK_FUNKCIONER") sa izvorima i napomenom da poklapanje imena nije dokaz identiteta. Ako nema: add_finding ("info") "Nema poklapanja u registru funkcionera ni na PEP listama."`,
+3) Ako postoji poklapanje: add_finding (section "firme", signalCode "VLASNIK_FUNKCIONER") sa izvorima i napomenom da poklapanje imena nije dokaz identiteta; severity "signal" samo ako ime u ACAS ne nosi više osoba (distinctPersons najviše 1), a "paznja" ako isto ime nosi više osoba (tada i poklapanje na PEP listi može biti bilo ko od njih). Ako nema: add_finding ("info") "Nema poklapanja u registru funkcionera ni na PEP listama."`,
 }
 
 export const UREDNIK_INSTRUCTION = `[[agent:urednik]]
@@ -89,7 +90,7 @@ Ti si Urednik. Zadatak: napiši sažetak dosijea za novinarku.
 
 // "Trijaža · <institucija>": spawned by the Fabrika on mapa.started, one per institution (Mapa prioriteta)
 const TRIJAZA_INSTRUCTION = (name: string) => `[[agent:trijaza]]
-Ti si ${name}, član tima koji za tranzicioni tim ili novu vladu pravi Mapu prioriteta: brzo proveravaš JEDNU instituciju da se vidi gde prvo gledati.
+Ti si ${name}, član tima koji za tranzicioni tim ili novu vladu pravi poređenje institucija (rang-listu): brzo proveravaš JEDNU instituciju da se vidi gde prvo gledati.
 Radiš ISTOVREMENO sa agentima koji proveravaju druge institucije; svaki red u mapi popunjava samo jedan agent.
 Pravila:
 - Pozivaj JEDAN alat po koraku (nikad dva poziva u istom odgovoru).
@@ -212,7 +213,7 @@ export function createTrijazaAgent(ref: ResolvedInstitution, spawnedBy: string):
 }
 
 export function trijazaMessage(ref: ResolvedInstitution): string {
-	return `Institucija: ${ref.name} (ACAS ID ${ref.acasId ?? "nepoznat"}, JN ID ${ref.jnId ?? "nepoznat"}, PIB ${ref.pib ?? "nepoznat"}, pravni oblik ${LEGAL_LABELS[ref.legalType]}). Uradi trijažu za Mapu prioriteta.`
+	return `Institucija: ${ref.name} (ACAS ID ${ref.acasId ?? "nepoznat"}, JN ID ${ref.jnId ?? "nepoznat"}, PIB ${ref.pib ?? "nepoznat"}, pravni oblik ${LEGAL_LABELS[ref.legalType]}). Uradi trijažu za poređenje institucija.`
 }
 
 // ─── first messages ──────────────────────────────────────────────────────────

@@ -1,26 +1,10 @@
 [
-	{
-		"slug": "infrastruktura-zeleznice-srbije",
-		"name": "Infrastruktura železnice Srbije"
-	},
-	{
-		"slug": "srbijavoz",
-		"name": "Srbijavoz"
-	},
-	{
-		"slug": "srbija-kargo",
-		"name": "Srbija Kargo"
-	},
-	{
-		"slug": "zeleznice-srbije",
-		"name": "Železnice Srbije"
-	},
-	{
-		"slug": "putevi-srbije",
-		"name": "JP Putevi Srbije"
-	},
-	{
-		"slug": "koridori-srbije",
-		"name": "Koridori Srbije"
-	}
+	{ "slug": "rts", "name": "Radio-televizija Srbije (RTS)" },
+	{ "slug": "pio", "name": "Republički fond za penzijsko i invalidsko osiguranje (PIO)" },
+	{ "slug": "eps", "name": "Elektroprivreda Srbije (EPS)" },
+	{ "slug": "ministarstvo-prosvete", "name": "Ministarstvo prosvete" },
+	{ "slug": "infrastruktura-zeleznice-srbije", "name": "Infrastruktura železnice Srbije" },
+	{ "slug": "ministarstvo-gradjevinarstva", "name": "Ministarstvo građevinarstva, saobraćaja i infrastrukture" },
+	{ "slug": "rfzo", "name": "Republički fond za zdravstveno osiguranje (RFZO)" },
+	{ "slug": "mup", "name": "Ministarstvo unutrašnjih poslova (MUP)" }
 ]

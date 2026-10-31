@@ -3,144 +3,154 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>Dosije · istraživački tim agenata</title>
-	<meta name="description" content="Tim agenata istovremeno proverava javne izvore i gradi dosije o instituciji. Svaka tvrdnja ima izvor, datum i status.">
-	<meta name="theme-color" content="#FFFFFF">
+	<title>Dosije · istraživanje javnih institucija</title>
+	<meta name="description" content="Dosije istovremeno pretražuje javne registre i medije i slaže nalaze o javnoj instituciji u pregledan dosije. Uz svaki nalaz stoje izvor, datum i status.">
+	<meta name="theme-color" content="#F4F1EA">
 	<link rel="icon" href="favicon.svg" type="image/svg+xml">
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Inter:wght@400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,500;8..60,600;8..60,700&display=swap">
 	<link rel="stylesheet" href="styles.css">
 </head>
 <body data-view="hero">
-	<a class="skip" href="#main" data-i18n>Preskoči na sadržaj</a>
+	<a class="skip" href="#main" data-i18n>Preskočite na sadržaj</a>
 	<div id="app">
 		<header class="topbar">
 			<button id="brandHome" class="brand" type="button" aria-label="Dosije: početna" data-i18n-attr="aria-label">
-				<svg class="brand-mark" viewBox="0 0 32 32" aria-hidden="true"><rect x="1" y="1" width="30" height="30" rx="7" fill="currentColor"/><path d="M10 8h6.5a8 8 0 0 1 0 16H10z" fill="none" stroke="#fff" stroke-width="2.6" stroke-linejoin="round"/><circle cx="24.5" cy="7.5" r="3.2" fill="#B42318" stroke="#fff" stroke-width="1.6"/></svg>
+				<svg class="brand-mark" viewBox="0 0 32 32" aria-hidden="true"><rect x="1.5" y="1.5" width="29" height="29" rx="4" fill="#1F2528"/><path d="M10.5 8.5h5.8a7.5 7.5 0 0 1 0 15h-5.8z" fill="none" stroke="#F4F1EA" stroke-width="2.4" stroke-linejoin="round"/><path d="M21.5 5.5h6v6" fill="none" stroke="#B5664A" stroke-width="2.4"/></svg>
 				<span class="wordmark">Dosije</span>
 			</button>
 			<nav class="nav-tabs" aria-label="Glavni meni" data-i18n-attr="aria-label">
-				<button id="btnNavDosije" class="nav-tab" type="button" aria-pressed="true"><span data-i18n>Dosije</span></button>
-				<button id="btnMapa" class="nav-tab" type="button" aria-pressed="false" title="Lista institucija prolazi kroz isti tim agenata paralelno: gde prvo gledati" data-i18n-attr="title"><span data-i18n>Mapa prioriteta</span></button>
+				<button id="btnNavDosije" class="nav-tab" type="button" aria-pressed="true" title="Istraživanje jedne institucije" data-i18n-attr="title"><span data-i18n>Dosije</span></button>
+				<button id="btnMapa" class="nav-tab" type="button" aria-pressed="false" title="Više institucija po istim pravilima, u jednoj rang-listi" data-i18n-attr="title"><span class="lbl-full" data-i18n>Poređenje institucija</span><span class="lbl-short" data-i18n>Poređenje</span></button>
+				<span id="navInd" class="nav-ind" aria-hidden="true"></span>
 			</nav>
+			<div id="topSteps" class="top-steps" hidden></div>
 			<div class="top-right">
 				<span id="modeText" class="conn-text" role="status" hidden></span>
 				<button id="btnNew" class="btn small" type="button" hidden><span aria-hidden="true">+</span>&nbsp;<span data-i18n>Novi dosije</span></button>
-				<button id="btnInbox" class="btn small ghost inbox-btn" type="button" aria-haspopup="dialog"><span data-i18n>Sanduče</span><span id="inboxCount" class="badge" aria-live="polite"></span></button>
+				<button id="btnInbox" class="btn small ghost inbox-btn" type="button" aria-haspopup="dialog"><span id="inboxLabel" data-i18n>Sanduče</span><span id="inboxCount" class="badge" aria-live="polite"></span></button>
 				<span class="lang-switch" role="group" aria-label="Language / Jezik"><button type="button" class="lang-btn" data-lang="sr" aria-pressed="true">SR</button><button type="button" class="lang-btn" data-lang="en" aria-pressed="false">EN</button></span>
+				<button id="btnHelp" class="help-btn" type="button" aria-haspopup="dialog" aria-controls="helpModal" aria-label="Kako radi Dosije i kako se čita dosije" title="Kako radi Dosije" data-i18n-attr="aria-label title"><span aria-hidden="true">?</span></button>
 			</div>
 		</header>
 
 		<div id="topNotice" class="notice-host top"></div>
 
 		<div id="statusLine" class="runbar" hidden>
-			<ol id="runSteps" class="steps" aria-label="Tok istrage" data-i18n-attr="aria-label"></ol>
-			<div id="slMain" class="run-stats"></div>
+			<ol id="runSteps" class="steps" aria-label="Tok istraživanja" data-i18n-attr="aria-label"></ol>
 		</div>
 
 		<main id="main">
 			<section id="hero" class="hero">
-				<div class="hero-inner">
-					<div class="hero-grid">
+				<div class="hero-stage">
+					<div class="hero-inner">
 						<div class="hero-main">
-							<h1 data-i18n>Od vesti do dosijea sa izvorima za nekoliko minuta</h1>
-							<p class="hero-lede" data-i18n>Upiši naziv javne institucije. Tim agenata istovremeno pretražuje javne registre i sam slaže dosije. Svaka tvrdnja ima izvor, datum i status: zvanično, potvrđeno ili nepotvrđeno.</p>
+							<h1 class="hero-title"><span data-i18n>Istražite javnu instituciju.</span> <em data-i18n>Dobijte dosije sa izvorima.</em></h1>
+							<p class="hero-lede" data-i18n>Dosije istovremeno pretražuje javne registre, podatke o nabavkama, revizorske izveštaje i medije, a rezultate objedinjuje u pregledan dosije sa izvorom, datumom i statusom svakog nalaza.</p>
 
 							<div id="heroResume" class="resume" hidden></div>
 
 							<form id="caseForm" class="start-form" autocomplete="off">
-								<label class="sr-only" for="inInst" data-i18n>Naziv institucije</label>
+								<label class="start-label" for="inInst" data-i18n>Koju instituciju istražujete?</label>
 								<div class="start-row">
 									<svg class="start-icon" viewBox="0 0 20 20" aria-hidden="true"><circle cx="8.5" cy="8.5" r="5.5" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M12.6 12.6 17 17" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
-									<input id="inInst" name="institution" type="text" placeholder="Naziv institucije, npr. Srbijavoz ili RTS" data-i18n-attr="placeholder" spellcheck="false">
-									<button id="btnStart" class="btn primary lg" type="submit"><span data-i18n>Pokreni istragu</span></button>
+									<input id="inInst" name="institution" type="text" placeholder="npr. RTS, Srbijavoz ili PIO Fond" aria-describedby="instHint" data-i18n-attr="placeholder" spellcheck="false">
+									<button id="btnStart" class="btn primary lg" type="submit"><span data-i18n>Pokrenite istraživanje</span></button>
 								</div>
+								<p id="instHint" class="start-hint" data-i18n>Upišite pun naziv ili skraćenicu. Dosije sam pronalazi instituciju u registrima.</p>
 								<div class="start-extra">
-									<button id="btnFocusToggle" class="link-btn" type="button" aria-expanded="false" aria-controls="inFocus"><span data-i18n>+ Dodaj fokus istrage (opciono)</span></button>
-									<input id="inFocus" name="focus" type="text" placeholder="Fokus, npr. javne nabavke 2024. ili imenovanje direktora" aria-label="Fokus istrage (opciono)" data-i18n-attr="placeholder aria-label" spellcheck="false" hidden>
+									<button id="btnFocusToggle" class="focus-toggle" type="button" aria-expanded="false" aria-controls="focusBox">
+										<svg class="chev" viewBox="0 0 16 16" aria-hidden="true"><path d="m5.5 3.5 4.5 4.5-4.5 4.5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+										<span data-i18n>Usmerite istraživanje</span>
+										<span class="opt" data-i18n>opciono</span>
+									</button>
+									<div id="focusBox" class="focus-box" data-open="false" inert>
+										<div class="focus-inner">
+											<label class="start-label sm" for="inFocus" data-i18n>Fokus istraživanja</label>
+											<input id="inFocus" name="focus" type="text" placeholder="npr. javne nabavke 2024. ili imenovanje direktora" aria-describedby="focusHint" data-i18n-attr="placeholder" spellcheck="false">
+											<p id="focusHint" class="start-hint" data-i18n>Fokus dobija svaki agent kao smernicu i stoji u zaglavlju dosijea. Sve oblasti se i dalje proveravaju.</p>
+										</div>
+									</div>
 								</div>
 							</form>
 
 							<div class="examples">
-								<div class="label" data-i18n>Ili probaj primer</div>
+								<h2 class="examples-title" data-i18n>Aktuelne institucije</h2>
 								<div id="heroChips" class="example-grid"></div>
 							</div>
 						</div>
-
-						<aside class="flow-card" aria-labelledby="howTitle">
-							<h2 id="howTitle" class="label" data-i18n>Kako radi</h2>
-							<ol class="flow">
-								<li>
-									<span class="flow-n">1</span>
-									<div><b data-i18n>Upišeš instituciju</b><p data-i18n>Pun naziv ili skraćenica (npr. RTS, EPS). Sistem pronalazi instituciju u registrima (PIB, matični broj, ACAS).</p></div>
-								</li>
-								<li>
-									<span class="flow-n">2</span>
-									<div><b data-i18n>Tim agenata radi istovremeno</b><p data-i18n>Kadrovik, Nabavke, Revizor i Mediji kreću u istom trenutku. Za svaku firmu i osobu koju nađu pokreće se novi agent.</p></div>
-								</li>
-								<li>
-									<span class="flow-n">3</span>
-									<div><b data-i18n>Urednik sam određuje status</b><p data-i18n>Tvrdnja bez izvora ne ulazi u dosije. Kad se izvori razlikuju, prednost ima zvanični registar; šta stoji samo na jednom nezvaničnom izvoru, označeno je kao nepotvrđeno.</p></div>
-								</li>
-								<li>
-									<span class="flow-n">4</span>
-									<div><b data-i18n>Dobijaš dosije sa izvorima</b><p data-i18n>Glavni signali, link za svaku tvrdnju i status svakog nalaza. Izvoz u PDF ili Markdown.</p></div>
-								</li>
-							</ol>
-						</aside>
 					</div>
+				</div>
 
-					<div class="sources-strip">
-						<div class="label" data-i18n>Javni izvori koje agenti pretražuju</div>
-						<ul class="src-tags">
-							<li><b>ACAS</b> <span data-i18n>funkcioneri i imovina</span></li>
-							<li><b data-i18n>Portal javnih nabavki</b></li>
-							<li><b>APR</b> <span data-i18n>privredni registar</span></li>
-							<li><b>DRI</b> <span data-i18n>revizorski izveštaji</span></li>
-							<li><b>Integrity Watch</b></li>
-							<li><b data-i18n>Službeni glasnik</b></li>
-							<li><b>OpenSanctions</b> · <b>KRIK</b></li>
-							<li><b data-i18n>Mediji</b></li>
+				<section class="sources band" aria-labelledby="srcTitle">
+					<div class="src-head">
+						<h2 id="srcTitle" class="sheet-title" data-i18n>Odakle dolaze podaci</h2>
+					</div>
+					<div class="src-marquee">
+						<ul id="srcTrack" class="src-track" aria-label="Izvori podataka" data-i18n-attr="aria-label">
+							<li class="src-card official"><span class="src-kind" data-i18n>Zvanični izvor</span><b>ACAS</b><span class="src-desc" data-i18n>registar funkcionera i izveštaji o imovini</span></li>
+							<li class="src-card official"><span class="src-kind" data-i18n>Zvanični izvor</span><b data-i18n>Portal javnih nabavki</b><span class="src-desc" data-i18n>ugovori i postupci</span></li>
+							<li class="src-card official"><span class="src-kind" data-i18n>Zvanični izvor</span><b>APR</b><span class="src-desc" data-i18n>privredni registar, otvoreni podaci</span></li>
+							<li class="src-card official"><span class="src-kind" data-i18n>Zvanični izvor</span><b>DRI</b><span class="src-desc" data-i18n>izveštaji Državne revizorske institucije</span></li>
+							<li class="src-card official"><span class="src-kind" data-i18n>Zvanični izvor</span><b data-i18n>Službeni glasnik</b><span class="src-desc" data-i18n>sadržaji brojeva, akti o imenovanju</span></li>
+							<li class="src-card"><span class="src-kind" data-i18n>Javni izvor</span><b>Integrity Watch</b><span class="src-desc" data-i18n>veze dobavljača sa funkcionerima i strankama</span></li>
+							<li class="src-card"><span class="src-kind" data-i18n>Javni izvor</span><b>OpenSanctions · KRIK</b><span class="src-desc" data-i18n>politički izložene osobe</span></li>
+							<li class="src-card"><span class="src-kind" data-i18n>Javni izvor</span><b>CompanyWall</b><span class="src-desc" data-i18n>vlasnici firmi, komercijalni pregled podataka iz APR</span></li>
+							<li class="src-card"><span class="src-kind" data-i18n>Javni izvor</span><b data-i18n>Mediji</b><span class="src-desc" data-i18n>RSS izvori, Google News, GDELT</span></li>
 						</ul>
 					</div>
+				</section>
 
-					<div class="mapa-teaser">
-						<div>
-							<b data-i18n>Imaš više institucija?</b>
-							<span data-i18n>Mapa prioriteta ih proverava paralelno, po jedan agent za svaku, i rangira gde prvo gledati.</span>
-						</div>
-						<button id="btnHeroMapa" class="btn" type="button"><span data-i18n>Otvori mapu prioriteta</span> <span aria-hidden="true">→</span></button>
-					</div>
-
-					<p class="hero-note" data-i18n>Sistem ne presuđuje: pokazuje signale, svaki sa izvorom i statusom.</p>
+				<div class="hero-sheet">
+					<p class="hero-note" data-i18n>Dosije ne donosi zaključke o krivici. Prikazuje šta piše u javnim izvorima, sa izvorom i statusom svakog nalaza.</p>
 				</div>
 			</section>
 
 			<div id="board" class="board">
-				<section id="mapaPanel" class="col doc mapa" aria-label="Mapa prioriteta" data-i18n-attr="aria-label" hidden>
+				<section id="mapaPanel" class="col doc mapa" aria-label="Poređenje institucija" data-i18n-attr="aria-label" hidden>
 					<div id="mapaScroll" class="doc-scroll">
-						<header class="doc-head">
+						<header class="doc-head mapa-head">
 							<div class="doc-title">
-								<div class="label"><span data-i18n>Mapa prioriteta</span> <span id="mapaStatus" class="stat idle"><i></i>čeka</span></div>
+								<div class="eyebrow"><span data-i18n>Poređenje institucija</span> <span id="mapaStatus" class="stat idle"><i></i>čeka</span></div>
 								<h2 class="serif-title" data-i18n>Gde prvo gledati</h2>
+								<p class="lede" data-i18n>Uporedite do osam institucija po istim pravilima. Za svaku instituciju poseban agent istovremeno proverava rukovodstvo, javne nabavke i izveštaje DRI, a rezultati se slažu u rang-listu.</p>
 							</div>
 						</header>
-						<p class="lede" data-i18n>Lista institucija prolazi kroz isti tim agenata istovremeno: po jedan agent „Trijaža“ za svaku instituciju proverava rukovodstvo (ACAS, v.d. i zakonski rok), javne nabavke i izveštaje DRI. Ocena je zbir fiksnih pravila, a ne mišljenje: pokazuje gde prvo gledati, ne ko je kriv.</p>
+
+						<section class="criteria" aria-label="Kako se računa ocena" data-i18n-attr="aria-label">
+							<div class="crit" data-area="rukovodstvo"><b data-i18n>Rukovodstvo</b><span data-i18n>v.d. direktor duže od zakonskog roka, niz uzastopnih v.d.</span></div>
+							<div class="crit" data-area="nabavke"><b data-i18n>Nabavke</b><span data-i18n>postupci bez objave, udeo najvećeg dobavljača, Integrity Watch</span></div>
+							<div class="crit" data-area="revizija"><b data-i18n>Revizija</b><span data-i18n>mišljenja DRI sa rezervom, broj izveštaja</span></div>
+							<div class="crit" data-area="veze"><b data-i18n>Zajednički dobavljači</b><span data-i18n>isti dobavljač u više institucija sa liste</span></div>
+						</section>
+
 						<form id="mapaForm" class="mapa-form" autocomplete="off">
-							<label class="label" for="mapaInput" data-i18n>Institucije (jedna po redu, najviše 8)</label>
-							<textarea id="mapaInput" rows="6" spellcheck="false" aria-label="Spisak institucija" data-i18n-attr="aria-label"></textarea>
+							<div class="mapa-form-head">
+								<h3 class="form-title" data-i18n>Institucije za poređenje</h3>
+								<span class="form-sub" data-i18n>jedna po redu, najviše 8</span>
+							</div>
+							<ol id="mapaList" class="inst-list"></ol>
+							<div class="inst-tools">
+								<button id="btnMapaAdd" class="link-btn" type="button" data-i18n>+ Dodajte instituciju</button>
+								<button id="btnMapaPaste" class="link-btn" type="button" data-i18n>Nalepite listu</button>
+								<button id="btnMapaPreset" class="link-btn" type="button" data-i18n>Vratite aktuelne institucije</button>
+							</div>
+							<textarea id="mapaInput" rows="6" spellcheck="false" aria-label="Spisak institucija, jedna po redu" data-i18n-attr="aria-label" hidden></textarea>
 							<div class="mapa-form-row">
-								<button id="btnMapaRun" class="btn primary" type="submit">Pokreni mapu</button>
-								<button id="btnMapaEdit" class="link-btn" type="button" data-i18n>izmeni listu</button>
-								<button id="btnMapaPreset" class="link-btn" type="button" data-i18n>vrati preset: transportni sektor</button>
+								<button id="btnMapaRun" class="btn primary" type="submit">Pokrenite poređenje</button>
+								<button id="btnMapaEdit" class="link-btn" type="button" data-i18n>Izmenite listu</button>
 								<span id="mapaProgress" class="mapa-progress"></span>
 							</div>
 							<div id="mapaNotice" class="notice-host"></div>
 						</form>
+
 						<div id="mapaVeza" class="mapa-veza" hidden></div>
-						<div id="mapaTable" class="mapa-table" role="table" aria-label="Rang lista institucija" data-i18n-attr="aria-label">
-							<div class="mhead" role="row"><span>#</span><span data-i18n>Institucija</span><span data-i18n>Ocena</span><span data-i18n>Signali</span><span data-i18n>Status</span><span></span></div>
+						<div id="mapaTable" class="mapa-table" role="table" aria-label="Rang-lista institucija" data-i18n-attr="aria-label">
+							<div class="mhead" role="row"><span>#</span><span data-i18n>Institucija</span><span data-i18n>Ocena i oblasti</span><span data-i18n>Signali</span><span data-i18n>Status</span><span></span></div>
 							<div id="mapaRows" class="mrows"></div>
 						</div>
-						<p class="disclaimer" data-i18n>Ocena sabira signale po fiksnim pravilima (v.d. preko roka, lanac v.d., postupci bez objave, Integrity Watch, DRI). To su signali, ne zaključak.</p>
+						<p class="disclaimer" data-i18n>Ocena je zbir bodova po fiksnim pravilima. Visoka ocena ne znači da je institucija prekršila zakon, već da je pronađeno više signala koje vredi proveriti.</p>
 					</div>
 				</section>
 
@@ -149,8 +159,8 @@
 						<header class="doc-head">
 							<div id="instCard" class="doc-title"></div>
 							<div class="doc-actions">
-								<button id="btnFinish" class="btn" type="button" hidden title="Agenti završavaju trenutni korak i urednik piše izveštaj" data-i18n-attr="title"><span data-i18n>Završi sada</span></button>
-								<button id="btnReport" class="btn primary" type="button" hidden><span data-i18n>Otvori izveštaj</span></button>
+								<button id="btnFinish" class="btn" type="button" hidden title="Agenti završavaju trenutni korak, a urednik piše sažetak" data-i18n-attr="title"><span data-i18n>Završite sada</span></button>
+								<button id="btnReport" class="btn primary" type="button" hidden><span data-i18n>Otvorite izveštaj</span></button>
 							</div>
 						</header>
 						<div id="docNotice" class="notice-host"></div>
@@ -169,60 +179,65 @@
 						<section class="card signals">
 							<header class="card-head">
 								<h3 class="sec-title"><span data-i18n>Glavni signali</span><span id="signalsCount" class="count">0</span></h3>
-								<span class="card-hint" data-i18n>najvažniji nalazi</span>
+								<span class="card-hint" data-i18n>signal nije dokaz nepravilnosti</span>
 							</header>
 							<div id="signalsBody"></div>
 						</section>
 						<section id="entitiesWrap" class="card entities-wrap" hidden>
 							<header class="card-head">
-								<h3 class="sec-title sm"><span data-i18n>Osobe i firme</span><span id="entitiesCount" class="count">0</span></h3>
-								<button id="btnAddLead" class="link-btn" type="button"><span data-i18n>+ Dodaj trag</span></button>
+								<h3 class="sec-title"><span data-i18n>Osobe i firme</span><span id="entitiesCount" class="count">0</span></h3>
+								<button id="btnAddLead" class="link-btn" type="button"><span data-i18n>+ Dodajte trag</span></button>
 							</header>
 							<div id="entities" class="entities"></div>
 						</section>
 						<section class="card findings-card">
+							<header class="card-head findings-head">
+								<h3 class="sec-title"><span data-i18n>Nalazi</span></h3>
+								<details class="status-help">
+									<summary data-i18n>Šta znače statusi?</summary>
+									<dl>
+										<div><dt><span class="stat zvanicno"><i></i><span data-i18n>Zvanično</span></span></dt><dd data-i18n>iz zvaničnog registra ili dokumenta; tumačenje nije time potvrđeno</dd></div>
+										<div><dt><span class="stat potvrdjeno"><i></i><span data-i18n>Potvrđeno</span></span></dt><dd data-i18n>isti podatak navode bar dva nezavisna izvora</dd></div>
+										<div><dt><span class="stat nepotvrdjeno"><i></i><span data-i18n>Nepotvrđeno</span></span></dt><dd data-i18n>samo jedan nezvaničan izvor</dd></div>
+										<div><dt><span class="stat demantovano"><i></i><span data-i18n>Odstupa od registra</span></span></dt><dd data-i18n>navod se razlikuje od zvaničnog registra</dd></div>
+									</dl>
+								</details>
+							</header>
 							<div class="tabs-bar">
 								<div id="tabs" class="tabs" role="tablist"></div>
 								<div id="filterBar" class="filter-bar" hidden></div>
 							</div>
 							<div id="findList" class="find-list"></div>
 						</section>
-						<p class="disclaimer" data-i18n>Signali nisu zaključci. Svaka tvrdnja ima izvor i status: zvanično, potvrđeno ili nepotvrđeno.</p>
+						<p class="disclaimer" data-i18n>Dosije ne donosi zaključke o krivici. Signal ističe podatak vredan dalje provere; svaki nalaz ima izvor i status.</p>
 					</div>
 				</section>
 
-				<section id="teamPanel" class="col team" aria-label="Tim" data-i18n-attr="aria-label">
+				<section id="teamPanel" class="col team" aria-label="Tim agenata" data-i18n-attr="aria-label">
 					<div class="card team-card">
 						<header class="col-head">
 							<div class="col-head-top">
 								<h2 class="col-title" data-i18n>Tim agenata</h2>
-								<span class="live-tag" aria-hidden="true"><i></i><span data-i18n>uživo</span></span>
 							</div>
 							<div id="concLabel" class="conc-label"></div>
 						</header>
 						<div id="holdBanner" class="hold" role="status" aria-live="polite" hidden></div>
-						<div class="conc">
+						<div class="conc" title="Broj agenata koji rade u istom trenutku, kroz vreme" data-i18n-attr="title">
 							<div id="sparkPlot" class="spark"></div>
 						</div>
-						<div class="legend" aria-hidden="true">
-							<span><i class="sw inf"></i><span data-i18n>razmišlja</span></span>
-							<span><i class="sw tool"></i><span data-i18n>pretražuje izvor</span></span>
-							<span><i class="sw tick"></i><span data-i18n>nalaz</span></span>
-							<span><i class="sw spawn"></i><span data-i18n>novi agent</span></span>
-						</div>
 						<div id="ganttWrap" class="gantt-wrap">
-							<canvas id="gantt" aria-label="Vremenska osa agenata" data-i18n-attr="aria-label"></canvas>
+							<canvas id="gantt" aria-label="Vremenska osa rada agenata" data-i18n-attr="aria-label"></canvas>
 							<div class="ruler-gap"></div>
 							<div id="lanesCore" class="lanes-core"></div>
 							<div class="dyn-wrap">
 								<div id="lanesDyn" class="lanes-dyn"></div>
-								<div id="dynEmpty" class="dyn-empty" data-i18n>Novi agenti se pokreću kad se pojavi nova firma ili osoba.</div>
+								<div id="dynEmpty" class="dyn-empty" data-i18n>Dodatni agenti se pokreću kad tim pronađe firmu ili osobu povezanu sa institucijom.</div>
 							</div>
 						</div>
 					</div>
-					<section id="livePanel" class="card live" aria-label="Pretraga uživo" data-i18n-attr="aria-label">
+					<section id="livePanel" class="card live" aria-label="Pretraga izvora uživo" data-i18n-attr="aria-label">
 						<header class="live-head">
-							<h3 class="sec-title sm" data-i18n>Pretraga uživo</h3>
+							<h3 class="sec-title" data-i18n>Pretraga izvora uživo</h3>
 							<span id="liveFilter" class="live-filter" hidden></span>
 							<span id="liveCount" class="live-count"></span>
 						</header>
@@ -255,29 +270,29 @@
 		<header class="inbox-head">
 			<div>
 				<h2 class="serif-title sm" data-i18n>Sanduče</h2>
-				<p class="inbox-sub" data-i18n>Pitanja agenata, tvoje odluke i tragovi koje dodaješ timu.</p>
+				<p class="inbox-sub" data-i18n>Pitanja agenata, Vaše odluke i tragovi koje dodajete timu.</p>
 			</div>
-			<button id="inboxClose" class="link-btn" type="button" aria-label="Zatvori" data-i18n-attr="aria-label"><span data-i18n>Zatvori</span></button>
+			<button id="inboxClose" class="link-btn" type="button" aria-label="Zatvorite" data-i18n-attr="aria-label"><span data-i18n>Zatvorite</span></button>
 		</header>
 		<div class="inbox-scroll">
 			<section class="inbox-open">
-				<h3 class="label"><span data-i18n>Čeka tvoju odluku</span> <span id="openCount" class="count">0</span></h3>
+				<h3 class="label"><span data-i18n>Čeka Vašu odluku</span> <span id="openCount" class="count">0</span></h3>
 				<div id="taskList" class="task-list"></div>
 				<div id="inboxEmpty" class="inbox-empty">
 					<b data-i18n>Nema otvorenih pitanja.</b>
-					<span data-i18n>Kad agent ne može sam da dođe do podatka (na primer vlasnik firme iza reCAPTCHA) ili naiđe na osetljiv signal, pitanje se pojavljuje na vrhu dosijea i ovde.</span>
+					<span data-i18n>Kad agent ne može sam da dođe do podatka ili naiđe na osetljiv signal, pitanje se pojavljuje na vrhu dosijea i ovde.</span>
 				</div>
 			</section>
 			<section id="leadSection" class="lead">
-				<h3 class="label" data-i18n>Dodaj trag</h3>
-				<p data-i18n>Znaš nešto što agenti ne znaju? Dodaj osobu ili firmu: odmah dobija svog agenta.</p>
+				<h3 class="label" data-i18n>Dodajte trag</h3>
+				<p data-i18n>Znate osobu ili firmu koju tim još nije pronašao? Dodajte je: odmah dobija svog agenta, kao i entiteti koje tim sam pronađe.</p>
 				<form id="leadForm" autocomplete="off">
 					<input name="name" type="text" placeholder="Ime i prezime ili naziv firme" aria-label="Ime ili naziv" data-i18n-attr="placeholder aria-label" required>
 					<div class="seg">
 						<label><input type="radio" name="kind" value="osoba" checked><span data-i18n>osoba</span></label>
 						<label><input type="radio" name="kind" value="firma"><span data-i18n>firma</span></label>
 					</div>
-					<button class="btn primary" type="submit" data-i18n>Dodaj trag</button>
+					<button class="btn primary" type="submit" data-i18n>Dodajte trag</button>
 					<div id="leadNotice" class="notice-host"></div>
 				</form>
 			</section>
@@ -288,15 +303,73 @@
 		</div>
 	</aside>
 
+	<div id="helpModal" class="modal help-modal" hidden>
+		<div class="modal-card help-card" tabindex="-1" role="dialog" aria-modal="true" aria-labelledby="helpTitle">
+			<header class="help-head">
+				<div>
+					<p class="eyebrow" data-i18n>Vodič</p>
+					<h2 id="helpTitle" class="serif-title" data-i18n>Kako radi Dosije</h2>
+				</div>
+				<button id="helpClose" class="help-close" type="button" aria-label="Zatvorite" title="Zatvorite" data-i18n-attr="aria-label title"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m4 4 8 8M12 4l-8 8" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg></button>
+			</header>
+			<div class="help-scroll">
+				<section class="how" aria-labelledby="howTitle">
+					<h3 id="howTitle" class="help-sec" data-i18n>Kako radi</h3>
+					<ol class="how-steps">
+						<li>
+							<span class="how-icon" aria-hidden="true"><svg viewBox="0 0 32 32"><rect x="7" y="5" width="18" height="22" rx="2" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M11 11h10M11 15h10M11 19h6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></span>
+							<span class="how-n">1</span>
+							<h4 data-i18n>Izaberite instituciju</h4>
+							<p data-i18n>Upišite naziv ili skraćenicu. Dosije je pronalazi u registrima po matičnom broju, PIB-u i ACAS oznaci.</p>
+						</li>
+						<li>
+							<span class="how-icon" aria-hidden="true"><svg viewBox="0 0 32 32"><path d="M4 9h12M4 16h20M4 23h9" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><circle cx="20" cy="9" r="2.6" fill="none" stroke="currentColor" stroke-width="1.6"/><circle cx="27" cy="16" r="2.6" fill="none" stroke="currentColor" stroke-width="1.6"/><circle cx="17" cy="23" r="2.6" fill="none" stroke="currentColor" stroke-width="1.6"/></svg></span>
+							<span class="how-n">2</span>
+							<h4 data-i18n>Agenti proveravaju izvore</h4>
+							<p data-i18n>Specijalizovani agenti istovremeno pretražuju svoje izvore. Kad pronađu firmu ili osobu povezanu sa institucijom, za nju se pokreće nova provera.</p>
+						</li>
+						<li>
+							<span class="how-icon" aria-hidden="true"><svg viewBox="0 0 32 32"><path d="M8 4h11l6 6v18H8z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="M19 4v6h6" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="m12 19 3 3 6-7" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+							<span class="how-n">3</span>
+							<h4 data-i18n>Dobijate dosije</h4>
+							<p data-i18n>Nalazi su složeni po oblastima, a glavni signali stoje na vrhu. Svaki nalaz ima izvor, datum i status. Izveštaj možete da preuzmete ili odštampate.</p>
+						</li>
+					</ol>
+				</section>
+
+				<section class="timeline-key" aria-labelledby="keyTitle">
+					<h3 id="keyTitle" class="help-sec" data-i18n>Kako čitati vremensku osu</h3>
+					<ul>
+						<li><i class="sw inf"></i><span><b data-i18n>Razmišlja</b> <span data-i18n>bira sledeći korak</span></span></li>
+						<li><i class="sw tool"></i><span><b data-i18n>Pretražuje izvor</b> <span data-i18n>upit registru, bazi ili medijima</span></span></li>
+						<li><i class="sw tick"></i><span><b data-i18n>Nalaz</b> <span data-i18n>upisan u dosije</span></span></li>
+						<li><i class="sw spawn"></i><span><b data-i18n>Novi agent</b> <span data-i18n>pokrenut zbog pronađene firme ili osobe</span></span></li>
+					</ul>
+					<p class="key-tip" data-i18n>Pređite mišem preko trake da vidite šta je agent radio; klik na agenta prikazuje samo njegove nalaze.</p>
+				</section>
+
+				<section class="glossary" aria-labelledby="glossTitle">
+					<h3 id="glossTitle" class="help-sec" data-i18n>Kako čitati dosije</h3>
+					<dl class="gloss-grid">
+						<div><dt data-i18n>Nalaz</dt><dd data-i18n>Podatak iz izvora upisan u dosije: činjenica, broj ili navod.</dd></div>
+						<div><dt><span class="sig-word" data-i18n>Signal</span></dt><dd data-i18n>Nalaz koji pravila ističu kao vredan dalje provere, na primer v.d. direktor duže od zakonskog roka. Signal nije dokaz nepravilnosti.</dd></div>
+						<div><dt><span class="stat zvanicno"><i></i><span data-i18n>Zvanično</span></span></dt><dd data-i18n>Potiče iz zvaničnog registra ili dokumenta. Tumačenje tog podatka time nije potvrđeno.</dd></div>
+						<div><dt><span class="stat potvrdjeno"><i></i><span data-i18n>Potvrđeno</span></span></dt><dd data-i18n>Isti podatak navode bar dva nezavisna izvora.</dd></div>
+						<div><dt><span class="stat nepotvrdjeno"><i></i><span data-i18n>Nepotvrđeno</span></span></dt><dd data-i18n>Stoji na jednom nezvaničnom izvoru, na primer u medijskom članku ili komercijalnoj bazi.</dd></div>
+						<div><dt><span class="stat demantovano"><i></i><span data-i18n>Odstupa od registra</span></span></dt><dd data-i18n>Navod se razlikuje od zvaničnog registra. Prednost ima registar.</dd></div>
+					</dl>
+				</section>
+			</div>
+		</div>
+	</div>
+
 	<div id="reportModal" class="modal" hidden>
 		<div class="modal-card" tabindex="-1" role="dialog" aria-modal="true" aria-labelledby="reportTitle">
 			<header class="modal-head">
 				<span id="reportTitle" class="label">Dosije</span>
 				<div class="modal-actions">
-					<button id="reportCopy" class="btn small" type="button" data-i18n>Kopiraj</button>
-					<button id="reportDownload" class="btn small" type="button" data-i18n>Preuzmi .md</button>
-					<button id="reportPrint" class="btn small primary" type="button" data-i18n>Štampaj / PDF</button>
-					<button id="reportClose" class="link-btn" type="button" aria-label="Zatvori" data-i18n-attr="aria-label"><span data-i18n>Zatvori</span></button>
+					<button id="reportPdf" class="btn primary" type="button"><svg class="btn-ico" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 2.5v8M4.5 7 8 10.5 11.5 7M3 13.5h10" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span data-i18n>Preuzmite PDF</span></button>
+					<button id="reportClose" class="modal-x" type="button" aria-label="Zatvorite" title="Zatvorite" data-i18n-attr="aria-label title"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m4 4 8 8M12 4l-8 8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></button>
 				</div>
 			</header>
 			<div class="modal-scroll">

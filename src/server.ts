@@ -13,7 +13,7 @@ import { applyEntryDefaults, config, editorModelLabel, modelLabel } from "./conf
 import { ApiError, addLead, boot, closeCase, configView, discardRun, getMapa, getReport, getSnapshot, shutdown, startCase, startMapa, submitAnswer } from "./mozaik/boot"
 import { bus } from "./mozaik/bus"
 import { S } from "./mozaik/domain"
-import { translateMarkdown, translateTexts, translationAvailable } from "./translate"
+import { asLang, messageIn } from "./shared/lang"
 import { logError } from "./mozaik/util"
 import type { WireEvent } from "./shared/types"
 
@@ -156,11 +156,9 @@ async function handleApi(req: http.IncomingMessage, res: http.ServerResponse, pa
 				res.end("Izveštaj još nije spreman.")
 				return true
 			}
-			// ?lang=en: the same report machine-translated (the agents write in Serbian)
-			const en = new URL(req.url ?? "/", "http://localhost").searchParams.get("lang") === "en"
-			const markdown = en ? await translateMarkdown(report.markdown) : report.markdown
-			res.writeHead(200, { "content-type": "text/markdown; charset=utf-8", "content-disposition": `attachment; filename="dosije-${report.caseId}${en ? "-en" : ""}.md"`, "cache-control": "no-store" })
-			res.end(markdown)
+			// the report is written in the language the case was started in
+			res.writeHead(200, { "content-type": "text/markdown; charset=utf-8", "content-disposition": `attachment; filename="dosije-${report.caseId}.md"`, "cache-control": "no-store" })
+			res.end(report.markdown)
 			return true
 		}
 		if (pathname === "/api/events") {
@@ -190,9 +188,9 @@ async function handleApi(req: http.IncomingMessage, res: http.ServerResponse, pa
 	const body = await readBody(req)
 	if (pathname === "/api/dosije") {
 		const input = String(body.input ?? "").trim()
-		if (!input) throw new ApiError(400, "Upiši naziv institucije.")
+		if (!input) throw new ApiError(400, "Upišite naziv institucije.")
 		try {
-			const { caseId } = await startCase(input.slice(0, 400), typeof body.focus === "string" ? body.focus.trim().slice(0, 200) : undefined)
+			const { caseId } = await startCase(input.slice(0, 400), typeof body.focus === "string" ? body.focus.trim().slice(0, 200) : undefined, asLang(body.lang))
 			return json(res, 200, { caseId }), true
 		} catch (err) {
 			if (err instanceof ApiError) throw err
@@ -200,12 +198,8 @@ async function handleApi(req: http.IncomingMessage, res: http.ServerResponse, pa
 		}
 	}
 	if (pathname === "/api/mapa") {
-		const { mapaId } = await startMapa(body.institutions)
+		const { mapaId } = await startMapa(body.institutions, asLang(body.lang))
 		return json(res, 200, { mapaId }), true
-	}
-	if (pathname === "/api/translate") {
-		const texts = Array.isArray(body.texts) ? body.texts.filter((x): x is string => typeof x === "string").slice(0, 80).map((x) => x.slice(0, 6000)) : []
-		return json(res, 200, { available: translationAvailable(), texts: await translateTexts(texts) }), true
 	}
 	if (pathname === "/api/odgovor") return submitAnswer(body), json(res, 200, { ok: true }), true
 	if (pathname === "/api/trag") return addLead(body), json(res, 200, { ok: true }), true
@@ -240,17 +234,19 @@ function serveStatic(res: http.ServerResponse, pathname: string): void {
 
 const server = http.createServer((req, res) => {
 	const url = new URL(req.url ?? "/", "http://localhost")
+	// messages to the browser in the language of its interface (the X-Lang header)
+	const lang = asLang(req.headers["x-lang"])
 	handleApi(req, res, url.pathname)
 		.then((handled) => {
 			if (handled) return
-			if (url.pathname.startsWith("/api/")) return json(res, 404, { error: "Nepoznata ruta." })
-			if (req.method !== "GET" && req.method !== "HEAD") return json(res, 405, { error: "Metod nije dozvoljen." })
+			if (url.pathname.startsWith("/api/")) return json(res, 404, { error: messageIn(lang, "Nepoznata ruta.") })
+			if (req.method !== "GET" && req.method !== "HEAD") return json(res, 405, { error: messageIn(lang, "Metod nije dozvoljen.") })
 			serveStatic(res, url.pathname)
 		})
 		.catch((err) => {
-			if (err instanceof ApiError) return json(res, err.status, { error: err.message })
+			if (err instanceof ApiError) return json(res, err.status, { error: messageIn(lang, err.message) })
 			logError("http", err)
-			if (!res.headersSent) json(res, 500, { error: "Interna greška servera." })
+			if (!res.headersSent) json(res, 500, { error: messageIn(lang, "Interna greška servera.") })
 		})
 })
 

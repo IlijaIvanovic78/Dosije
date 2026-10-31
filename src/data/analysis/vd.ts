@@ -134,7 +134,9 @@ export function checkVd(official: Official, inst: { legalType: LegalType }, toda
 // ─── head of the institution + chain of acting heads ────────────────────────
 
 const HEAD_POSITION = /(direktor|predsednik|na[čc]elnik|ministar)/i
-const NOT_HEAD = /(skup[šs]tin|odbor|[čc]lan|zamenik|pomo[ćc]nik|savet|komisij|sekretar|izvr[šs]n|sektor|slu[žz]b|odeljenj|jedinic|v\.?d\.?\s+na[čc]elnik\w*\s+(uprav|odeljenj|slu))/i
+// the director of a provincial fund, a branch or a regional unit heads that unit, not the institution (PIO: "Direktor
+// pokrajinskog fonda" is listed under the Republic fund)
+const NOT_HEAD = /(skup[šs]tin|odbor|[čc]lan|zamenik|pomo[ćc]nik|savet|komisij|sekretar|izvr[šs]n|sektor|slu[žz]b|odeljenj|jedinic|v\.?d\.?\s+na[čc]elnik\w*\s+(uprav|odeljenj|slu)|(direktor|na[čc]elnik)\w*\s+(pokrajinsk|regionaln|podru[čc]n|filijal|ogrank|ispostav))/i
 
 export function isHeadPosition(position: string): boolean {
 	return HEAD_POSITION.test(position) && !NOT_HEAD.test(position)

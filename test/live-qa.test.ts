@@ -7,6 +7,7 @@ import { describe, test } from "node:test"
 process.env.DATA_MODE = "cache"
 
 const { pickHead, pastActingOverLimit, earlierActingTerms, checkVd } = await import("../src/data/analysis/vd")
+const { endedByReport } = await import("../src/data/analysis/ended")
 const { normalizeName, cyrToLat } = await import("../src/data/translit")
 const { mediaName } = await import("../src/data/newsPlan")
 const { guessLegalType } = await import("../src/data/resolver")
@@ -34,6 +35,23 @@ describe("head of the institution", () => {
 		]
 		assert.equal(pickHead(grad)?.fullName, "Žarko Mićin")
 		assert.equal(pickHead([o("1", "Tihomir Vejnović", "Predsednik nadzornog odbora", "2025-06-25")]), undefined)
+	})
+
+	test("the director of a provincial fund or a branch is not the head of the institution", () => {
+		const pio = [o("1", "Slavko Imrić", "Direktor pokrajinskog fonda za penzijsko i invalidsko osiguranje", "2012-02-07"), o("2", "Danilo Vujičić", "v.d. predsednik upravnog odbora", "2024-09-27")]
+		assert.equal(pickHead(pio), undefined, "only a unit head and a board chair: the head is unknown")
+		assert.equal(pickHead([o("1", "Svetlana Milijić", "Direktor filijale", "2013-11-01")]), undefined)
+		assert.equal(pickHead([o("1", "Ana Anić", "Direktor", "2020-01-01"), o("2", "Pera Perić", "Direktor regionalnog centra", "2024-01-01")])?.fullName, "Ana Anić")
+	})
+
+	test("a head's own report on leaving closes the function the register left open (EPS)", () => {
+		const head = o("1", "Miroslav Tomašević", "v.d. generalnog direktora", "2022-03-03")
+		const report = (reason: string, source: string, period: string) => ({ personId: "1", fullName: "Miroslav Tomašević", reportDate: "2023-07-12", reason, summary: [], incomes: [{ source, period }], source: src })
+		const ended = endedByReport(head, [report("prestanak javne funkcije", "V.f. direktora, JP EPS Beograd", "mesečno, 04.03.2022. - 15.06.2023.")])
+		assert.equal(ended?.to, "2023-06-15")
+		assert.equal(endedByReport(head, [report("redovni izveštaj", "V.f. direktora, JP EPS Beograd", "mesečno, 04.03.2022. - 15.06.2023.")]), undefined, "only a report on leaving")
+		assert.equal(endedByReport(head, [report("prestanak javne funkcije", "Član skupštine društva, D.o.o. Park Palić", "mesečno, 11.05.2022. - 15.06.2023.")]), undefined, "another function")
+		assert.equal(endedByReport(head, [report("prestanak javne funkcije", "Direktor, JP Neko", "mesečno, 01.01.2019. - 15.06.2021.")]), undefined, "an earlier function")
 	})
 
 	test("the minister heads a ministry; acting assistants are checked on their own", () => {

@@ -48,6 +48,7 @@ export interface Official {
 	to?: string // end date (undefined = still in office)
 	appointedBy?: string // e.g. "Vlada Republike Srbije"
 	source: SourceRef
+	endedBy?: SourceRef // the official's asset report on leaving the function, when the register left it open (see closeEndedHeads)
 }
 
 export interface AssetReport {

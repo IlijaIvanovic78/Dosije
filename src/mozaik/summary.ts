@@ -1,6 +1,7 @@
 // Ranking and the deterministic summary of a case. Used by the Urednik's tools (dosije_pregled), by the scripted final
 // loop, as the fallback when the editor model fails to write a summary, and by the report.
 
+import type { Lang } from "../shared/lang"
 import { n, pluralIndex } from "../shared/plural"
 import type { Finding, Section } from "../shared/types"
 import type { DosijeState, Summary } from "./state"
@@ -136,13 +137,25 @@ export function leadHeads(titles: string[]): string[] {
 }
 
 /** Plain Serbian lede. The institution's name is quoted after "o instituciji" so it never needs declension. */
-export function buildLede(p: { institution: string; findings: number; signals: number; attention: number; conflicts: number; heads: string[] }): string {
+export function buildLede(p: { institution: string; findings: number; signals: number; attention: number; conflicts: number; heads: string[]; lang?: Lang }): string {
+	if (p.lang === "en") return buildLedeEn(p)
 	const counts = [p.signals ? `${n(p.signals, "signal")}` : "", p.attention ? `${p.attention} za pažnju` : ""].filter(Boolean).join(" i ")
 	const parts = [`Tim agenata je o instituciji „${p.institution}“ prikupio ${n(p.findings, "nalaz")}${counts ? `: ${counts}` : ""}.`]
 	if (p.conflicts === 1) parts.push("Jedan konflikt između izvora rešen je u korist zvaničnog registra.")
 	else if (p.conflicts > 1) parts.push(`${n(p.conflicts, "konflikt")} između izvora ${pluralIndex(p.conflicts) === 1 ? "rešena su" : "rešeno je"} u korist zvaničnog registra.`)
 	if (p.heads.length) parts.push(`Najvažnije: ${p.heads.map((h, i) => `(${i + 1}) ${h.replace(/;\s*/g, ", ").replace(/[.\s]+$/u, "")}`).join("; ")}.`)
 	parts.push("To su signali, ne zaključci; svaki nalaz nosi izvor i status.")
+	return parts.join(" ")
+}
+
+function buildLedeEn(p: { institution: string; findings: number; signals: number; attention: number; conflicts: number; heads: string[] }): string {
+	const plural = (k: number, one: string, many = `${one}s`) => `${k} ${k === 1 ? one : many}`
+	const counts = [p.signals ? plural(p.signals, "signal") : "", p.attention ? `${p.attention} notable` : ""].filter(Boolean).join(" and ")
+	const parts = [`The team of agents collected ${plural(p.findings, "finding")} about “${p.institution}”${counts ? `: ${counts}` : ""}.`]
+	if (p.conflicts === 1) parts.push("One conflict between sources was resolved in favour of the official register.")
+	else if (p.conflicts > 1) parts.push(`${p.conflicts} conflicts between sources were resolved in favour of the official register.`)
+	if (p.heads.length) parts.push(`The most important: ${p.heads.map((h, i) => `(${i + 1}) ${h.replace(/;\s*/g, ", ").replace(/[.\s]+$/u, "")}`).join("; ")}.`)
+	parts.push("These are signals, not conclusions; every finding carries a source and a status.")
 	return parts.join(" ")
 }
 
@@ -155,7 +168,7 @@ export function defaultSummary(state: DosijeState): Summary {
 	const name = state.institution?.name ?? "instituciji"
 	const heads = leadHeads(top.map((f) => f.title))
 	void official
-	const lede = buildLede({ institution: name, findings: all.length, signals, attention, conflicts: state.conflicts.size, heads })
+	const lede = buildLede({ institution: name, findings: all.length, signals, attention, conflicts: state.conflicts.size, heads, lang: state.lang })
 	return {
 		lede,
 		topSignals: top.map((f) => ({ findingId: f.id, headline: f.title })),

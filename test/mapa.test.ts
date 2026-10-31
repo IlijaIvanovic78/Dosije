@@ -1,5 +1,5 @@
-﻿// npm test: "Mapa prioriteta" in-process (real Mozaik runtime, local cache, no key): one Trijaža agent per institution of
-// the preset, all at the same time; plus the deterministic scoring and the case/map mutual exclusion.
+﻿// npm test: the institution comparison ("mapa") in-process (real Mozaik runtime, local cache, no key): one Trijaža agent per
+// institution of the transport sector list, all at the same time; plus the deterministic scoring and the case/map mutual exclusion.
 // Run with DATA_MODE=cache, DEMO_SPEED=0.05.
 
 import assert from "node:assert/strict"
@@ -19,6 +19,9 @@ const { scoreSignals } = await import("../src/data/analysis/priority")
 type WireEvent = import("../src/shared/types").WireEvent
 type MapaRow = import("../src/shared/types").MapaRow
 
+// the transport sector: every name of it is in the local cache snapshot the tests run on
+const TRANSPORT = ["Infrastruktura železnice Srbije", "Srbijavoz", "Srbija Kargo", "Železnice Srbije", "JP Putevi Srbije", "Koridori Srbije"]
+
 describe("priority score (deterministic)", () => {
 	test("adds up the documented components", () => {
 		const r = scoreSignals({ vdOver: true, vdMonths: 17, vdLimitMonths: 12, vdChainMonths: 77, vdChainCount: 4, nwpShare: 0.001, nwpCount: 10, iwFlags: 8, driReports: 21, driQualified: 1 })
@@ -35,7 +38,7 @@ describe("priority score (deterministic)", () => {
 	})
 })
 
-describe("Mapa prioriteta (scripted agents, cached preset)", () => {
+describe("Institution comparison (scripted agents, cached transport list)", () => {
 	const events: WireEvent[] = []
 	let off: () => void
 
@@ -50,23 +53,23 @@ describe("Mapa prioriteta (scripted agents, cached preset)", () => {
 	})
 
 	test("a case and a map exclude each other (409)", { timeout: 120_000 }, async () => {
-		const first = await startMapa()
+		const first = await startMapa(TRANSPORT)
 		assert.ok(first.mapaId.startsWith("map-"))
 		await assert.rejects(startCase("Infrastruktura železnice Srbije"), (err) => err instanceof ApiError && err.status === 409)
-		await assert.rejects(startMapa(), (err) => err instanceof ApiError && err.status === 409, "a second map while one runs")
+		await assert.rejects(startMapa(TRANSPORT), (err) => err instanceof ApiError && err.status === 409, "a second map while one runs")
 		const view = await waitForMapa(100_000)
 		assert.equal(view.status, "done")
 
 		await startCase("Infrastruktura železnice Srbije")
-		await assert.rejects(startMapa(), (err) => err instanceof ApiError && err.status === 409 && /Dosije je u toku/.test(err.message))
+		await assert.rejects(startMapa(TRANSPORT), (err) => err instanceof ApiError && err.status === 409 && /Dosije je u toku/.test(err.message))
 		assert.ok(await waitForDone(100_000), "the case finished")
 	})
 
 	test("one Trijaža agent per institution runs at the same time and the ranking is sorted", { timeout: 120_000 }, async () => {
 		events.length = 0
-		const preset = loadMapaPreset()
-		assert.ok(preset.length >= 6, "preset has the transport sector list")
-		const { mapaId, institutions } = await startMapa()
+		assert.equal(loadMapaPreset().length, 8, "the default list loads (the current institutions)")
+		const preset = TRANSPORT
+		const { mapaId, institutions } = await startMapa(TRANSPORT)
 		assert.equal(institutions.length, preset.length)
 		const view = await waitForMapa(100_000)
 		assert.equal(view.status, "done")

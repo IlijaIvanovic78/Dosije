@@ -1,107 +1,83 @@
-# Dosije design system: "a clean, modern research tool"
+# Dosije design system: editorial research
 
-The product is a research instrument for journalists. It should feel like a well-made modern product (clean cards,
-clear states, generous spacing) that a newsroom would trust, **not** a sci-fi AI dashboard and not a bare HTML page.
-Anyone looking at the screen for five seconds should be able to say what is happening: how many agents work right now,
-who waits for the journalist, and what the dossier already says.
+Dosije is a research instrument for journalists, researchers, civil society and citizens. It should look like a careful
+piece of investigative journalism: paper, ink and archive documents, a serif for headlines, a plain sans for data. It
+must read as credible, transparent and calm, never as an AI dashboard or a generic SaaS template.
 
-**What to avoid:**
-- dark navy with neon purple or cyan, glows, glassmorphism, shimmer, pulsing rings;
-- emojis as icons;
-- giant metric tiles and marketing copy;
-- old-blog typography (system serif headings on a beige page).
+**What to avoid:** bright generic blue as the main color, purple AI gradients, neon, glassmorphism, glows, pulsing
+borders; emojis as icons; giant metric tiles and marketing copy; sensational wording.
 
 ## Principles
-1. **One flow, always visible.** The run bar shows where the run is: the team investigates → you decide → the dossier
-   is ready. Each step has one obvious place on screen.
-2. **Cards on a light gray page.** White cards (14px radius, 1px `--rule` border, a faint shadow) group what belongs
-   together: the team, live search, the dossier header, decisions, signals, people and firms, findings.
-3. **Color means state.** Blue = working / selected, amber = waiting for you, red = signal, green = official / done.
-   States are soft tinted pills with text, never color alone.
-4. **Calm motion.** Only a 150 ms fade for new items and a pale highlight that fades out on new findings. Nothing
-   pulses, bounces or slides.
-5. **No emojis.** Small monochrome inline SVG icons (`currentColor`, 1.6px stroke) or 2-letter initials.
-6. **Data looks like data.** Numbers use tabular figures, identifiers are monospace, dates are `dd.mm.yyyy`.
 
-## Tokens
+1. **The start page has character; the working screens are about data.** Only the start page carries the desk photo
+   (`public/img/desk.webp`, documents on a table, the right side of the hero; the left half is clean paper for the
+   headline and the form). Everything else is paper, cards and type.
+2. **Two levels of information.** First the story of the run (the phases in the run bar, how many agents work now, the
+   main signals); then the full detail for whoever wants it (the timeline, every agent with its role or the reason it
+   was launched, every source request, every finding with its sources). Complexity is organised, never hidden.
+3. **Color means state, and always comes with words.** A status is a pill with a dot and a word; a signal is a red
+   rule and the word "signal". Nothing is told by color alone.
+4. **Neutral language.** A signal is "worth a closer look", never proof. Links between people, companies and the
+   institution are shown as the source records them. The UI never asks the user to approve or verify anything the
+   system does on its own.
+5. **Calm motion.** A short fade for new rows, a pale highlight that fades on a new finding, a slow breathing dot for
+   what is live. Nothing bounces or slides.
+6. **Data looks like data.** Tabular figures, identifiers in monospace, dates `dd.mm.yyyy`, full names readable (wrap,
+   or the whole name on hover).
+7. **Formal address.** The Serbian interface addresses the user with "Vi": "Pokrenite istraživanje", "Usmerite
+   istraživanje", "Vaše odluke". A Serbian string is also the key of its English translation in `public/js/i18n.js`,
+   so a change of wording renames that key too.
+8. **One language per run.** A dossier or a comparison is researched in the language chosen when it starts: the agents
+   write in it, and the report, the summary, the comparison reasons and the server's messages follow it. Nothing is
+   machine-translated; switching the interface language later changes the interface, not what the agents wrote.
+
+## Tokens (`public/styles.css`)
 
 | token | value | use |
 |---|---|---|
-| `--bg` | `#F4F5F7` | page background |
-| `--surface` | `#FFFFFF` | cards, inputs, modal |
-| `--sunk` / `--hover` | `#F1F3F6` / `#F8F9FB` | neutral pills, segmented controls, row hover |
-| `--ink` / `--ink-2` / `--ink-3` | `#111827` / `#4B5563` / `#8B95A5` | text, secondary text, labels and meta |
-| `--rule` / `--rule-strong` | `#E7E9EE` / `#D6DAE1` | card borders and separators / input borders |
-| `--accent` (+ `-ink`, `-tint`) | `#2563EB` | links, focus, the active step, tool bars, the live agent count |
-| `--signal` (+ `-tint`) | `#DC2626` | signals, "odstupa od registra", the "now" line |
-| `--wait` (+ `-ink`, `-tint`) | `#D97706` | waiting for the journalist |
-| `--ok` (+ `-ink`, `-tint`) | `#16A34A` | zvanično, done |
-| `--warn` (+ `-tint`) | `#A16207` | nepotvrđeno, pažnja |
-| `--think` | `#D5DBE4` | inference bars |
+| `--bg` / `--paper` | `#F4F1EA` | page background (warm paper) |
+| `--surface` | `#FFFEFB` | cards, panels |
+| `--sunk` | `#ECE7DC` | counts, quiet pills, empty bars |
+| `--ink` | `#1F2528` | text, primary buttons |
+| `--ink-2` / `--ink-3` | `#454B4E` / `#686E70` | secondary text (both pass AA on paper) |
+| `--rule` / `--rule-strong` | `#E3DDD1` / `#CDC5B6` | borders, separators |
+| `--accent` | `#8F5944` | terracotta: active tab, links, live things, "searching a source" in the timeline |
+| `--slate` | `#3F5866` | status "official", official sources |
+| `--ok` | `#2F6B47` | status "confirmed", finished phases |
+| `--wait` | `#A26511` | status "unconfirmed", "notable" findings |
+| `--signal` | `#A8321F` | signals, "differs from the register", errors |
+| comparison areas | slate / gold `#9A7A33` / olive `#5F6B3C` / terracotta | leadership / procurement / audit / shared suppliers |
 
-Statuses are pills (dot + text) on a tint of their color: **Zvanično** green, **Potvrđeno** blue, **Nepotvrđeno**
-amber-brown, **Odstupa od registra** red. Severity is a 3px rule on the left edge of a finding: signal = red,
-pažnja = amber, info = gray.
+Type: **Source Serif 4** for headlines and the report, **Inter** for the interface and data, **IBM Plex Mono** for
+identifiers and the timeline axis (Google Fonts, with local fallbacks). Body 15px; nothing smaller than 12px.
 
-## Typography
-- UI and headings: `"Inter", "Segoe UI Variable", "Segoe UI", system-ui, -apple-system, Roboto, sans-serif` (headings
-  bold with slightly negative letter-spacing). No webfont downloads: the app must work offline.
-- The printed report uses a book serif (`"Source Serif 4"`, Charter, Georgia); on screen it uses the UI font.
-- Data and IDs: `ui-monospace, "SF Mono", "Cascadia Mono", Consolas, monospace`.
-- Sizes: body 14.5/1.55, small 12.5-13, labels 11px uppercase with letter-spacing .07em, institution title 28px bold,
-  card titles 16px semibold, finding titles 15.5px semibold, start headline 50px extra-bold.
+## Statuses
 
-## Components
-- **Buttons.** Primary: solid `--ink`, white text, 9px radius. Secondary: white with a 1px border. Text buttons in
-  `--accent`. "Odluči" on a waiting banner is solid amber.
-- **Inputs.** White, 1px `--rule-strong`, 9px radius, a 3px focus ring in `--accent` at 15%. The start search is one
-  large field with the primary button inside it.
-- **Agent avatar.** A 22-24px rounded square with 2-letter initials, one soft tint per agent group.
-- **Agent status.** A pill on the right of each lane: "razmišlja" gray, the current request ("ACAS · funkcioneri …")
-  blue, "čeka tebe" solid amber, "gotovo" green, "blokirano" red.
-- **Team card.** The headline is the live count ("4 agenta rade upravo sada · vrhunac 15", the number in blue; after
-  the run: "15 agenata istovremeno u vrhuncu"), then a small area chart (blue line, 10% fill), the legend and the
-  timeline.
-- **Timeline (Gantt).** Rounded 10px bars on a shared mm:ss axis: think = `--think`, tool = `--accent`, waiting =
-  amber with a 45° hatch; a finding is a 2px dark tick, a spawn a hollow circle, "now" a 1px red line.
-- **Decisions.** An amber-tinted card on the dossier ("3 odluke čekaju na tebe"), one task open at a time; an approval
-  shows the draft finding as it will appear in the report.
-- **Done card.** Green-tinted, a check icon, a one-line summary and the next actions.
-- **Toasts.** White, 12px radius, a soft shadow; question toasts have an amber left edge.
+| status | color | means |
+|---|---|---|
+| Zvanično / Official | slate | from an official register or document; the interpretation is not thereby confirmed |
+| Potvrđeno / Confirmed | green | at least two independent sources report it |
+| Nepotvrđeno / Unconfirmed | amber, hollow dot | a single unofficial source |
+| Odstupa od registra / Differs from the register | red, diamond | the claim differs from the official register |
 
-## Simplicity rules
-- **Show less at once.** One top bar, one run bar, two columns of cards, one collapsible drawer.
-- **Motion budget.** Only the two animations above. The timeline redraws at most 4 times per second.
-- **Labels, not decoration.** Every colored mark has a text equivalent.
-- **Copy** is short, plain Serbian, the way a newsroom colleague would write it. No hype and no "AI" buzzwords in
-  headings.
+A source that did not answer is a finding of its own ("the source did not respond"), never an empty section.
 
-## Live search ("Pretraga uživo")
-Every public-source request an agent makes arrives as an `izvor.upit` event (`SourceActivity` in
-`src/shared/types.ts`). There are two events per request with the same `id`: `u_toku`, then `ok`, `kes` or `greska`.
-- **A card under the team**, newest on top. Each row reads:
+## Screens
 
-  `12:04:31  KA  ACAS  pretraga · funkcioneri: Infrastruktura železnice Srbije  [✓ 0,4 s · 9]`
-
-  the time, the agent's initials, the source, the action and label (a link when there is a `url`), and a status pill:
-  "…" while `u_toku`, then green "✓ 0,4 s", gray "keš 30.10." or red "greška".
-- **Agent lanes** show the agent's current request as their status pill, falling back to "alat: <tool>" or
-  "razmišlja".
-
-## Layout
-The screen follows one flow: **start → the team investigates → you decide → the dossier is ready**.
-
-- **Top bar** (white): the logo mark and wordmark "Dosije" (back to the start screen), a segmented switch "Dosije |
-  Mapa prioriteta", then "+ Novi dosije", "Sanduče" (an amber count badge when something waits) and SR | EN. No model
-  or mode text: a connection note appears only when the server connection drops.
-- **Run bar** under the top bar: three numbered steps "Tim istražuje → Tvoje odluke → Dosije je spreman" (blue =
-  running, amber = waiting for you, green check = done; step 2 opens the decisions, step 3 the report), and on the
-  right the numbers as pills: "6 agenata radi istovremeno", "vrhunac 15", "31 nalaz", "5 signala", "642 Mozaik
-  događaja".
-- **Columns.** Left (about 40%): the team card and the live search card. Right (about 60%), a column of cards: the
-  institution header, "Čeka tvoju odluku" while an agent waits, "Dosije je spreman" at the end, "Glavni signali",
-  "Osobe i firme", then the findings with section tabs.
-- **Start screen.** A bold headline, one paragraph, the large search field, the demo institutions as cards with an
-  icon, and "Kako radi" as four numbered steps (step 3, "Ti odlučuješ", in amber). Below: the public sources as tags
-  and a pointer to "Mapa prioriteta". A very faint blue glow at the top of the page is the only gradient.
-- **Phones.** One column: the dossier (and its decisions) first, the team below; the start form stacks.
+- **Top bar:** the two tools ("Dosije", "Poređenje institucija") with one underline that slides to the active one, and
+  on the right SR / EN and "?", which opens the guide: how it works (three steps) and how to read a dossier. Changing
+  the screen fades the new one in.
+- **Start:** headline, one-paragraph explanation, the institution form (name or acronym; an optional focus that opens
+  and closes in place), the current institutions as cards (`data/static/examples.json`), then where the data comes
+  from as a slowly moving strip of source cards (official ones marked apart; it stops on hover or with its pause
+  button, and stands still for reduced motion), and a one-line statement of neutrality.
+- **Investigation:** the run bar (collecting data → the Editor's summary → the dossier is ready; counters for working
+  now / launched / at once at most / findings / signals, each explained on hover). Left: the agent team (live count,
+  concurrency chart, legend, timeline with lanes grouped and foldable, live source searches in plain words). Right: the
+  dossier (header, done card, main signals with why / whom / source / date / status, people and companies with their
+  recorded link, findings by area with a reliability line).
+- **Institution comparison** ("mapa" in the code): what the score is made of (four areas), the list of institutions
+  (one field each, or paste a list; it starts with the current institutions of `data/static/mapa-preset.json`), a
+  ranking table whose score bar is split by area, details per area with sources and a way into the full dossier. A
+  high score is never presented as wrongdoing.
+- **Report:** a document on paper: serif headings, rules between sections, sources as links; print / PDF and Markdown.

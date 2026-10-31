@@ -1,0 +1,6 @@
+[
+	{ "slug": "rts", "name": "Radio-televizija Srbije (RTS)", "kind": "Javni medijski servis" },
+	{ "slug": "pio-fond", "name": "PIO Fond", "kind": "Republički fond · penzijsko osiguranje" },
+	{ "slug": "ministarstvo-prosvete", "name": "Ministarstvo prosvete", "kind": "Ministarstvo · obrazovanje" },
+	{ "slug": "eps", "name": "Elektroprivreda Srbije", "kind": "Javno preduzeće · energetika" }
+]

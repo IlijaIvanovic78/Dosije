@@ -1,32 +1,20 @@
-// Report modal: Markdown render, download, print/PDF, copy.
+// Report modal: the Markdown report as a document on screen, and its download as a PDF file.
 
 import { renderMarkdown } from "./markdown.js"
 import { state } from "./store.js"
-import { api } from "./api.js"
 import { toast, dismissToasts } from "./toast.js"
-import { t, getLang } from "./i18n.js"
+import { t } from "./i18n.js"
+import { downloadPdf, pdfName } from "./pdf.js"
 
-let modal, body, copyBtn, titleEl
-// the Markdown on screen: the report itself, or its English translation
-let shown = ""
+let modal, body, titleEl, pdfBtn
 
 export function openReport() {
 	if (!state.report) {
 		toast({ kind: "info", title: t("Izveštaj još nije spreman"), text: t("Pojaviće se kad agenti završe dosije.") })
 		return
 	}
-	shown = state.report.markdown
-	if (getLang() === "en") {
-		body.replaceChildren(Object.assign(document.createElement("p"), { className: "empty-line", textContent: t("Prevodim izveštaj…") }))
-		const caseId = state.caseId
-		api.reportMd()
-			.then((en) => {
-				if (modal.hidden || state.caseId !== caseId || typeof en !== "string") return
-				shown = en
-				body.innerHTML = renderMarkdown(en)
-			})
-			.catch(() => !modal.hidden && (body.innerHTML = renderMarkdown(shown)))
-	} else body.innerHTML = renderMarkdown(shown)
+	// written in the language the case was started in
+	body.innerHTML = renderMarkdown(state.report.markdown)
 	titleEl.textContent = state.institution?.name ? `${t("Izveštaj")} · ${state.institution.name}` : t("Izveštaj")
 	modal.hidden = false
 	dismissToasts(".toast.done")
@@ -40,58 +28,37 @@ export function closeReport() {
 	modal.hidden = true
 }
 
-export async function downloadReport() {
-	let text = state.report?.markdown || ""
-	try {
-		const remote = await api.reportMd()
-		if (typeof remote === "string" && remote.trim()) text = remote
-	} catch {}
-	const blob = new Blob([text], { type: "text/markdown;charset=utf-8" })
-	const a = document.createElement("a")
-	a.href = URL.createObjectURL(blob)
-	a.download = `dosije-${state.caseId || "izvestaj"}${getLang() === "en" ? "-en" : ""}.md`
-	document.body.appendChild(a)
-	a.click()
-	a.remove()
-	setTimeout(() => URL.revokeObjectURL(a.href), 4000)
-}
+let busy = false
 
-async function copy() {
-	const text = shown || state.report?.markdown || ""
+/** Downloads the report as a PDF. `btn` shows the work while the file is made. */
+export async function downloadReport(btn = pdfBtn) {
+	if (!state.report || busy) return
+	busy = true
+	const label = btn?.querySelector("span[data-i18n]") ?? btn
+	const before = label?.textContent
+	if (btn) btn.disabled = true
+	if (label) label.textContent = t("Pravim PDF…")
 	try {
-		await navigator.clipboard.writeText(text)
-	} catch {
-		const ta = document.createElement("textarea")
-		ta.value = text
-		ta.style.cssText = "position:fixed;opacity:0"
-		document.body.appendChild(ta)
-		ta.select()
-		document.execCommand("copy")
-		ta.remove()
+		const text = state.report.markdown
+		const name = state.institution?.name || state.input || ""
+		await downloadPdf(text, { title: `${t("Dosije")} · ${name}`, footer: `${t("Dosije")} · ${name}`, fileName: pdfName(name) })
+	} catch (e) {
+		console.warn("pdf", e)
+		toast({ kind: "error", title: t("PDF nije napravljen"), text: t("Proverite internet vezu i pokušajte ponovo. Izveštaj možete i da odštampate iz pregledača.") })
+	} finally {
+		busy = false
+		if (btn) btn.disabled = false
+		if (label && before !== undefined) label.textContent = before
 	}
-	copyBtn.textContent = t("Kopirano")
-	setTimeout(() => (copyBtn.textContent = t("Kopiraj")), 1800)
-}
-
-function print() {
-	document.body.classList.add("printing-report")
-	const cleanup = () => {
-		document.body.classList.remove("printing-report")
-		window.removeEventListener("afterprint", cleanup)
-	}
-	window.addEventListener("afterprint", cleanup)
-	window.print()
 }
 
 export function initReport() {
 	modal = document.getElementById("reportModal")
 	body = document.getElementById("reportBody")
-	copyBtn = document.getElementById("reportCopy")
 	titleEl = document.getElementById("reportTitle")
+	pdfBtn = document.getElementById("reportPdf")
 	document.getElementById("reportClose").addEventListener("click", closeReport)
-	document.getElementById("reportDownload").addEventListener("click", downloadReport)
-	document.getElementById("reportPrint").addEventListener("click", print)
-	copyBtn.addEventListener("click", copy)
+	pdfBtn.addEventListener("click", () => downloadReport(pdfBtn))
 	modal.addEventListener("mousedown", (e) => {
 		if (e.target === modal) closeReport()
 	})

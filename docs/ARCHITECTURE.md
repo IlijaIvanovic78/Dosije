@@ -317,35 +317,25 @@ at most 4 times per second.
 - color means state: blue working, amber waiting for you, red signal, green official or done, always as text pills;
 - no emojis (initials avatars, small SVG icons) and almost no motion.
 
-**Layout (the flow is: start, the team investigates, you decide, the dossier is ready):**
-- **Start screen:** a large input for an institution or a news link (an optional focus behind "+ Dodaj fokus"), four
-  example institutions, "Kako radi" in four steps, the public sources and a way into "Mapa prioriteta".
-- **Top bar:** wordmark, the "Dosije | Mapa prioriteta" switch, "+ Novi dosije", "Sanduče N" and SR | EN. A connection
-  note appears only when the server connection drops.
-- **Run bar:** the steps "Tim istražuje → Tvoje odluke → Dosije je spreman" (clickable: step 2 opens the decisions,
-  step 3 the report), plus agents working at once (peak), findings, signals and Mozaik events.
-- **Left column, "Tim":**
-  - a small concurrency chart;
-  - one lane per agent, with the core agents first and dynamic agents grouped under "Firme", "Imovina", "Mediji ·
-    osobe", "Provera" and "Trijaža", each with a thin timeline: think, tool, waiting (hatched), findings (ticks) and
-    spawn (hollow circle);
-  - the approval banner ("Kadrovik čeka tvoju odluku. Ostali agenti nastavljaju.");
-  - **"Pretraga uživo"**: `izvor.upit` requests with source, label, link and status.
-- **Right column, "Dosije":**
-  - institution header;
-  - **"Čeka tvoju odluku"**: the open questions (answer or skip) and approvals ("Ubaci u izveštaj" / "Odbaci") right
-    on the dossier, one card open at a time; only the asking agent is paused;
-  - **"Dosije je spreman"** once the report exists: what the team did, "Otvori izveštaj", "Preuzmi .md" and "Šta još
-    proveriti";
-  - "Glavni signali", where repeated signal codes are grouped;
-  - section tabs (Rukovodstvo, Novac, Firme, Revizija, Mediji, Šta još proveriti);
-  - finding rows with a severity rule, status, sources (a compact article list when there are four or more), merge
-    and conflict notes.
-- **Sanduče:** a side panel with the open decisions as short rows, the decision history and "Dodaj trag".
-- **Report modal:** a printable document, with "Preuzmi .md", "Štampaj / PDF" (prints only the report) and "Kopiraj".
-- **Mapa prioriteta:** the institution list, "Pokreni mapu" and a live ranking table with signal chips, details and
-  "Otvori dosije".
-- **Bottom drawer:** the raw Mozaik event log, collapsed by default.
+**Layout** (the design system is in [DESIGN.md](DESIGN.md)):
+- **Top bar:** wordmark, the "Dosije | Poređenje institucija" switch (one underline slides to the active tab), "+ Novi
+  dosije", SR | EN and "?", which opens the guide (how it works, how to read a dossier). A connection note appears only
+  when the server connection drops.
+- **Start screen:** the institution field (name or acronym; links are refused), an optional focus that opens in place,
+  the current institutions as cards (`data/static/examples.json`), the sources as a moving strip of cards (official ones
+  marked apart) and a one-line statement of neutrality.
+- **Run bar:** the phases "Prikupljanje podataka → Sažetak urednika → Dosije je spreman" and the counters (working now,
+  launched, at most at once, findings, signals), each explained on hover.
+- **Left column, "Tim agenata":** the live count and a small concurrency chart, a legend, one lane per agent with its
+  role (or why it was launched) and a thin timeline, dynamic agents grouped and foldable, and "Pretraga izvora uživo":
+  every request to a public source in plain words, with its status.
+- **Right column, "Dosije":** the institution header, the "Dosije je spreman" card, the main signals (why, whom, source,
+  date, status), people and companies with their recorded link, and the findings by area with a reliability line.
+- **Report modal:** a printable document, with "Preuzmite Markdown", "Odštampajte ili sačuvajte PDF" and "Kopirajte
+  tekst".
+- **Poređenje institucija:** what the score is made of, the institution list, "Pokrenite poređenje" and a live ranking
+  table whose score bar is split by area, with details per area and "Otvorite pun dosije".
+- **Bottom drawer:** the raw Mozaik event log, kept for debugging and hidden from users.
 
 **Robustness:** the EventSource reconnects automatically, and the server replays the current case's events after the
 snapshot, so a reload rebuilds the timeline. Events are deduped by `seq`, every untrusted string is inserted as text,

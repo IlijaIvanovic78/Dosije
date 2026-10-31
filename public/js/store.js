@@ -5,6 +5,9 @@ import { parseIso, jsonShort } from "./format.js"
 
 export const CORE_ORDER = ["kadrovik", "nabavke", "revizor", "mediji", "urednik"]
 
+/** The team column belongs to the run on screen: the map view before any map shows no agents of an earlier dossier. */
+export const teamShown = () => !(state.ui.view === "mapa" && state.runKind !== "mapa")
+
 export const state = {
 	config: null,
 	conn: "connecting",
@@ -24,7 +27,7 @@ export const state = {
 	stats: null,
 	report: null,
 
-	// "Mapa prioriteta" (separate from the case): runKind says which run the lanes / Gantt / metrics belong to
+	// "Poređenje institucija" (separate from the case): runKind says which run the lanes / Gantt / metrics belong to
 	runKind: "case",
 	mapa: { id: null, status: "idle", startedAt: null, finishedAt: null, rows: new Map(), veze: new Map() }, // veze: shared suppliers ("mapa.veza")
 	ui: { view: "dosije", fresh: false }, // right column: "dosije" | "mapa"; fresh = client-side "Novi dosije" (empty state shown)

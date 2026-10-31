@@ -25,7 +25,7 @@ The bar under the top bar walks you through the flow: **Tim istražuje → Tvoje
    owner questions the same way.
 4. The Mediji and Revizor lanes show **"reaguje na nalaz"**: agents react to each other's findings.
 5. When the bar turns green, the **"Dosije je spreman"** card opens the report (exports to `.md` or PDF) and the list
-   of what still needs checking. Then switch to **Mapa prioriteta** in the top bar: six institutions in parallel.
+   of what still needs checking. Then switch to **Poređenje institucija** in the top bar: eight institutions in parallel.
    **SR | EN** switches the interface language.
 
 **How it runs without a key, and with one:**
@@ -86,7 +86,7 @@ The concept-by-concept map to the code is in [docs/HOW_IT_WORKS.md](docs/HOW_IT_
 |---|---|
 | `npm test` | the test suite: concurrency, the cascade, interception, conflicts, LLM mode against a fake OpenAI API |
 | `npm run cli -- "Srbijavoz"` | a headless dossier with an ASCII Gantt of the agents |
-| `npm run mapa` | the priority map from the terminal |
+| `npm run mapa` | the institution comparison from the terminal |
 | `npm run qa` | checks every finding's source, link and attribution |
 
 ## Docs

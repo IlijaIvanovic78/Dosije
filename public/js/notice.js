@@ -24,7 +24,7 @@ export function showNotice(host, { text, kind = "error", actions = [] }) {
 					actions.map((a) => h("button", { class: "btn small", type: "button", onclick: a.onClick }, a.label)),
 				)
 			: null,
-		kind === "error" ? h("button", { class: "link-btn n-close", type: "button", onclick: () => clearNotice(host) }, t("Zatvori")) : null,
+		kind === "error" ? h("button", { class: "link-btn n-close", type: "button", onclick: () => clearNotice(host) }, t("Zatvorite")) : null,
 	)
 	host.replaceChildren(box)
 }
@@ -41,7 +41,7 @@ function waitFor(cond, ms = 60000) {
 				resolve()
 			} else if (Date.now() - t0 > ms) {
 				clearInterval(timer)
-				reject(new Error(t("Dosije se još završava. Pokušaj ponovo za nekoliko sekundi.")))
+				reject(new Error(t("Dosije se još završava. Pokušajte ponovo za nekoliko sekundi.")))
 			}
 		}, 250)
 	})

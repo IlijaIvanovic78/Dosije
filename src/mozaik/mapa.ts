@@ -4,9 +4,10 @@
 
 import fs from "node:fs"
 import path from "node:path"
-import { SHARED_SUPPLIER_POINTS, scoreSignals } from "../data/analysis/priority"
+import { SHARED_SUPPLIER_POINTS, scoreSignals, sharedSupplierLine } from "../data/analysis/priority"
 import { shortInstitution } from "../data/activity"
 import { normalizeName } from "../data/translit"
+import { messageIn, type Lang } from "../shared/lang"
 import { n } from "../shared/plural"
 import type { MapaRow, MapaSharedSupplier, MapaSignals, MapaVeza, SourceRef } from "../shared/types"
 import { finalizeActivities } from "./activity"
@@ -47,8 +48,8 @@ export function normalizeInstitutions(raw: unknown): MapaInstitution[] {
 		const s = slug(clean)
 		if (clean.length >= 2 && s && !out.has(s)) out.set(s, { slug: s, name: clean })
 	}
-	if (out.size === 0) throw new RangeError("Upiši bar jednu instituciju.")
-	if (out.size > MAPA_MAX) throw new RangeError(`Najviše ${MAPA_MAX} institucija po mapi.`)
+	if (out.size === 0) throw new RangeError("Upišite bar jednu instituciju.")
+	if (out.size > MAPA_MAX) throw new RangeError(`Najviše ${MAPA_MAX} institucija po poređenju.`)
 	return [...out.values()]
 }
 
@@ -86,8 +87,9 @@ export function failRow(slugOf: string, error: string, producerId: string): void
 	const row = S().mapa.rows.get(slugOf)
 	if (!row || isTerminal(row)) return
 	row.status = "error"
-	row.error = error
+	row.error = messageIn(S().lang, error)
 	row.score = 0
+	row.parts = undefined
 	row.reasons = []
 	publish(row, producerId)
 }
@@ -110,8 +112,9 @@ export function recordTriage(slugOf: string, part: TriagePart, result: { ok: boo
 
 function refreshRow(row: MapaRow, t: TriageRecord): void {
 	row.signals = { ...t.signals }
-	const { score, reasons } = scoreSignals(row.signals)
+	const { score, reasons, parts } = scoreSignals(row.signals, S().lang)
 	row.score = score
+	row.parts = parts
 	row.reasons = [...reasons, ...t.gaps.map((g) => `nema podataka: ${g}`)]
 }
 
@@ -121,7 +124,7 @@ function refreshRow(row: MapaRow, t: TriageRecord): void {
  * Suppliers that are among the top suppliers (name + PIB, put into the shared state by the triage tools) of 2+ institutions of the
  * map. Ordered: most institutions first, then the best rank. Rows that failed do not take part.
  */
-export function computeLinks(m: MapaState = S().mapa): MapaVeza[] {
+export function computeLinks(m: MapaState = S().mapa, lang: Lang = "sr"): MapaVeza[] {
 	const byKey = new Map<string, { pib?: string; names: string[]; institutions: MapaVeza["institutions"] }>()
 	for (const [slugOf, t] of m.triage) {
 		const row = m.rows.get(slugOf)
@@ -146,7 +149,7 @@ export function computeLinks(m: MapaState = S().mapa): MapaVeza[] {
 			supplier: { name, ...(e.pib ? { pib: e.pib } : {}) },
 			institutions,
 			points: SHARED_SUPPLIER_POINTS,
-			line: `Isti dobavljač u ${n(institutions.length, "institucija")}: ${name}`,
+			line: sharedSupplierLine(institutions.length, name, lang),
 		})
 	}
 	return links.sort((a, b) => b.institutions.length - a.institutions.length || a.institutions[0].rank - b.institutions[0].rank || a.supplier.name.localeCompare(b.supplier.name, "sr"))
@@ -162,7 +165,7 @@ export function updateLinks(): void {
 		const state = S()
 		const m = state.mapa
 		if (!m.id || m.status !== "running") return
-		const links = computeLinks(m)
+		const links = computeLinks(m, S().lang)
 		for (const v of links) {
 			const signature = v.institutions.map((i) => i.slug).sort().join("|")
 			if (m.links.get(v.key) === signature) continue

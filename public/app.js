@@ -15,16 +15,9 @@ import { initMetrics } from "./js/metrics.js"
 import { initSearch } from "./js/search.js"
 import { showNotice, clearNotice, finishCaseThen, caseBusy } from "./js/notice.js"
 import { t, setLang, onLang, applyStatic } from "./js/i18n.js"
+import { initHelp, initSources } from "./js/help.js"
 
 const $ = (id) => document.getElementById(id)
-
-/** What kind of institution each demo is (shown under its name on the start screen). */
-const DEMO_KIND = {
-	"infrastruktura-zeleznice-srbije": "Državno preduzeće · železnička infrastruktura",
-	srbijavoz: "Državno preduzeće · putnički prevoz",
-	"univerzitetski-klinicki-centar-vojvodine": "Zdravstvena ustanova",
-	"grad-novi-sad": "Lokalna samouprava",
-}
 
 const STUCK_MS = 8000
 let connSince = Date.now()
@@ -49,34 +42,37 @@ function renderMode() {
 	const stuck = Date.now() - connSince > STUCK_MS
 	el.hidden = false
 	el.className = `conn-text ${state.conn === "down" || stuck ? "down" : ""}`
-	el.textContent = stuck ? t("nema veze sa serverom") : state.conn === "down" ? t("veza prekinuta, povezujem…") : t("povezujem…")
-	el.title = stuck ? t("Proveri da li server radi (npm start) i zatvori višak tabova sa Dosijeom: pregledač drži najviše 6 veza ka istom serveru.") : t("Veza sa serverom (SSE)")
+	el.textContent = stuck ? t("nema veze sa serverom") : state.conn === "down" ? t("veza je prekinuta, ponovo se povezujem…") : t("povezujem se…")
+	el.title = stuck ? t("Proverite da li server radi (npm start).") : t("Veza sa serverom")
 }
 
-const BUILDING_ICON =
-	'<svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" aria-hidden="true"><path d="M3 17h14M4.5 17V8.5L10 4.5l5.5 4V17"/><path d="M8 17v-4h4v4M7.5 9.5h1M11.5 9.5h1"/></svg>'
-
-function exampleIcon() {
-	const el = h("span", { class: "ex-icon" })
-	el.innerHTML = BUILDING_ICON
-	return el
-}
-
+/** The current institutions as small research cards: what it is, its name, and the action. */
 function renderDemoChips() {
 	const demos = state.config?.demoInstitutions || []
 	$("heroChips").replaceChildren(
-		...demos.map((d, i) =>
+		...demos.map((d) =>
 			h(
 				"button",
-				{ class: "example", type: "button", onclick: () => startCase(d.name) },
-				exampleIcon(),
+				{ class: "example", type: "button", onclick: () => startCase(d.name), "aria-label": t("Istražite: {name}", { name: d.name }) },
+				h("span", { class: "ex-kind" }, t(d.kind || "Javna institucija")),
 				h("span", { class: "ex-name" }, d.name),
-				DEMO_KIND[d.slug] ? h("span", { class: "ex-kind" }, t(DEMO_KIND[d.slug])) : null,
-				i === 0 ? h("span", { class: "ex-tag" }, t("najbolji demo")) : null,
-				h("span", { class: "ex-go", "aria-hidden": "true" }, "→"),
+				h("span", { class: "ex-go", "aria-hidden": "true" }, `${t("Istražite")} →`),
 			),
 		),
 	)
+}
+
+/** The side panel holds questions and approvals only when the server asks the user; otherwise it is the place to add a lead. */
+function renderInboxButton() {
+	const asks = !!state.config?.asksUser
+	const label = $("inboxLabel")
+	const text = asks ? "Sanduče" : "Dodajte trag"
+	if (label.dataset.sr !== text) {
+		label.dataset.sr = text
+		label.textContent = t(text)
+	}
+	// a lead only makes sense while a case is open
+	$("btnInbox").hidden = !asks && !(state.caseId && document.body.dataset.view === "case" && state.ui.view !== "mapa")
 }
 
 /** On the empty state, a case the server still holds stays one click away. */
@@ -88,9 +84,9 @@ function renderResume() {
 	const name = state.institution?.name || state.input
 	const running = state.status === "running" || state.status === "finalizing"
 	el.replaceChildren(
-		h("span", { class: `stat ${running ? "running" : "done"}` }, h("i"), running ? t("u toku") : t("završeno")),
-		h("span", { class: "resume-text" }, h("b", null, name)),
-		h("button", { class: "link-btn", type: "button", onclick: resumeCase }, `${t("Vrati se na dosije")} →`),
+		h("span", { class: `stat ${running ? "running" : "done"}` }, h("i"), running ? t("istraživanje traje") : t("završeno")),
+		h("span", { class: "resume-text" }, name),
+		h("button", { class: "link-btn", type: "button", onclick: resumeCase }, `${running ? t("Pratite istraživanje") : t("Otvorite dosije")} →`),
 	)
 }
 
@@ -102,7 +98,7 @@ async function doStart(value, focusValue) {
 		await api.start(value, focusValue || undefined)
 	} catch (e) {
 		const actions = []
-		if (e.status === 409 && caseBusy()) actions.push({ label: t("Završi dosije pa pokreni novi"), onClick: () => finishCaseThen(host, () => doStart(value, focusValue)) })
+		if (e.status === 409 && caseBusy()) actions.push({ label: t("Završite dosije pa pokrenite novi"), onClick: () => finishCaseThen(host, () => doStart(value, focusValue)) })
 		showNotice(host, { text: `${t("Dosije nije pokrenut.")} ${e.message}`, actions })
 	}
 }
@@ -122,7 +118,7 @@ async function startCase(inputValue) {
 	if (/^(https?:\/\/|www\.)|\.(rs|com|net|org|info)(\/|$)/i.test(value)) {
 		inst.focus()
 		inst.classList.add("invalid")
-		showNotice($("topNotice"), { text: t("Upiši naziv institucije (ključne reči). Linkovi se ne prihvataju.") })
+		showNotice($("topNotice"), { text: t("Upišite naziv institucije (ključne reči). Linkovi se ne prihvataju.") })
 		return
 	}
 	clearNotice($("topNotice"))
@@ -131,14 +127,15 @@ async function startCase(inputValue) {
 	starting = true
 	const btn = $("btnStart")
 	btn.disabled = true
-	btn.textContent = t("Pokrećem…")
+	btn.textContent = t("Pronalazim instituciju…")
 	try {
-		await doStart(value, focus.value.trim())
+		// a closed focus box is not a focus: what was typed there waits until it is opened again
+		await doStart(value, focusOpen ? focus.value.trim() : "")
 	} finally {
 		setTimeout(() => {
 			starting = false
 			btn.disabled = false
-			btn.textContent = t("Pokreni istragu")
+			btn.textContent = t("Pokrenite istraživanje")
 		}, 900)
 	}
 }
@@ -147,26 +144,51 @@ function goHome() {
 	clearNotice($("topNotice"))
 	$("inInst").value = ""
 	$("inFocus").value = ""
+	toggleFocus(false)
 	startFresh()
 	$("inInst").focus()
 }
 
+/** The underline of the active tab slides to the tab that was chosen. */
+function placeNavIndicator() {
+	const active = document.querySelector('.nav-tab[aria-pressed="true"]')
+	const ind = $("navInd")
+	if (!active) return
+	ind.style.width = `${active.offsetWidth - 24}px`
+	ind.style.transform = `translateX(${active.offsetLeft + 12}px)`
+	ind.classList.add("ready")
+}
+
+let lastView = ""
 function renderView() {
 	const hasCase = (!!state.caseId || state.ui.view === "mapa") && !state.ui.fresh
 	document.body.dataset.view = hasCase ? "case" : "hero"
 	const dosije = state.ui.view !== "mapa"
 	$("btnNavDosije").setAttribute("aria-pressed", String(dosije))
+	$("btnMapa").setAttribute("aria-pressed", String(!dosije))
 	$("btnNew").hidden = !hasCase || !state.caseId || !dosije
 	renderResume()
+	renderInboxButton()
+	placeNavIndicator()
+	// a change of screen fades the new one in (not the first paint)
+	const view = `${document.body.dataset.view}:${dosije ? "dosije" : "mapa"}`
+	if (lastView && view !== lastView) {
+		const main = $("main")
+		main.classList.remove("view-in")
+		void main.offsetWidth
+		main.classList.add("view-in")
+	}
+	lastView = view
 }
 
-function toggleFocus(open) {
-	const input = $("inFocus")
-	const btn = $("btnFocusToggle")
-	input.hidden = !open
-	btn.hidden = open
-	btn.setAttribute("aria-expanded", String(open))
-	if (open) input.focus()
+let focusOpen = false
+function toggleFocus(open = !focusOpen) {
+	focusOpen = open
+	const box = $("focusBox")
+	box.dataset.open = String(open)
+	box.inert = !open
+	$("btnFocusToggle").setAttribute("aria-expanded", String(open))
+	if (open) setTimeout(() => $("inFocus").focus({ preventScroll: true }), 60)
 }
 
 async function boot() {
@@ -175,9 +197,12 @@ async function boot() {
 		startCase()
 	})
 	$("inInst").addEventListener("input", (e) => e.target.classList.remove("invalid"))
-	$("btnFocusToggle").addEventListener("click", () => toggleFocus(true))
-	$("inFocus").addEventListener("blur", (e) => {
-		if (!e.target.value.trim()) toggleFocus(false)
+	$("btnFocusToggle").addEventListener("click", () => toggleFocus())
+	$("inFocus").addEventListener("keydown", (e) => {
+		if (e.key === "Escape") {
+			toggleFocus(false)
+			$("btnFocusToggle").focus()
+		}
 	})
 	$("btnNew").addEventListener("click", goHome)
 	$("brandHome").addEventListener("click", () => {
@@ -185,7 +210,8 @@ async function boot() {
 		else setView("dosije")
 	})
 	$("btnNavDosije").addEventListener("click", () => setView("dosije"))
-	$("btnHeroMapa").addEventListener("click", () => setView("mapa"))
+	window.addEventListener("resize", placeNavIndicator)
+	document.fonts?.ready.then(placeNavIndicator)
 	$("btnAddLead").addEventListener("click", () => {
 		openInbox()
 		const input = document.querySelector("#leadForm input[name=name]")
@@ -193,11 +219,16 @@ async function boot() {
 		setTimeout(() => input?.focus({ preventScroll: true }), 40)
 	})
 	for (const b of document.querySelectorAll(".lang-btn")) b.addEventListener("click", () => setLang(b.dataset.lang))
+	// before the static texts are translated, so the copies of the source cards are translated too
+	initSources()
 	applyStatic()
+	initHelp()
 	onLang(() => {
 		renderMode()
 		renderDemoChips()
 		renderResume()
+		renderInboxButton()
+		placeNavIndicator()
 	})
 
 	initMetrics()
@@ -224,6 +255,7 @@ async function boot() {
 	try {
 		state.config = await api.config()
 		renderDemoChips()
+		renderInboxButton()
 	} catch (e) {
 		console.warn("config unavailable", e)
 	}

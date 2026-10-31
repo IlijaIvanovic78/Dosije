@@ -1,21 +1,23 @@
-// "Tim": agent lanes (name + status text on top, a thin track below). The Gantt bars live in gantt.js
-// and are drawn over the track element of each row.
+// "Tim": agent lanes (name, what the agent does or why it was launched, its status; a thin track below). The Gantt bars
+// live in gantt.js and are drawn over the track element of each row. Groups of launched agents fold away.
 
-import { h, reconcile, createScheduler, avatar, truncate } from "./format.js"
-import { state, on, now, openTasks, setFilter, CORE_ORDER } from "./store.js"
+import { h, reconcile, createScheduler, avatar, truncate, ROLE_TEXT, TOOL_LABEL, ROLE_LABEL } from "./format.js"
+import { state, on, now, openTasks, setFilter, CORE_ORDER, teamShown } from "./store.js"
 import { focusDecisions } from "./inbox.js"
-import { t, pl, getLang, onLang, onTx, tx, agentName } from "./i18n.js"
+import { t, pl, getLang, onLang, tx, txLabel, agentName } from "./i18n.js"
 
 const DYN_GROUPS = [
-	{ id: "trijaza", label: "Trijaža" },
-	{ id: "firme", label: "Firme" },
-	{ id: "imovina", label: "Imovina" },
-	{ id: "mediji", label: "Mediji · osobe" },
-	{ id: "provera", label: "Provera" },
+	{ id: "trijaza", label: "Trijaža", desc: "po jedan agent za svaku instituciju sa liste" },
+	{ id: "firme", label: "Firme", desc: "po jedan agent za svakog pronađenog dobavljača" },
+	{ id: "imovina", label: "Imovina", desc: "izveštaji o imovini svakog funkcionera" },
+	{ id: "mediji", label: "Mediji · osobe", desc: "medijske objave o svakoj osobi iz dosijea" },
+	{ id: "provera", label: "Provera", desc: "da li je vlasnik firme funkcioner ili PEP" },
 ]
 
 const rows = new Map() // laneId -> { root, status, spawn, sig }
 const headers = new Map()
+const collapsed = new Set() // groups the user folded
+let rerender = () => {}
 
 let coreEl
 let dynEl
@@ -32,17 +34,17 @@ const classify = (info) => {
 export function laneStatus(lane, now_) {
 	if (classify(lane.info) === "human") {
 		const n = openTasks().length
-		return n ? { k: "wait", label: t("čeka tebe") } : { k: "idle", label: t("u timu") }
+		return n ? { k: "wait", label: t("čeka Vas") } : { k: "idle", label: t("u timu") }
 	}
 	if (lane.left) return { k: "done", label: t("gotovo") }
-	if (lane.openWait) return { k: "wait", label: t("čeka tebe") }
+	if (lane.openWait) return { k: "wait", label: t("čeka Vas") }
 	if (lane.blockedUntil > now_) return { k: "blocked", label: t("blokirano") }
 	let req = null
 	for (const r of lane.reqs.values()) req = r
-	if (req) return { k: "tool", label: `${req.source} · ${tx(req.label)} …` }
+	if (req) return { k: "tool", label: `${req.source} · ${txLabel(req.label)} …` }
 	let tool = null
 	for (const seg of lane.tools.values()) tool = seg
-	if (tool) return { k: "tool", label: `${t("alat")}: ${truncate(tool.label, 28)}` }
+	if (tool) return { k: "tool", label: TOOL_LABEL[tool.label] || truncate(tool.label, 28) }
 	if (lane.openInf) return { k: "think", label: t("razmišlja") }
 	if (lane.loopsOpen > 0) return { k: "work", label: t("radi") }
 	if (lane.error) return { k: "error", label: t("greška") }
@@ -54,8 +56,20 @@ function spawnerName(info) {
 	return agentName((info.spawnedBy && state.agents.get(info.spawnedBy)?.name) || "")
 }
 
-function spawnText(info) {
-	return t("pokrenuo: {ev} · {by}", { ev: info.group === "trijaza" ? "mapa.started" : "entity.added", by: spawnerName(info) || agentName("Fabrika") })
+const FOUND_AS = { dobavljac: "dobavljač institucije", funkcioner: "funkcioner u instituciji", vlasnik: "vlasnik firme", pomenut: "pomenut u izvorima" }
+
+/** Why a launched agent exists, from the record: which agent found which person or company, and in what role. */
+export function spawnText(info) {
+	if (info.group === "trijaza") return t("pokrenut za instituciju sa liste")
+	const e = info.entityId ? state.entities.get(info.entityId) : null
+	const by = agentName(e?.addedByName || spawnerName(info) || "Fabrika")
+	const as = e?.role ? t(FOUND_AS[e.role] || ROLE_LABEL[e.role] || e.role) : e?.kind === "firma" ? t("firma") : t("osoba")
+	return t("povod: {as} · pronašli: {by}", { as, by })
+}
+
+/** The line under an agent's name: its job for the core team, the reason it was launched for the others. */
+function roleLine(info) {
+	return info.dynamic ? spawnText(info) : ROLE_TEXT[info.group] || ""
 }
 
 function buildLane(lane) {
@@ -68,7 +82,7 @@ function buildLane(lane) {
 		{
 			class: `lane ${kind}${info.dynamic ? " is-dyn" : ""}`,
 			dataset: { lane: info.id },
-			title: [tx(info.description) || agentName(info.name), info.dynamic ? spawnText(info) : ""].filter(Boolean).join("\n"),
+			title: [agentName(info.name), tx(info.description), info.dynamic ? spawnText(info) : ""].filter(Boolean).join("\n"),
 			tabindex: "0",
 			role: "button",
 			"aria-pressed": "false",
@@ -80,7 +94,15 @@ function buildLane(lane) {
 				}
 			},
 		},
-		h("div", { class: "lane-top" }, h("i", { class: "adot" }), avatar(info), h("span", { class: "lane-name" }, agentName(info.name)), spawn, status),
+		h(
+			"div",
+			{ class: "lane-top" },
+			h("i", { class: "adot" }),
+			avatar(info),
+			h("span", { class: "lane-id" }, h("span", { class: "lane-name" }, agentName(info.name)), h("span", { class: "lane-role" }, roleLine(info))),
+			spawn,
+			status,
+		),
 		h("div", { class: "lane-track" }),
 	)
 	const rec = { root, status, spawn, sig: "", spawnSig: "" }
@@ -101,7 +123,7 @@ function updateLane(lane, tm) {
 	}
 	const recent = state.live && lane.info.dynamic && lane.spawnT && tm - lane.spawnT < 10000
 	const reacting = state.live && lane.reactT && tm - lane.reactT < 10000
-	const note = reacting ? `${t("reaguje na nalaz")}${lane.reactFrom ? ` · ${agentName(lane.reactFrom)}` : ""}` : recent ? spawnText(lane.info) : ""
+	const note = reacting ? `${t("reaguje na nalaz")}${lane.reactFrom ? ` · ${agentName(lane.reactFrom)}` : ""}` : recent ? t("nov") : ""
 	if (rec.spawnSig !== note) {
 		rec.spawnSig = note
 		rec.spawn.textContent = note
@@ -134,12 +156,12 @@ function renderBanner() {
 		n > 1
 			? getLang() === "en"
 				? `${n} agents are waiting for your decision`
-				: `${n} ${pl(n, ["agent čeka", "agenta čekaju", "agenata čeka"])} tvoju odluku`
-			: t("{agent} čeka tvoju odluku", { agent: open[0].fromAgentName })
+				: `${n} ${pl(n, ["agent čeka", "agenta čekaju", "agenata čeka"])} Vašu odluku`
+			: t("{agent} čeka Vašu odluku", { agent: open[0].fromAgentName })
 	const sig = `${getLang()}|${who}`
 	if (banner.dataset.sig !== sig) {
 		banner.dataset.sig = sig
-		banner.replaceChildren(h("span", null, h("b", null, `${who}.`), ` ${t("Ostali agenti nastavljaju.")}`), h("button", { class: "btn small wait", type: "button", onclick: () => focusDecisions(open[0].id) }, t("Odluči")))
+		banner.replaceChildren(h("span", null, h("b", null, `${who}.`), ` ${t("Ostali agenti nastavljaju.")}`), h("button", { class: "btn small wait", type: "button", onclick: () => focusDecisions(open[0].id) }, t("Odlučite")))
 	}
 	banner.hidden = false
 }
@@ -148,7 +170,7 @@ function render() {
 	const tm = now()
 	// during a map only the agents that took part are shown (the case agents would sit idle)
 	const idleInMap = (l) => state.runKind === "mapa" && !l.segs.length && !l.loopsOpen
-	const all = [...state.lanes.values()]
+	const all = teamShown() ? [...state.lanes.values()] : []
 	// the journalist's lane only shows waits for the user: nothing waits for the user unless the server asks (config.asksUser)
 	const human = state.config?.asksUser ? all.filter((l) => classify(l.info) === "human" && !idleInMap(l)) : []
 	const core = all.filter((l) => classify(l.info) === "core" && !idleInMap(l)).sort(laneSort)
@@ -164,13 +186,36 @@ function render() {
 		if (!members.length) continue
 		let hd = headers.get(g.id)
 		if (!hd) {
-			hd = { root: h("div", { class: "lane-group" }, h("span", null, t(g.label)), h("span", { class: "g-count" }, "0")), count: null }
+			// a group header folds its agents away (their bars stay in the timeline data and come back unfolded)
+			hd = {
+				root: h(
+					"button",
+					{
+						class: "lane-group",
+						type: "button",
+						"aria-expanded": "true",
+						title: t("Sakrijte ili prikažite ovu grupu agenata"),
+						onclick: () => {
+							if (collapsed.has(g.id)) collapsed.delete(g.id)
+							else collapsed.add(g.id)
+							rerender()
+						},
+					},
+					h("span", { class: "g-chev", "aria-hidden": "true" }, "▾"),
+					h("span", { class: "g-label" }, t(g.label)),
+					h("span", { class: "g-count" }, "0"),
+					h("span", { class: "g-desc" }, t(g.desc)),
+				),
+				count: null,
+			}
 			hd.count = hd.root.querySelector(".g-count")
 			headers.set(g.id, hd)
 		}
 		const label = `${members.length}`
 		if (hd.count.textContent !== label) hd.count.textContent = label
-		dynEls.push(hd.root, ...members.map((l) => rows.get(l.id).root))
+		const folded = collapsed.has(g.id)
+		hd.root.setAttribute("aria-expanded", String(!folded))
+		dynEls.push(hd.root, ...(folded ? [] : members.map((l) => rows.get(l.id).root)))
 	}
 	reconcile(dynEl, dynEls)
 	dynEmptyEl.hidden = dynEls.length > 0
@@ -189,7 +234,9 @@ export function initLanes() {
 	wrapEl = document.getElementById("ganttWrap")
 
 	const schedule = createScheduler(render)
+	rerender = schedule
 	on("agents", schedule)
+	on("view", schedule)
 	on("lane", schedule)
 	on("tasks", schedule)
 	on("filters", schedule)
@@ -201,8 +248,6 @@ export function initLanes() {
 		}
 		schedule()
 	})
-	// a translation batch: status lines show the translated source labels (their signature is the text itself)
-	onTx(schedule)
 	onLang(() => {
 		for (const r of rows.values()) r.root.remove()
 		rows.clear()

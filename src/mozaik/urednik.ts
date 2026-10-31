@@ -63,7 +63,8 @@ function mergeInto(older: Finding, n: Finding): void {
 	if (!older.signalCode && n.signalCode) older.signalCode = n.signalCode
 	older.entityIds = [...new Set([...older.entityIds, ...n.entityIds])]
 	older.mergedFrom = [...(older.mergedFrom ?? []), n.id, ...(n.mergedFrom ?? [])]
-	older.note = `Spojeno iz ${older.mergedFrom.length + 1} nalaza (${[...new Set([older.agentName, n.agentName])].join(", ")}).`
+	const who = [...new Set([older.agentName, n.agentName])].join(", ")
+	older.note = S().lang === "en" ? `Merged from ${older.mergedFrom.length + 1} findings (${who}).` : `Spojeno iz ${older.mergedFrom.length + 1} nalaza (${who}).`
 	state.findings.delete(n.id)
 	state.mergedAway.set(n.id, older.id)
 	updateFinding(older, "merge")
@@ -82,11 +83,13 @@ function describe(f: Finding): string {
 }
 
 const REGISTER_LABEL: Partial<Record<SourceKind, string>> = { acas: "ACAS", dri: "DRI", jnportal: "Portal javnih nabavki", paragraf: "Službeni glasnik", zakon: "propis" }
+const REGISTER_LABEL_EN: Partial<Record<SourceKind, string>> = { acas: "ACAS", dri: "State Audit Institution", jnportal: "Public Procurement Portal", paragraf: "Official Gazette", zakon: "regulation" }
 
 /** "Zvanični registar (ACAS)": who the official side of a conflict is. */
 function officialLabel(f: Finding): string {
 	const s = f.sources.find((x) => x.official)
-	return `Zvanični registar (${(s && REGISTER_LABEL[s.kind]) || describe(f)})`
+	const which = (s && (S().lang === "en" ? REGISTER_LABEL_EN : REGISTER_LABEL)[s.kind]) || describe(f)
+	return S().lang === "en" ? `The official register (${which})` : `Zvanični registar (${which})`
 }
 
 function resolveConflict(a: Finding, b: Finding): void {
@@ -112,12 +115,19 @@ function resolveConflict(a: Finding, b: Finding): void {
 	const wv = winner.claim?.value ?? ""
 	const lv = loser.claim?.value ?? ""
 	// a different title in a headline is not a denial: neutral wording, the official register simply has precedence
+	const en = S().lang === "en"
 	const explanation =
 		rule === "zvanicni_izvor_ima_prednost"
-			? `${officialLabel(winner)} navodi «${wv}»; ${describe(loser)} navodi «${lv}». Prednost ima zvanični registar.`
+			? en
+				? `${officialLabel(winner)} says «${wv}»; ${describe(loser)} says «${lv}». The official register takes precedence.`
+				: `${officialLabel(winner)} navodi «${wv}»; ${describe(loser)} navodi «${lv}». Prednost ima zvanični registar.`
 			: rule === "vise_izvora"
-				? `Nijedan ili oba nalaza imaju zvanični izvor. Navod «${wv}» ima više izvora (${winner.sources.length} prema ${loser.sources.length}) od navoda «${lv}»; prednost ima navod sa više izvora.`
-				: `Izvori su izjednačeni po zvaničnosti i broju. Noviji navod «${wv}» ima prednost nad starijim «${lv}»; stariji navod nije potvrđen.`
+				? en
+					? `Neither or both findings have an official source. The claim «${wv}» has more sources (${winner.sources.length} to ${loser.sources.length}) than «${lv}»; the claim with more sources takes precedence.`
+					: `Nijedan ili oba nalaza imaju zvanični izvor. Navod «${wv}» ima više izvora (${winner.sources.length} prema ${loser.sources.length}) od navoda «${lv}»; prednost ima navod sa više izvora.`
+				: en
+					? `The sources are equal in officialness and number. The newer claim «${wv}» takes precedence over the older «${lv}»; the older claim is not confirmed.`
+					: `Izvori su izjednačeni po zvaničnosti i broju. Noviji navod «${wv}» ima prednost nad starijim «${lv}»; stariji navod nije potvrđen.`
 	const conflict: Conflict = {
 		id: state.nextConflictId(),
 		caseId: winner.caseId,
@@ -135,8 +145,12 @@ function resolveConflict(a: Finding, b: Finding): void {
 	loser.conflictId = conflict.id
 	loser.note =
 		rule === "zvanicni_izvor_ima_prednost"
-			? `${officialLabel(winner)} navodi «${wv}»; ovaj izvor navodi «${lv}». Prednost ima zvanični registar.`
-			: `Konflikt izvora: prednost ima navod «${wv}».`
+			? en
+				? `${officialLabel(winner)} says «${wv}»; this source says «${lv}». The official register takes precedence.`
+				: `${officialLabel(winner)} navodi «${wv}»; ovaj izvor navodi «${lv}». Prednost ima zvanični registar.`
+			: en
+				? `Source conflict: the claim «${wv}» takes precedence.`
+				: `Konflikt izvora: prednost ima navod «${wv}».`
 	winner.conflictId = conflict.id
 	publishConflict(conflict)
 	updateFinding(loser, "conflict")
@@ -175,7 +189,7 @@ export function processFinding(findingId: string): void {
 	// a finding that backs up another agent's finding with an independent official source (DRI vs Nabavke): say so on the older one
 	const backed = f.corroborates ? state.findings.get(f.corroborates) : undefined
 	if (backed && !backed.note?.includes(f.title)) {
-		backed.note = [backed.note, `Potkrepljeno nalazom ${f.agentName}: ${f.title}`].filter(Boolean).join(" ")
+		backed.note = [backed.note, S().lang === "en" ? `Backed by the finding of ${f.agentName}: ${f.title}` : `Potkrepljeno nalazom ${f.agentName}: ${f.title}`].filter(Boolean).join(" ")
 		updateFinding(backed, "status")
 	}
 	for (const older of state.findingList()) {
