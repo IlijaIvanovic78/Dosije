@@ -1223,6 +1223,113 @@ body[data-view="case"] #hero {
 	font-size: 14.5px;
 	color: var(--ink-2);
 }
+
+/* ─── try it yourself: the QR code of the public address ─────────────────── */
+
+.try.band {
+	padding: 72px var(--page-gutter) 80px;
+	border-bottom: 1px solid var(--rule);
+}
+.try-inner {
+	display: grid;
+	grid-template-columns: minmax(0, 580px) auto;
+	justify-content: start;
+	align-items: center;
+	column-gap: clamp(48px, 9vw, 140px);
+}
+.try-kicker {
+	margin: 0 0 10px;
+	font-size: 12.5px;
+	font-weight: 700;
+	letter-spacing: 0.08em;
+	text-transform: uppercase;
+	color: var(--accent);
+}
+.try .sheet-title {
+	margin-bottom: 14px;
+	font-size: 34px;
+	line-height: 1.15;
+}
+.try-lede {
+	max-width: 54ch;
+	margin: 0 0 26px;
+	font-size: 16.5px;
+	line-height: 1.6;
+	color: var(--ink-2);
+}
+.try-steps {
+	display: grid;
+	gap: 12px;
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+.try-steps li {
+	display: flex;
+	align-items: center;
+	gap: 12px;
+	font-size: 15.5px;
+	color: var(--ink);
+}
+.try-n {
+	flex: none;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 28px;
+	height: 28px;
+	border: 1px solid var(--rule-strong);
+	border-radius: 50%;
+	background: var(--surface);
+	font: 600 14px/1 var(--display);
+	color: var(--accent-ink);
+}
+/* the code lies on the desk like one more paper, taped among the others */
+.try-card {
+	position: relative;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	margin: 0;
+	padding: 24px 24px 12px;
+	border: 1px solid var(--rule);
+	border-top: 3px solid var(--accent);
+	border-radius: var(--radius);
+	background: var(--surface);
+	box-shadow: var(--shadow-lg);
+	transform: rotate(-1.5deg);
+}
+.try-card::before {
+	content: "";
+	position: absolute;
+	top: -15px;
+	left: 50%;
+	width: 96px;
+	height: 26px;
+	border-radius: 2px;
+	background: rgba(181, 102, 74, 0.22);
+	transform: translateX(-50%) rotate(3deg);
+}
+.try-qr {
+	display: block;
+	width: 232px;
+	height: 232px;
+	color: var(--ink);
+}
+.try-url {
+	margin: 10px 0 2px;
+	font: 600 15.5px/1.3 var(--mono);
+	letter-spacing: 0.02em;
+	color: var(--ink);
+}
+.try-share {
+	margin-top: 4px;
+	color: var(--accent-ink);
+}
+.try-share svg {
+	width: 15px;
+	height: 15px;
+}
 .hero-note {
 	padding-top: 28px;
 	text-align: center;
@@ -3619,15 +3726,17 @@ body[data-view="case"] #hero {
 	#btnNew span[data-i18n] {
 		display: none;
 	}
+	/* a picture made for a phone: the papers frame the first screen, its middle stays clean for the headline */
 	.hero-stage {
 		min-height: 0;
 		align-items: flex-start;
-		background-position: 72% top;
-		background-size: auto 100%;
+		background-image: url("img/desk-phone.webp");
+		background-position: center top;
+		background-size: 100% auto;
 	}
 	/* the collage shows behind the headline; the veil thickens toward the form and the examples */
 	.hero-stage::before {
-		background: linear-gradient(180deg, rgba(244, 241, 234, 0.42) 0%, rgba(244, 241, 234, 0.6) 34%, rgba(244, 241, 234, 0.86) 58%, rgba(244, 241, 234, 0.95) 100%);
+		background: linear-gradient(180deg, rgba(244, 241, 234, 0.22) 0, rgba(244, 241, 234, 0.4) 120vw, var(--paper) 176vw);
 	}
 	.hero-title,
 	.hero-lede {
@@ -3700,6 +3809,26 @@ body[data-view="case"] #hero {
 	}
 	.sources.band .src-head {
 		margin-bottom: 20px;
+	}
+	.try.band {
+		padding: 48px var(--page-gutter) 56px;
+	}
+	.try-inner {
+		grid-template-columns: minmax(0, 1fr);
+		row-gap: 44px;
+	}
+	.try .sheet-title {
+		font-size: 27px;
+	}
+	.try-lede {
+		font-size: 16px;
+	}
+	.try-card {
+		justify-self: center;
+	}
+	.try-qr {
+		width: 210px;
+		height: 210px;
 	}
 	.help-card {
 		max-height: 100%;

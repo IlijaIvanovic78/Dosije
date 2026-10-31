@@ -1,5 +1,10 @@
-// The guide behind the "?" in the top bar (how Dosije works, how to read a dossier) and the rotating strip of sources on
-// the start screen.
+// The guide behind the "?" in the top bar (how Dosije works, how to read a dossier), the rotating strip of sources on
+// the start screen, and the "share the link" button next to its QR code.
+
+import { t } from "./i18n.js"
+import { toast } from "./toast.js"
+
+const PUBLIC_URL = "https://dosije.online/"
 
 let modal, opener
 
@@ -75,4 +80,25 @@ export function initSources() {
 		if (atEnd) strip.scrollTo({ left: 0, behavior: "smooth" })
 		else strip.scrollBy({ left: card.offsetWidth + (parseFloat(getComputedStyle(track).columnGap) || 0), behavior: "smooth" })
 	}, STEP_MS)
+}
+
+/** "Podelite link": a phone opens its share sheet (Viber, WhatsApp, ...); elsewhere the link goes to the clipboard. */
+export function initShare() {
+	const btn = document.getElementById("btnShare")
+	btn.addEventListener("click", async () => {
+		if (navigator.share && window.matchMedia("(pointer: coarse)").matches) {
+			try {
+				await navigator.share({ title: "Dosije", text: t("Skenirajte kod i pokrenite svoj dosije"), url: PUBLIC_URL })
+			} catch {
+				// closed without sharing
+			}
+			return
+		}
+		try {
+			await navigator.clipboard.writeText(PUBLIC_URL)
+			toast({ text: t("Link je kopiran: {url}", { url: PUBLIC_URL }), ttl: 3000 })
+		} catch {
+			toast({ text: PUBLIC_URL, ttl: 6000 })
+		}
+	})
 }
