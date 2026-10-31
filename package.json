@@ -17,7 +17,8 @@
     "load": "tsx scripts/load-test.ts",
     "test": "tsx --test test/*.test.ts",
     "typecheck": "tsc --noEmit",
-    "check-keys": "tsx scripts/check-keys.ts"
+    "check-keys": "tsx scripts/check-keys.ts",
+    "screenshots": "tsx scripts/screenshots.ts"
   },
   "license": "MIT",
   "dependencies": {
