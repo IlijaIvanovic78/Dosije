@@ -1,7 +1,7 @@
 // Phones and narrow windows: the board is one column there, and the agent team used to sit under the whole dossier
 // (dozens of screens down). A switch under the run bar shows one pane at a time: the dossier (or the comparison) or the
-// agent team. A new run opens on the team at work; when it ends, the dossier opens with its result, unless the visitor
-// chose a pane in the meantime. Wide screens show both columns and never see the switch (styles.css).
+// agent team. A run opens on the team at work; when it ends, the dossier opens at the top, on its result. In between
+// the visitor switches freely. Wide screens show both columns and never see the switch (styles.css).
 
 import { state, on, isRunning, isDone, activeCount } from "./store.js"
 import { t, onLang } from "./i18n.js"
@@ -11,14 +11,12 @@ const ONE_COLUMN = window.matchMedia("(max-width: 1020px)")
 
 let el
 let pane = "doc"
-let picked = false // the visitor chose a pane during this run
 let lastRun = null
 let lastRunning = false
 const scrollOf = { doc: 0, team: 0 }
 let queued = false
 
-function setPane(next, byVisitor) {
-	if (byVisitor) picked = true
+function setPane(next) {
 	if (next === pane) return
 	const main = document.getElementById("main")
 	scrollOf[pane] = main.scrollTop
@@ -62,10 +60,12 @@ function follow() {
 	const run = state.runKind === "mapa" ? state.mapa.id : state.caseId
 	const running = isRunning()
 	if (run && run !== lastRun && running) {
-		picked = false
 		scrollOf.doc = scrollOf.team = 0
-		setPane("team", false)
-	} else if (lastRunning && !running && isDone() && !picked) setPane("doc", false)
+		setPane("team")
+	} else if (lastRunning && !running && isDone()) {
+		scrollOf.doc = 0
+		setPane("doc")
+	}
 	lastRun = run
 	lastRunning = running
 	schedule()
@@ -81,16 +81,16 @@ export function initPanes() {
 		teamBadge: root.querySelector('[data-pane="team"] .ps-badge'),
 	}
 	document.body.dataset.pane = pane
-	for (const b of [el.doc, el.team]) b.addEventListener("click", () => setPane(b.dataset.pane, true))
+	for (const b of [el.doc, el.team]) b.addEventListener("click", () => setPane(b.dataset.pane))
 	root.addEventListener("keydown", (e) => {
 		if (e.key !== "ArrowLeft" && e.key !== "ArrowRight") return
 		const next = pane === "doc" ? "team" : "doc"
-		setPane(next, true)
+		setPane(next)
 		el[next].focus()
 	})
 	// a tap on an agent filters the dossier to its findings: on one column, show them
 	on("filters", (key) => {
-		if (key === "agentId" && state.filters.agentId && ONE_COLUMN.matches && pane === "team") setPane("doc", true)
+		if (key === "agentId" && state.filters.agentId && ONE_COLUMN.matches && pane === "team") setPane("doc")
 	})
 	for (const topic of ["meta", "snapshot", "view"]) on(topic, follow)
 	for (const topic of ["lane", "finding", "agents"]) on(topic, schedule)

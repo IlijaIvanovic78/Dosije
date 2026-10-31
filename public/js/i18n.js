@@ -263,10 +263,6 @@ const EN = {
 	"Dodajte trag": "Add a lead",
 	"istraživanje javnih institucija": "investigating public institutions",
 	// ─── connection, start, resume ───
-	"veza je prekinuta, ponovo se povezujem…": "connection lost, reconnecting…",
-	"povezujem se…": "connecting…",
-	"Proverite da li server radi (npm start).": "Check that the server is running (npm start).",
-	"Veza sa serverom": "Connection to the server",
 	"istraživanje traje": "investigation in progress",
 	"Pratite istraživanje": "Follow the investigation",
 	"Pronalazim instituciju…": "Finding the institution…",
@@ -535,7 +531,6 @@ const EN = {
 	"Agenti završavaju trenutni korak i urednik piše izveštaj": "The agents finish their current step and the editor writes the report",
 	"Čeka samo agent koji pita. Ostali nastavljaju.": "Only the asking agent waits. The others carry on.",
 	"najvažnije za proveru": "the most important to verify",
-	"nema veze sa serverom": "no connection to the server",
 	"Proveri da li server radi (npm start) i zatvori višak tabova sa Dosijeom: pregledač drži najviše 6 veza ka istom serveru.":
 		"Check that the server is running (npm start) and close extra Dosije tabs: the browser keeps at most 6 connections to one server.",
 	"pretražuje izvor": "searching a source",

@@ -42,7 +42,16 @@ export function initHelp() {
 	})
 }
 
-/** The source cards run in a loop: the list is shown twice in a row (the copy is hidden from screen readers). */
+const PHONE = window.matchMedia("(max-width: 860px)")
+const STILL = window.matchMedia("(prefers-reduced-motion: reduce)")
+const STEP_MS = 2200
+const AFTER_TOUCH_MS = 4000
+
+/**
+ * The source cards run in a loop: the list is shown twice in a row (the copy is hidden from screen readers). On a phone
+ * the strip is a row to swipe instead (styles.css), and it moves on by one card every couple of seconds; a swipe holds
+ * it for a moment, and it waits while it is off screen.
+ */
 export function initSources() {
 	const track = document.getElementById("srcTrack")
 	for (const li of [...track.children]) {
@@ -51,4 +60,17 @@ export function initSources() {
 		copy.classList.add("dup")
 		track.appendChild(copy)
 	}
+
+	const strip = track.parentElement
+	let onScreen = false
+	let heldUntil = 0
+	new IntersectionObserver(([entry]) => (onScreen = entry.isIntersecting)).observe(strip)
+	for (const ev of ["pointerdown", "touchstart", "wheel"]) strip.addEventListener(ev, () => (heldUntil = Date.now() + AFTER_TOUCH_MS), { passive: true })
+	setInterval(() => {
+		if (!PHONE.matches || STILL.matches || !onScreen || document.hidden || Date.now() < heldUntil) return
+		const card = track.querySelector(".src-card")
+		const atEnd = strip.scrollLeft + strip.clientWidth >= strip.scrollWidth - 4
+		if (atEnd) strip.scrollTo({ left: 0, behavior: "smooth" })
+		else strip.scrollBy({ left: card.offsetWidth + (parseFloat(getComputedStyle(track).columnGap) || 0), behavior: "smooth" })
+	}, STEP_MS)
 }

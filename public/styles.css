@@ -623,14 +623,6 @@ input.invalid {
 	align-items: center;
 	gap: 12px;
 }
-.conn-text {
-	font-size: 13px;
-	font-weight: 600;
-	color: var(--ink-3);
-}
-.conn-text.down {
-	color: var(--signal);
-}
 .inbox-btn {
 	position: relative;
 }
@@ -3496,36 +3488,58 @@ body[data-view="case"] #hero {
 		top: 0;
 		z-index: 6;
 		display: flex;
-		gap: 6px;
 		padding: 8px 14px;
 		background: var(--surface);
 		border-bottom: 1px solid var(--rule);
+	}
+	/* one control with two halves; the dark thumb slides under the pane on screen */
+	.ps-seg {
+		position: relative;
+		flex: 1;
+		display: flex;
+		padding: 3px;
+		border: 1px solid var(--rule-strong);
+		border-radius: 10px;
+		background: var(--sunk);
+	}
+	.ps-thumb {
+		position: absolute;
+		top: 3px;
+		bottom: 3px;
+		left: 3px;
+		width: calc(50% - 3px);
+		border-radius: 7px;
+		background: var(--ink);
+		box-shadow: var(--shadow);
+		transition: transform 0.25s cubic-bezier(0.3, 0.7, 0.2, 1);
+	}
+	body[data-pane="team"] .ps-thumb {
+		transform: translateX(100%);
 	}
 	body[data-pane="team"] .board > .doc,
 	body[data-pane="doc"] .board > .team {
 		display: none;
 	}
 	.ps-btn {
+		position: relative;
 		flex: 1 1 0;
 		min-width: 0;
 		display: inline-flex;
 		align-items: center;
 		justify-content: center;
 		gap: 7px;
-		height: 38px;
+		height: 36px;
 		padding: 0 10px;
-		border: 1px solid var(--rule-strong);
-		border-radius: 8px;
-		background: var(--surface);
-		color: var(--ink-2);
+		border: 0;
+		border-radius: 7px;
+		background: none;
+		color: var(--ink-3);
 		font: 600 14.5px/1 var(--sans);
 		white-space: nowrap;
 		cursor: pointer;
-		transition: background 0.15s, color 0.15s, border-color 0.15s;
+		transition: color 0.2s;
 	}
 	.ps-btn[aria-selected="true"] {
-		background: var(--ink);
-		border-color: var(--ink);
 		color: #fbf8f2;
 	}
 	.ps-lbl {
@@ -3541,10 +3555,11 @@ body[data-view="case"] #hero {
 		height: 20px;
 		padding: 0 6px;
 		border-radius: 10px;
-		background: var(--sunk);
+		background: var(--surface);
 		color: var(--ink-2);
 		font-size: 11.5px;
 		font-weight: 700;
+		transition: background 0.2s, color 0.2s;
 	}
 	.ps-btn[aria-selected="true"] .ps-badge {
 		background: rgba(255, 255, 255, 0.16);
@@ -3563,7 +3578,7 @@ body[data-view="case"] #hero {
 	}
 	/* the findings tabs stick under the switch */
 	body[data-view="case"] .tabs-bar {
-		top: 55px;
+		top: 61px;
 	}
 	.mhead {
 		display: none;
@@ -3610,8 +3625,13 @@ body[data-view="case"] #hero {
 		background-position: 72% top;
 		background-size: auto 100%;
 	}
+	/* the collage shows behind the headline; the veil thickens toward the form and the examples */
 	.hero-stage::before {
-		background: linear-gradient(180deg, rgba(244, 241, 234, 0.9) 0%, rgba(244, 241, 234, 0.96) 30%, rgba(244, 241, 234, 0.98) 100%);
+		background: linear-gradient(180deg, rgba(244, 241, 234, 0.42) 0%, rgba(244, 241, 234, 0.6) 34%, rgba(244, 241, 234, 0.86) 58%, rgba(244, 241, 234, 0.95) 100%);
+	}
+	.hero-title,
+	.hero-lede {
+		text-shadow: 0 0 14px rgba(244, 241, 234, 0.95), 0 0 3px rgba(244, 241, 234, 0.9);
 	}
 	:root {
 		--page-gutter: 18px;
@@ -3651,6 +3671,26 @@ body[data-view="case"] #hero {
 	}
 	.src-card {
 		width: 228px;
+		scroll-snap-align: start;
+	}
+	/* a row to swipe that moves on by itself (js/help.js) instead of the moving band: a band thousands of pixels wide is
+	   not always painted in time on a phone, and its cards blink out */
+	.src-marquee {
+		overflow-x: auto;
+		scroll-snap-type: x mandatory;
+		scroll-padding: 0 var(--page-gutter);
+		padding: 6px var(--page-gutter) 12px;
+		scrollbar-width: none;
+	}
+	.src-marquee::-webkit-scrollbar {
+		display: none;
+	}
+	.src-track {
+		padding-right: var(--page-gutter);
+		animation: none;
+	}
+	.src-track .dup {
+		display: none;
 	}
 	.sources.band {
 		padding: 44px 0 40px;

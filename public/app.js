@@ -20,33 +20,6 @@ import { initPanes } from "./js/panes.js"
 
 const $ = (id) => document.getElementById(id)
 
-const STUCK_MS = 8000
-let connSince = Date.now()
-let lastConn = null
-let stuckTimer = null
-
-/** The top bar only speaks up when the connection to the server is in trouble. */
-function renderMode() {
-	const el = $("modeText")
-	if (state.conn !== lastConn) {
-		lastConn = state.conn
-		connSince = Date.now()
-		clearTimeout(stuckTimer)
-		if (state.conn !== "up") stuckTimer = setTimeout(renderMode, STUCK_MS + 100)
-	}
-	if (state.conn === "up") {
-		el.hidden = true
-		el.textContent = ""
-		return
-	}
-	// still not connected after a while: say what usually causes it
-	const stuck = Date.now() - connSince > STUCK_MS
-	el.hidden = false
-	el.className = `conn-text ${state.conn === "down" || stuck ? "down" : ""}`
-	el.textContent = stuck ? t("nema veze sa serverom") : state.conn === "down" ? t("veza je prekinuta, ponovo se povezujem…") : t("povezujem se…")
-	el.title = stuck ? t("Proverite da li server radi (npm start).") : t("Veza sa serverom")
-}
-
 /** The current institutions as small research cards: what it is, its name, and the action. */
 function renderDemoChips() {
 	const demos = state.config?.demoInstitutions || []
@@ -225,7 +198,6 @@ async function boot() {
 	applyStatic()
 	initHelp()
 	onLang(() => {
-		renderMode()
 		renderDemoChips()
 		renderResume()
 		renderInboxButton()
@@ -243,15 +215,12 @@ async function boot() {
 	initMapa()
 	initPanes()
 
-	on("conn", renderMode)
 	on("snapshot", () => {
-		renderMode()
 		renderDemoChips()
 		renderView()
 	})
 	on("meta", renderView)
 	on("view", renderView)
-	renderMode()
 	renderView()
 
 	try {
