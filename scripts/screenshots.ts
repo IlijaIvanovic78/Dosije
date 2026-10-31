@@ -128,24 +128,24 @@ async function desktop(page: Page): Promise<void> {
 	// the sources carousel and the QR code under it, below the top bar
 	await scrollTo(page, "#srcTitle")
 	await page.eval(`window.scrollBy(0, -110)`)
-	await page.shot("01-try-it.png")
+	await page.shot("07-try-it.png")
 
 	await startExample(page, 0)
 	// mid-run: the core agents and the ones the Fabrika spawned work at the same time and the first signals are in
 	await page.waitFor(`document.querySelectorAll("#lanesDyn .lane").length >= 8 && document.querySelectorAll("#findList > *").length >= 6`, 60_000, "agenti i prvi nalazi")
 	await sleep(1500)
-	await page.shot("02-team-live.png")
+	await page.shot("01-team-live.png")
 
 	await page.waitFor(caseDone, 300_000, "dosije je spreman")
 	await page.eval(`document.getElementById("dosijeScroll").scrollTop = 0`)
-	await page.shot("03-done.png")
+	await page.shot("02-done.png")
 	await scrollTo(page, "#signalsBody")
 	await page.eval(`document.getElementById("dosijeScroll").scrollBy(0, -90)`)
-	await page.shot("04-signals.png")
+	await page.shot("03-signals.png")
 
 	await page.click("#btnReport")
 	await page.waitFor(`!document.getElementById("reportModal").hidden && document.getElementById("reportBody").textContent.length > 200`, 20_000, "izveštaj")
-	await page.shot("05-report.png")
+	await page.shot("04-report.png")
 	await page.click("#reportClose")
 
 	await page.click("#btnMapa")
@@ -154,11 +154,11 @@ async function desktop(page: Page): Promise<void> {
 	await page.click("#btnMapaRun")
 	await page.waitFor(`document.getElementById("mapaStatus").classList.contains("running")`, 20_000, "mapa je pokrenuta")
 	await page.waitFor(`document.getElementById("mapaStatus").classList.contains("done") && document.querySelectorAll("#mapaRows > *").length >= 6`, 240_000, "mapa prioriteta")
-	await page.shot("06-mapa.png")
+	await page.shot("05-mapa.png")
 
 	// the scripted agents write their findings in Serbian, so the English interface is shown on the start page
 	await freshVisit(page, "en")
-	await page.shot("07-en.jpg")
+	await page.shot("06-en.jpg")
 }
 
 async function phone(page: Page): Promise<void> {

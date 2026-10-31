@@ -6,7 +6,7 @@ signals for verification, never verdicts.
 
 **Live: [dosije.online](https://dosije.online)**. Scan the code on the start page to run it on your phone.
 
-![Twelve agents at work at the same time: the four core agents, the editor and one agent per supplier the team found](docs/img/02-team-live.png)
+![The start page: type an institution or pick one of the four current ones](docs/img/00-start.jpg)
 
 ## Try it
 
@@ -44,17 +44,68 @@ the dossier when it is ready.
   after the first lookup. The screenshots here are from this mode.
 - Requires Node 20 or newer. npm may print `allow-scripts` warnings; they are harmless.
 
-| ![Start page](docs/img/00-start.jpg) | ![Try it on your phone](docs/img/01-try-it.png) |
-|---|---|
-| Start: type an institution or pick one of the four current ones. | "Probajte sami": scan the code and run your own dossier. |
-| ![Dossier ready](docs/img/03-done.png) | ![Main signals](docs/img/04-signals.png) |
-| The dossier is ready: how long it took, how many agents, the report and the PDF. | The main signals, ranked by the editor; each one with its source and status. |
-| ![Report](docs/img/05-report.png) | ![Institution comparison](docs/img/06-mapa.png) |
-| The report: what the dossier is and is not, sources, statuses and a checklist. | Poređenje institucija: eight agents at once, one ranking and the suppliers they share. |
+## Screens
 
-| ![Phone: start](docs/img/08-phone-start.jpg) | ![Phone: the team at work](docs/img/09-phone-team.png) | ![Phone: the dossier](docs/img/10-phone-dossier.png) | ![English](docs/img/07-en.jpg) |
-|---|---|---|---|
-| Phone: the start page. | The team while it works. | The dossier, opened on its own when ready. | The same interface in English. |
+One run in order, from the start page above to the report, then the comparison of institutions.
+
+<table>
+  <tr>
+    <td width="50%" valign="top">
+      <img src="docs/img/01-team-live.png" alt="The team at work"><br>
+      <b>1. The team at work.</b> Twelve agents at once: the four core agents, the editor and one agent per supplier
+      found. On the right, the people and companies they have found so far.
+    </td>
+    <td width="50%" valign="top">
+      <img src="docs/img/02-done.png" alt="The dossier is ready"><br>
+      <b>2. The dossier is ready.</b> How long it took, how many agents worked and how many findings they collected,
+      with the report and the PDF one click away.
+    </td>
+  </tr>
+  <tr>
+    <td width="50%" valign="top">
+      <img src="docs/img/03-signals.png" alt="Main signals"><br>
+      <b>3. Main signals.</b> The editor's summary and the signals it ranked first, each with its source, date and
+      status.
+    </td>
+    <td width="50%" valign="top">
+      <img src="docs/img/04-report.png" alt="The report"><br>
+      <b>4. The report.</b> What the dossier is and is not, the institution's identifiers, statuses, sources and a
+      checklist of what a human still has to verify.
+    </td>
+  </tr>
+  <tr>
+    <td width="50%" valign="top">
+      <img src="docs/img/05-mapa.png" alt="Institution comparison"><br>
+      <b>5. Poređenje institucija.</b> Eight agents at once, one per institution, a single ranking and the suppliers
+      the institutions share.
+    </td>
+    <td width="50%" valign="top">
+      <img src="docs/img/06-en.jpg" alt="The interface in English"><br>
+      <b>6. English.</b> The same interface in English, one click on <b>SR | EN</b>.
+    </td>
+  </tr>
+</table>
+
+### On a phone
+
+![Probajte sami: scan the code on the start page and run your own dossier](docs/img/07-try-it.png)
+
+<table>
+  <tr>
+    <td width="33%" valign="top">
+      <img src="docs/img/08-phone-start.jpg" alt="Phone: the start page"><br>
+      <b>The start page</b> after scanning the code.
+    </td>
+    <td width="33%" valign="top">
+      <img src="docs/img/09-phone-team.png" alt="Phone: the team at work"><br>
+      <b>Tim agenata</b> while the agents work.
+    </td>
+    <td width="33%" valign="top">
+      <img src="docs/img/10-phone-dossier.png" alt="Phone: the dossier"><br>
+      <b>Dosije</b>, opened on its own when it is ready.
+    </td>
+  </tr>
+</table>
 
 ## What it is
 

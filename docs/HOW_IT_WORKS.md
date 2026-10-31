@@ -12,7 +12,7 @@ For a **transition team or a new government**: a *list* of institutions goes thr
 parallel**, and the output is a live rank list "gde prvo gledati". It is also the strongest visual proof of
 concurrency: one **"Trijaža · <institucija>"** agent per institution, all running at the same moment.
 
-![Poređenje institucija: eight Trijaža agents at once, one ranking](img/06-mapa.png)
+![Poređenje institucija: eight Trijaža agents at once, one ranking](img/05-mapa.png)
 
 - **From the UI:** click **"Poređenje institucija"** in the header, edit the list (one field per institution, or paste a
   list; at most 8; it starts with the current institutions in `data/static/mapa-preset.json`) and click **"Pokrenite
